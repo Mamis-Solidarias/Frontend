@@ -1,5 +1,5 @@
 import { editField, getItem } from '../utils/universal';
-import { editCommunityId, Family } from './family';
+import { editCommunityId, families, Family } from './family';
 
 interface Community {
   id: string;
@@ -33,6 +33,10 @@ createCommunity('Del Sur', 'Tierra del Fuego', 'Cerca del frío');
 
 const getCommunity = (communityId: string): Community | null => {
   return getItem(communities, communityId);
+};
+
+const getFamilies = (communityId: string): Family[] => {
+  return families.filter((family) => family.communityId === communityId);
 };
 
 const editName = (id: string, name: string): boolean => {
@@ -81,6 +85,7 @@ export {
   communities,
   createCommunity,
   getCommunity,
+  getFamilies,
   editName,
   editAddress,
   editDescription,
