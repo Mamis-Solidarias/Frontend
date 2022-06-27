@@ -1,72 +1,91 @@
-import { editField, getItem } from "../utils/universal";
-import { editCommunityId, Family } from "./family";
+import { editField, getItem } from '../utils/universal';
+import { editCommunityId, Family } from './family';
 
 interface Community {
-    id:             string;
-    name:           string;
-    address:        string;
-    description:    string;
-    families:       Family[];
+  id: string;
+  name: string;
+  address: string;
+  description: string;
+  families: Family[];
 }
 
 let communities: Community[] = [];
 let communityId: number = 0;
 
-const createCommunity = (name: string, address: string, description: string ) : void => {
-    communities.push({ id: communityId.toString(), name, address, description, families: [] });
-    communityId += 1;
-}
+const createCommunity = (
+  name: string,
+  address: string,
+  description: string
+): void => {
+  communities.push({
+    id: communityId.toString(),
+    name,
+    address,
+    description,
+    families: [],
+  });
+  communityId += 1;
+};
 
-const getCommunity = (communityId: string) : Community | null => {
-    return getItem(communities, communityId);
-}
+createCommunity('De los Arroyos', 'Puerto Madero', 'Cerca del río');
+createCommunity('De los Pinos', 'Neuquén', 'Cerca de los pinos');
+createCommunity('Del Sur', 'Tierra del Fuego', 'Cerca del frío');
 
-const editName = (id: string, name: string) : boolean => {
-    return editField(communities, id, 'name', name);
-}
+const getCommunity = (communityId: string): Community | null => {
+  return getItem(communities, communityId);
+};
 
-const editAddress = (id: string, address: string) : boolean => {
-    return editField(communities, id, 'address', address);
-}
+const editName = (id: string, name: string): boolean => {
+  return editField(communities, id, 'name', name);
+};
 
-const editDescription = (id: string, description: string) : boolean => {
-    return editField(communities, id, 'description', description);
-}
+const editAddress = (id: string, address: string): boolean => {
+  return editField(communities, id, 'address', address);
+};
 
-const addFamily = (fam: Family, communityId: string) : boolean => {
-    const communitiesList: Community[] = communities.filter( community => community.id === communityId );
+const editDescription = (id: string, description: string): boolean => {
+  return editField(communities, id, 'description', description);
+};
 
-    if( !! communitiesList ) {
-        editCommunityId(fam.id, communityId);
-        communitiesList[0].families.push(fam);
-        return true;
-    }
+const addFamily = (fam: Family, communityId: string): boolean => {
+  const communitiesList: Community[] = communities.filter(
+    (community) => community.id === communityId
+  );
 
-    return false;
-}
+  if (!!communitiesList) {
+    editCommunityId(fam.id, communityId);
+    communitiesList[0].families.push(fam);
+    return true;
+  }
 
-const removeFamily = (fam: Family, communityId: string ) : boolean => {
-    const communitiesList: Community[] = communities.filter( community => community.id === communityId );
+  return false;
+};
 
-    if( !! communitiesList ) {
-        editCommunityId(fam.id, '-1');
-        communitiesList[0].families = communitiesList[0].families.filter( family => family.id === fam.id);
-        return true;
-    }
+const removeFamily = (fam: Family, communityId: string): boolean => {
+  const communitiesList: Community[] = communities.filter(
+    (community) => community.id === communityId
+  );
 
-    return false;
-}
+  if (!!communitiesList) {
+    editCommunityId(fam.id, '-1');
+    communitiesList[0].families = communitiesList[0].families.filter(
+      (family) => family.id === fam.id
+    );
+    return true;
+  }
 
+  return false;
+};
 
 export {
-    communities,
-    createCommunity,
-    getCommunity,
-    editName,
-    editAddress,
-    editDescription,
-    addFamily,
-    removeFamily
-}
+  communities,
+  createCommunity,
+  getCommunity,
+  editName,
+  editAddress,
+  editDescription,
+  addFamily,
+  removeFamily,
+};
 
 export type { Community };

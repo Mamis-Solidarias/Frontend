@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import router from 'next/router';
 
 import { Navigation } from '../../components/index';
-import { beneficiaries, createBeneficiary } from '../../types/beneficiary';
+import { createBeneficiary } from '../../types/beneficiary';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -26,6 +27,13 @@ const Beneficiarios = () => {
     <Box sx={{ display: 'flex' }}>
       <Navigation />
       <Container sx={{ py: '5em', px: '5em' }}>
+        <Button
+          variant="outlined"
+          onClick={() => router.push('/beneficiarios')}
+          sx={{ marginBottom: '3em' }}
+        >
+          Atrás
+        </Button>
         <Typography variant="h3" component="div">
           Nuevo Beneficiario
         </Typography>
@@ -47,7 +55,6 @@ const Beneficiarios = () => {
               true,
               form.comments.value
             );
-            console.log(beneficiaries);
             e.target.submit();
           }}
         >

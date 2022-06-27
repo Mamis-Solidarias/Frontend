@@ -3,16 +3,14 @@ import { useRouter } from 'next/router';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+
+import { Navigation } from '../../components';
+import { families, Family } from '../../types/family';
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 import CardContent from '@mui/material/CardContent';
+import Divider from '@mui/material/Divider';
 
-import { Navigation } from '../../components/index';
-import { beneficiaries } from '../../types/beneficiary';
-import type { Beneficiary } from '../../types/beneficiary';
-import { getFamily } from '../../types/family';
-
-const Beneficiarios = () => {
+const Families = () => {
   const router = useRouter();
 
   return (
@@ -21,9 +19,9 @@ const Beneficiarios = () => {
       <Box sx={{ py: '5em', px: '5em' }}>
         <Button
           variant="outlined"
-          onClick={() => router.push('/beneficiarios/crear')}
+          onClick={() => router.push('/familias/crear')}
         >
-          Crear Beneficiario
+          Crear Familia
         </Button>
         <Box
           component="div"
@@ -34,14 +32,14 @@ const Beneficiarios = () => {
             flexWrap: 'wrap',
           }}
         >
-          {beneficiaries.map((benef: Beneficiary) => (
+          {families.map((family: Family) => (
             <Button
               sx={{ my: '3em', mx: '3em', minWidth: '20em' }}
-              onClick={() => router.push('/beneficiarios/' + benef.id)}
-              key={benef.id}
+              onClick={() => router.push('/familias/' + family.id)}
+              key={family.id}
             >
               <Card
-                key={benef.id}
+                key={family.id}
                 sx={{
                   minWidth: '100%',
                   minHeight: '100%',
@@ -51,14 +49,15 @@ const Beneficiarios = () => {
                 }}
               >
                 <CardContent>
-                  <strong>Nombre:</strong> {benef.firstName} {benef.lastName}
-                </CardContent>
-                <CardContent>
-                  <strong>Familia:</strong> {getFamily(benef.familyId).name}
+                  <strong>Nombre:</strong> {family.name}
                 </CardContent>
                 <Divider />
                 <CardContent>
-                  <strong>Tipo:</strong> {benef.type}
+                  <strong>Dirección:</strong> {family.address}
+                </CardContent>
+                <CardContent>
+                  <strong>Modo de contacto:</strong>{' '}
+                  {family.connectivityDetails}
                 </CardContent>
               </Card>
             </Button>
@@ -69,4 +68,4 @@ const Beneficiarios = () => {
   );
 };
 
-export default Beneficiarios;
+export default Families;
