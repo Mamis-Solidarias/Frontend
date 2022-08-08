@@ -11,6 +11,7 @@ import { Navigation } from '../../components/index';
 import { beneficiaries } from '../../types/beneficiary';
 import type { Beneficiary } from '../../types/beneficiary';
 import { getFamily } from '../../types/family';
+import Typography from '@mui/material/Typography';
 
 const Beneficiarios = () => {
   const router = useRouter();
@@ -19,6 +20,9 @@ const Beneficiarios = () => {
     <Box sx={{ display: 'flex' }}>
       <Navigation />
       <Box sx={{ py: '5em', px: '5em' }}>
+        <Typography variant="h2" align="center">
+          Beneficiarios
+        </Typography>
         <Button
           variant="outlined"
           onClick={() => router.push('/beneficiarios/crear')}
@@ -45,7 +49,8 @@ const Beneficiarios = () => {
                 sx={{
                   minWidth: '100%',
                   minHeight: '100%',
-                  backgroundColor: 'RGBA(0,112,243,0.5)',
+                  backgroundColor: 'RGBA(0,112,243,0.3)',
+                  borderRadius: '5%',
                   textAlign: 'start',
                   px: '1em',
                 }}

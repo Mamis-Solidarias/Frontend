@@ -33,7 +33,7 @@ const Family = () => {
             sx={{
               minWidth: '100%',
               minHeight: '100%',
-              backgroundColor: 'RGBA(0,112,243,0.5)',
+              backgroundColor: 'RGBA(0,112,243,0.3)',
               textAlign: 'start',
               px: '1em',
             }}

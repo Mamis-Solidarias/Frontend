@@ -9,6 +9,7 @@ import { families, Family } from '../../types/family';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 
 const Families = () => {
   const router = useRouter();
@@ -17,6 +18,9 @@ const Families = () => {
     <Box sx={{ display: 'flex' }}>
       <Navigation />
       <Box sx={{ py: '5em', px: '5em' }}>
+        <Typography variant="h2" align="center">
+          Familias
+        </Typography>
         <Button
           variant="outlined"
           onClick={() => router.push('/familias/crear')}
@@ -43,7 +47,8 @@ const Families = () => {
                 sx={{
                   minWidth: '100%',
                   minHeight: '100%',
-                  backgroundColor: 'RGBA(0,112,243,0.5)',
+                  backgroundColor: 'RGBA(0,112,243,0.3)',
+                  borderRadius: '5%',
                   textAlign: 'start',
                   px: '1em',
                 }}

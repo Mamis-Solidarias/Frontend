@@ -32,9 +32,9 @@ const NavigationDrawer = () => {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            <ListItem key="Beneficiarios" disablePadding>
-              <ListItemButton onClick={() => router.push('/beneficiarios')}>
-                <ListItemText primary="Beneficiarios" />
+            <ListItem key="Comunidades" disablePadding>
+              <ListItemButton onClick={() => router.push('/comunidades')}>
+                <ListItemText primary="Comunidades" />
               </ListItemButton>
             </ListItem>
             <ListItem key="Familias" disablePadding>
@@ -42,9 +42,9 @@ const NavigationDrawer = () => {
                 <ListItemText primary="Familias" />
               </ListItemButton>
             </ListItem>
-            <ListItem key="Comunidades" disablePadding>
-              <ListItemButton onClick={() => router.push('/comunidades')}>
-                <ListItemText primary="Comunidades" />
+            <ListItem key="Beneficiarios" disablePadding>
+              <ListItemButton onClick={() => router.push('/beneficiarios')}>
+                <ListItemText primary="Beneficiarios" />
               </ListItemButton>
             </ListItem>
           </List>
