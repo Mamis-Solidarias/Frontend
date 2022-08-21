@@ -1,0 +1,39 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+networks:
+  users-net:
+    driver: "bridge"
+    name: users-net
+    
+services:
+  users-db:
+    image: postgres:13-alpine
+    container_name: users_db
+    restart: always
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: users
+    volumes:
+      - C:/Users/IgnacioGabrielSamped/Documents/PF/.db:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - users-net
+
+  users:
+    image: ghcr.io/mamis-solidarias/users:1.0.0
+    restart: unless-stopped
+    depends_on:
+      - users-db
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - users-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: development
+      ConnectionStrings__Production: 'Host=users_db:5432;Database=users;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=users_db:5432;Database=users;Username=dev;Password=dev'
+      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
+      
