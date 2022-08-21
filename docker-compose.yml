@@ -22,7 +22,7 @@ services:
       - users-net
 
   users:
-    image: ghcr.io/mamis-solidarias/users:1.0.0
+    image: ghcr.io/mamis-solidarias/users:main
     restart: unless-stopped
     depends_on:
       - users-db

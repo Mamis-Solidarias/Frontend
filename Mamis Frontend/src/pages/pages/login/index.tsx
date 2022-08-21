@@ -8,8 +8,6 @@ import { useRouter } from 'next/router';
 // ** MUI Components
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
@@ -20,7 +18,6 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled, useTheme } from '@mui/material/styles';
 import MuiCard, { CardProps } from '@mui/material/Card';
 import InputAdornment from '@mui/material/InputAdornment';
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel';
 
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline';
@@ -34,19 +31,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
-import axios, { AxiosInstance } from 'axios';
-import * as tunnel from 'tunnel';
-
-const agent = tunnel.httpsOverHttp({
-  proxy: {
-    host: 'proxy.com',
-    port: 8000
-  }
-});
-const axiosClient: AxiosInstance = axios.create({
-  baseURL: 'http://localhost',
-  httpsAgent: agent
-});
+import FormHelperText from '@mui/material/FormHelperText';
+import { loginUser } from 'src/API/Users/auth';
 
 interface State {
   password: string;
@@ -64,13 +50,6 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }));
 
-const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
-  '& .MuiFormControlLabel-label': {
-    fontSize: '0.875rem',
-    color: theme.palette.text.secondary
-  }
-}));
-
 const LoginPage = () => {
   // ** State
   const [values, setValues] = useState<State>({
@@ -81,6 +60,7 @@ const LoginPage = () => {
   // ** Hook
   const theme = useTheme();
   const router = useRouter();
+  const [showBadRequest, setShowBadRequest] = useState<boolean>(false);
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -96,14 +76,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const data = { email: event.target.email.value, password: values.password };
-    axiosClient
-      .post('/users/auth', data)
+
+    loginUser(event.target.email.value, values.password)
       .then(response => {
-        console.log(response);
+        if (response.status === 200) {
+          localStorage.setItem('user', response.data.jwt);
+          router.push('/');
+        }
       })
       .catch(err => {
-        console.log(err);
+        if (err.response.status === 400) {
+          setShowBadRequest(true);
+        }
       });
   };
 
@@ -113,8 +97,8 @@ const LoginPage = () => {
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg
-              width={35}
-              height={29}
+              width={35 * 3}
+              height={29 * 3}
               version='1.1'
               viewBox='0 0 30 23'
               xmlns='http://www.w3.org/2000/svg'
@@ -210,12 +194,16 @@ const LoginPage = () => {
                 }
               />
             </FormControl>
+            {showBadRequest && (
+              <FormHelperText sx={{ mt: '1em' }} error={true}>
+                Ingresar email y contraseña válidos
+              </FormHelperText>
+            )}
             <Box
-              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+              sx={{ my: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              <FormControlLabel control={<Checkbox />} label='Remember Me' />
               <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
+                <LinkStyled onClick={e => e.preventDefault()}>Olvidé la contraseña</LinkStyled>
               </Link>
             </Box>
             <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} type='submit'>
