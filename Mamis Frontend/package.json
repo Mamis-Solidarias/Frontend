@@ -47,6 +47,7 @@
         "axios": "^0.27.2",
         "clsx": "^1.1.1",
         "http-proxy-middleware": "^2.0.6",
+        "jsonwebtoken": "^8.5.1",
         "mdi-material-ui": "^7.1.0",
         "next": "12.2.3",
         "nprogress": "^0.2.0",
@@ -59,6 +60,7 @@
         "tunnel": "^0.0.6"
     },
     "devDependencies": {
+        "@types/jsonwebtoken": "^8.5.9",
         "@types/node": "16.11.11",
         "@types/nprogress": "^0.2.0",
         "@types/react": "17.0.37",

@@ -1,25 +1,25 @@
 // ** Icon imports
-import Login from 'mdi-material-ui/Login'
-import Table from 'mdi-material-ui/Table'
-import CubeOutline from 'mdi-material-ui/CubeOutline'
-import HomeOutline from 'mdi-material-ui/HomeOutline'
-import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
-import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
-import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
-import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
-import HomeGroup from 'mdi-material-ui/HomeGroup'
-import HomeAccount from 'mdi-material-ui/HomeAccount'
-import AccountGroup from 'mdi-material-ui/AccountGroup'
+import Login from 'mdi-material-ui/Login';
+import Table from 'mdi-material-ui/Table';
+import CubeOutline from 'mdi-material-ui/CubeOutline';
+import HomeOutline from 'mdi-material-ui/HomeOutline';
+import FormatLetterCase from 'mdi-material-ui/FormatLetterCase';
+import AccountCogOutline from 'mdi-material-ui/AccountCogOutline';
+import CreditCardOutline from 'mdi-material-ui/CreditCardOutline';
+import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline';
+import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline';
+import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended';
+import HomeGroup from 'mdi-material-ui/HomeGroup';
+import HomeAccount from 'mdi-material-ui/HomeAccount';
+import AccountGroup from 'mdi-material-ui/AccountGroup';
 
 // ** Type import
-import { VerticalNavItemsType } from 'src/@core/layouts/types'
+import { VerticalNavItemsType } from 'src/@core/layouts/types';
 
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      sectionTitle: 'Beneficiarios'
+      sectionTitle: 'Grupos'
     },
     {
       icon: AccountGroup,
@@ -27,15 +27,9 @@ const navigation = (): VerticalNavItemsType => {
       path: '/beneficiarios'
     },
     {
-      sectionTitle: 'Familias'
-    },
-    {
       icon: HomeAccount,
       title: 'Familias',
       path: '/familias'
-    },
-    {
-      sectionTitle: 'Comunidades'
     },
     {
       icon: HomeGroup,
@@ -104,7 +98,7 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Form Layouts',
       path: '/form-layouts'
     }
-  ]
-}
+  ];
+};
 
-export default navigation
+export default navigation;
