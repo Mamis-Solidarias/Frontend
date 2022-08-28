@@ -33,7 +33,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Administrar Usuarios',
       icon: AccountCogOutline,
-      path: '/account-settings'
+      path: '/usuarios'
     }
   ];
 };

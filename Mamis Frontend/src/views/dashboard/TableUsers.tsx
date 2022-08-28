@@ -56,7 +56,7 @@ const DashboardTable = () => {
                   <TableCell>{row.phone}</TableCell>
                   <TableCell>{row.isActive ? 'Activo' : 'Inactivo'}</TableCell>
                   <TableCell>
-                    <Button>Editar Permisos</Button>
+                    <Button variant='contained'>Editar Permisos</Button>
                   </TableCell>
                 </TableRow>
               ))}
