@@ -20,8 +20,7 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import AccountOutline from 'mdi-material-ui/AccountOutline';
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline';
 
-import jwt from 'jsonwebtoken';
-import { secret } from 'src/API/initialization';
+import { verifyJwt } from 'src/API/initialization';
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -68,9 +67,8 @@ const UserDropdown = () => {
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
-      const user = jwt.verify(localStorage.getItem('user') as any, secret);
+      const user = verifyJwt(localStorage.getItem('user') as any);
       setUser(user);
-      console.log(user);
     }
   }, []);
 

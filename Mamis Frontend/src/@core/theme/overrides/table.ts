@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from '@mui/material/styles';
 
 const Table = (theme: Theme) => {
   return {
@@ -40,7 +40,7 @@ const Table = (theme: Theme) => {
     MuiTableRow: {
       styleOverrides: {
         root: {
-          '& .MuiTableCell-head:first-child, & .MuiTableCell-root:first-child ': {
+          '& .MuiTableCell-head:first-of-type, & .MuiTableCell-root:first-of-type ': {
             paddingLeft: theme.spacing(5)
           },
           '& .MuiTableCell-head:last-child, & .MuiTableCell-root:last-child': {
@@ -63,7 +63,7 @@ const Table = (theme: Theme) => {
         }
       }
     }
-  }
-}
+  };
+};
 
-export default Table
+export default Table;
