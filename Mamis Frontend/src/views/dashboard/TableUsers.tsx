@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import { useEffect, useState } from 'react';
 import { getUsers } from 'src/API/Users/user_data';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 
 interface RowType {
   id: number;
@@ -42,7 +43,7 @@ const DashboardTable = () => {
               <TableCell>Nombre</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Teléfono</TableCell>
-              <TableCell>Estado</TableCell>
+              <TableCell>Activo</TableCell>
               <TableCell>Permisos</TableCell>
             </TableRow>
           </TableHead>
@@ -54,7 +55,9 @@ const DashboardTable = () => {
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.phone}</TableCell>
-                  <TableCell>{row.isActive ? 'Activo' : 'Inactivo'}</TableCell>
+                  <TableCell>
+                    <Checkbox checked={row.isActive as unknown as boolean} />
+                  </TableCell>
                   <TableCell>
                     <Button variant='contained'>Editar Permisos</Button>
                   </TableCell>

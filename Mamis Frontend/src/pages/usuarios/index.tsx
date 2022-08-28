@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 // ** Styled Component Import
@@ -12,6 +13,9 @@ const Dashboard = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <TableUsers />
+          <Button variant='contained' sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+            Añadir Nuevo Usuario
+          </Button>
         </Grid>
       </Grid>
     </ApexChartWrapper>
