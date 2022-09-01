@@ -21,6 +21,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline';
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline';
 
 import { verifyJwt } from 'src/API/initialization';
+import LoginVariant from 'mdi-material-ui/LoginVariant';
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -136,10 +137,30 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
-          <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-          Cerrar Sesión
-        </MenuItem>
+        {typeof window !== 'undefined' && !!localStorage.getItem('user') && (
+          <MenuItem
+            sx={{ py: 2 }}
+            onClick={() => {
+              localStorage.clear();
+              router.push('/');
+            }}
+          >
+            <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+            Cerrar Sesión
+          </MenuItem>
+        )}
+        {typeof window === 'undefined' ||
+          (!localStorage.getItem('user') && (
+            <MenuItem
+              sx={{ py: 2 }}
+              onClick={() => {
+                router.push('/login');
+              }}
+            >
+              <LoginVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+              Iniciar Sesión
+            </MenuItem>
+          ))}
       </Menu>
     </Fragment>
   );
