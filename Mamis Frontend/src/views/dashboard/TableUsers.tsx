@@ -13,6 +13,8 @@ import { getUsers } from 'src/API/Users/user_data';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 
+import { verifyJwt } from 'src/API/initialization';
+
 interface RowType {
   id: number;
   name: string;
@@ -28,7 +30,13 @@ const DashboardTable = () => {
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
       getUsers(localStorage.getItem('user'), 0, 7).then(users => {
-        setRows(users.data.entries);
+        const adminUserId = parseInt(verifyJwt(localStorage.getItem('user')).Id);
+
+        setRows(
+          users.data.entries.filter((user: RowType) => {
+            return user.id !== adminUserId;
+          })
+        );
       });
     }
   }, []);
@@ -50,7 +58,7 @@ const DashboardTable = () => {
           <TableBody>
             {!!rows &&
               rows.map((row: RowType) => (
-                <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.email}</TableCell>

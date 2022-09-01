@@ -21,7 +21,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline';
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline';
 
 import { verifyJwt } from 'src/API/initialization';
-import LoginVariant from 'mdi-material-ui/LoginVariant';
+import Button from '@mui/material/Button';
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -75,93 +75,90 @@ const UserDropdown = () => {
 
   return (
     <Fragment>
-      <Badge
-        overlap='circular'
-        onClick={handleDropdownOpen}
-        sx={{ ml: 2, cursor: 'pointer' }}
-        badgeContent={<BadgeContentSpan />}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        {user?.Name}
-      </Badge>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={() => handleDropdownClose()}
-        sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Box sx={{ pt: 2, pb: 3, px: 4 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Badge
-              overlap='circular'
-              badgeContent={<BadgeContentSpan />}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            >
-              {/* <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} /> */}
-              {user?.Name}
-            </Badge>
-            <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>{user?.Name}</Typography>
-              <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                {user?.Email}
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-        <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <AccountOutline sx={{ marginRight: 2 }} />
-            Perfil
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <EmailOutline sx={{ marginRight: 2 }} />
-            Notificaciones
-          </Box>
-        </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CogOutline sx={{ marginRight: 2 }} />
-            Ajustes
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <HelpCircleOutline sx={{ marginRight: 2 }} />
-            FAQS
-          </Box>
-        </MenuItem>
-        <Divider />
-        {typeof window !== 'undefined' && !!localStorage.getItem('user') && (
-          <MenuItem
-            sx={{ py: 2 }}
-            onClick={() => {
-              localStorage.clear();
-              router.push('/');
-            }}
+      {typeof window !== 'undefined' && !!localStorage.getItem('user') && (
+        <>
+          <Badge
+            overlap='circular'
+            onClick={handleDropdownOpen}
+            sx={{ ml: 2, cursor: 'pointer' }}
+            badgeContent={<BadgeContentSpan />}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           >
-            <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-            Cerrar Sesión
-          </MenuItem>
-        )}
-        {typeof window === 'undefined' ||
-          (!localStorage.getItem('user') && (
+            {user?.Name}
+          </Badge>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={() => handleDropdownClose()}
+            sx={{ '& .MuiMenu-paper': { width: 230, marginTop: 4 } }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          >
+            <Box sx={{ pt: 2, pb: 3, px: 4 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Badge
+                  overlap='circular'
+                  badgeContent={<BadgeContentSpan />}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                >
+                  {/* <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} /> */}
+                  {user?.Name}
+                </Badge>
+                <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
+                  <Typography sx={{ fontWeight: 600 }}>{user?.Name}</Typography>
+                  <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
+                    {user?.Email}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+            <Divider sx={{ mt: 0, mb: 1 }} />
+            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <Box sx={styles}>
+                <AccountOutline sx={{ marginRight: 2 }} />
+                Perfil
+              </Box>
+            </MenuItem>
+            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <Box sx={styles}>
+                <EmailOutline sx={{ marginRight: 2 }} />
+                Notificaciones
+              </Box>
+            </MenuItem>
+            <Divider />
+            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <Box sx={styles}>
+                <CogOutline sx={{ marginRight: 2 }} />
+                Ajustes
+              </Box>
+            </MenuItem>
+            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <Box sx={styles}>
+                <HelpCircleOutline sx={{ marginRight: 2 }} />
+                FAQS
+              </Box>
+            </MenuItem>
+            <Divider />
             <MenuItem
               sx={{ py: 2 }}
               onClick={() => {
-                router.push('/login');
+                localStorage.clear();
+                router.push('/').then(() => router.reload());
               }}
             >
-              <LoginVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-              Iniciar Sesión
+              <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
+              Cerrar Sesión
             </MenuItem>
-          ))}
-      </Menu>
+          </Menu>
+        </>
+      )}
+      {typeof window !== 'undefined' && !localStorage.getItem('user') && (
+        <>
+          <Button onClick={() => router.push('/login')} variant='contained'>
+            Iniciar Sesión
+          </Button>
+        </>
+      )}
     </Fragment>
   );
 };
