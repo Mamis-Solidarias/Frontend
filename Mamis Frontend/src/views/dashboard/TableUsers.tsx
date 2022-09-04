@@ -9,7 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
 import { useEffect, useState } from 'react';
-import { getUsers } from 'src/API/Users/user_data';
+import { getUsers, deleteUser, reactivateUser } from 'src/API/Users/user_data';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 
@@ -64,7 +64,16 @@ const DashboardTable = () => {
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.phone}</TableCell>
                   <TableCell>
-                    <Checkbox checked={row.isActive as unknown as boolean} />
+                    <Checkbox
+                      checked={row.isActive as unknown as boolean}
+                      onClick={() => {
+                        if (row.isActive) {
+                          deleteUser(localStorage.getItem('user'), row.id).then(_ => window.location.reload());
+                        } else {
+                          reactivateUser(localStorage.getItem('user'), row.id).then(_ => window.location.reload());
+                        }
+                      }}
+                    />
                   </TableCell>
                   <TableCell>
                     <Button variant='contained'>Editar Permisos</Button>
