@@ -72,6 +72,14 @@ export const CreateUser: FC<CreateUserProps> = props => {
     }
   };
 
+  const detectConfirmPasswordMismatch = (password: string) => {
+    if (password === confirmPassword) {
+      setPasswordMismatch(false);
+    } else {
+      setPasswordMismatch(true);
+    }
+  };
+
   const resetFields = () => {
     setEmail('');
     setName('');
@@ -170,6 +178,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
             onChange={e => {
               setPassword(e.target.value);
               detectInvalidPassword(e.target.value);
+              detectConfirmPasswordMismatch(e.target.value);
             }}
             fullWidth={true}
             variant='standard'
