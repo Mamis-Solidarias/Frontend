@@ -94,7 +94,7 @@ const DashboardTable = () => {
                         onClick={() => {
                           if (row.isActive) {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            deleteUser(localStorage.getItem('user'), row.id).then(_ => window.location.reload());
+                            deleteUser(localStorage.getItem('user'), row.id).catch;
                           } else {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
                             reactivateUser(localStorage.getItem('user'), row.id).then(_ => window.location.reload());

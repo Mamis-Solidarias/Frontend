@@ -7,30 +7,16 @@ import { useRouter } from 'next/router';
 // ** MUI Imports
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
-import Badge from '@mui/material/Badge';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 // ** Icons Imports
-import CogOutline from 'mdi-material-ui/CogOutline';
-import EmailOutline from 'mdi-material-ui/EmailOutline';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import AccountOutline from 'mdi-material-ui/AccountOutline';
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline';
 
 import { verifyJwt } from 'src/API/initialization';
 import Button from '@mui/material/Button';
-
-// ** Styled Components
-const BadgeContentSpan = styled('span')(({ theme }) => ({
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-  backgroundColor: theme.palette.success.main,
-  boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
-}));
 
 const UserDropdown = () => {
   // ** States
@@ -40,6 +26,7 @@ const UserDropdown = () => {
   const router = useRouter();
 
   const [user, setUser] = useState<any>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -67,6 +54,7 @@ const UserDropdown = () => {
   };
 
   useEffect(() => {
+    setMounted(true);
     if (!!localStorage.getItem('user')) {
       const user = verifyJwt(localStorage.getItem('user') as any);
       setUser(user);
@@ -75,17 +63,11 @@ const UserDropdown = () => {
 
   return (
     <Fragment>
-      {typeof window !== 'undefined' && !!localStorage.getItem('user') && (
+      {mounted && !!localStorage.getItem('user') && (
         <>
-          <Badge
-            overlap='circular'
-            onClick={handleDropdownOpen}
-            sx={{ ml: 2, cursor: 'pointer' }}
-            badgeContent={<BadgeContentSpan />}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          >
+          <Button onClick={handleDropdownOpen} sx={{ ml: 2, cursor: 'pointer' }}>
             {user?.Name}
-          </Badge>
+          </Button>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -96,14 +78,6 @@ const UserDropdown = () => {
           >
             <Box sx={{ pt: 2, pb: 3, px: 4 }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Badge
-                  overlap='circular'
-                  badgeContent={<BadgeContentSpan />}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                >
-                  {/* <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} /> */}
-                  {user?.Name}
-                </Badge>
                 <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
                   <Typography sx={{ fontWeight: 600 }}>{user?.Name}</Typography>
                   <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
@@ -117,25 +91,6 @@ const UserDropdown = () => {
               <Box sx={styles}>
                 <AccountOutline sx={{ marginRight: 2 }} />
                 Perfil
-              </Box>
-            </MenuItem>
-            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-              <Box sx={styles}>
-                <EmailOutline sx={{ marginRight: 2 }} />
-                Notificaciones
-              </Box>
-            </MenuItem>
-            <Divider />
-            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-              <Box sx={styles}>
-                <CogOutline sx={{ marginRight: 2 }} />
-                Ajustes
-              </Box>
-            </MenuItem>
-            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-              <Box sx={styles}>
-                <HelpCircleOutline sx={{ marginRight: 2 }} />
-                FAQS
               </Box>
             </MenuItem>
             <Divider />
