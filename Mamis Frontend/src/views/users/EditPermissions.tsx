@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 interface EditPermissionsProps {
   openDialog: boolean;
   handleClose: () => void;
-  id: string;
+  id: number;
 }
 
 interface Role {
@@ -53,7 +53,6 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Permisos</DialogTitle>
       <DialogContent>
-        {}
         <TableContainer>
           <Table aria-label='table in dashboard'>
             <TableHead>

@@ -10,7 +10,7 @@ export const getUser = async (loginData: any, id: string) => {
   return authAxiosClient(loginData).get('users/' + id);
 };
 
-export const reactivateUser = async (loginData: any, id: string) => {
+export const reactivateUser = async (loginData: any, id: number) => {
   return authAxiosClient(loginData).post('users/' + id);
 };
 
@@ -29,7 +29,7 @@ export const updateUser = async (
   return authAxiosClient(loginData).patch('users/' + id, data);
 };
 
-export const deleteUser = async (loginData: any, id: string) => {
+export const deleteUser = async (loginData: any, id: number) => {
   return authAxiosClient(loginData).delete('users/' + id);
 };
 
@@ -43,13 +43,13 @@ export const updateUserPassword = async (
 
 export const updateUserRole = async (
   loginData: any,
-  id: string,
+  id: number,
   roles: { service: string; canWrite: boolean; canRead: boolean }[]
 ) => {
   return authAxiosClient(loginData).put('users/' + id + '/roles', roles);
 };
 
-export const getUserRoles = async (loginData: any, id: string) => {
+export const getUserRoles = async (loginData: any, id: number) => {
   return authAxiosClient(loginData).get('users/' + id + '/roles');
 };
 

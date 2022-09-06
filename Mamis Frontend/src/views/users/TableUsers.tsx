@@ -18,7 +18,7 @@ import { EditPermissions } from './EditPermissions';
 import TablePagination from '@mui/material/TablePagination';
 
 interface RowType {
-  id: string;
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -31,15 +31,17 @@ const DashboardTable = () => {
     MEDIUM_SIZE = 10,
     LARGE_SIZE = 15;
   const [rows, setRows] = useState<any>();
-  const [id, setId] = useState<string>('0');
+  const [id, setId] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [actualPage, setActualPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(INITIAL_SIZE);
   const [openEditPermissions, setOpenEditPermissions] = useState<boolean>(false);
+  const [actualUserId, setActualUserId] = useState<string>('-1');
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
       changePage(0, INITIAL_SIZE);
+      setActualUserId(verifyJwt(localStorage.getItem('user') as string).Id);
     }
   }, []);
 
@@ -54,14 +56,9 @@ const DashboardTable = () => {
 
   const changePage = async (newPage: number, size: number) => {
     getUsers(localStorage.getItem('user'), newPage, size).then(users => {
-      const adminUserId = verifyJwt(localStorage.getItem('user') as string).Id;
       setTotalPages(users.data.totalPages);
       setActualPage(users.data.page);
-      setRows(
-        users.data.entries.filter((user: RowType) => {
-          return user.id !== adminUserId;
-        })
-      );
+      setRows(users.data.entries);
     });
   };
 
@@ -90,16 +87,17 @@ const DashboardTable = () => {
                     <TableCell>{row.phone}</TableCell>
                     <TableCell>
                       <Checkbox
-                        checked={row.isActive as unknown as boolean}
+                        checked={row.isActive === 'false'}
                         onClick={() => {
-                          if (row.isActive) {
+                          if (row.isActive === 'true') {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            deleteUser(localStorage.getItem('user'), row.id).catch;
+                            deleteUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = 'false'));
                           } else {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            reactivateUser(localStorage.getItem('user'), row.id).then(_ => window.location.reload());
+                            reactivateUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = 'true'));
                           }
                         }}
+                        disabled={row.id === parseInt(actualUserId)}
                       />
                     </TableCell>
                     <TableCell>
@@ -109,6 +107,7 @@ const DashboardTable = () => {
                           setId(row.id);
                           setOpenEditPermissions(true);
                         }}
+                        disabled={row.id === parseInt(actualUserId)}
                       >
                         Editar Permisos
                       </Button>
@@ -130,7 +129,7 @@ const DashboardTable = () => {
         <TablePagination
           rowsPerPageOptions={[INITIAL_SIZE, MEDIUM_SIZE, LARGE_SIZE]}
           component='div'
-          count={totalPages * (rows ? rows.length : 1)}
+          count={rows ? (rows.length < 5 ? (totalPages - 1) * rowsPerPage + rows.length : -1) : 1}
           rowsPerPage={rowsPerPage}
           page={actualPage}
           onPageChange={handleChangePage}
