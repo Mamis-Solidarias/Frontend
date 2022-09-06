@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import TableUsers from 'src/views/dashboard/TableUsers';
+import TableUsers from 'src/views/users/TableUsers';
 import { CreateUser } from 'src/views/users/CreateUser';
 
 const Dashboard = () => {

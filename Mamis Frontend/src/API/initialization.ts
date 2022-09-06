@@ -22,4 +22,4 @@ export const authAxiosClient = (bearerToken: string) => {
 
 const secret = 'Super long key no one will ever find out and definitely not typed by hand';
 
-export const verifyJwt = (token: string) => jwt.verify(token, secret);
+export const verifyJwt = (token: string): any => jwt.verify(token, secret);
