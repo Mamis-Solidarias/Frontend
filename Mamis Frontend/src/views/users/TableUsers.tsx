@@ -16,6 +16,8 @@ import Checkbox from '@mui/material/Checkbox';
 import { verifyJwt } from 'src/API/initialization';
 import { EditPermissions } from './EditPermissions';
 import TablePagination from '@mui/material/TablePagination';
+import { EditPassword } from './EditPassword';
+import { UpdateUser } from './UpdateUser';
 
 interface RowType {
   id: number;
@@ -36,6 +38,8 @@ const DashboardTable = () => {
   const [actualPage, setActualPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(INITIAL_SIZE);
   const [openEditPermissions, setOpenEditPermissions] = useState<boolean>(false);
+  const [openEditPassword, setOpenEditPassword] = useState<boolean>(false);
+  const [openUpdateUser, setOpenUpdateUser] = useState<boolean>(false);
   const [actualUserId, setActualUserId] = useState<string>('-1');
 
   useEffect(() => {
@@ -72,9 +76,11 @@ const DashboardTable = () => {
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Email</TableCell>
+                <TableCell></TableCell>
                 <TableCell>Teléfono</TableCell>
                 <TableCell>Activo</TableCell>
                 <TableCell>Permisos</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -86,8 +92,28 @@ const DashboardTable = () => {
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.phone}</TableCell>
                     <TableCell>
+                      <Button
+                        variant='contained'
+                        onClick={() => {
+                          setId(row.id);
+                          setOpenUpdateUser(true);
+                        }}
+                      >
+                        Editar Datos de Usuario
+                      </Button>
+                      {openUpdateUser && (
+                        <UpdateUser
+                          openDialog={openUpdateUser}
+                          id={id}
+                          handleClose={() => {
+                            setOpenUpdateUser(false);
+                          }}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <Checkbox
-                        checked={row.isActive === 'false'}
+                        checked={row.isActive === 'true'}
                         onClick={() => {
                           if (row.isActive === 'true') {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -117,6 +143,26 @@ const DashboardTable = () => {
                           id={id}
                           handleClose={() => {
                             setOpenEditPermissions(false);
+                          }}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant='contained'
+                        onClick={() => {
+                          setId(row.id);
+                          setOpenEditPassword(true);
+                        }}
+                      >
+                        Editar Contraseña
+                      </Button>
+                      {openEditPassword && (
+                        <EditPassword
+                          openDialog={openEditPassword}
+                          id={id}
+                          handleClose={() => {
+                            setOpenEditPassword(false);
                           }}
                         />
                       )}
