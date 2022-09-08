@@ -25,7 +25,7 @@ interface RowType {
   email: string;
   phone: string;
   salary: string;
-  isActive: string;
+  isActive: boolean;
 }
 
 const DashboardTable = () => {
@@ -63,6 +63,7 @@ const DashboardTable = () => {
       setTotalPages(users.data.totalPages);
       setActualPage(users.data.page);
       setRows(users.data.entries);
+      console.log(users.data.entries);
     });
   };
 
@@ -113,14 +114,14 @@ const DashboardTable = () => {
                     </TableCell>
                     <TableCell>
                       <Checkbox
-                        checked={row.isActive === 'true'}
+                        checked={row.isActive}
                         onClick={() => {
-                          if (row.isActive === 'true') {
+                          if (row.isActive) {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            deleteUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = 'false'));
+                            deleteUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = false));
                           } else {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            reactivateUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = 'true'));
+                            reactivateUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = true));
                           }
                         }}
                         disabled={row.id === parseInt(actualUserId)}

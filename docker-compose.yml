@@ -1,0 +1,74 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+networks:
+  mamis-net:
+    driver: "bridge"
+    name: mamis-net
+
+volumes:
+  db:
+    
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.37
+    container_name: jaeger
+    restart: always
+    networks:
+        - mamis-net
+    ports:
+        - 14250:14250/tcp
+        - 14268:14268/tcp
+        - 16686:16686/tcp
+        - 5775:5775/udp
+        - 5778:5778/tcp
+        - 6831:6831/udp
+        - 6832:6832/udp
+        
+  mamis-db:
+    image: postgres:13-alpine
+    container_name: mamis-db
+    restart: always
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      PGTZ: America/Argentina/Buenos_Aires
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - mamis-net
+
+  users:
+    image: ghcr.io/mamis-solidarias/users:main
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: production
+      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=users;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=users;Username=dev;Password=dev'
+      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
+      
+
+  beneficiaries:
+    image: ghcr.io/mamis-solidarias/beneficiaries:main
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+    ports:
+      - 8080:80
+      - 8081:443
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: production
+      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
+      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
+      
