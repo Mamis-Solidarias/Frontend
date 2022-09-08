@@ -14,3 +14,7 @@ export const getCommunities = async (loginData: any) => {
 export const getCommunity = async (loginData: any, id: string) => {
   return authAxiosClient(loginData).get('communities/' + id);
 };
+
+export const updateCommunity = async (loginData: any, id: string, data: { address?: string; description?: string }) => {
+  return authAxiosClient(loginData).patch('users/' + id, data);
+};

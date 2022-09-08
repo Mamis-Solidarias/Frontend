@@ -112,7 +112,9 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => {
-              communities.push({ name, address, description, communityCode });
+              const finalDescription = !!description ? description : null;
+              const finalCommunityCode = !!communityCode ? communityCode : null;
+              communities.push({ name, address, description: finalDescription, communityCode: finalCommunityCode });
               resetFields();
             }}
             disabled={address === '' || name === ''}
