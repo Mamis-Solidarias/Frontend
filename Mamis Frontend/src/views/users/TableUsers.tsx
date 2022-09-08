@@ -13,7 +13,7 @@ import { getUsers, deleteUser, reactivateUser } from 'src/API/Users/user_data';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 
-import { verifyJwt } from 'src/API/initialization';
+import { verifyJwt } from 'src/API/Users/initialization';
 import { EditPermissions } from './EditPermissions';
 import TablePagination from '@mui/material/TablePagination';
 import { EditPassword } from './EditPassword';
@@ -63,7 +63,6 @@ const DashboardTable = () => {
       setTotalPages(users.data.totalPages);
       setActualPage(users.data.page);
       setRows(users.data.entries);
-      console.log(users.data.entries);
     });
   };
 

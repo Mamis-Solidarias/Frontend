@@ -1,4 +1,4 @@
-import { axiosClient } from '../initialization';
+import { axiosClient } from './initialization';
 
 export const loginUser = async (email: string, password: string) => {
   const data = { email, password };

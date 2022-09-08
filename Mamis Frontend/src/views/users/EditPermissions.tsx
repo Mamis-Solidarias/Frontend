@@ -88,14 +88,18 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                   >
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                       <Select
-                        value={role.service}
                         label='Servicio'
+                        value={role.service ? role.service : ''}
                         onChange={e => {
                           role.service = e.target.value;
+                          console.log(role.service);
                         }}
                       >
-                        <MenuItem value={'Users'}>Usuarios</MenuItem>
-                        <MenuItem value={'Beneficiaries'}>Beneficiarios</MenuItem>
+                        <MenuItem value='' hidden>
+                          None
+                        </MenuItem>
+                        <MenuItem value='Users'>Usuarios</MenuItem>
+                        <MenuItem value='Beneficiaries'>Beneficiarios</MenuItem>
                       </Select>
                     </TableCell>
                     <TableCell>

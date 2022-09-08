@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import AccountOutline from 'mdi-material-ui/AccountOutline';
 
-import { verifyJwt } from 'src/API/initialization';
+import { verifyJwt } from 'src/API/Users/initialization';
 import Button from '@mui/material/Button';
 
 const UserDropdown = () => {

@@ -2,14 +2,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { FC, useEffect, useState } from 'react';
-import { verifyJwt } from 'src/API/initialization';
+import { verifyJwt } from 'src/API/Users/initialization';
 import { getUser } from 'src/API/Users/user_data';
 import { EditPassword } from './EditPassword';
 import { UpdateUser } from './UpdateUser';
 
-interface UserProfileDisplayProps {}
-
-export const UserProfileDisplay: FC<UserProfileDisplayProps> = props => {
+export const UserProfileDisplay: FC = () => {
   const [profileUser, setProfileUserUser] = useState();
   const [openEditPassword, setOpenEditPassword] = useState<boolean>(false);
   const [openUpdateUser, setOpenUpdateUser] = useState<boolean>(false);
