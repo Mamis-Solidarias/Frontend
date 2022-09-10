@@ -12,38 +12,47 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import { createCommunities } from 'src/API/Beneficiaries/communities_data';
+import { createFamilies } from 'src/API/Beneficiaries/communities_data';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-interface CreateCommunityProps {
+interface CreateFamiliesProps {
+  communityCode: string;
   openDialog: boolean;
   handleClose: () => void;
 }
 
-interface Community {
+interface Family {
+  familyNumber: number | null;
   name: string;
   address: string;
-  description: string | null;
-  communityCode: string | null;
+  details: string | null;
+  contacts: { type: string; content: string; title: string; isPreferred: boolean }[];
 }
 
-export const CreateCommunity: FC<CreateCommunityProps> = props => {
-  const { openDialog, handleClose } = props;
+export const CreateFamilies: FC<CreateFamiliesProps> = props => {
+  const { openDialog, handleClose, communityCode } = props;
+  const [number, setNumber] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [communityCode, setCommunityCode] = useState<string>('');
-  const [communities] = useState<Community[]>([]);
+  const [families, setFamilies] = useState<Family[]>([]);
 
   const resetFields = () => {
+    setNumber('');
     setName('');
     setAddress('');
     setDescription('');
-    setCommunityCode('');
   };
 
   const resetAllFields = () => {
     resetFields();
-    communities.length = 0;
+    families.length = 0;
+  };
+
+  const deleteFamily = (family: Family) => {
+    const newFamilies = families.filter(newFamily => newFamily !== family);
+    setFamilies(newFamilies);
   };
 
   return (
@@ -55,16 +64,30 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Comunidad</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Familia</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
             style={{ padding: '1em' }}
-            id='communityName'
+            id='familyId'
+            type='text'
+            inputProps={{ pattern: '[0-9]*$' }}
+            label='Número de Nueva Familia (opcional)'
+            placeholder='23'
+            value={number}
+            onChange={e => {
+              setNumber(e.target.value);
+            }}
+            fullWidth={true}
+            variant='standard'
+          />
+          <TextField
+            style={{ padding: '1em' }}
+            id='familyName'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Nombre de Nueva Comunidad'
-            placeholder='Misiones'
+            label='Nombre de Nueva Familia'
+            placeholder='García'
             value={name}
             onChange={e => {
               setName(e.target.value);
@@ -77,7 +100,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Dirección de Nueva Comunidad'
+            label='Dirección de Nueva Familia'
             placeholder='Cataratas 123'
             value={address}
             onChange={e => {
@@ -86,29 +109,15 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             fullWidth={true}
             variant='standard'
           />
-
           <TextField
             style={{ padding: '1em' }}
-            id='description'
+            id='details'
             type='text'
-            label='Descripción de Nueva Comunidad (opcional)'
-            placeholder='Es un lindo pueblo'
+            label='Detalle de Nueva Familia (opcional)'
+            placeholder='La familia de José'
             value={description}
             onChange={e => {
               setDescription(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            style={{ padding: '1em' }}
-            id='communityCode'
-            type='text'
-            label='Código de Comunidad de Nueva Comunidad (opcional)'
-            placeholder='MI'
-            value={communityCode}
-            onChange={e => {
-              setCommunityCode(e.target.value);
             }}
             fullWidth={true}
             variant='standard'
@@ -118,8 +127,14 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             variant='contained'
             onClick={() => {
               const finalDescription = !!description ? description : null;
-              const finalCommunityCode = !!communityCode ? communityCode : null;
-              communities.push({ name, address, description: finalDescription, communityCode: finalCommunityCode });
+              const finalFamilyNumber: number | null = !!number ? parseInt(number) : null;
+              families.push({
+                familyNumber: finalFamilyNumber,
+                name,
+                address,
+                details: finalDescription,
+                contacts: []
+              });
               resetFields();
             }}
             disabled={address === '' || name === ''}
@@ -131,20 +146,31 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
+                <TableCell>ID</TableCell>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Dirección</TableCell>
-                <TableCell>Descripción</TableCell>
-                <TableCell>Código de Comunidad</TableCell>
+                <TableCell>Detalles</TableCell>
+                <TableCell>Forma de contacto</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {!!communities &&
-                communities.map((community: Community) => (
-                  <TableRow hover key={community.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{community.name}</TableCell>
-                    <TableCell>{community.address}</TableCell>
-                    <TableCell>{community.description}</TableCell>
-                    <TableCell>{community.communityCode}</TableCell>
+              {!!families &&
+                families.map((family: Family) => (
+                  <TableRow
+                    hover
+                    key={family.familyNumber}
+                    sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}
+                  >
+                    <TableCell>{family.familyNumber}</TableCell>
+                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{family.name}</TableCell>
+                    <TableCell>{family.address}</TableCell>
+                    <TableCell>{family.details}</TableCell>
+                    <TableCell></TableCell>
+                    <TableCell>
+                      <IconButton aria-label='delete' size='small' onClick={() => deleteFamily(family)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -154,11 +180,11 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={() => {
-            createCommunities(localStorage.getItem('user'), communities);
+            createFamilies(localStorage.getItem('user'), communityCode, families);
             resetAllFields();
             handleClose();
           }}
-          disabled={communities.length === 0}
+          disabled={families.length === 0}
         >
           Crear Comunidades
         </Button>

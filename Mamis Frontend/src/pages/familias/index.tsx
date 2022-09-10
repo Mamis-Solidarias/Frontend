@@ -6,17 +6,38 @@ import { useEffect, useState } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import TableUsers from 'src/views/users/TableUsers';
-import { CreateUser } from 'src/views/users/CreateUser';
+import FamiliesTable from 'src/views/families/FamiliesTable';
+import MenuItem from '@mui/material/MenuItem';
+import { getCommunities } from 'src/API/Beneficiaries/communities_data';
+import Select from '@mui/material/Select/Select';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import { CreateFamilies } from 'src/views/families/CreateFamilies';
+
+interface Community {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+}
 
 const Dashboard = () => {
   const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
+  const [communityCode, setCommunityCode] = useState<string | undefined>();
+  const [communities, setCommunities] = useState<Community[]>([]);
+
+  useEffect(() => {
+    if (!!localStorage.getItem('user')) {
+      getCommunities(localStorage.getItem('user')).then(result => {
+        setCommunities(result.data.communities);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (openWindow && openCreateUser === false) {
       setOpenWindow(false);
-      window.location.reload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCreateUser]);
@@ -25,7 +46,20 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <TableUsers />
+          <Box sx={{ my: '2em' }}>
+            <InputLabel id='communityLabel'>
+              <strong>Comunidades</strong>
+            </InputLabel>
+            <Select defaultValue='#' onChange={e => setCommunityCode(e.target.value)} labelId='communityLabel'>
+              <MenuItem value='#' hidden={true}></MenuItem>
+              {communities.map(community => (
+                <MenuItem value={community.id} key={community.id}>
+                  {community.id + ' - ' + community.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+          <FamiliesTable communityCode={communityCode} />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -33,10 +67,17 @@ const Dashboard = () => {
               setOpenWindow(true);
               setOpenCreateUser(true);
             }}
+            disabled={!communityCode}
           >
             Añadir Nueva Familia
           </Button>
-          <CreateUser openDialog={openCreateUser} handleClose={() => setOpenCreateUser(false)} />
+          {!!communityCode && (
+            <CreateFamilies
+              openDialog={openCreateUser}
+              handleClose={() => setOpenCreateUser(false)}
+              communityCode={communityCode}
+            />
+          )}
         </Grid>
       </Grid>
     </ApexChartWrapper>

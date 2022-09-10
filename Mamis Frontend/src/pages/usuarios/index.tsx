@@ -16,7 +16,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (openWindow && openCreateUser === false) {
       setOpenWindow(false);
-      window.location.reload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCreateUser]);

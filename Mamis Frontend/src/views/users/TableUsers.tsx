@@ -101,15 +101,6 @@ const DashboardTable = () => {
                       >
                         Editar Datos de Usuario
                       </Button>
-                      {openUpdateUser && (
-                        <UpdateUser
-                          openDialog={openUpdateUser}
-                          id={id}
-                          handleClose={() => {
-                            setOpenUpdateUser(false);
-                          }}
-                        />
-                      )}
                     </TableCell>
                     <TableCell>
                       <Checkbox
@@ -137,15 +128,6 @@ const DashboardTable = () => {
                       >
                         Editar Permisos
                       </Button>
-                      {openEditPermissions && (
-                        <EditPermissions
-                          openDialog={openEditPermissions}
-                          id={id}
-                          handleClose={() => {
-                            setOpenEditPermissions(false);
-                          }}
-                        />
-                      )}
                     </TableCell>
                     <TableCell>
                       <Button
@@ -157,15 +139,6 @@ const DashboardTable = () => {
                       >
                         Editar Contraseña
                       </Button>
-                      {openEditPassword && (
-                        <EditPassword
-                          openDialog={openEditPassword}
-                          id={id}
-                          handleClose={() => {
-                            setOpenEditPassword(false);
-                          }}
-                        />
-                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -181,6 +154,33 @@ const DashboardTable = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        {openEditPermissions && (
+          <EditPermissions
+            openDialog={openEditPermissions}
+            id={id}
+            handleClose={() => {
+              setOpenEditPermissions(false);
+            }}
+          />
+        )}
+        {openEditPassword && (
+          <EditPassword
+            openDialog={openEditPassword}
+            id={id}
+            handleClose={() => {
+              setOpenEditPassword(false);
+            }}
+          />
+        )}
+        {openUpdateUser && (
+          <UpdateUser
+            openDialog={openUpdateUser}
+            id={id}
+            handleClose={() => {
+              setOpenUpdateUser(false);
+            }}
+          />
+        )}
       </Card>
     </>
   );

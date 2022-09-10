@@ -18,3 +18,28 @@ export const getCommunity = async (loginData: any, id: string) => {
 export const updateCommunity = async (loginData: any, id: string, data: { address?: string; description?: string }) => {
   return authAxiosClient(loginData).patch('users/' + id, data);
 };
+
+export const getFamiliesByCommunity = async (loginData: any, id: string, page: number, pageSize: number) => {
+  const query = '?page=' + page + '&pageSize=' + pageSize;
+
+  return authAxiosClient(loginData).get('communities/' + id + '/families' + query);
+};
+
+export const createFamilies = async (
+  loginData: any,
+  id: string,
+  families: {
+    familyNumber: number | null;
+    name: string;
+    address: string;
+    details: string | null;
+    contacts: {
+      type: string;
+      content: string;
+      title: string;
+      isPreferred: boolean;
+    }[];
+  }[]
+) => {
+  return authAxiosClient(loginData).post('communities/' + id + '/families', { families: families });
+};

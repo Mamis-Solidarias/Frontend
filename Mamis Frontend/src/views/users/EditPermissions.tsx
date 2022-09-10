@@ -10,9 +10,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import Checkbox from '@mui/material/Checkbox';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface EditPermissionsProps {
   openDialog: boolean;
@@ -28,10 +32,8 @@ interface Role {
 
 export const EditPermissions: FC<EditPermissionsProps> = props => {
   const { openDialog, id, handleClose } = props;
-  const [allRoles, setAllRoles] = useState<any[]>([]);
-  const [userRoles, setUserRoles] = useState<any[]>([]);
-  const [notSentRoles] = useState<any[]>([]);
-  const [newRoleFilled, setNewRoleFilled] = useState<boolean>(true);
+  const [allRoles, setAllRoles] = useState<Role[]>([]);
+  const [userRoles, setUserRoles] = useState<Role[]>([]);
   const [starterCall, setStarterCall] = useState<boolean>(false);
 
   useEffect(() => {
@@ -43,6 +45,18 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
     }
   }, [id]);
 
+  const changeRoleInUserRoles = (role: Role, newService: string, canRead: boolean, canWrite: boolean) => {
+    const newRole = { service: newService, canRead: canRead, canWrite: canWrite };
+    const newUserRoles = userRoles.filter(userRole => userRole !== role);
+    newUserRoles.push(newRole);
+    setUserRoles(newUserRoles);
+  };
+
+  const deleteRole = (role: Role) => {
+    const newUserRoles = userRoles.filter(userRole => userRole !== role);
+    setUserRoles(newUserRoles);
+  };
+
   return (
     <Dialog
       open={openDialog}
@@ -53,91 +67,80 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Permisos</DialogTitle>
       <DialogContent>
+        {userRoles.length == 0 && (
+          <TableRow key='noroles'>
+            <TableCell>Este usuario aún no tiene roles cargados</TableCell>
+          </TableRow>
+        )}
         <TableContainer>
           <Table aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
                 <TableCell>Servicio</TableCell>
-                <TableCell>Puede Leer</TableCell>
-                <TableCell>Puede Escribir</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {userRoles.length == 0 && (
-                <TableRow key='noroles'>
-                  <TableCell>Este usuario aún no tiene roles cargados</TableCell>
-                </TableRow>
-              )}
+              <TableRow hover key='button'>
+                <Button
+                  variant='contained'
+                  sx={{ my: 3, marginLeft: 'auto', marginRight: 'auto' }}
+                  onClick={() =>
+                    userRoles.push({
+                      service: '#',
+                      canRead: false,
+                      canWrite: false
+                    })
+                  }
+                >
+                  Añadir Nuevo Servicio
+                </Button>
+              </TableRow>
               {userRoles.length > 0 &&
                 userRoles.map((role: Role) => (
                   <TableRow hover key={role.service} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                      <strong>{role.service}</strong>
-                    </TableCell>
-                    <TableCell>{role.canRead ? 'Sí' : 'No'}</TableCell>
-                    <TableCell>{role.canWrite ? 'Sí' : 'No'}</TableCell>
-                  </TableRow>
-                ))}
-              <TableRow key='separator'></TableRow>
-              {notSentRoles.length > 0 &&
-                notSentRoles.map((role: Role) => (
-                  <TableRow
-                    hover
-                    key={notSentRoles.length}
-                    sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}
-                  >
-                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                       <Select
-                        label='Servicio'
-                        value={role.service ? role.service : ''}
+                        value={role.service}
                         onChange={e => {
-                          role.service = e.target.value;
-                          console.log(role.service);
+                          changeRoleInUserRoles(role, e.target.value, true, false);
                         }}
                       >
-                        <MenuItem value='' hidden>
-                          None
-                        </MenuItem>
+                        <MenuItem value='#' style={{ display: 'none' }}></MenuItem>
                         <MenuItem value='Users'>Usuarios</MenuItem>
                         <MenuItem value='Beneficiaries'>Beneficiarios</MenuItem>
                       </Select>
                     </TableCell>
                     <TableCell>
-                      <Checkbox value={role.canRead}></Checkbox>
+                      <Stack direction='row' spacing={1} alignItems='center'>
+                        <Typography>Lectura</Typography>
+                        <Switch
+                          onChange={e => changeRoleInUserRoles(role, role.service, true, e.target.checked)}
+                          defaultChecked={role.canWrite}
+                        />
+                        <Typography>Lectura y Escritura</Typography>
+                      </Stack>
                     </TableCell>
                     <TableCell>
-                      <Checkbox value={role.canWrite}></Checkbox>
+                      <IconButton aria-label='delete' size='small' onClick={() => deleteRole(role)}>
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
+              <TableRow key='separator'></TableRow>
             </TableBody>
           </Table>
         </TableContainer>
-        {newRoleFilled && (
+        {userRoles.length > 0 && (
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
             onClick={() => {
-              setNewRoleFilled(false);
-              notSentRoles.push({
-                service: '',
-                canRead: false,
-                canWrite: false
-              });
+              updateUserRole(localStorage.getItem('user'), id, userRoles);
             }}
           >
-            Añadir Nuevo Permiso
-          </Button>
-        )}
-        {newRoleFilled && (
-          <Button
-            variant='contained'
-            sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={() => {
-              updateUserRole(localStorage.getItem('user'), id, notSentRoles);
-            }}
-          >
-            Cargar Nuevos Permisos
+            Cargar Permisos
           </Button>
         )}
       </DialogContent>

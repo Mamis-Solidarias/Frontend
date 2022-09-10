@@ -46,7 +46,7 @@ export const updateUserRole = async (
   id: number,
   roles: { service: string; canWrite: boolean; canRead: boolean }[]
 ) => {
-  return authAxiosClient(loginData).put('users/' + id + '/roles', roles);
+  return authAxiosClient(loginData).put('users/' + id + '/roles', { roles: roles });
 };
 
 export const getUserRoles = async (loginData: any, id: number) => {
