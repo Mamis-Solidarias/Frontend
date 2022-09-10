@@ -35,13 +35,18 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
   const [allRoles, setAllRoles] = useState<Role[]>([]);
   const [userRoles, setUserRoles] = useState<Role[]>([]);
   const [starterCall, setStarterCall] = useState<boolean>(false);
+  const [permissions, setPermissions] = useState<number>(0);
 
   useEffect(() => {
     if (!!id && !starterCall) {
       setStarterCall(true);
       if (allRoles.length == 0) getRoles(localStorage.getItem('user')).then(result => setAllRoles(result.data.roles));
-      if (userRoles.length == 0)
-        getUserRoles(localStorage.getItem('user'), id).then(result => setUserRoles(result.data.roles));
+      if (userRoles.length == 0) {
+        getUserRoles(localStorage.getItem('user'), id).then(result => {
+          setUserRoles(result.data.roles);
+          setPermissions(result.data.roles.length);
+        });
+      }
     }
   }, [id]);
 
@@ -67,11 +72,6 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Permisos</DialogTitle>
       <DialogContent>
-        {userRoles.length == 0 && (
-          <TableRow key='noroles'>
-            <TableCell>Este usuario aún no tiene roles cargados</TableCell>
-          </TableRow>
-        )}
         <TableContainer>
           <Table aria-label='table in dashboard'>
             <TableHead>
@@ -81,17 +81,24 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
               </TableRow>
             </TableHead>
             <TableBody>
+              {userRoles.length == 0 && (
+                <TableRow key='noroles'>
+                  <TableCell>Este usuario aún no tiene roles cargados</TableCell>
+                </TableRow>
+              )}
               <TableRow hover key='button'>
                 <Button
                   variant='contained'
                   sx={{ my: 3, marginLeft: 'auto', marginRight: 'auto' }}
-                  onClick={() =>
+                  onClick={() => {
+                    setPermissions(permissions + 1);
                     userRoles.push({
                       service: '#',
                       canRead: false,
                       canWrite: false
-                    })
-                  }
+                    });
+                  }}
+                  disabled={permissions >= 2}
                 >
                   Añadir Nuevo Servicio
                 </Button>
@@ -116,7 +123,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                         <Typography>Lectura</Typography>
                         <Switch
                           onChange={e => changeRoleInUserRoles(role, role.service, true, e.target.checked)}
-                          defaultChecked={role.canWrite}
+                          checked={role.canWrite}
                         />
                         <Typography>Lectura y Escritura</Typography>
                       </Stack>
