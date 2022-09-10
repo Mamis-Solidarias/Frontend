@@ -22,7 +22,7 @@ interface Community {
 }
 
 const Dashboard = () => {
-  const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
+  const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [communityCode, setCommunityCode] = useState<string | undefined>();
   const [communities, setCommunities] = useState<Community[]>([]);
@@ -36,11 +36,11 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (openWindow && openCreateUser === false) {
+    if (openWindow && openCreateFamilies === false) {
       setOpenWindow(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openCreateUser]);
+  }, [openCreateFamilies]);
 
   return (
     <ApexChartWrapper>
@@ -65,16 +65,16 @@ const Dashboard = () => {
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
             onClick={() => {
               setOpenWindow(true);
-              setOpenCreateUser(true);
+              setOpenCreateFamilies(true);
             }}
             disabled={!communityCode}
           >
-            Añadir Nueva Familia
+            Añadir Nuevas Familias
           </Button>
           {!!communityCode && (
             <CreateFamilies
-              openDialog={openCreateUser}
-              handleClose={() => setOpenCreateUser(false)}
+              openDialog={openCreateFamilies}
+              handleClose={() => setOpenCreateFamilies(false)}
               communityCode={communityCode}
             />
           )}

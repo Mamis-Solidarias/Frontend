@@ -5,14 +5,14 @@ export const updateFamily = async (
   id: string,
   data: { name?: string; address?: string; details?: string; contacts?: any }
 ) => {
-  return authAxiosClient(loginData).patch('familias/' + id, data);
+  return authAxiosClient(loginData).patch('families/' + id, data);
 };
 
 export const getFamily = async (loginData: any, id: string) => {
-  return authAxiosClient(loginData).get('familias/' + id);
+  return authAxiosClient(loginData).get('families/' + id);
 };
 
-export const addBeneficiaries = async (
+export const createBeneficiaries = async (
   loginData: any,
   id: string,
   beneficiaries: {
@@ -24,15 +24,7 @@ export const addBeneficiaries = async (
     dni: string;
     comments?: string;
     likes?: string;
-    clothes?: any;
-    education?: string;
-    health: {
-      hasCovidVaccine: boolean;
-      hasMandatoryVaccines: boolean;
-      observations: string;
-    };
-    job: any;
   }[]
 ) => {
-  return authAxiosClient(loginData).post('familias/' + id + '/beneficiaries', { beneficiaries: beneficiaries });
+  return authAxiosClient(loginData).post('families/' + id + '/beneficiaries', { beneficiaries: beneficiaries });
 };

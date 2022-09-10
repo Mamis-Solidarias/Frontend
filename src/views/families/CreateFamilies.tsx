@@ -186,7 +186,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
           }}
           disabled={families.length === 0}
         >
-          Crear Comunidades
+          Crear Familias
         </Button>
       </DialogContent>
     </Dialog>

@@ -24,7 +24,7 @@ export const createUser = async (
 export const updateUser = async (
   loginData: any,
   id: string,
-  data: { email?: string; name?: string; phone?: string }
+  data: { email: string | null; name?: string | null; phone?: string | null }
 ) => {
   return authAxiosClient(loginData).patch('users/' + id, data);
 };

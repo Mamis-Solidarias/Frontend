@@ -62,7 +62,10 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
   };
 
   const handleSubmit = async () => {
-    await updateUser(localStorage.getItem('user'), id, { email, name, phone });
+    const emailToSend = !!email ? email : null;
+    const nameToSend = !!name ? name : null;
+    const phoneToSend = !!phone ? phone : null;
+    await updateUser(localStorage.getItem('user'), id, { email: emailToSend, name: nameToSend, phone: phoneToSend });
     resetFields();
     handleClose();
   };
@@ -140,7 +143,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={handleSubmit}
-            disabled={invalidEmail || invalidName || invalidPhone || email === '' || name === ''}
+            disabled={invalidEmail || invalidName || invalidPhone || (!name && !phone && !email)}
           >
             Crear
           </Button>
