@@ -9,7 +9,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import FamiliesTable from 'src/views/families/FamiliesTable';
 import MenuItem from '@mui/material/MenuItem';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
-import Select from '@mui/material/Select/Select';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import { CreateFamilies } from 'src/views/families/CreateFamilies';

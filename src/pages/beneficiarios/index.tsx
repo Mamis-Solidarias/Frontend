@@ -8,7 +8,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 // ** Demo Components Imports
 import MenuItem from '@mui/material/MenuItem';
 import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
-import Select from '@mui/material/Select/Select';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import { getFamily } from 'src/API/Beneficiaries/families_data';
