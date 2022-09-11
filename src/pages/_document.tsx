@@ -1,14 +1,14 @@
 // ** React Import
-import { Children } from 'react'
+import { Children } from 'react';
 
 // ** Next Import
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 // ** Emotion Imports
-import createEmotionServer from '@emotion/server/create-instance'
+import createEmotionServer from '@emotion/server/create-instance';
 
 // ** Utils Imports
-import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
+import { createEmotionCache } from 'src/@core/utils/create-emotion-cache';
 
 class CustomDocument extends Document {
   render() {
@@ -33,14 +33,14 @@ class CustomDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
 CustomDocument.getInitialProps = async ctx => {
-  const originalRenderPage = ctx.renderPage
-  const cache = createEmotionCache()
-  const { extractCriticalToChunks } = createEmotionServer(cache)
+  const originalRenderPage = ctx.renderPage;
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks } = createEmotionServer(cache);
 
   ctx.renderPage = () =>
     originalRenderPage({
@@ -51,10 +51,10 @@ CustomDocument.getInitialProps = async ctx => {
             emotionCache={cache}
           />
         )
-    })
+    });
 
-  const initialProps = await Document.getInitialProps(ctx)
-  const emotionStyles = extractCriticalToChunks(initialProps.html)
+  const initialProps = await Document.getInitialProps(ctx);
+  const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map(style => {
     return (
       <style
@@ -62,13 +62,13 @@ CustomDocument.getInitialProps = async ctx => {
         dangerouslySetInnerHTML={{ __html: style.css }}
         data-emotion={`${style.key} ${style.ids.join(' ')}`}
       />
-    )
-  })
+    );
+  });
 
   return {
     ...initialProps,
     styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags]
-  }
-}
+  };
+};
 
-export default CustomDocument
+export default CustomDocument;

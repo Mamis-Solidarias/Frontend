@@ -1,9 +1,9 @@
 // ** MUI imports
-import { styled } from '@mui/material/styles'
-import Box, { BoxProps } from '@mui/material/Box'
+import { styled } from '@mui/material/styles';
+import Box, { BoxProps } from '@mui/material/Box';
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'src/@core/utils/hex-to-rgba';
 
 const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
   return {
@@ -355,7 +355,7 @@ const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
         backgroundColor: 'transparent !important'
       }
     }
-  }
-})
+  };
+});
 
-export default DatePickerWrapper
+export default DatePickerWrapper;

@@ -48,6 +48,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const changeRoleInUserRoles = (role: Role, newService: string, canRead: boolean, canWrite: boolean) => {

@@ -1,14 +1,14 @@
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Avatar from '@mui/material/Avatar'
-import Typography from '@mui/material/Typography'
-import CardContent from '@mui/material/CardContent'
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import CardContent from '@mui/material/CardContent';
 
 // ** Icons Imports
-import Heart from 'mdi-material-ui/Heart'
-import Linkedin from 'mdi-material-ui/Linkedin'
-import ShareVariant from 'mdi-material-ui/ShareVariant'
+import Heart from 'mdi-material-ui/Heart';
+import Linkedin from 'mdi-material-ui/Linkedin';
+import ShareVariant from 'mdi-material-ui/ShareVariant';
 
 const CardLinkedIn = () => {
   return (
@@ -49,7 +49,7 @@ const CardLinkedIn = () => {
         </Box>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default CardLinkedIn
+export default CardLinkedIn;

@@ -1,14 +1,14 @@
 // ** MUI Imports
-import Divider from '@mui/material/Divider'
-import { styled, useTheme } from '@mui/material/styles'
-import Typography, { TypographyProps } from '@mui/material/Typography'
-import MuiListSubheader, { ListSubheaderProps } from '@mui/material/ListSubheader'
+import Divider from '@mui/material/Divider';
+import { styled, useTheme } from '@mui/material/styles';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import MuiListSubheader, { ListSubheaderProps } from '@mui/material/ListSubheader';
 
 // ** Types
-import { NavSectionTitle } from 'src/@core/layouts/types'
+import { NavSectionTitle } from 'src/@core/layouts/types';
 
 interface Props {
-  item: NavSectionTitle
+  item: NavSectionTitle;
 }
 
 // ** Styled Components
@@ -22,7 +22,7 @@ const ListSubheader = styled((props: ListSubheaderProps) => <MuiListSubheader co
     backgroundColor: 'transparent',
     transition: 'padding-left .25s ease-in-out'
   })
-)
+);
 
 const TypographyHeaderText = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontSize: '0.75rem',
@@ -31,14 +31,14 @@ const TypographyHeaderText = styled(Typography)<TypographyProps>(({ theme }) => 
   textTransform: 'uppercase',
   color: theme.palette.text.disabled,
   fontWeight: theme.typography.fontWeightMedium
-}))
+}));
 
 const VerticalNavSectionTitle = (props: Props) => {
   // ** Props
-  const { item } = props
+  const { item } = props;
 
   // ** Hook
-  const theme = useTheme()
+  const theme = useTheme();
 
   return (
     <ListSubheader
@@ -66,7 +66,7 @@ const VerticalNavSectionTitle = (props: Props) => {
         <TypographyHeaderText noWrap>{item.sectionTitle}</TypographyHeaderText>
       </Divider>
     </ListSubheader>
-  )
-}
+  );
+};
 
-export default VerticalNavSectionTitle
+export default VerticalNavSectionTitle;

@@ -1,5 +1,5 @@
 // ** MUI imports
-import { styled } from '@mui/material/styles'
+import { styled } from '@mui/material/styles';
 
 const ApexChartWrapper = styled('div')(({ theme }) => ({
   '& .apexcharts-canvas': {
@@ -98,6 +98,6 @@ const ApexChartWrapper = styled('div')(({ theme }) => ({
       stroke: theme.palette.divider
     }
   }
-}))
+}));
 
-export default ApexChartWrapper
+export default ApexChartWrapper;

@@ -50,6 +50,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
         changePage(0, INITIAL_SIZE);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -82,6 +83,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
         setRows(result.data.families);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [communityCode]);
 
   return (

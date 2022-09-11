@@ -1,13 +1,13 @@
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Rating from '@mui/material/Rating'
-import Button from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
-import CardContent from '@mui/material/CardContent'
-import CardActions from '@mui/material/CardActions'
-import Grid, { GridProps } from '@mui/material/Grid'
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Rating from '@mui/material/Rating';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Grid, { GridProps } from '@mui/material/Grid';
 
 // Styled Grid component
 const StyledGrid1 = styled(Grid)<GridProps>(({ theme }) => ({
@@ -23,7 +23,7 @@ const StyledGrid1 = styled(Grid)<GridProps>(({ theme }) => ({
       paddingTop: 0
     }
   }
-}))
+}));
 
 // Styled Grid component
 const StyledGrid2 = styled(Grid)<GridProps>(({ theme }) => ({
@@ -36,13 +36,13 @@ const StyledGrid2 = styled(Grid)<GridProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     order: -1
   }
-}))
+}));
 
 // Styled component for the image
 const Img = styled('img')(({ theme }) => ({
   height: '11rem',
   borderRadius: theme.shape.borderRadius
-}))
+}));
 
 const CardHorizontalRatings = () => {
   return (
@@ -74,7 +74,7 @@ const CardHorizontalRatings = () => {
         </StyledGrid2>
       </Grid>
     </Card>
-  )
-}
+  );
+};
 
-export default CardHorizontalRatings
+export default CardHorizontalRatings;
