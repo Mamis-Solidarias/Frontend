@@ -44,7 +44,17 @@ const DashboardTable = () => {
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
-      changePage(0, INITIAL_SIZE);
+      if (!!localStorage.getItem('pageUsers')) {
+        setRowsPerPage(parseInt(localStorage.getItem('pageSize') as string));
+        changePage(
+          parseInt(localStorage.getItem('pageUsers') as string),
+          parseInt(localStorage.getItem('pageSize') as string)
+        );
+      } else {
+        localStorage.setItem('pageUsers', '0');
+        localStorage.setItem('pageSize', INITIAL_SIZE.toString());
+        changePage(0, INITIAL_SIZE);
+      }
       setActualUserId(verifyJwt(localStorage.getItem('user') as string).Id);
     }
   }, []);
@@ -55,11 +65,13 @@ const DashboardTable = () => {
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
+    localStorage.setItem('pageSize', (+event.target.value).toString());
     changePage(0, +event.target.value);
   };
 
   const changePage = async (newPage: number, size: number) => {
     getUsers(localStorage.getItem('user'), newPage, size).then(users => {
+      localStorage.setItem('pageUsers', newPage.toString());
       setTotalPages(users.data.totalPages);
       setActualPage(users.data.page);
       setRows(users.data.entries);
@@ -148,7 +160,7 @@ const DashboardTable = () => {
         <TablePagination
           rowsPerPageOptions={[INITIAL_SIZE, MEDIUM_SIZE, LARGE_SIZE]}
           component='div'
-          count={rows ? (rows.length < 5 ? (totalPages - 1) * rowsPerPage + rows.length : -1) : 1}
+          count={rows ? (rows.length < rowsPerPage ? (totalPages - 1) * rowsPerPage + rows.length : -1) : 1}
           rowsPerPage={rowsPerPage}
           page={actualPage}
           onPageChange={handleChangePage}
