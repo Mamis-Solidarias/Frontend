@@ -78,7 +78,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
         handleClose();
       }}
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nuevo Usuario</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Usuario</DialogTitle>
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
@@ -145,7 +145,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
             onClick={handleSubmit}
             disabled={invalidEmail || invalidName || invalidPhone || (!name && !phone && !email)}
           >
-            Crear
+            Editar
           </Button>
         </Box>
       </DialogContent>
