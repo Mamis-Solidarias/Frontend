@@ -143,8 +143,9 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={() => {
-              updateUserRole(localStorage.getItem('user'), id, userRoles);
+            onClick={async () => {
+              await updateUserRole(localStorage.getItem('user'), id, userRoles);
+              handleClose();
             }}
           >
             Cargar Permisos
