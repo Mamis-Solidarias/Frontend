@@ -38,7 +38,17 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
-      changePage(0, INITIAL_SIZE);
+      if (!!localStorage.getItem('pageFamilies')) {
+        setRowsPerPage(parseInt(localStorage.getItem('pageSize') as string));
+        changePage(
+          parseInt(localStorage.getItem('pageFamilies') as string),
+          parseInt(localStorage.getItem('pageSize') as string)
+        );
+      } else {
+        localStorage.setItem('pageFamilies', '0');
+        localStorage.setItem('pageSize', INITIAL_SIZE.toString());
+        changePage(0, INITIAL_SIZE);
+      }
     }
   }, []);
 
@@ -48,12 +58,14 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
+    localStorage.setItem('pageSize', (+event.target.value).toString());
     changePage(0, +event.target.value);
   };
 
   const changePage = async (newPage: number, size: number) => {
     if (!!communityCode) {
       getFamiliesByCommunity(localStorage.getItem('user'), communityCode, newPage, size).then(result => {
+        localStorage.setItem('pageFamilies', newPage.toString());
         setTotalPages(result.data.totalPages);
         setActualPage(result.data.page);
         setRows(result.data.families);
@@ -63,7 +75,10 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
 
   useEffect(() => {
     if (!!localStorage.getItem('user') && !!communityCode) {
-      getFamiliesByCommunity(localStorage.getItem('user'), communityCode, 0, 5).then(result => {
+      getFamiliesByCommunity(localStorage.getItem('user'), communityCode, 0, rowsPerPage).then(result => {
+        localStorage.setItem('pageFamilies', '0');
+        setTotalPages(result.data.totalPages);
+        setActualPage(result.data.page);
         setRows(result.data.families);
       });
     }
