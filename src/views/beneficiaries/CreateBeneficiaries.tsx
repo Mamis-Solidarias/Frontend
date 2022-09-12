@@ -14,9 +14,10 @@ import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { createBeneficiaries } from 'src/API/Beneficiaries/families_data';
-import { EducationForm } from './EducationForm';
-import { GeneralForm } from './GeneralForm';
-import { ClothesForm } from './ClothesForm';
+import { EducationForm } from './Forms/EducationForm';
+import { GeneralForm } from './Forms/GeneralForm';
+import { ClothesForm } from './Forms/ClothesForm';
+import { HealthForm } from './Forms/HealthForm';
 
 interface CreateBeneficiariesProps {
   familyId: string;
@@ -61,6 +62,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [pantsSize, setPantsSize] = useState<string>('');
   const [shirtSize, setShirtSize] = useState<string>('');
   const [shoeSize, setShoeSize] = useState<string>('');
+  const [addHealth, setAddHealth] = useState<boolean>(false);
+  const [hasMandatoryVaccines, setHasMandatoryVaccines] = useState<boolean>(false);
+  const [hasCovidVaccine, setHasCovidVaccine] = useState<boolean>(false);
+  const [observations, setObservations] = useState<string>('');
 
   const resetFields = () => {
     setFirstName('');
@@ -75,6 +80,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
     setTransportationMethod('');
     setSchool('');
     setAddEducation(false);
+    setHasCovidVaccine(false);
+    setHasMandatoryVaccines(false);
+    setObservations('');
+    setAddHealth(false);
     setAddClothes(false);
   };
 
@@ -168,6 +177,32 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
               }}
             >
               Añadir información de Ropa
+            </Button>
+          )}
+
+          {addHealth && (
+            <HealthForm
+              hasMandatoryVaccines={hasMandatoryVaccines}
+              setHasMandatoryVaccines={setHasMandatoryVaccines}
+              hasCovidVaccine={hasCovidVaccine}
+              setHasCovidVaccine={setHasCovidVaccine}
+              observations={observations}
+              setObservations={setObservations}
+              setAddHealth={setAddHealth}
+            />
+          )}
+          {!addHealth && (
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+              variant='contained'
+              onClick={() => {
+                setShoeSize('');
+                setPantsSize('');
+                setShirtSize('');
+                setAddHealth(true);
+              }}
+            >
+              Añadir información de Salud
             </Button>
           )}
 
