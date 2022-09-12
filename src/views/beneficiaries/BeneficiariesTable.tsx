@@ -10,15 +10,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import { useEffect, useState } from 'react';
-import { getFamily } from 'src/API/Beneficiaries/families_data';
-
-interface BeneficiariesTableProps {
-  familyId?: string;
-}
+import { useQuery, gql } from '@apollo/client';
 
 interface RowType {
   id: string;
+  familyId: string;
   firstName: string;
   lastName: string;
   type: string;
@@ -37,17 +33,51 @@ interface RowType {
   job: any;
 }
 
-const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
-  const { familyId } = props;
-  const [rows, setRows] = useState<any>();
+const BeneficiariesTable: FC = () => {
+  const GetBeneficiaries = () => {
+    const GET_BENEFICIARIES = gql`
+      query getBeneficiaries {
+        beneficiaries {
+          nodes {
+            dni
+            birthday
+            comments
+            familyId
+            firstName
+            gender
+            id
+            isActive
+            lastName
+            likes
+            type
+            education {
+              school
+              year
+              transportationMethod
+            }
+          }
+        }
+      }
+    `;
+    const { loading, error, data } = useQuery(GET_BENEFICIARIES);
 
-  useEffect(() => {
-    if (!!familyId) {
-      getFamily(localStorage.getItem('user'), familyId).then(result => {
-        setRows(result.data.families);
-      });
-    }
-  }, [familyId]);
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+
+    const GENDERS = { MALE: 'Masculino', FEMALE: 'Femenino', OTHER: 'otro' };
+    const TYPES = { ADULT: 'Adulto', CHILD: 'Niño' };
+
+    return data.beneficiaries.nodes.map((row: RowType) => (
+      <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+        <TableCell>{row.familyId}</TableCell>
+        <TableCell>{row.firstName + ' ' + row.lastName}</TableCell>
+        <TableCell>{GENDERS[row.gender as keyof typeof GENDERS]}</TableCell>
+        <TableCell>{row.birthday}</TableCell>
+        <TableCell>{row.dni}</TableCell>
+        <TableCell>{TYPES[row.type as keyof typeof TYPES]}</TableCell>
+      </TableRow>
+    ));
+  };
 
   return (
     <>
@@ -56,35 +86,16 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
+                <TableCell>ID de Familia</TableCell>
                 <TableCell>Nombre Completo</TableCell>
                 <TableCell>Género</TableCell>
                 <TableCell>Cumpleaños</TableCell>
                 <TableCell>DNI</TableCell>
-                <TableCell>Qué le gusta</TableCell>
-                <TableCell>Ropa</TableCell>
-                <TableCell>Educación</TableCell>
-                <TableCell>Salud</TableCell>
-                <TableCell>Trabajo</TableCell>
                 <TableCell>Tipo</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {!!rows &&
-                rows.map((row: RowType) => (
-                  <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                    <TableCell>{row.firstName + ' ' + row.lastName}</TableCell>
-                    <TableCell>{row.gender}</TableCell>
-                    <TableCell>{row.birthday}</TableCell>
-                    <TableCell>{row.dni}</TableCell>
-                    <TableCell>{row.likes}</TableCell>
-                    <TableCell>{row.clothes}</TableCell>
-                    <TableCell>{row.health}</TableCell>
-                    <TableCell>{row.job}</TableCell>
-                    <TableCell>{row.type}</TableCell>
-                  </TableRow>
-                ))}
+              <GetBeneficiaries />
             </TableBody>
           </Table>
         </TableContainer>

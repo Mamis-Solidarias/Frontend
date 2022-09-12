@@ -30,11 +30,38 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 // ** Global css styles
 import '../../styles/globals.css';
 
+// ** Apollo Client - for GraphQL
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
   Component: NextPage;
   emotionCache: EmotionCache;
 };
+
+// ** Apollo Client auth token
+const httpLink = createHttpLink({
+  uri: 'http://localhost:8080/graphql'
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('user');
+
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ''
+    }
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+});
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -63,17 +90,18 @@ const App = (props: ExtendedAppProps) => {
       <Head>
         <title>{`${themeConfig.templateName} - Consola de Administrador`}</title>
         <meta name='description' content={`${themeConfig.templateName} – Consola de Administrador`} />
-        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template, Mamis Solidarias' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>;
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
+      <ApolloProvider client={client}>
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>;
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </ApolloProvider>
     </CacheProvider>
   );
 };

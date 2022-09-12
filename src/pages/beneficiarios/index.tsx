@@ -11,7 +11,6 @@ import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/co
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
-import { getFamily } from 'src/API/Beneficiaries/families_data';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTable';
 import { CreateBeneficiaries } from 'src/views/beneficiaries/CreateBeneficiaries';
 
@@ -61,14 +60,6 @@ const Dashboard = () => {
     }
   }, [communityCode]);
 
-  useEffect(() => {
-    if (!!familyId) {
-      getFamily(localStorage.getItem('user'), familyId).then(result => {
-        setFamilies(result.data);
-      });
-    }
-  }, [familyId]);
-
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -103,7 +94,7 @@ const Dashboard = () => {
               </Box>
             )}
           </Box>
-          <BeneficiariesTable familyId={familyId} />
+          <BeneficiariesTable />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}

@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
 import TableContainer from '@mui/material/TableContainer';
@@ -15,11 +14,19 @@ import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { createBeneficiaries } from 'src/API/Beneficiaries/families_data';
+import { EducationForm } from './EducationForm';
+import { GeneralForm } from './GeneralForm';
 
 interface CreateBeneficiariesProps {
   familyId: string;
   openDialog: boolean;
   handleClose: () => void;
+}
+
+interface Education {
+  school: string;
+  transportationMethod: string;
+  year: string;
 }
 
 interface Beneficiary {
@@ -31,6 +38,7 @@ interface Beneficiary {
   dni: string;
   comments?: string;
   likes?: string;
+  education?: Education;
 }
 
 export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
@@ -44,6 +52,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [comments, setComments] = useState<string>('');
   const [likes, setLikes] = useState<string>('');
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
+  const [school, setSchool] = useState<string>('');
+  const [transportationMethod, setTransportationMethod] = useState<string>('');
+  const [year, setYear] = useState<string>('');
+  const [addEducation, setAddEducation] = useState<boolean>(false);
 
   const resetFields = () => {
     setFirstName('');
@@ -54,6 +66,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
     setDni('');
     setComments('');
     setLikes('');
+    setYear('');
+    setTransportationMethod('');
+    setSchool('');
+    setAddEducation(false);
   };
 
   const resetAllFields = () => {
@@ -75,121 +91,58 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Familia</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nuevo Beneficiario</DialogTitle>
       <DialogContent>
         <Box>
-          <TextField
-            style={{ padding: '1em' }}
-            id='firstName'
-            type='text'
-            inputProps={{ pattern: '[0-9]*$' }}
-            label='Nombres de Beneficiario'
-            placeholder='Juan García'
-            value={firstName}
-            onChange={e => {
-              setFirstName(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
+          <GeneralForm
+            dni={dni}
+            setDni={setDni}
+            gender={gender}
+            setGender={setGender}
+            birthday={birthday}
+            setBirthday={setBirthday}
+            likes={likes}
+            setLikes={setLikes}
+            comments={comments}
+            setComments={setComments}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            type={type}
+            setType={setType}
           />
-          <TextField
-            style={{ padding: '1em' }}
-            id='lastName'
-            type='text'
-            inputProps={{ pattern: '[0-9]*$' }}
-            label='Apellidos de Beneficiario'
-            placeholder='Pedro Montoya'
-            value={lastName}
-            onChange={e => {
-              setLastName(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            style={{ padding: '1em' }}
-            id='type'
-            type='text'
-            inputProps={{ pattern: '[0-9]*$' }}
-            label='Tipo de Beneficiario'
-            placeholder='Niño'
-            value={type}
-            onChange={e => {
-              setType(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            style={{ padding: '1em' }}
-            id='gender'
-            type='text'
-            label='Género del Beneficiario'
-            placeholder='M'
-            value={gender}
-            onChange={e => {
-              setGender(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            style={{ padding: '1em' }}
-            id='birthday'
-            type='text'
-            inputProps={{ pattern: '[0-9]*$' }}
-            label='Fecha de Nacimiento del Beneficiario'
-            placeholder='23'
-            value={birthday}
-            onChange={e => {
-              setBirthday(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            style={{ padding: '1em' }}
-            id='dni'
-            type='text'
-            label='DNI del Beneficiario'
-            placeholder='23456654'
-            value={dni}
-            onChange={e => {
-              setDni(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            sx={{ padding: '1em' }}
-            id='comments'
-            type='text'
-            label='Comentarios sobre Beneficiario'
-            placeholder='Es buena gente'
-            value={comments}
-            onChange={e => {
-              setComments(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            style={{ padding: '1em' }}
-            id='likes'
-            type='text'
-            label='Cosas que le gustan al Beneficiario'
-            placeholder='La familia de José'
-            value={likes}
-            onChange={e => {
-              setLikes(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
+          {addEducation && (
+            <EducationForm
+              year={year}
+              school={school}
+              setYear={setYear}
+              setSchool={setSchool}
+              transportationMethod={transportationMethod}
+              setTransportationMethod={setTransportationMethod}
+              setAddEducation={setAddEducation}
+            />
+          )}
+          {!addEducation && (
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+              variant='contained'
+              onClick={() => {
+                setTransportationMethod('');
+                setSchool('');
+                setYear('');
+                setAddEducation(true);
+              }}
+            >
+              Nueva información de Educación
+            </Button>
+          )}
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => {
+              const education: Education | undefined =
+                !!school && !!year && !!transportationMethod ? { school, year, transportationMethod } : undefined;
               beneficiaries.push({
                 firstName,
                 lastName,
@@ -198,7 +151,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                 birthday,
                 dni,
                 comments,
-                likes
+                likes,
+                education
               });
               resetFields();
             }}
