@@ -4,12 +4,15 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import React, { FC } from 'react';
-import Card from '@mui/material/Card';
+import { Education } from './BeneficiaryCard/Education';
+import { Health } from './BeneficiaryCard/Health';
+import { Clothes } from './BeneficiaryCard/Clothes';
+import { Likes } from './BeneficiaryCard/Likes';
+import { Comments } from './BeneficiaryCard/Comments';
+import { Job } from './BeneficiaryCard/Job';
 
 const GET_BENEFICIARIES = gql`
   query getBeneficiaries {
@@ -91,14 +94,7 @@ export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[])
 
   const GENDERS = { MALE: 'Masculino', FEMALE: 'Femenino', OTHER: 'Otro' };
   const TYPES = { ADULT: 'Adulto', CHILD: 'Niño' };
-  const TRANSPORT_METHODS = {
-    BIKE: 'Bicicleta',
-    CAR: 'Auto',
-    HORSE: 'Caballo',
-    PUBLIC_TRANSPORT: 'Transporte Público',
-    WALKING: 'Caminando',
-    OTHER: 'Otros'
-  };
+
   const nodes = data.beneficiaries.nodes;
 
   return nodes.map((row: RowType, index: number) => (
@@ -143,116 +139,13 @@ export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[])
       <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
         <TableCell colSpan={12}>
           <Collapse in={open[index]} timeout='auto' unmountOnExit>
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
-              {!!row.education && (
-                <Card sx={{ backgroundColor: '#fea7a7' }}>
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Educación
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      <p>
-                        <strong>Institución:</strong>&ensp;
-                        {row.education.school}
-                      </p>
-                      <p>
-                        <strong>Año académico:</strong>&ensp;
-                        {row.education.year}
-                      </p>
-                      <p>
-                        <strong>Método de Transporte: </strong>&ensp;
-                        {TRANSPORT_METHODS[row.education.transportationMethod as keyof typeof TRANSPORT_METHODS]}
-                      </p>
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
-              {!!row.health && (
-                <Card sx={{ backgroundColor: '#fea7a7' }}>
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Salud
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      <p>
-                        <strong>¿Tiene Vacuna COVID?:</strong>&ensp;
-                        {row.health.hasCovidVaccine}
-                      </p>
-                      <p>
-                        <strong>¿Tiene Vacunas Mandatorias?:</strong>&ensp;
-                        {row.health.hasMandatoryVaccines}
-                      </p>
-                      <p>
-                        <strong>Observaciones: </strong>&ensp;
-                        {row.health.observations}
-                      </p>
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
-              {!!row.clothes && (
-                <Card sx={{ backgroundColor: '#fea7a7' }}>
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Ropa
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      <p>
-                        <strong>Talle de Calzado:</strong>&ensp;
-                        {row.clothes.shoeSize}
-                      </p>
-                      <p>
-                        <strong>Talle de Pantalones:</strong>&ensp;
-                        {row.clothes.pantsSize}
-                      </p>
-                      <p>
-                        <strong>Talle de Remera: </strong>&ensp;
-                        {row.clothes.shirtSize}
-                      </p>
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
-              {!!row.comments && (
-                <Card sx={{ backgroundColor: '#fea7a7' }}>
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Comentarios
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      {row.comments}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
-              {!!row.likes && (
-                <Card sx={{ backgroundColor: '#fea7a7' }}>
-                  <CardContent>
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Qué le Gusta
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      {row.likes}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
-              {!!row.job && (
-                <Card sx={{ backgroundColor: '#fea7a7' }}>
-                  <CardContent>
-                    {' '}
-                    <Typography gutterBottom variant='h5' component='div'>
-                      Trabajo
-                    </Typography>
-                    <Typography variant='body2' color='text.secondary'>
-                      <p>
-                        <strong>Título:</strong>&ensp;
-                        {row.job.title}
-                      </p>
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+              {!!row.education && <Education education={row.education} sx={{ mx: '1em' }} />}
+              {!!row.health && <Health health={row.health} sx={{ mx: '1em' }} />}
+              {!!row.clothes && <Clothes clothes={row.clothes} sx={{ mx: '1em' }} />}
+              {!!row.comments && <Comments comments={row.comments} sx={{ mx: '1em' }} />}
+              {!!row.likes && <Likes likes={row.likes} sx={{ mx: '1em' }} />}
+              {!!row.job && <Job job={row.job} sx={{ mx: '1em' }} />}
             </Box>
           </Collapse>
         </TableCell>
