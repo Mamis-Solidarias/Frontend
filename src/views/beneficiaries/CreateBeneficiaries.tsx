@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { createBeneficiaries } from 'src/API/Beneficiaries/families_data';
 import { EducationForm } from './EducationForm';
 import { GeneralForm } from './GeneralForm';
+import { ClothesForm } from './ClothesForm';
 
 interface CreateBeneficiariesProps {
   familyId: string;
@@ -56,6 +57,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [transportationMethod, setTransportationMethod] = useState<string>('');
   const [year, setYear] = useState<string>('');
   const [addEducation, setAddEducation] = useState<boolean>(false);
+  const [addClothes, setAddClothes] = useState<boolean>(false);
+  const [pantsSize, setPantsSize] = useState<string>('');
+  const [shirtSize, setShirtSize] = useState<string>('');
+  const [shoeSize, setShoeSize] = useState<string>('');
 
   const resetFields = () => {
     setFirstName('');
@@ -70,6 +75,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
     setTransportationMethod('');
     setSchool('');
     setAddEducation(false);
+    setAddClothes(false);
   };
 
   const resetAllFields = () => {
@@ -112,6 +118,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             type={type}
             setType={setType}
           />
+
           {addEducation && (
             <EducationForm
               year={year}
@@ -134,9 +141,36 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                 setAddEducation(true);
               }}
             >
-              Nueva información de Educación
+              Añadir información de Educación
             </Button>
           )}
+
+          {addClothes && (
+            <ClothesForm
+              pantsSize={pantsSize}
+              setPantsSize={setPantsSize}
+              shirtSize={shirtSize}
+              setShirtSize={setShirtSize}
+              shoeSize={shoeSize}
+              setShoeSize={setShoeSize}
+              setAddClothes={setAddClothes}
+            />
+          )}
+          {!addClothes && (
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+              variant='contained'
+              onClick={() => {
+                setShoeSize('');
+                setPantsSize('');
+                setShirtSize('');
+                setAddClothes(true);
+              }}
+            >
+              Añadir información de Ropa
+            </Button>
+          )}
+
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
@@ -168,8 +202,6 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                 <TableCell>Género</TableCell>
                 <TableCell>Cumpleaños</TableCell>
                 <TableCell>DNI</TableCell>
-                <TableCell>Qué le gusta</TableCell>
-                <TableCell>Ropa</TableCell>
                 <TableCell>Tipo</TableCell>
               </TableRow>
             </TableHead>
@@ -185,8 +217,6 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                     <TableCell>{beneficiary.gender}</TableCell>
                     <TableCell>{beneficiary.birthday}</TableCell>
                     <TableCell>{beneficiary.dni}</TableCell>
-                    <TableCell>{beneficiary.likes}</TableCell>
-                    <TableCell></TableCell>
                     <TableCell>{beneficiary.type}</TableCell>
                     <TableCell>
                       <IconButton aria-label='delete' size='small' onClick={() => deleteBeneficiary(beneficiary)}>
