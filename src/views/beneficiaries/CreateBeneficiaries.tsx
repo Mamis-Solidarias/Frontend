@@ -18,6 +18,7 @@ import { EducationForm } from './Forms/EducationForm';
 import { GeneralForm } from './Forms/GeneralForm';
 import { ClothesForm } from './Forms/ClothesForm';
 import { HealthForm } from './Forms/HealthForm';
+import { JobForm } from './Forms/JobForm';
 
 interface CreateBeneficiariesProps {
   familyId: string;
@@ -66,6 +67,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [hasMandatoryVaccines, setHasMandatoryVaccines] = useState<boolean>(false);
   const [hasCovidVaccine, setHasCovidVaccine] = useState<boolean>(false);
   const [observations, setObservations] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [addJob, setAddJob] = useState<boolean>(false);
 
   const resetFields = () => {
     setFirstName('');
@@ -206,6 +209,20 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             </Button>
           )}
 
+          {addJob && <JobForm title={title} setTitle={setTitle} setAddJob={setAddJob} />}
+          {!addJob && (
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+              variant='contained'
+              onClick={() => {
+                setTitle('');
+                setAddJob(true);
+              }}
+            >
+              Añadir información de Trabajo
+            </Button>
+          )}
+
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
@@ -235,7 +252,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
               <TableRow>
                 <TableCell>Nombre Completo</TableCell>
                 <TableCell>Género</TableCell>
-                <TableCell>Cumpleaños</TableCell>
+                <TableCell>Fecha de Nacimiento</TableCell>
                 <TableCell>DNI</TableCell>
                 <TableCell>Tipo</TableCell>
               </TableRow>

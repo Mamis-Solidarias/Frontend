@@ -94,7 +94,6 @@ const Dashboard = () => {
               </Box>
             )}
           </Box>
-          <BeneficiariesTable />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -106,6 +105,8 @@ const Dashboard = () => {
           >
             Añadir Nuevos Beneficiarios
           </Button>
+          <BeneficiariesTable />
+
           {!!familyId && (
             <CreateBeneficiaries
               openDialog={openCreateBeneficiary}

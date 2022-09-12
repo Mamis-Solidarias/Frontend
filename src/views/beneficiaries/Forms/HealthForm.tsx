@@ -30,7 +30,7 @@ export const HealthForm: FC<HealthFormProps> = props => {
 
   return (
     <>
-      <Typography>Datos de Educación</Typography>
+      <Typography>Datos de Salud</Typography>
       <InputLabel>¿Tiene Vacuna COVID?</InputLabel>
       <Stack direction='row' spacing={1} alignItems='center'>
         <Typography>Sí</Typography>
@@ -65,7 +65,7 @@ export const HealthForm: FC<HealthFormProps> = props => {
           setAddHealth(false);
         }}
       >
-        Borrar información de Salud
+        Borrar Información de Salud
       </Button>
     </>
   );

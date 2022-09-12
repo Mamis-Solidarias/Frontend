@@ -19,11 +19,11 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
 
   return (
     <>
-      <Typography>Datos de Educación</Typography>
+      <Typography>Datos de Ropa</Typography>
       <TextField
         style={{ padding: '1em' }}
         type='text'
-        label='Talle de Zapatillas'
+        label='Talle de Calzado'
         placeholder='42'
         value={shoeSize}
         onChange={e => setShoeSize(e.target.value)}
@@ -64,7 +64,7 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
           setAddClothes(false);
         }}
       >
-        Borrar información de Ropa
+        Borrar Información de Ropa
       </Button>
     </>
   );
