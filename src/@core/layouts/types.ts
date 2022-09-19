@@ -16,12 +16,14 @@ export type NavLink = {
   openInNewTab?: boolean;
   icon?: string | string[] | ReactNode;
   badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
+  service: string;
 };
 
 export type NavSectionTitle = {
   sectionTitle: string;
   action?: string;
   subject?: string;
+  service: string;
 };
 
 export type VerticalNavItemsType = (NavLink | NavSectionTitle)[];

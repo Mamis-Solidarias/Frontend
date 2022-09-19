@@ -10,30 +10,36 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types';
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      sectionTitle: 'Grupos'
+      sectionTitle: 'Grupos',
+      service: ''
     },
     {
       icon: AccountGroup,
       title: 'Beneficiarios',
-      path: '/beneficiarios'
+      path: '/beneficiarios',
+      service: 'Beneficiaries'
     },
     {
       icon: HomeAccount,
       title: 'Familias',
-      path: '/familias'
+      path: '/familias',
+      service: 'Beneficiaries'
     },
     {
       icon: HomeGroup,
       title: 'Comunidades',
-      path: '/comunidades'
+      path: '/comunidades',
+      service: 'Beneficiaries'
     },
     {
-      sectionTitle: 'Usuarios'
+      sectionTitle: 'Usuarios',
+      service: 'Users'
     },
     {
       title: 'Administrar Usuarios',
       icon: AccountCogOutline,
-      path: '/usuarios'
+      path: '/usuarios',
+      service: 'Users'
     }
   ];
 };
