@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
-import { updateCommunity } from 'src/API/Beneficiaries/communities_data';
+import { updateFamily } from 'src/API/Beneficiaries/families_data';
 
 interface UpdateFamilyProps {
   id: any;
@@ -17,17 +17,24 @@ interface UpdateFamilyProps {
 export const UpdateFamily: FC<UpdateFamilyProps> = props => {
   const { openDialog, handleClose, id } = props;
   const [address, setAddress] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+  const [details, setDetails] = useState<string>('');
+  const [name, setName] = useState<string>('');
 
   const resetFields = () => {
+    setName('');
     setAddress('');
-    setDescription('');
+    setDetails('');
   };
 
   const handleSubmit = async () => {
     const addressToSend = !!address ? address : null;
-    const descriptionToSend = !!description ? description : null;
-    await updateCommunity(localStorage.getItem('user'), id, { address: addressToSend, description: descriptionToSend });
+    const detailsToSend = !!details ? details : null;
+    const nameToSend = !!name ? name : null;
+    await updateFamily(localStorage.getItem('user'), id, {
+      address: addressToSend,
+      details: detailsToSend,
+      name: nameToSend
+    });
     resetFields();
     handleClose();
   };
@@ -48,6 +55,20 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
+            label='Nuevo Nombre de Familia'
+            placeholder='Paso de los Libres 428'
+            value={name}
+            onChange={e => {
+              setName(e.target.value);
+            }}
+            fullWidth={true}
+            variant='standard'
+          />
+          <TextField
+            style={{ padding: '1em' }}
+            id='address'
+            type='text'
+            inputProps={{ pattern: '^.+$' }}
             label='Nueva Dirección'
             placeholder='Paso de los Libres 428'
             value={address}
@@ -59,14 +80,14 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
           />
           <TextField
             sx={{ padding: '1em' }}
-            id='description'
+            id='details'
             type='text'
             inputProps={{ pattern: ' .+' }}
-            label='Descripción'
-            placeholder='Es un lindo pueblo'
-            value={description}
+            label='Nuevos Detalles'
+            placeholder='Viven cerca del río'
+            value={details}
             onChange={e => {
-              setDescription(e.target.value);
+              setDetails(e.target.value);
             }}
             fullWidth={true}
             variant='standard'
@@ -76,7 +97,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={handleSubmit}
-            disabled={!description && !address}
+            disabled={!details && !address && !name}
           >
             Editar
           </Button>

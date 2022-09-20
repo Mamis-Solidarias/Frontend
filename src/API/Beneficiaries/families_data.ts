@@ -3,7 +3,7 @@ import { authAxiosClient } from './initialization';
 export const updateFamily = async (
   loginData: any,
   id: string,
-  data: { name?: string; address?: string; details?: string; contacts?: any }
+  data: { name?: string | null; address?: string | null; details?: string | null; contacts?: any }
 ) => {
   return authAxiosClient(loginData).patch('families/' + id, data);
 };
