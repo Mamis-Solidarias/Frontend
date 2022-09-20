@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 // ** Types Imports
 import { useEffect, useState } from 'react';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
+import Button from '@mui/material/Button';
+import { UpdateCommunity } from './UpdateCommunity';
 
 interface RowType {
   id: number | null;
@@ -20,6 +22,8 @@ interface RowType {
 
 const CommunitiesTable = () => {
   const [rows, setRows] = useState<any>();
+  const [id, setId] = useState<number>(-1);
+  const [openUpdateCommunity, setOpenUpdateCommunity] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
@@ -49,12 +53,32 @@ const CommunitiesTable = () => {
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.address}</TableCell>
-                    <TableCell>{row.description}</TableCell>
+                    <TableCell>{!!row.description ? row.description : '-'}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant='contained'
+                        onClick={() => {
+                          setId(row.id as number);
+                          setOpenUpdateCommunity(true);
+                        }}
+                      >
+                        Editar Datos de Comunidad
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
+        {openUpdateCommunity && (
+          <UpdateCommunity
+            openDialog={openUpdateCommunity}
+            id={id}
+            handleClose={() => {
+              setOpenUpdateCommunity(false);
+            }}
+          />
+        )}
       </Card>
     </>
   );

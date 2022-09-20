@@ -15,6 +15,7 @@ import TableBody from '@mui/material/TableBody';
 import { createFamilies } from 'src/API/Beneficiaries/communities_data';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ContactForm } from './ContactForm';
 
 interface CreateFamiliesProps {
   communityCode: string;
@@ -22,12 +23,19 @@ interface CreateFamiliesProps {
   handleClose: () => void;
 }
 
+interface Contact {
+  content: string;
+  isPreferred: boolean;
+  title: string;
+  type: string;
+}
+
 interface Family {
   familyNumber: number | null;
   name: string;
   address: string;
   details: string | null;
-  contacts: { type: string; content: string; title: string; isPreferred: boolean }[];
+  contacts: Contact[];
 }
 
 export const CreateFamilies: FC<CreateFamiliesProps> = props => {
@@ -37,6 +45,12 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [families, setFamilies] = useState<Family[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [addContact, setAddContact] = useState<number>(0);
+  const [types, setTypes] = useState<string[]>([]);
+  const [contents, setContents] = useState<string[]>([]);
+  const [titles, setTitles] = useState<string[]>([]);
+  const [arrayIsPreferred, setArrayIsPreferred] = useState<boolean[]>([]);
 
   const resetFields = () => {
     setNumber('');
@@ -47,7 +61,13 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
 
   const resetAllFields = () => {
     resetFields();
-    families.length = 0;
+    setAddContact(0);
+    setContacts([]);
+    setTypes([]);
+    setContents([]);
+    setTitles([]);
+    setFamilies([]);
+    setArrayIsPreferred([]);
   };
 
   const deleteFamily = (family: Family) => {
@@ -122,10 +142,84 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             fullWidth={true}
             variant='standard'
           />
+
+          {!!addContact &&
+            contacts.map((contact, index) => (
+              <ContactForm
+                types={types}
+                setTypes={setTypes}
+                arrayIsPreferred={arrayIsPreferred}
+                setArrayIsPreferred={setArrayIsPreferred}
+                contents={contents}
+                setContents={setContents}
+                titles={titles}
+                setTitles={setTitles}
+                key={index}
+              />
+            ))}
+          {!!addContact && (
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+              variant='contained'
+              onClick={() => {
+                contacts.pop();
+                setAddContact(addContact - 1);
+              }}
+            >
+              Borrar Última Fila de Forma de Contactos
+            </Button>
+          )}
+          <Button
+            sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+            variant='contained'
+            onClick={() => {
+              setAddContact(addContact + 1);
+              const newContact: Contact = { isPreferred: false, title: '', content: '', type: '' };
+              const newTypes = types;
+              const newTitles = titles;
+              const newContents = contents;
+              const newArrayIsPreferred = arrayIsPreferred;
+
+              newTypes.push('');
+              newTitles.push('');
+              newContents.push('');
+              newArrayIsPreferred.push(false);
+
+              setTypes(newTypes);
+              setTitles(newTitles);
+              setContents(newContents);
+              setArrayIsPreferred(newArrayIsPreferred);
+
+              contacts.push(newContact);
+            }}
+          >
+            Añadir Forma de Contacto
+          </Button>
+
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => {
+              const familyContacts = [];
+              for (let index = 0; index < addContact; index++) {
+                console.log(
+                  'contents',
+                  contents,
+                  'arrayIsPreferred',
+                  arrayIsPreferred,
+                  'types',
+                  types,
+                  'titles',
+                  titles
+                );
+                familyContacts.push({
+                  content: contents[index],
+                  isPreferred: arrayIsPreferred[index],
+                  type: types[index],
+                  title: titles[index]
+                });
+              }
+              console.log(familyContacts);
               const finalDescription = !!description ? description : null;
               const finalFamilyNumber: number | null = !!number ? parseInt(number) : null;
               families.push({
@@ -133,7 +227,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                 name,
                 address,
                 details: finalDescription,
-                contacts: []
+                contacts: familyContacts
               });
               resetFields();
             }}

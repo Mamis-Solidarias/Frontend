@@ -15,8 +15,12 @@ export const getCommunity = async (loginData: any, id: string) => {
   return authAxiosClient(loginData).get('communities/' + id);
 };
 
-export const updateCommunity = async (loginData: any, id: string, data: { address?: string; description?: string }) => {
-  return authAxiosClient(loginData).patch('users/' + id, data);
+export const updateCommunity = async (
+  loginData: any,
+  id: string,
+  data: { address?: string | null; description?: string | null }
+) => {
+  return authAxiosClient(loginData).patch('communities/' + id, data);
 };
 
 export const getFamiliesByCommunity = async (loginData: any, id: string, page: number, pageSize: number) => {

@@ -13,13 +13,20 @@ import TableContainer from '@mui/material/TableContainer';
 import { useEffect, useState } from 'react';
 import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import TablePagination from '@mui/material/TablePagination';
+import IconButton from '@mui/material/IconButton';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Collapse from '@mui/material/Collapse';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { UpdateFamily } from './UpdateFamily';
 
 interface FamiliesTableProps {
   communityCode?: string;
 }
 
 interface RowType {
-  id: number | null;
+  id: string | null;
   name: string;
   address: string;
   details: string | null;
@@ -35,6 +42,9 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [actualPage, setActualPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(INITIAL_SIZE);
+  const [open, setOpen] = useState<boolean[]>([]);
+  const [id, setId] = useState<string>('');
+  const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
@@ -93,22 +103,84 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
+                <TableCell></TableCell>
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Dirección</TableCell>
                 <TableCell>Detalles</TableCell>
-                <TableCell>Formas de Contacto</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {!!rows &&
-                rows.map((row: RowType) => (
-                  <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.address}</TableCell>
-                    <TableCell>{row.details}</TableCell>
-                  </TableRow>
+                rows.length > 0 &&
+                rows.map((row: RowType, index: number) => (
+                  <>
+                    <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                      <TableCell>
+                        <IconButton
+                          aria-label='expand row'
+                          size='small'
+                          onClick={() => {
+                            if (open.length === 0) {
+                              setOpen(
+                                Array.from({ length: rows.length }, (l, openIndex) => {
+                                  if (openIndex === index) return true;
+
+                                  return false;
+                                })
+                              );
+                            } else {
+                              setOpen(
+                                Array.from({ length: rows.length }, (l, openIndex) => {
+                                  if (openIndex === index) {
+                                    return !open[index];
+                                  }
+
+                                  return open[openIndex];
+                                })
+                              );
+                            }
+                          }}
+                        >
+                          {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
+                      </TableCell>
+                      <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.address}</TableCell>
+                      <TableCell>{row.details}</TableCell>
+                    </TableRow>
+                    <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                      <TableCell colSpan={12}>
+                        <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                            <TableCell>
+                              <Button
+                                variant='contained'
+                                onClick={() => {
+                                  setId(row.id as string);
+                                  setOpenUpdateFamily(true);
+                                }}
+                              >
+                                Editar Datos de Familia
+                              </Button>
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                variant='contained'
+                                onClick={() => {
+                                  setId(row.id as string);
+                                  setOpenUpdateFamily(true);
+                                }}
+                              >
+                                Editar Contacto de Familia
+                              </Button>
+                            </TableCell>
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </>
                 ))}
             </TableBody>
           </Table>
@@ -122,6 +194,15 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        {openUpdateFamily && (
+          <UpdateFamily
+            openDialog={openUpdateFamily}
+            id={id}
+            handleClose={() => {
+              setOpenUpdateFamily(false);
+            }}
+          />
+        )}
       </Card>
     </>
   );
