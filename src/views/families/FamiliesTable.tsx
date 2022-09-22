@@ -20,6 +20,7 @@ import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { UpdateFamily } from './UpdateFamily';
+import { UpdateFamilyContacts } from './UpdateFamilyContacts';
 
 interface FamiliesTableProps {
   communityCode?: string;
@@ -31,6 +32,13 @@ interface RowType {
   address: string;
   details: string | null;
   contacts: { type: string; content: string; title: string; isPreferred: boolean }[];
+}
+
+interface Contact {
+  content: string;
+  isPreferred: boolean;
+  title: string;
+  type: string;
 }
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {
@@ -45,6 +53,8 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   const [open, setOpen] = useState<boolean[]>([]);
   const [id, setId] = useState<string>('');
   const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
+  const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
+  const [contacts, setContacts] = useState<Contact[]>([]);
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
@@ -170,7 +180,8 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                                 variant='contained'
                                 onClick={() => {
                                   setId(row.id as string);
-                                  setOpenUpdateFamily(true);
+                                  setContacts(row.contacts);
+                                  setOpenUpdateContacts(true);
                                 }}
                               >
                                 Editar Contacto de Familia
@@ -200,6 +211,16 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
             id={id}
             handleClose={() => {
               setOpenUpdateFamily(false);
+            }}
+          />
+        )}
+        {openUpdateContacts && (
+          <UpdateFamilyContacts
+            openDialog={openUpdateContacts}
+            id={id}
+            contacts={contacts}
+            handleClose={() => {
+              setOpenUpdateContacts(false);
             }}
           />
         )}

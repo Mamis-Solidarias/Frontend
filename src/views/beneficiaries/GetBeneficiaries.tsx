@@ -22,6 +22,9 @@ const GET_BENEFICIARIES = gql`
         birthday
         comments
         familyId
+        family {
+          communityId
+        }
         firstName
         gender
         id

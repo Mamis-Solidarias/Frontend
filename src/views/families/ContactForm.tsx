@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 
-import { FC, useEffect } from 'react';
+import { FC, useState } from 'react';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -9,70 +9,68 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 
+interface Contact {
+  content: string;
+  isPreferred: boolean;
+  title: string;
+  type: string;
+}
 interface ContactFormProps {
-  types: string[];
-  setTypes: (value: string[]) => void;
-  contents: string[];
-  setContents: (value: string[]) => void;
-  arrayIsPreferred: boolean[];
-  setArrayIsPreferred: (value: boolean[]) => void;
-  titles: string[];
-  setTitles: (value: string[]) => void;
-  key: number;
+  contact: Contact;
+  setContact: (contact: Contact) => void;
 }
 
 export const ContactForm: FC<ContactFormProps> = props => {
-  const { types, setTypes, contents, setContents, arrayIsPreferred, setArrayIsPreferred, titles, setTitles, key } =
-    props;
-
-  useEffect(() => {
-    console.log(arrayIsPreferred);
-  }, [arrayIsPreferred]);
+  const { contact, setContact } = props;
+  const [changes, setChanges] = useState<number>(0);
 
   return (
     <>
-      <Typography>Forma de Contacto N° {key}</Typography>
       <TextField
         style={{ padding: '1em' }}
         type='text'
-        label='Contenido'
-        placeholder='@miguel.sanchez77'
-        value={contents[key]}
-        onChange={e => {
-          const newContents = contents;
-          newContents[key] = e.target.value;
-          setContents(newContents);
-        }}
-        fullWidth={true}
-        variant='standard'
-      />
-      <TextField
-        style={{ padding: '1em' }}
-        type='text'
-        label='Título de Contacto'
+        label='Título de Nuevo Contacto'
         placeholder='Instagram'
-        value={titles[key]}
+        value={contact.title}
         onChange={e => {
-          const newTitles = titles;
-          newTitles[key] = e.target.value;
-          setTitles(newTitles);
+          const newContact = contact;
+          newContact.title = e.target.value;
+          setContact(newContact);
+          setChanges(changes + 1);
         }}
         fullWidth={true}
         variant='standard'
       />
+      <TextField
+        style={{ padding: '1em' }}
+        type='text'
+        label='Contenido de Nuevo Contacto'
+        placeholder='@miguel.sanchez77'
+        value={contact.content}
+        onChange={e => {
+          const newContact = contact;
+          newContact.content = e.target.value;
+          setContact(newContact);
+          setChanges(changes + 1);
+        }}
+        fullWidth={true}
+        variant='standard'
+      />
+
       <FormControl fullWidth sx={{ padding: '1em' }}>
-        <InputLabel id={'types' + key}>Forma de Contacto</InputLabel>
+        <InputLabel id={'types'}>Nueva Forma de Contacto</InputLabel>
         <Select
-          labelId={'types' + key}
+          labelId={'types'}
           fullWidth={true}
           variant='standard'
           defaultValue={'Email'}
-          value={types[key]}
-          label='Tipo de Contacto'
+          value={contact.type}
+          label='Nueva Forma de Contacto'
           onChange={e => {
-            const newTypes = types;
-            newTypes[key] = e.target.value;
-            setTypes(newTypes);
+            const newContact = contact;
+            newContact.type = e.target.value;
+            setContact(newContact);
+            setChanges(changes + 1);
           }}
         >
           <MenuItem value='' hidden={true}></MenuItem>
@@ -88,11 +86,12 @@ export const ContactForm: FC<ContactFormProps> = props => {
         <Typography>No es preferida</Typography>
         <Switch
           onChange={e => {
-            const newArrayIsPreferred = arrayIsPreferred;
-            newArrayIsPreferred[key] = e.target.checked;
-            setArrayIsPreferred(newArrayIsPreferred);
+            const newContact = contact;
+            newContact.isPreferred = e.target.checked;
+            setContact(newContact);
+            setChanges(changes + 1);
           }}
-          checked={arrayIsPreferred[key]}
+          checked={contact.isPreferred}
         />
         <Typography>Es preferida</Typography>
       </Stack>
