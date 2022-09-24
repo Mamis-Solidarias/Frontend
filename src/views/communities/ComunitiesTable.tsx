@@ -12,13 +12,7 @@ import { useEffect, useState } from 'react';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import Button from '@mui/material/Button';
 import { UpdateCommunity } from './UpdateCommunity';
-
-interface RowType {
-  id: number | null;
-  name: string;
-  address: string;
-  description: string | null;
-}
+import Community from 'src/types/Community';
 
 const CommunitiesTable = () => {
   const [rows, setRows] = useState<any>();
@@ -48,7 +42,7 @@ const CommunitiesTable = () => {
             </TableHead>
             <TableBody>
               {!!rows &&
-                rows.map((row: RowType) => (
+                rows.map((row: Community) => (
                   <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                     <TableCell>{row.name}</TableCell>
@@ -58,7 +52,7 @@ const CommunitiesTable = () => {
                       <Button
                         variant='contained'
                         onClick={() => {
-                          setId(row.id as number);
+                          setId(parseInt(row.id as string));
                           setOpenUpdateCommunity(true);
                         }}
                       >

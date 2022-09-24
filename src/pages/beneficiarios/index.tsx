@@ -13,21 +13,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTable';
 import { CreateBeneficiaries } from 'src/views/beneficiaries/CreateBeneficiaries';
-
-interface Community {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-}
-
-interface Family {
-  id: number;
-  name: string;
-  address: string;
-  details: string | null;
-  contacts: { type: string; content: string; title: string; isPreferred: boolean }[];
-}
+import Community from 'src/types/Community';
+import Family from 'src/types/Family';
 
 const Dashboard = () => {
   const [openCreateBeneficiary, setOpenCreateBeneficiary] = useState<boolean>(false);

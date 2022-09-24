@@ -170,7 +170,7 @@ const LoginPage = () => {
               {themeConfig.templateName}
             </Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => handleSubmit(e)}>
+          <form noValidate onSubmit={e => handleSubmit(e)}>
             <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>

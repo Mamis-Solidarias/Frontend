@@ -19,29 +19,13 @@ import { GeneralForm } from './Forms/GeneralForm';
 import { ClothesForm } from './Forms/ClothesForm';
 import { HealthForm } from './Forms/HealthForm';
 import { JobForm } from './Forms/JobForm';
+import Beneficiary from 'src/types/Beneficiary';
+import Education from 'src/types/Education';
 
 interface CreateBeneficiariesProps {
   familyId: string;
   openDialog: boolean;
   handleClose: () => void;
-}
-
-interface Education {
-  school: string;
-  transportationMethod: string;
-  year: string;
-}
-
-interface Beneficiary {
-  firstName: string;
-  lastName: string;
-  type: string;
-  gender: string;
-  birthday: string;
-  dni: string;
-  comments?: string;
-  likes?: string;
-  education?: Education;
 }
 
 export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {

@@ -18,15 +18,7 @@ import { EditPermissions } from './EditPermissions';
 import TablePagination from '@mui/material/TablePagination';
 import { EditPassword } from './EditPassword';
 import { UpdateUser } from './UpdateUser';
-
-interface RowType {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  salary: string;
-  isActive: boolean;
-}
+import User from 'src/types/User';
 
 const DashboardTable = () => {
   const INITIAL_SIZE = 5,
@@ -97,7 +89,7 @@ const DashboardTable = () => {
             </TableHead>
             <TableBody>
               {!!rows &&
-                rows.map((row: RowType) => (
+                rows.map((row: User) => (
                   <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                     <TableCell>{row.name}</TableCell>

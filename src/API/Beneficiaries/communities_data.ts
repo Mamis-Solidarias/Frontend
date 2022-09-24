@@ -1,17 +1,16 @@
 import { authAxiosClient } from './initialization';
+import Community from 'src/types/Community';
+import Family from 'src/types/Family';
 
-export const createCommunities = async (
-  loginData: any,
-  data: { name: string; address: string; description: string | null; communityCode: string | null }[]
-) => {
+export const createCommunities = async (loginData: any, data: Community[]) => {
   return authAxiosClient(loginData).post('communities', { communities: data });
 };
 
-export const getCommunities = async (loginData: any) => {
+export const getCommunities = async (loginData: any): Promise<{ data: { communities: Community[] } }> => {
   return authAxiosClient(loginData).get('communities');
 };
 
-export const getCommunity = async (loginData: any, id: string) => {
+export const getCommunity = async (loginData: any, id: string): Promise<{ data: Community }> => {
   return authAxiosClient(loginData).get('communities/' + id);
 };
 
@@ -23,7 +22,12 @@ export const updateCommunity = async (
   return authAxiosClient(loginData).patch('communities/' + id, data);
 };
 
-export const getFamiliesByCommunity = async (loginData: any, id: string, page: number, pageSize: number) => {
+export const getFamiliesByCommunity = async (
+  loginData: any,
+  id: string,
+  page: number,
+  pageSize: number
+): Promise<{ data: Family[] }> => {
   const query = '?page=' + page + '&pageSize=' + pageSize;
 
   return authAxiosClient(loginData).get('communities/' + id + '/families' + query);
@@ -31,7 +35,7 @@ export const getFamiliesByCommunity = async (loginData: any, id: string, page: n
 
 export const createFamilies = async (
   loginData: any,
-  id: string,
+  communityId: string,
   families: {
     familyNumber: number | null;
     name: string;
@@ -45,5 +49,5 @@ export const createFamilies = async (
     }[];
   }[]
 ) => {
-  return authAxiosClient(loginData).post('communities/' + id + '/families', { families: families });
+  return authAxiosClient(loginData).post('communities/' + communityId + '/families', { families });
 };

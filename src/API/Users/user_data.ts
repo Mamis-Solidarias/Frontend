@@ -1,12 +1,14 @@
+import Role from 'src/types/Role';
+import User, { UsersHttp } from 'src/types/User';
 import { authAxiosClient } from './initialization';
 
-export const getUsers = async (loginData: any, page: number, pageSize: number) => {
+export const getUsers = async (loginData: any, page: number, pageSize: number): Promise<{ data: UsersHttp }> => {
   const query = '?page=' + page + '&pageSize=' + pageSize;
 
   return authAxiosClient(loginData).get('users' + query);
 };
 
-export const getUser = async (loginData: any, id: string) => {
+export const getUser = async (loginData: any, id: string): Promise<{ data: User }> => {
   return authAxiosClient(loginData).get('users/' + id);
 };
 
@@ -14,10 +16,7 @@ export const reactivateUser = async (loginData: any, id: number) => {
   return authAxiosClient(loginData).post('users/' + id);
 };
 
-export const createUser = async (
-  loginData: any,
-  data: { email: string; name: string; phone: string; password: string }
-) => {
+export const createUser = async (loginData: any, data: User) => {
   return authAxiosClient(loginData).post('users', data);
 };
 
@@ -41,11 +40,7 @@ export const updateUserPassword = async (
   return authAxiosClient(loginData).put('users/' + id + '/password', passwordData);
 };
 
-export const updateUserRole = async (
-  loginData: any,
-  id: number,
-  roles: { service: string; canWrite: boolean; canRead: boolean }[]
-) => {
+export const updateUserRole = async (loginData: any, id: number, roles: Role[]) => {
   return authAxiosClient(loginData).put('users/' + id + '/roles', { roles: roles });
 };
 

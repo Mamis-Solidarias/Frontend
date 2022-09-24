@@ -15,13 +15,7 @@ import Box from '@mui/material/Box';
 import { CreateFamilies } from 'src/views/families/CreateFamilies';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-
-interface Community {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-}
+import Community from 'src/types/Community';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);

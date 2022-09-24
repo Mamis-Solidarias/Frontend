@@ -13,6 +13,9 @@ import { Clothes } from './BeneficiaryCard/Clothes';
 import { Likes } from './BeneficiaryCard/Likes';
 import { Comments } from './BeneficiaryCard/Comments';
 import { Job } from './BeneficiaryCard/Job';
+import Beneficiary from 'src/types/Beneficiary';
+import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
+import GENDERS from 'src/types/Genders';
 
 const GET_BENEFICIARIES = gql`
   query getBeneficiaries {
@@ -50,38 +53,10 @@ const GET_BENEFICIARIES = gql`
   }
 `;
 
-interface RowType {
-  id: string;
-  familyId: string;
-  firstName: string;
-  lastName: string;
-  type: string;
-  gender: string;
-  birthday: string;
-  dni: string;
-  comments?: string;
-  likes?: string;
-  clothes?: {
-    shoeSize: string;
-    pantsSize: string;
-    shirtSize: string;
-  };
-  education?: {
-    school: string;
-    year: string;
-    transportationMethod: string;
-  };
-  health?: {
-    hasCovidVaccine: boolean;
-    hasMandatoryVaccines: boolean;
-    observations: string;
-  };
-  job: { title: string };
-}
-
 export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[]) => void }> = props => {
   const { open, setOpen } = props;
   const { loading, error, data } = useQuery(GET_BENEFICIARIES);
+
   if (loading)
     return (
       <TableRow>
@@ -95,12 +70,9 @@ export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[])
       </TableRow>
     );
 
-  const GENDERS = { MALE: 'Masculino', FEMALE: 'Femenino', OTHER: 'Otro' };
-  const TYPES = { ADULT: 'Adulto', CHILD: 'Niño' };
-
   const nodes = data.beneficiaries.nodes;
 
-  return nodes.map((row: RowType, index: number) => (
+  return nodes.map((row: Beneficiary, index: number) => (
     <React.Fragment key={row.id}>
       <TableRow hover sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
         <TableCell>
@@ -137,7 +109,7 @@ export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[])
         <TableCell>{row.firstName + ' ' + row.lastName}</TableCell>
         <TableCell>{GENDERS[row.gender as keyof typeof GENDERS]}</TableCell>
         <TableCell>{row.birthday}</TableCell>
-        <TableCell>{TYPES[row.type as keyof typeof TYPES]}</TableCell>
+        <TableCell>{BENEFICIARY_TYPES[row.type as keyof typeof BENEFICIARY_TYPES]}</TableCell>
       </TableRow>
       <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
         <TableCell colSpan={12}>

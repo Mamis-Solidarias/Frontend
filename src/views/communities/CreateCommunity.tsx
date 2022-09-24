@@ -13,17 +13,11 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import { createCommunities } from 'src/API/Beneficiaries/communities_data';
+import Community from 'src/types/Community';
 
 interface CreateCommunityProps {
   openDialog: boolean;
   handleClose: () => void;
-}
-
-interface Community {
-  name: string;
-  address: string;
-  description: string | null;
-  communityCode: string | null;
 }
 
 export const CreateCommunity: FC<CreateCommunityProps> = props => {
@@ -117,8 +111,8 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => {
-              const finalDescription = !!description ? description : null;
-              const finalCommunityCode = !!communityCode ? communityCode : null;
+              const finalDescription = !!description ? description : undefined;
+              const finalCommunityCode = !!communityCode ? communityCode : undefined;
               communities.push({ name, address, description: finalDescription, communityCode: finalCommunityCode });
               resetFields();
             }}
@@ -144,7 +138,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{community.name}</TableCell>
                     <TableCell>{community.address}</TableCell>
                     <TableCell>{community.description}</TableCell>
-                    <TableCell>{community.communityCode}</TableCell>
+                    <TableCell>{community.id}</TableCell>
                   </TableRow>
                 ))}
             </TableBody>
