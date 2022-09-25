@@ -35,29 +35,28 @@ const UserLayout = ({ children }: Props) => {
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  if (typeof window !== 'undefined' && localStorage.getItem('user') !== undefined) {
-    return (
-      <VerticalLayout
-        hidden={hidden}
-        settings={settings}
-        saveSettings={saveSettings}
-        verticalNavItems={VerticalNavItems()} // Navigation Items
-        // afterVerticalNavMenuContent={}
-        verticalAppBarContent={(
-          props // AppBar Content
-        ) => (
-          <VerticalAppBarContent
-            hidden={hidden}
-            settings={settings}
-            saveSettings={saveSettings}
-            toggleNavVisibility={props.toggleNavVisibility}
-          />
-        )}
-      >
-        {children}
-      </VerticalLayout>
-    );
-  } else return <>{children}</>;
+
+  return (
+    <VerticalLayout
+      hidden={hidden}
+      settings={settings}
+      saveSettings={saveSettings}
+      verticalNavItems={VerticalNavItems()} // Navigation Items
+      // afterVerticalNavMenuContent={}
+      verticalAppBarContent={(
+        props // AppBar Content
+      ) => (
+        <VerticalAppBarContent
+          hidden={hidden}
+          settings={settings}
+          saveSettings={saveSettings}
+          toggleNavVisibility={props.toggleNavVisibility}
+        />
+      )}
+    >
+      {children}
+    </VerticalLayout>
+  );
 };
 
 export default UserLayout;

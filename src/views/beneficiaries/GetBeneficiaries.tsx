@@ -7,12 +7,12 @@ import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import React, { FC } from 'react';
-import { Education } from './BeneficiaryCard/Education';
-import { Health } from './BeneficiaryCard/Health';
-import { Clothes } from './BeneficiaryCard/Clothes';
-import { Likes } from './BeneficiaryCard/Likes';
-import { Comments } from './BeneficiaryCard/Comments';
-import { Job } from './BeneficiaryCard/Job';
+import { EducationCard } from './BeneficiaryCard/Education';
+import { HealthCard } from './BeneficiaryCard/Health';
+import { ClothesCard } from './BeneficiaryCard/Clothes';
+import { LikesCard } from './BeneficiaryCard/Likes';
+import { CommentsCard } from './BeneficiaryCard/Comments';
+import { JobCard } from './BeneficiaryCard/Job';
 import Beneficiary from 'src/types/Beneficiary';
 import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
 import GENDERS from 'src/types/Genders';
@@ -52,8 +52,12 @@ const GET_BENEFICIARIES = gql`
     }
   }
 `;
+interface GetBeneficiariesProps {
+  open: boolean[];
+  setOpen: (value: boolean[]) => void;
+}
 
-export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[]) => void }> = props => {
+export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
   const { open, setOpen } = props;
   const { loading, error, data } = useQuery(GET_BENEFICIARIES);
 
@@ -115,12 +119,12 @@ export const GetBeneficiaries: FC<{ open: boolean[]; setOpen: (value: boolean[])
         <TableCell colSpan={12}>
           <Collapse in={open[index]} timeout='auto' unmountOnExit>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
-              {!!row.education && <Education education={row.education} sx={{ mx: '1em' }} />}
-              {!!row.health && <Health health={row.health} sx={{ mx: '1em' }} />}
-              {!!row.clothes && <Clothes clothes={row.clothes} sx={{ mx: '1em' }} />}
-              {!!row.comments && <Comments comments={row.comments} sx={{ mx: '1em' }} />}
-              {!!row.likes && <Likes likes={row.likes} sx={{ mx: '1em' }} />}
-              {!!row.job && <Job job={row.job} sx={{ mx: '1em' }} />}
+              {!!row.education && <EducationCard education={row.education} sx={{ mx: '1em' }} />}
+              {!!row.health && <HealthCard health={row.health} sx={{ mx: '1em' }} />}
+              {!!row.clothes && <ClothesCard clothes={row.clothes} sx={{ mx: '1em' }} />}
+              {!!row.comments && <CommentsCard comments={row.comments} sx={{ mx: '1em' }} />}
+              {!!row.likes && <LikesCard likes={row.likes} sx={{ mx: '1em' }} />}
+              {!!row.job && <JobCard job={row.job} sx={{ mx: '1em' }} />}
             </Box>
           </Collapse>
         </TableCell>

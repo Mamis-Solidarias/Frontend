@@ -25,7 +25,7 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <CommunitiesTable />
+          <CommunitiesTable openCreateCommunities={openCreateCommunities} />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -34,7 +34,7 @@ const Dashboard = () => {
               setOpenCreateCommunities(true);
             }}
           >
-            Añadir Nuevas Comunidades
+            Añadir Comunidades
           </Button>
           <CreateCommunity openDialog={openCreateCommunities} handleClose={() => setOpenCreateCommunities(false)} />
         </Grid>

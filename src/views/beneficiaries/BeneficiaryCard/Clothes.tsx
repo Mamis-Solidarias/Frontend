@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
-export const Clothes: FC<{ clothes: any; sx?: any }> = props => {
+export const ClothesCard: FC<{ clothes: any; sx?: any }> = props => {
   const { clothes, sx } = props;
 
   return (

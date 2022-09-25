@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
-export const Health: FC<{ health: any; sx?: any }> = props => {
+export const HealthCard: FC<{ health: any; sx?: any }> = props => {
   const { health, sx } = props;
 
   return (

@@ -19,7 +19,7 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 
 const Dashboard = () => {
-  const [openCreateBeneficiary, setOpenCreateBeneficiary] = useState<boolean>(false);
+  const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [communityCode, setCommunityCode] = useState<string | undefined>();
   const [communities, setCommunities] = useState<Community[]>([]);
@@ -37,14 +37,14 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (openWindow && openCreateBeneficiary === false) {
+    if (openWindow && !openCreateBeneficiaries) {
       setOpenWindow(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openCreateBeneficiary]);
+  }, [openCreateBeneficiaries]);
 
   useEffect(() => {
-    if (!!communityCode) {
+    if (!!communityCode && communityCode !== '#') {
       getFamiliesByCommunity(localStorage.getItem('user'), communityCode, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
@@ -64,12 +64,8 @@ const Dashboard = () => {
                 <InputLabel id='communityLabel'>
                   <strong>Comunidades</strong>
                 </InputLabel>
-                <Select
-                  defaultValue={!!communities[0] && !!communities[0].id ? communities[0].id : '#'}
-                  onChange={e => setCommunityCode(e.target.value)}
-                  labelId='communityLabel'
-                >
-                  <MenuItem value='#' hidden={true}></MenuItem>
+                <Select defaultValue={'#'} onChange={e => setCommunityCode(e.target.value)} labelId='communityLabel'>
+                  <MenuItem value='#'>Todas</MenuItem>
                   {communities.map(community => (
                     <MenuItem value={community.id} key={community.id}>
                       {community.id + ' - ' + community.name}
@@ -101,18 +97,18 @@ const Dashboard = () => {
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
             onClick={() => {
               setOpenWindow(true);
-              setOpenCreateBeneficiary(true);
+              setOpenCreateBeneficiaries(true);
             }}
             disabled={!familyId}
           >
-            Añadir Nuevos Beneficiarios
+            Añadir Beneficiarios
           </Button>
           <BeneficiariesTable />
 
           {!!familyId && (
             <CreateBeneficiaries
-              openDialog={openCreateBeneficiary}
-              handleClose={() => setOpenCreateBeneficiary(false)}
+              openDialog={openCreateBeneficiaries}
+              handleClose={() => setOpenCreateBeneficiaries(false)}
               familyId={familyId}
             />
           )}

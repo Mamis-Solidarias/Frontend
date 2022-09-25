@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
-export const Likes: FC<{ likes: string; sx?: any }> = props => {
+export const LikesCard: FC<{ likes: string; sx?: any }> = props => {
   const { likes, sx } = props;
 
   return (

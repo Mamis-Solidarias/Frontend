@@ -21,37 +21,25 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { UpdateFamily } from './UpdateFamily';
 import { UpdateFamilyContacts } from './UpdateFamilyContacts';
+import Contact from 'src/types/Contact';
+import Family from 'src/types/Family';
 
 interface FamiliesTableProps {
   communityCode?: string;
-}
-
-interface RowType {
-  id: string | null;
-  name: string;
-  address: string;
-  details: string | null;
-  contacts: { type: string; content: string; title: string; isPreferred: boolean }[];
-}
-
-interface Contact {
-  content: string;
-  isPreferred: boolean;
-  title: string;
-  type: string;
+  openCreateFamilies: boolean;
 }
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {
   const INITIAL_SIZE = 5,
     MEDIUM_SIZE = 10,
     LARGE_SIZE = 15;
-  const { communityCode } = props;
+  const { communityCode, openCreateFamilies } = props;
   const [rows, setRows] = useState<any>();
   const [totalPages, setTotalPages] = useState<number>(0);
   const [actualPage, setActualPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(INITIAL_SIZE);
   const [open, setOpen] = useState<boolean[]>([]);
-  const [id, setId] = useState<string>('');
+  const [id, setId] = useState<number>(-1);
   const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
   const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -94,7 +82,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
     }
   };
 
-  useEffect(() => {
+  const getFamilies = () => {
     if (!!localStorage.getItem('user') && !!communityCode) {
       getFamiliesByCommunity(localStorage.getItem('user'), communityCode, 0, rowsPerPage).then(result => {
         localStorage.setItem('pageFamilies', '0');
@@ -103,8 +91,21 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
         setRows(result.data.families);
       });
     }
+  };
+
+  useEffect(() => {
+    if (!!localStorage.getItem('user') && !!communityCode) {
+      getFamilies();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [communityCode]);
+
+  useEffect(() => {
+    if (!!localStorage.getItem('user') && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
+      getFamilies();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openUpdateContacts, openUpdateFamily, openCreateFamilies]);
 
   return (
     <>
@@ -123,7 +124,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
             <TableBody>
               {!!rows &&
                 rows.length > 0 &&
-                rows.map((row: RowType, index: number) => (
+                rows.map((row: Family, index: number) => (
                   <>
                     <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                       <TableCell>
@@ -168,23 +169,23 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                               <Button
                                 variant='contained'
                                 onClick={() => {
-                                  setId(row.id as string);
+                                  setId(row.id as number);
                                   setOpenUpdateFamily(true);
                                 }}
                               >
-                                Editar Datos de Familia
+                                Editar Datos
                               </Button>
                             </TableCell>
                             <TableCell>
                               <Button
                                 variant='contained'
                                 onClick={() => {
-                                  setId(row.id as string);
+                                  setId(row.id as number);
                                   setContacts(row.contacts);
                                   setOpenUpdateContacts(true);
                                 }}
                               >
-                                Editar Contacto de Familia
+                                Editar Contactos
                               </Button>
                             </TableCell>
                           </Box>

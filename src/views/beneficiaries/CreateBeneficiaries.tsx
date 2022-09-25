@@ -21,6 +21,16 @@ import { HealthForm } from './Forms/HealthForm';
 import { JobForm } from './Forms/JobForm';
 import Beneficiary from 'src/types/Beneficiary';
 import Education from 'src/types/Education';
+import Grid from '@mui/material/Grid';
+import Collapse from '@mui/material/Collapse';
+import { EducationCard } from './BeneficiaryCard/Education';
+import { HealthCard } from './BeneficiaryCard/Health';
+import { ClothesCard } from './BeneficiaryCard/Clothes';
+import { CommentsCard } from './BeneficiaryCard/Comments';
+import { LikesCard } from './BeneficiaryCard/Likes';
+import { JobCard } from './BeneficiaryCard/Job';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 interface CreateBeneficiariesProps {
   familyId: string;
@@ -53,6 +63,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [observations, setObservations] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [addJob, setAddJob] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean[]>([]);
 
   const resetFields = () => {
     setFirstName('');
@@ -72,6 +83,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
     setObservations('');
     setAddHealth(false);
     setAddClothes(false);
+    setOpen([]);
   };
 
   const resetAllFields = () => {
@@ -93,120 +105,125 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nuevo Beneficiario</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Beneficiarios</DialogTitle>
       <DialogContent>
         <Box>
-          <GeneralForm
-            dni={dni}
-            setDni={setDni}
-            gender={gender}
-            setGender={setGender}
-            birthday={birthday}
-            setBirthday={setBirthday}
-            likes={likes}
-            setLikes={setLikes}
-            comments={comments}
-            setComments={setComments}
-            firstName={firstName}
-            setFirstName={setFirstName}
-            lastName={lastName}
-            setLastName={setLastName}
-            type={type}
-            setType={setType}
-          />
-
-          {addEducation && (
-            <EducationForm
-              year={year}
-              school={school}
-              setYear={setYear}
-              setSchool={setSchool}
-              transportationMethod={transportationMethod}
-              setTransportationMethod={setTransportationMethod}
-              setAddEducation={setAddEducation}
+          <Grid item xs={12}>
+            <GeneralForm
+              dni={dni}
+              setDni={setDni}
+              gender={gender}
+              setGender={setGender}
+              birthday={birthday}
+              setBirthday={setBirthday}
+              likes={likes}
+              setLikes={setLikes}
+              comments={comments}
+              setComments={setComments}
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
+              type={type}
+              setType={setType}
             />
-          )}
-          {!addEducation && (
-            <Button
-              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-              variant='contained'
-              onClick={() => {
-                setTransportationMethod('');
-                setSchool('');
-                setYear('');
-                setAddEducation(true);
-              }}
-            >
-              Añadir información de Educación
-            </Button>
-          )}
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+              <Grid xs={5}>
+                {addEducation && (
+                  <EducationForm
+                    year={year}
+                    school={school}
+                    setYear={setYear}
+                    setSchool={setSchool}
+                    transportationMethod={transportationMethod}
+                    setTransportationMethod={setTransportationMethod}
+                    setAddEducation={setAddEducation}
+                  />
+                )}
+                {!addEducation && (
+                  <Button
+                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+                    variant='contained'
+                    onClick={() => {
+                      setTransportationMethod('');
+                      setSchool('');
+                      setYear('');
+                      setAddEducation(true);
+                    }}
+                  >
+                    Añadir Educación
+                  </Button>
+                )}
 
-          {addClothes && (
-            <ClothesForm
-              pantsSize={pantsSize}
-              setPantsSize={setPantsSize}
-              shirtSize={shirtSize}
-              setShirtSize={setShirtSize}
-              shoeSize={shoeSize}
-              setShoeSize={setShoeSize}
-              setAddClothes={setAddClothes}
-            />
-          )}
-          {!addClothes && (
-            <Button
-              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-              variant='contained'
-              onClick={() => {
-                setShoeSize('');
-                setPantsSize('');
-                setShirtSize('');
-                setAddClothes(true);
-              }}
-            >
-              Añadir información de Ropa
-            </Button>
-          )}
+                {addClothes && (
+                  <ClothesForm
+                    pantsSize={pantsSize}
+                    setPantsSize={setPantsSize}
+                    shirtSize={shirtSize}
+                    setShirtSize={setShirtSize}
+                    shoeSize={shoeSize}
+                    setShoeSize={setShoeSize}
+                    setAddClothes={setAddClothes}
+                  />
+                )}
+                {!addClothes && (
+                  <Button
+                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+                    variant='contained'
+                    onClick={() => {
+                      setShoeSize('');
+                      setPantsSize('');
+                      setShirtSize('');
+                      setAddClothes(true);
+                    }}
+                  >
+                    Añadir Ropa
+                  </Button>
+                )}
+              </Grid>
+              <Grid xs={5}>
+                {addHealth && (
+                  <HealthForm
+                    hasMandatoryVaccines={hasMandatoryVaccines}
+                    setHasMandatoryVaccines={setHasMandatoryVaccines}
+                    hasCovidVaccine={hasCovidVaccine}
+                    setHasCovidVaccine={setHasCovidVaccine}
+                    observations={observations}
+                    setObservations={setObservations}
+                    setAddHealth={setAddHealth}
+                  />
+                )}
+                {!addHealth && (
+                  <Button
+                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+                    variant='contained'
+                    onClick={() => {
+                      setShoeSize('');
+                      setPantsSize('');
+                      setShirtSize('');
+                      setAddHealth(true);
+                    }}
+                  >
+                    Añadir Salud
+                  </Button>
+                )}
 
-          {addHealth && (
-            <HealthForm
-              hasMandatoryVaccines={hasMandatoryVaccines}
-              setHasMandatoryVaccines={setHasMandatoryVaccines}
-              hasCovidVaccine={hasCovidVaccine}
-              setHasCovidVaccine={setHasCovidVaccine}
-              observations={observations}
-              setObservations={setObservations}
-              setAddHealth={setAddHealth}
-            />
-          )}
-          {!addHealth && (
-            <Button
-              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-              variant='contained'
-              onClick={() => {
-                setShoeSize('');
-                setPantsSize('');
-                setShirtSize('');
-                setAddHealth(true);
-              }}
-            >
-              Añadir información de Salud
-            </Button>
-          )}
-
-          {addJob && <JobForm title={title} setTitle={setTitle} setAddJob={setAddJob} />}
-          {!addJob && (
-            <Button
-              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-              variant='contained'
-              onClick={() => {
-                setTitle('');
-                setAddJob(true);
-              }}
-            >
-              Añadir información de Trabajo
-            </Button>
-          )}
-
+                {addJob && <JobForm title={title} setTitle={setTitle} setAddJob={setAddJob} />}
+                {!addJob && (
+                  <Button
+                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+                    variant='contained'
+                    onClick={() => {
+                      setTitle('');
+                      setAddJob(true);
+                    }}
+                  >
+                    Añadir Trabajo
+                  </Button>
+                )}
+              </Grid>
+            </Box>
+          </Grid>
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
@@ -224,6 +241,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                 likes,
                 education
               });
+              open.push(false);
               resetFields();
             }}
           >
@@ -243,23 +261,72 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             </TableHead>
             <TableBody>
               {!!beneficiaries &&
-                beneficiaries.map((beneficiary: Beneficiary) => (
-                  <TableRow
-                    hover
-                    key={beneficiary.firstName}
-                    sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}
-                  >
-                    <TableCell>{beneficiary.firstName + ' ' + beneficiary.lastName}</TableCell>
-                    <TableCell>{beneficiary.gender}</TableCell>
-                    <TableCell>{beneficiary.birthday}</TableCell>
-                    <TableCell>{beneficiary.dni}</TableCell>
-                    <TableCell>{beneficiary.type}</TableCell>
-                    <TableCell>
-                      <IconButton aria-label='delete' size='small' onClick={() => deleteBeneficiary(beneficiary)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
+                beneficiaries.map((beneficiary: Beneficiary, index) => (
+                  <>
+                    <TableRow
+                      hover
+                      key={beneficiary.firstName}
+                      sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}
+                    >
+                      <TableCell>
+                        <IconButton
+                          aria-label='expand row'
+                          size='small'
+                          onClick={() => {
+                            if (open.length === 0) {
+                              setOpen(
+                                Array.from({ length: beneficiaries.length }, (l, openIndex) => {
+                                  if (openIndex === index) return true;
+
+                                  return false;
+                                })
+                              );
+                            } else {
+                              setOpen(
+                                Array.from({ length: beneficiaries.length }, (l, openIndex) => {
+                                  if (openIndex === index) {
+                                    return !open[index];
+                                  }
+
+                                  return open[openIndex];
+                                })
+                              );
+                            }
+                          }}
+                        >
+                          {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                        </IconButton>
+                      </TableCell>
+                      <TableCell>{beneficiary.firstName + ' ' + beneficiary.lastName}</TableCell>
+                      <TableCell>{beneficiary.gender}</TableCell>
+                      <TableCell>{beneficiary.birthday}</TableCell>
+                      <TableCell>{beneficiary.dni}</TableCell>
+                      <TableCell>{beneficiary.type}</TableCell>
+                      <TableCell>
+                        <IconButton aria-label='delete' size='small' onClick={() => deleteBeneficiary(beneficiary)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                      <TableCell colSpan={12}>
+                        <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                            {!!beneficiary.education && (
+                              <EducationCard education={beneficiary.education} sx={{ mx: '1em' }} />
+                            )}
+                            {!!beneficiary.health && <HealthCard health={beneficiary.health} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.clothes && <ClothesCard clothes={beneficiary.clothes} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.comments && (
+                              <CommentsCard comments={beneficiary.comments} sx={{ mx: '1em' }} />
+                            )}
+                            {!!beneficiary.likes && <LikesCard likes={beneficiary.likes} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{ mx: '1em' }} />}
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </>
                 ))}
             </TableBody>
           </Table>
@@ -274,7 +341,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           }}
           disabled={beneficiaries.length === 0}
         >
-          Crear Beneficiarios
+          Crear
         </Button>
       </DialogContent>
     </Dialog>

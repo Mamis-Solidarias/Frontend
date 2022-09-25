@@ -8,24 +8,39 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import Button from '@mui/material/Button';
 import { UpdateCommunity } from './UpdateCommunity';
 import Community from 'src/types/Community';
 
-const CommunitiesTable = () => {
+interface CommunitiesTableProps {
+  openCreateCommunities: boolean;
+}
+
+const CommunitiesTable: FC<CommunitiesTableProps> = props => {
+  const { openCreateCommunities } = props;
   const [rows, setRows] = useState<any>();
   const [id, setId] = useState<number>(-1);
   const [openUpdateCommunity, setOpenUpdateCommunity] = useState<boolean>(false);
 
-  useEffect(() => {
+  const refreshCommunities = () => {
     if (!!localStorage.getItem('user')) {
       getCommunities(localStorage.getItem('user')).then(communities => {
         setRows(communities.data.communities);
       });
     }
+  };
+
+  useEffect(() => {
+    refreshCommunities();
   }, []);
+
+  useEffect(() => {
+    if (!!localStorage.getItem('user')) {
+      refreshCommunities();
+    }
+  }, [openCreateCommunities]);
 
   return (
     <>

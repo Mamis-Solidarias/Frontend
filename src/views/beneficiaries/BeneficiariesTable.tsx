@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 
 // ** MUI Imports
 import Card from '@mui/material/Card';
@@ -12,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 // ** Types Imports
 import { GetBeneficiaries } from './GetBeneficiaries';
 
-const BeneficiariesTable: FC = () => {
+const BeneficiariesTable = () => {
   const [open, setOpen] = useState<boolean[]>([]);
 
   return (

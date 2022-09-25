@@ -14,16 +14,10 @@ import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ContactForm } from './ContactForm';
-
-interface Contact {
-  content: string;
-  isPreferred: boolean;
-  title: string;
-  type: string;
-}
+import Contact from 'src/types/Contact';
 
 interface UpdateContactsProps {
-  id: string;
+  id: number;
   contacts: Contact[];
   openDialog: boolean;
   handleClose: () => void;

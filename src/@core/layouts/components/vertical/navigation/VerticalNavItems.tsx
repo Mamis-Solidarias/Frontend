@@ -43,9 +43,7 @@ const VerticalNavItems = (props: Props) => {
     } else return <div key='none'></div>;
   });
 
-  if (typeof window !== 'undefined' && !!localStorage.getItem('user')) {
-    return <>{RenderMenuItems}</>;
-  } else return <></>;
+  return <>{RenderMenuItems}</>;
 };
 
 export default VerticalNavItems;

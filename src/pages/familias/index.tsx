@@ -63,7 +63,7 @@ const Dashboard = () => {
               </Box>
             </Box>
           </Card>
-          <FamiliesTable communityCode={communityCode} />
+          <FamiliesTable communityCode={communityCode} openCreateFamilies={openCreateFamilies} />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -73,7 +73,7 @@ const Dashboard = () => {
             }}
             disabled={!communityCode}
           >
-            Añadir Nuevas Familias
+            Añadir Familias
           </Button>
           {!!communityCode && (
             <CreateFamilies
