@@ -1,9 +1,6 @@
 import TextField from '@mui/material/TextField';
 
 import { FC } from 'react';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -64,27 +61,23 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           fullWidth={true}
           variant='standard'
         />
-        <FormControl fullWidth sx={{ my: '1em' }}>
-          <InputLabel id='type'>Tipo de Beneficiario</InputLabel>
-          <Select
-            labelId='type'
-            fullWidth={true}
-            variant='standard'
-            placeholder='Niño'
-            id='typeSelector'
-            value={type}
-            label='Tipo'
-            onChange={e => setType(e.target.value)}
-          >
-            <MenuItem value='Adult'>Adulto</MenuItem>
-            <MenuItem value='Child'>Niño</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          fullWidth={true}
+          variant='standard'
+          placeholder='Niño'
+          id='typeSelector'
+          value={type}
+          label='Tipo'
+          onChange={e => setType(e.target.value)}
+        >
+          <MenuItem value='Adult'>Adulto</MenuItem>
+          <MenuItem value='Child'>Niño</MenuItem>
+        </TextField>
         <TextField
           style={{ padding: '1em' }}
           id='birthday'
-          type='text'
-          inputProps={{ pattern: '[0-9]*$' }}
+          type='date'
           label='Fecha de Nacimiento'
           placeholder='23/4/1998'
           value={birthday}
@@ -123,23 +116,20 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           fullWidth={true}
           variant='standard'
         />
-        <FormControl fullWidth sx={{ my: '1em' }}>
-          <InputLabel id='gender'>Género del Beneficiario</InputLabel>
-          <Select
-            labelId='gender'
-            fullWidth={true}
-            variant='standard'
-            placeholder='Masculino'
-            id='genderSelectior'
-            value={gender}
-            label='Género'
-            onChange={e => setGender(e.target.value)}
-          >
-            <MenuItem value='Male'>Masculino</MenuItem>
-            <MenuItem value='Female'>Femenino</MenuItem>
-            <MenuItem value='Other'>Otro</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          fullWidth={true}
+          style={{ padding: '1em' }}
+          variant='standard'
+          label='Género'
+          placeholder='Masculino'
+          value={gender}
+          onChange={e => setGender(e.target.value)}
+        >
+          <MenuItem value='Male'>Masculino</MenuItem>
+          <MenuItem value='Female'>Femenino</MenuItem>
+          <MenuItem value='Other'>Otro</MenuItem>
+        </TextField>
         <TextField
           style={{ padding: '1em' }}
           id='dni'
