@@ -40,10 +40,12 @@ const VerticalNavItems = (props: Props) => {
       const TagName: any = resolveNavItemComponent(item, verifyJwt(localStorage.getItem('user') as string).permissions);
 
       return <TagName {...props} key={index} item={item} />;
-    } else return <></>;
+    } else return <div key='none'></div>;
   });
 
-  return <>{RenderMenuItems}</>;
+  if (typeof window !== 'undefined' && !!localStorage.getItem('user')) {
+    return <>{RenderMenuItems}</>;
+  } else return <></>;
 };
 
 export default VerticalNavItems;

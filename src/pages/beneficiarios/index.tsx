@@ -15,6 +15,8 @@ import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTable';
 import { CreateBeneficiaries } from 'src/views/beneficiaries/CreateBeneficiaries';
 import Community from 'src/types/Community';
 import Family from 'src/types/Family';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
 
 const Dashboard = () => {
   const [openCreateBeneficiary, setOpenCreateBeneficiary] = useState<boolean>(false);
@@ -27,7 +29,9 @@ const Dashboard = () => {
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
       getCommunities(localStorage.getItem('user')).then(result => {
-        setCommunities(result.data.communities);
+        if (!!result.data.communities && result.data.communities.length > 0) {
+          setCommunities(result.data.communities);
+        }
       });
     }
   }, []);
@@ -51,26 +55,37 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', my: '2em' }}>
-            <Box>
-              <InputLabel id='communityLabel'>
-                <strong>Comunidades</strong>
-              </InputLabel>
-              <Select defaultValue='#' onChange={e => setCommunityCode(e.target.value)} labelId='communityLabel'>
-                <MenuItem value='#' hidden={true}></MenuItem>
-                {communities.map(community => (
-                  <MenuItem value={community.id} key={community.id}>
-                    {community.id + ' - ' + community.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </Box>
-            {families.length > 0 && (
-              <Box>
+          <Card sx={{ my: '2em', width: '100%', flexDirection: 'column' }}>
+            <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
+              Filtros
+            </Typography>
+            <Box sx={{ flexDirection: 'row' }}>
+              <Box sx={{ padding: '1em' }}>
+                <InputLabel id='communityLabel'>
+                  <strong>Comunidades</strong>
+                </InputLabel>
+                <Select
+                  defaultValue={!!communities[0] && !!communities[0].id ? communities[0].id : '#'}
+                  onChange={e => setCommunityCode(e.target.value)}
+                  labelId='communityLabel'
+                >
+                  <MenuItem value='#' hidden={true}></MenuItem>
+                  {communities.map(community => (
+                    <MenuItem value={community.id} key={community.id}>
+                      {community.id + ' - ' + community.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </Box>
+              <Box sx={{ padding: '1em' }}>
                 <InputLabel id='familyLabel'>
                   <strong>Familias</strong>
                 </InputLabel>
-                <Select defaultValue='#' onChange={e => setFamilyId(e.target.value)} labelId='communityLabel'>
+                <Select
+                  defaultValue={!!families[0] && !!families[0].id ? families[0].id : '#'}
+                  onChange={e => setFamilyId(e.target.value as string | undefined)}
+                  labelId='communityLabel'
+                >
                   <MenuItem value='#' hidden={true}></MenuItem>
                   {families.map(family => (
                     <MenuItem value={family.id} key={family.id}>
@@ -79,8 +94,8 @@ const Dashboard = () => {
                   ))}
                 </Select>
               </Box>
-            )}
-          </Box>
+            </Box>
+          </Card>
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}

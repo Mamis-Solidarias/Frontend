@@ -62,57 +62,59 @@ const VerticalLayout = (props: LayoutProps) => {
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible);
 
-  return (
-    <>
-      <VerticalLayoutWrapper className='layout-wrapper'>
-        {/* Navigation Menu */}
-        <Navigation
-          navWidth={navWidth}
-          navVisible={navVisible}
-          setNavVisible={setNavVisible}
-          toggleNavVisibility={toggleNavVisibility}
-          {...props}
-        />
-        <MainContentWrapper className='layout-content-wrapper'>
-          {/* AppBar Component */}
-          <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />
+  if (typeof window !== 'undefined' && localStorage.getItem('user') !== undefined) {
+    return (
+      <>
+        <VerticalLayoutWrapper className='layout-wrapper'>
+          {/* Navigation Menu */}
+          <Navigation
+            navWidth={navWidth}
+            navVisible={navVisible}
+            setNavVisible={setNavVisible}
+            toggleNavVisibility={toggleNavVisibility}
+            {...props}
+          />
+          <MainContentWrapper className='layout-content-wrapper'>
+            {/* AppBar Component */}
+            <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />
 
-          {/* Content */}
-          <ContentWrapper
-            className='layout-page-content'
-            sx={{
-              ...(contentWidth === 'boxed' && {
-                mx: 'auto',
-                '@media (min-width:1440px)': { maxWidth: 1440 },
-                '@media (min-width:1200px)': { maxWidth: '100%' }
-              })
-            }}
-          >
-            {children}
-          </ContentWrapper>
+            {/* Content */}
+            <ContentWrapper
+              className='layout-page-content'
+              sx={{
+                ...(contentWidth === 'boxed' && {
+                  mx: 'auto',
+                  '@media (min-width:1440px)': { maxWidth: 1440 },
+                  '@media (min-width:1200px)': { maxWidth: '100%' }
+                })
+              }}
+            >
+              {children}
+            </ContentWrapper>
 
-          {/* Footer Component */}
-          <Footer {...props} />
+            {/* Footer Component */}
+            <Footer {...props} />
 
-          {/* Portal for React Datepicker */}
-          <DatePickerWrapper sx={{ zIndex: 11 }}>
-            <Box id='react-datepicker-portal'></Box>
-          </DatePickerWrapper>
-        </MainContentWrapper>
-      </VerticalLayoutWrapper>
+            {/* Portal for React Datepicker */}
+            <DatePickerWrapper sx={{ zIndex: 11 }}>
+              <Box id='react-datepicker-portal'></Box>
+            </DatePickerWrapper>
+          </MainContentWrapper>
+        </VerticalLayoutWrapper>
 
-      {/* Scroll to top button */}
-      {scrollToTop ? (
-        scrollToTop(props)
-      ) : (
-        <ScrollToTop className='mui-fixed'>
-          <Fab color='primary' size='small' aria-label='scroll back to top'>
-            <ArrowUp />
-          </Fab>
-        </ScrollToTop>
-      )}
-    </>
-  );
+        {/* Scroll to top button */}
+        {scrollToTop ? (
+          scrollToTop(props)
+        ) : (
+          <ScrollToTop className='mui-fixed'>
+            <Fab color='primary' size='small' aria-label='scroll back to top'>
+              <ArrowUp />
+            </Fab>
+          </ScrollToTop>
+        )}
+      </>
+    );
+  } else return <></>;
 };
 
 export default VerticalLayout;

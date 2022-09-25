@@ -3,7 +3,6 @@ export default interface User {
   name: string;
   email: string;
   phone: string;
-  salary: string;
   isActive: boolean;
 }
 
@@ -11,8 +10,9 @@ export interface UserNoId {
   name: string;
   email: string;
   phone: string;
-  salary: string;
-  isActive: boolean;
+  salary?: string;
+  isActive?: boolean;
+  password?: string;
 }
 
 export interface UsersHttp {

@@ -59,24 +59,25 @@ const Drawer = (props: Props) => {
     onOpen: () => null,
     onClose: () => null
   };
-
-  return (
-    <SwipeableDrawer
-      className='layout-vertical-nav'
-      variant={hidden ? 'temporary' : 'permanent'}
-      {...(hidden ? { ...MobileDrawerProps } : { ...DesktopDrawerProps })}
-      PaperProps={{ sx: { width: navWidth } }}
-      sx={{
-        width: navWidth,
-        '& .MuiDrawer-paper': {
-          borderRight: 0,
-          backgroundColor: theme.palette.background.default
-        }
-      }}
-    >
-      {children}
-    </SwipeableDrawer>
-  );
+  if (typeof window !== 'undefined' && localStorage.getItem('user') !== undefined) {
+    return (
+      <SwipeableDrawer
+        className='layout-vertical-nav'
+        variant={hidden ? 'temporary' : 'permanent'}
+        {...(hidden ? { ...MobileDrawerProps } : { ...DesktopDrawerProps })}
+        PaperProps={{ sx: { width: navWidth } }}
+        sx={{
+          width: navWidth,
+          '& .MuiDrawer-paper': {
+            borderRight: 0,
+            backgroundColor: theme.palette.background.default
+          }
+        }}
+      >
+        {children}
+      </SwipeableDrawer>
+    );
+  } else return <></>;
 };
 
 export default Drawer;

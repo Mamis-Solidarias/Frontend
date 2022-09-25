@@ -147,8 +147,9 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
-          onClick={() => {
-            createCommunities(localStorage.getItem('user'), communities);
+          onClick={async e => {
+            e.preventDefault();
+            await createCommunities(localStorage.getItem('user'), communities);
             resetAllFields();
             handleClose();
           }}

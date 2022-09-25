@@ -20,13 +20,14 @@ import Community from 'src/types/Community';
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
-  const [communityCode, setCommunityCode] = useState<string | undefined>();
+  const [communityCode, setCommunityCode] = useState<string>('#');
   const [communities, setCommunities] = useState<Community[]>([]);
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
       getCommunities(localStorage.getItem('user')).then(result => {
         setCommunities(result.data.communities);
+        setCommunityCode(result.data.communities[0].id as string);
       });
     }
   }, []);
@@ -51,7 +52,7 @@ const Dashboard = () => {
                 <InputLabel id='communityLabel'>
                   <strong>Comunidades</strong>
                 </InputLabel>
-                <Select defaultValue='#' onChange={e => setCommunityCode(e.target.value)} labelId='communityLabel'>
+                <Select value={communityCode} onChange={e => setCommunityCode(e.target.value)} labelId='communityLabel'>
                   <MenuItem value='#' hidden={true}></MenuItem>
                   {communities.map(community => (
                     <MenuItem value={community.id} key={community.id}>

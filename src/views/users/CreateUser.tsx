@@ -16,7 +16,7 @@ interface CreateUserProps {
 
 const emailPattern = /^[^@]+@[^@]+$/;
 const namePattern = /.{5,100}/;
-const phonePattern = /^\+?(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$/;
+const phonePattern = /^.+}$/;
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,50}$/;
 
 export const CreateUser: FC<CreateUserProps> = props => {
@@ -93,7 +93,8 @@ export const CreateUser: FC<CreateUserProps> = props => {
     setPasswordMismatch(false);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     await createUser(localStorage.getItem('user'), { email, name, phone, password });
     resetFields();
     handleClose();

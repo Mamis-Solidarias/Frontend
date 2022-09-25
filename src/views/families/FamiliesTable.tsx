@@ -199,7 +199,9 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
         <TablePagination
           rowsPerPageOptions={[INITIAL_SIZE, MEDIUM_SIZE, LARGE_SIZE]}
           component='div'
-          count={rows ? (rows.length < 5 ? (totalPages - 1) * rowsPerPage + rows.length : -1) : 1}
+          count={
+            rows ? (rows.length < 5 ? (rows.length !== 0 ? (totalPages - 1) * rowsPerPage + rows.length : 0) : -1) : 1
+          }
           rowsPerPage={rowsPerPage}
           page={actualPage}
           onPageChange={handleChangePage}

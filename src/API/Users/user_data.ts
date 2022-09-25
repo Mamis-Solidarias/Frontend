@@ -1,5 +1,5 @@
 import Role from 'src/types/Role';
-import User, { UsersHttp } from 'src/types/User';
+import User, { UserNoId, UsersHttp } from 'src/types/User';
 import { authAxiosClient } from './initialization';
 
 export const getUsers = async (loginData: any, page: number, pageSize: number): Promise<{ data: UsersHttp }> => {
@@ -16,7 +16,7 @@ export const reactivateUser = async (loginData: any, id: number) => {
   return authAxiosClient(loginData).post('users/' + id);
 };
 
-export const createUser = async (loginData: any, data: User) => {
+export const createUser = async (loginData: any, data: UserNoId) => {
   return authAxiosClient(loginData).post('users', data);
 };
 

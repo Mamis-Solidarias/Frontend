@@ -1,6 +1,6 @@
 import { authAxiosClient } from './initialization';
 import Community from 'src/types/Community';
-import Family from 'src/types/Family';
+import { FamiliesHttp } from 'src/types/Family';
 
 export const createCommunities = async (loginData: any, data: Community[]) => {
   return authAxiosClient(loginData).post('communities', { communities: data });
@@ -27,7 +27,7 @@ export const getFamiliesByCommunity = async (
   id: string,
   page: number,
   pageSize: number
-): Promise<{ data: Family[] }> => {
+): Promise<{ data: FamiliesHttp }> => {
   const query = '?page=' + page + '&pageSize=' + pageSize;
 
   return authAxiosClient(loginData).get('communities/' + id + '/families' + query);
