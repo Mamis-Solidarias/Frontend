@@ -75,6 +75,7 @@ export const EducationForm: FC<EducationFormProps> = props => {
       <Button
         sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
         variant='contained'
+        color='warning'
         onClick={() => {
           setYear('');
           setSchool('');
@@ -82,7 +83,7 @@ export const EducationForm: FC<EducationFormProps> = props => {
           setAddEducation(false);
         }}
       >
-        Borrar información de Educación
+        Borrar Educación
       </Button>
     </>
   );

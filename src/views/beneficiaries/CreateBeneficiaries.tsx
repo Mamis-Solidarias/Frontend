@@ -144,6 +144,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
+                    color='info'
                     onClick={() => {
                       setTransportationMethod('');
                       setSchool('');
@@ -170,6 +171,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
+                    color='info'
                     onClick={() => {
                       setShoeSize('');
                       setPantsSize('');
@@ -197,6 +199,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
+                    color='info'
                     onClick={() => {
                       setShoeSize('');
                       setPantsSize('');
@@ -213,6 +216,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
+                    color='info'
                     onClick={() => {
                       setTitle('');
                       setAddJob(true);

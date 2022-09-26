@@ -75,11 +75,12 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           <MenuItem value='Child'>Niño</MenuItem>
         </TextField>
         <TextField
-          style={{ padding: '1em' }}
+          style={{ padding: '1em', marginTop: '1em' }}
           id='birthday'
           type='date'
           label='Fecha de Nacimiento'
-          placeholder='23/4/1998'
+          InputLabelProps={{ shrink: true }}
+          placeholder='23/04/1998'
           value={birthday}
           onChange={e => {
             setBirthday(e.target.value);

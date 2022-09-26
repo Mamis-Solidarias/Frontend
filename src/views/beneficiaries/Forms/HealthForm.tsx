@@ -58,6 +58,7 @@ export const HealthForm: FC<HealthFormProps> = props => {
       <Button
         sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
         variant='contained'
+        color='warning'
         onClick={() => {
           setHasMandatoryVaccines(false);
           setHasCovidVaccine(false);
@@ -65,7 +66,7 @@ export const HealthForm: FC<HealthFormProps> = props => {
           setAddHealth(false);
         }}
       >
-        Borrar Información de Salud
+        Borrar Salud
       </Button>
     </>
   );

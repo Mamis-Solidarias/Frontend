@@ -29,12 +29,13 @@ export const JobForm: FC<JobFormProps> = props => {
       <Button
         sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
         variant='contained'
+        color='warning'
         onClick={() => {
           setTitle('');
           setAddJob(false);
         }}
       >
-        Borrar Información de Trabajo
+        Borrar Trabajo
       </Button>
     </>
   );

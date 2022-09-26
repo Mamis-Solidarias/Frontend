@@ -57,6 +57,7 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
       <Button
         sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
         variant='contained'
+        color='warning'
         onClick={() => {
           setShoeSize('');
           setPantsSize('');
@@ -64,7 +65,7 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
           setAddClothes(false);
         }}
       >
-        Borrar Información de Ropa
+        Borrar Ropa
       </Button>
     </>
   );
