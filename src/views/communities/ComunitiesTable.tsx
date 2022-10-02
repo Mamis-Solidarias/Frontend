@@ -16,10 +16,11 @@ import Community from 'src/types/Community';
 
 interface CommunitiesTableProps {
   openCreateCommunities: boolean;
+  openWindow: boolean;
 }
 
 const CommunitiesTable: FC<CommunitiesTableProps> = props => {
-  const { openCreateCommunities } = props;
+  const { openCreateCommunities, openWindow } = props;
   const [rows, setRows] = useState<any>();
   const [id, setId] = useState<number>(-1);
   const [openUpdateCommunity, setOpenUpdateCommunity] = useState<boolean>(false);
@@ -37,10 +38,10 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
   }, []);
 
   useEffect(() => {
-    if (!!localStorage.getItem('user')) {
+    if (!!localStorage.getItem('user') && !openWindow) {
       refreshCommunities();
     }
-  }, [openCreateCommunities]);
+  }, [openCreateCommunities, openWindow]);
 
   return (
     <>

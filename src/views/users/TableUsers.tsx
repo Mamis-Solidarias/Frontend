@@ -8,7 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { getUsers, deleteUser, reactivateUser } from 'src/API/Users/user_data';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -20,7 +20,12 @@ import { EditPassword } from './EditPassword';
 import { UpdateUser } from './UpdateUser';
 import User from 'src/types/User';
 
-const DashboardTable = () => {
+interface TableUsersProps {
+  openWindow: boolean;
+}
+
+const TableUsers: FC<TableUsersProps> = props => {
+  const { openWindow } = props;
   const INITIAL_SIZE = 5,
     MEDIUM_SIZE = 10,
     LARGE_SIZE = 15;
@@ -50,6 +55,12 @@ const DashboardTable = () => {
       setActualUserId(verifyJwt(localStorage.getItem('user') as string).Id);
     }
   }, []);
+
+  useEffect(() => {
+    if (!openWindow) {
+      changePage(actualPage, rowsPerPage);
+    }
+  }, [openWindow]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     changePage(newPage, rowsPerPage);
@@ -190,4 +201,4 @@ const DashboardTable = () => {
   );
 };
 
-export default DashboardTable;
+export default TableUsers;

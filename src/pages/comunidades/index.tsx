@@ -16,7 +16,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (openWindow && openCreateCommunities === false) {
       setOpenWindow(false);
-      window.location.reload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCreateCommunities]);
@@ -25,7 +24,7 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <CommunitiesTable openCreateCommunities={openCreateCommunities} />
+          <CommunitiesTable openCreateCommunities={openCreateCommunities} openWindow={openWindow} />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}

@@ -4,6 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { FC, useState } from 'react';
 import TableContainer from '@mui/material/TableContainer';
@@ -14,6 +15,7 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import { createCommunities } from 'src/API/Beneficiaries/communities_data';
 import Community from 'src/types/Community';
+import IconButton from '@mui/material/IconButton';
 
 interface CreateCommunityProps {
   openDialog: boolean;
@@ -26,7 +28,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [communityCode, setCommunityCode] = useState<string>('');
-  const [communities] = useState<Community[]>([]);
+  const [communities, setCommunities] = useState<Community[]>([]);
 
   const resetFields = () => {
     setName('');
@@ -38,6 +40,11 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
   const resetAllFields = () => {
     resetFields();
     communities.length = 0;
+  };
+
+  const deleteCommunity = (community: Community) => {
+    const newCommunities = communities.filter(newCommunity => newCommunity !== community);
+    setCommunities(newCommunities);
   };
 
   return (
@@ -129,6 +136,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                 <TableCell>Dirección</TableCell>
                 <TableCell>Descripción</TableCell>
                 <TableCell>Código de Comunidad</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -139,6 +147,11 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                     <TableCell>{community.address}</TableCell>
                     <TableCell>{community.description}</TableCell>
                     <TableCell>{community.id}</TableCell>
+                    <TableCell>
+                      <IconButton aria-label='delete' size='small' onClick={() => deleteCommunity(community)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

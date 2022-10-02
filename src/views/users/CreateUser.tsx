@@ -16,7 +16,7 @@ interface CreateUserProps {
 
 const emailPattern = /^[^@]+@[^@]+$/;
 const namePattern = /.{5,100}/;
-const phonePattern = /^.+}$/;
+const phonePattern = /^.+$/;
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,50}$/;
 
 export const CreateUser: FC<CreateUserProps> = props => {
@@ -156,7 +156,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
             style={{ padding: '1em' }}
             id='phone'
             type='tel'
-            inputProps={{ pattern: ' ^+?(?:(?:00)?549?)?0?(?:11|[2368]d)(?:(?=d{0,2}15)d{2})??d{8}$' }}
+            inputProps={{ pattern: ' ^.+$' }}
             label='Teléfono'
             placeholder='+5492995077824'
             value={phone}
