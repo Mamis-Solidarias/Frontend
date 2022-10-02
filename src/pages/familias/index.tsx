@@ -27,7 +27,9 @@ const Dashboard = () => {
     if (!!localStorage.getItem('user')) {
       getCommunities(localStorage.getItem('user')).then(result => {
         setCommunities(result.data.communities);
-        setCommunityCode(result.data.communities[0].id as string);
+        if (result.data.communities.length > 0) {
+          setCommunityCode(result.data.communities[0].id as string);
+        }
       });
     }
   }, []);

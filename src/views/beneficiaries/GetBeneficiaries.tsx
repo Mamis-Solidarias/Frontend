@@ -6,7 +6,7 @@ import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { EducationCard } from './BeneficiaryCard/Education';
 import { HealthCard } from './BeneficiaryCard/Health';
 import { ClothesCard } from './BeneficiaryCard/Clothes';
@@ -17,9 +17,22 @@ import Beneficiary from 'src/types/Beneficiary';
 import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
 import GENDERS from 'src/types/Genders';
 
+interface GetBeneficiariesProps {
+  ageStart?: number | null;
+  ageEnd?: number | null;
+  lastNameContains?: string;
+  type?: string;
+  dniStarts?: string | null;
+  familyId?: string;
+  communityId?: string;
+  school?: string;
+  gender?: string;
+  isActive?: boolean;
+}
+
 const GET_BENEFICIARIES = gql`
-  query getBeneficiaries {
-    beneficiaries {
+  query getBeneficiaries($dniStarts: String) {
+    beneficiaries(where: { dni: { eq: $dniStarts } }) {
       nodes {
         dni
         birthday
@@ -35,6 +48,11 @@ const GET_BENEFICIARIES = gql`
         lastName
         likes
         type
+        clothes {
+          pantsSize
+          shoeSize
+          shirtSize
+        }
         health {
           hasCovidVaccine
           hasMandatoryVaccines
@@ -58,8 +76,40 @@ interface GetBeneficiariesProps {
 }
 
 export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
+  const { ageStart, ageEnd, lastNameContains, type, dniStarts, familyId, communityId, school, gender, isActive } =
+    props;
+
   const { open, setOpen } = props;
-  const { loading, error, data } = useQuery(GET_BENEFICIARIES);
+  const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
+    variables: {
+      ageStart,
+      ageEnd,
+      lastNameContains,
+      type,
+      dniStarts,
+      familyId,
+      communityId,
+      school,
+      gender,
+      isActive
+    }
+  });
+
+  useEffect(() => {
+    refetch({
+      ageStart,
+      ageEnd,
+      lastNameContains,
+      type,
+      dniStarts,
+      familyId,
+      communityId,
+      school,
+      gender,
+      isActive
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ageStart, ageEnd, lastNameContains, type, dniStarts, familyId, communityId, school, gender, isActive]);
 
   if (loading)
     return (
@@ -67,12 +117,15 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
         <TableCell>Loading...</TableCell>
       </TableRow>
     );
-  if (error)
+  if (error) {
+    console.log(error);
+
     return (
       <TableRow>
         <TableCell>Error :(</TableCell>
       </TableRow>
     );
+  }
 
   const nodes = data.beneficiaries.nodes;
 

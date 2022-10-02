@@ -55,11 +55,11 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Card sx={{ my: '2em', width: '100%', flexDirection: 'column' }}>
+          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
               Filtros
             </Typography>
-            <Box sx={{ flexDirection: 'row' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Box sx={{ padding: '1em' }}>
                 <InputLabel id='communityLabel'>
                   <strong>Comunidades</strong>

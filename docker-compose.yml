@@ -72,3 +72,19 @@ services:
       ConnectionStrings__Development: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
       JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
       
+  donors:
+    image: ghcr.io/mamis-solidarias/donors:main
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+    ports:
+      - 8082:80
+      - 8083:443
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: development
+      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
+      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
+   

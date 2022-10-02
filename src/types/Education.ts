@@ -1,5 +1,5 @@
 export default interface Education {
-  school: string;
-  transportationMethod: string;
-  year: string;
+  school?: string;
+  transportationMethod?: string;
+  year?: string;
 }

@@ -72,18 +72,20 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   };
 
   const changePage = async (newPage: number, size: number) => {
-    if (!!communityCode) {
+    if (!!communityCode && communityCode !== '#') {
       getFamiliesByCommunity(localStorage.getItem('user'), communityCode, newPage, size).then(result => {
         localStorage.setItem('pageFamilies', newPage.toString());
-        setTotalPages(result.data.totalPages);
-        setActualPage(result.data.page);
+        if (!!result.data.totalPages && !!result.data.page) {
+          setTotalPages(result.data.totalPages);
+          setActualPage(result.data.page);
+        }
         setRows(result.data.families);
       });
     }
   };
 
   const getFamilies = () => {
-    if (!!localStorage.getItem('user') && !!communityCode) {
+    if (!!localStorage.getItem('user') && !!communityCode && communityCode !== '#') {
       getFamiliesByCommunity(localStorage.getItem('user'), communityCode, 0, rowsPerPage).then(result => {
         localStorage.setItem('pageFamilies', '0');
         setTotalPages(result.data.totalPages);
@@ -94,9 +96,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   };
 
   useEffect(() => {
-    if (!!localStorage.getItem('user') && !!communityCode) {
-      getFamilies();
-    }
+    getFamilies();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [communityCode]);
 
