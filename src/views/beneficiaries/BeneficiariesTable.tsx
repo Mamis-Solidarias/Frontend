@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 
 // ** MUI Imports
 import Card from '@mui/material/Card';
@@ -11,9 +11,15 @@ import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
 import { GetBeneficiaries } from './GetBeneficiaries';
+import { BeneficiariesFilters } from 'src/types/BeneficiariesFilters';
 
-const BeneficiariesTable = () => {
+interface BeneficiariesTableProps {
+  filters: BeneficiariesFilters;
+}
+
+const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   const [open, setOpen] = useState<boolean[]>([]);
+  const { filters } = props;
 
   return (
     <>
@@ -32,7 +38,7 @@ const BeneficiariesTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <GetBeneficiaries open={open} setOpen={setOpen} />
+              <GetBeneficiaries open={open} setOpen={setOpen} filters={filters} />
             </TableBody>
           </Table>
         </TableContainer>

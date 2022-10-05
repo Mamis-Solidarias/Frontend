@@ -143,75 +143,12 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             variant='standard'
           />
 
-          {!!addContact &&
-            contacts.map((contact, index) => (
-              <ContactForm
-                types={types}
-                setTypes={setTypes}
-                arrayIsPreferred={arrayIsPreferred}
-                setArrayIsPreferred={setArrayIsPreferred}
-                contents={contents}
-                setContents={setContents}
-                titles={titles}
-                setTitles={setTitles}
-                key={index}
-              />
-            ))}
-          {!!addContact && (
-            <Button
-              sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-              variant='contained'
-              onClick={() => {
-                contacts.pop();
-                setAddContact(addContact - 1);
-              }}
-            >
-              Borrar Última Fila de Forma de Contactos
-            </Button>
-          )}
-          <Button
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-            variant='contained'
-            onClick={() => {
-              setAddContact(addContact + 1);
-              const newContact: Contact = { isPreferred: false, title: '', content: '', type: '' };
-              const newTypes = types;
-              const newTitles = titles;
-              const newContents = contents;
-              const newArrayIsPreferred = arrayIsPreferred;
-
-              newTypes.push('');
-              newTitles.push('');
-              newContents.push('');
-              newArrayIsPreferred.push(false);
-
-              setTypes(newTypes);
-              setTitles(newTitles);
-              setContents(newContents);
-              setArrayIsPreferred(newArrayIsPreferred);
-
-              contacts.push(newContact);
-            }}
-          >
-            Añadir Forma de Contacto
-          </Button>
-
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => {
               const familyContacts = [];
               for (let index = 0; index < addContact; index++) {
-                console.log(
-                  'contents',
-                  contents,
-                  'arrayIsPreferred',
-                  arrayIsPreferred,
-                  'types',
-                  types,
-                  'titles',
-                  titles
-                );
                 familyContacts.push({
                   content: contents[index],
                   isPreferred: arrayIsPreferred[index],
@@ -219,7 +156,6 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                   title: titles[index]
                 });
               }
-              console.log(familyContacts);
               const finalDescription = !!description ? description : null;
               const finalFamilyNumber: number | null = !!number ? parseInt(number) : null;
               families.push({
@@ -273,8 +209,8 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
-          onClick={() => {
-            createFamilies(localStorage.getItem('user'), communityCode, families);
+          onClick={async () => {
+            await createFamilies(localStorage.getItem('user'), communityCode, families);
             resetAllFields();
             handleClose();
           }}

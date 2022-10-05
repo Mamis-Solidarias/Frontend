@@ -16,23 +16,37 @@ import { JobCard } from './BeneficiaryCard/Job';
 import Beneficiary from 'src/types/Beneficiary';
 import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
 import GENDERS from 'src/types/Genders';
-
-interface GetBeneficiariesProps {
-  ageStart?: number | null;
-  ageEnd?: number | null;
-  lastNameContains?: string;
-  type?: string;
-  dniStarts?: string | null;
-  familyId?: string;
-  communityId?: string;
-  school?: string;
-  gender?: string;
-  isActive?: boolean;
-}
+import { BeneficiariesFilters } from 'src/types/BeneficiariesFilters';
 
 const GET_BENEFICIARIES = gql`
-  query getBeneficiaries($dniStarts: String) {
-    beneficiaries(where: { dni: { eq: $dniStarts } }) {
+  query filterQuery(
+    $dniStarts: String
+    $ageStart: Int
+    $ageEnd: Int
+    $firstName: String
+    $lastName: String
+    $type: String
+    $familyId: String
+    $communityId: String
+    $school: String
+    $gender: String
+    $isActive: Boolean
+  ) {
+    filteredBeneficiaries(
+      filter: {
+        dniStarts: $dniStarts
+        ageStart: $ageStart
+        ageEnd: $ageEnd
+        lastName: $lastName
+        firstName: $firstName
+        type: $type
+        familyId: $familyId
+        communityId: $communityId
+        school: $school
+        gender: $gender
+        isActive: $isActive
+      }
+    ) {
       nodes {
         dni
         birthday
@@ -73,43 +87,45 @@ const GET_BENEFICIARIES = gql`
 interface GetBeneficiariesProps {
   open: boolean[];
   setOpen: (value: boolean[]) => void;
+  filters: BeneficiariesFilters;
 }
 
 export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
-  const { ageStart, ageEnd, lastNameContains, type, dniStarts, familyId, communityId, school, gender, isActive } =
-    props;
+  const { filters } = props;
 
   const { open, setOpen } = props;
   const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
-      ageStart,
-      ageEnd,
-      lastNameContains,
-      type,
-      dniStarts,
-      familyId,
-      communityId,
-      school,
-      gender,
-      isActive
+      ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
+      ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
+      firstName: filters.firstName,
+      lastName: filters.lastName,
+      type: filters.type,
+      dniStarts: filters.dniStarts,
+      familyId: filters.familyId,
+      communityId: filters.communityCode,
+      school: filters.school,
+      gender: filters.gender,
+      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null
     }
   });
 
   useEffect(() => {
     refetch({
-      ageStart,
-      ageEnd,
-      lastNameContains,
-      type,
-      dniStarts,
-      familyId,
-      communityId,
-      school,
-      gender,
-      isActive
+      ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
+      ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
+      lastName: filters.lastName,
+      firstName: filters.firstName,
+      type: filters.type,
+      dniStarts: filters.dniStarts,
+      familyId: filters.familyId,
+      communityId: filters.communityCode,
+      school: filters.school,
+      gender: filters.gender,
+      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ageStart, ageEnd, lastNameContains, type, dniStarts, familyId, communityId, school, gender, isActive]);
+  }, [filters]);
 
   if (loading)
     return (
@@ -118,8 +134,6 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
       </TableRow>
     );
   if (error) {
-    console.log(error);
-
     return (
       <TableRow>
         <TableCell>Error :(</TableCell>
@@ -127,7 +141,7 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
     );
   }
 
-  const nodes = data.beneficiaries.nodes;
+  const nodes = data.filteredBeneficiaries.nodes;
 
   return nodes.map((row: Beneficiary, index: number) => (
     <React.Fragment key={row.id}>

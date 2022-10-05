@@ -6,25 +6,24 @@ import { useEffect, useState } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import MenuItem from '@mui/material/MenuItem';
 import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import Box from '@mui/material/Box';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTable';
 import { CreateBeneficiaries } from 'src/views/beneficiaries/CreateBeneficiaries';
 import Community from 'src/types/Community';
 import Family from 'src/types/Family';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+import { useBeneficiariesFilters } from 'src/hooks/useBeneficiariesFilters';
+import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersView';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
-  const [communityCode, setCommunityCode] = useState<string | undefined>();
+  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
+  const { filters, setFilter } = useBeneficiariesFilters();
   const [communities, setCommunities] = useState<Community[]>([]);
   const [families, setFamilies] = useState<Family[]>([]);
-  const [familyId, setFamilyId] = useState<string | undefined>();
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
@@ -44,54 +43,44 @@ const Dashboard = () => {
   }, [openCreateBeneficiaries]);
 
   useEffect(() => {
-    if (!!communityCode && communityCode !== '#') {
-      getFamiliesByCommunity(localStorage.getItem('user'), communityCode, 0, 100).then(result => {
+    if (!!filters.communityCode && filters.communityCode !== '#') {
+      getFamiliesByCommunity(localStorage.getItem('user'), filters.communityCode, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
     }
-  }, [communityCode]);
+  }, [filters.communityCode]);
 
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card sx={{ my: '2em', py: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
-              Filtros
+              Filtros {filtersApplied.dniStarts}
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Box sx={{ padding: '1em' }}>
-                <InputLabel id='communityLabel'>
-                  <strong>Comunidades</strong>
-                </InputLabel>
-                <Select defaultValue={'#'} onChange={e => setCommunityCode(e.target.value)} labelId='communityLabel'>
-                  <MenuItem value='#'>Todas</MenuItem>
-                  {communities.map(community => (
-                    <MenuItem value={community.id} key={community.id}>
-                      {community.id + ' - ' + community.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              <Box sx={{ padding: '1em' }}>
-                <InputLabel id='familyLabel'>
-                  <strong>Familias</strong>
-                </InputLabel>
-                <Select
-                  defaultValue={!!families[0] && !!families[0].id ? families[0].id : '#'}
-                  onChange={e => setFamilyId(e.target.value as string | undefined)}
-                  labelId='communityLabel'
-                >
-                  <MenuItem value='#' hidden={true}></MenuItem>
-                  {families.map(family => (
-                    <MenuItem value={family.id} key={family.id}>
-                      {family.id + ' - ' + family.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-            </Box>
+            <BeneficiariesFiltersView
+              filters={filters}
+              setFilter={setFilter}
+              communities={communities}
+              families={families}
+            />
+            <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
+              <Button
+                onClick={() => {
+                  const filtersToApply = filters;
+                  for (const fk in filtersToApply) {
+                    if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                      filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                    }
+                  }
+                  setFiltersApplied(filtersToApply);
+                }}
+              >
+                Aplicar Filtros
+              </Button>
+            </Typography>
           </Card>
+
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -99,17 +88,18 @@ const Dashboard = () => {
               setOpenWindow(true);
               setOpenCreateBeneficiaries(true);
             }}
-            disabled={!familyId}
+            disabled={!filters.familyId}
           >
-            Añadir Beneficiarios
+            Añadir Beneficiarios a Familia {filters.familyId}
           </Button>
-          <BeneficiariesTable />
 
-          {!!familyId && (
+          <BeneficiariesTable filters={filtersApplied} />
+
+          {!!filters.familyId && (
             <CreateBeneficiaries
               openDialog={openCreateBeneficiaries}
               handleClose={() => setOpenCreateBeneficiaries(false)}
-              familyId={familyId}
+              familyId={filters.familyId}
             />
           )}
         </Grid>
