@@ -4,45 +4,15 @@ import { FC } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
 
 interface GeneralFormProps {
-  firstName: string;
-  setFirstName: (value: string) => void;
-  lastName: string;
-  setLastName: (value: string) => void;
-  type: string;
-  setType: (value: string) => void;
-  gender: string;
-  setGender: (value: string) => void;
-  birthday: string;
-  setBirthday: (value: string) => void;
-  dni: string;
-  setDni: (value: string) => void;
-  comments: string;
-  setComments: (value: string) => void;
-  likes?: string;
-  setLikes: (value: string) => void;
+  beneficiaryFields: CreateBeneficiaryFields;
+  setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
 }
 
 export const GeneralForm: FC<GeneralFormProps> = props => {
-  const {
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    type,
-    setType,
-    gender,
-    setGender,
-    birthday,
-    setBirthday,
-    dni,
-    setDni,
-    comments,
-    setComments,
-    likes,
-    setLikes
-  } = props;
+  const { beneficiaryFields, setBeneficiaryField } = props;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
@@ -54,10 +24,8 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           inputProps={{ pattern: '[0-9]*$' }}
           label='Nombre'
           placeholder='Juan García'
-          value={firstName}
-          onChange={e => {
-            setFirstName(e.target.value);
-          }}
+          value={beneficiaryFields.firstName}
+          onChange={e => setBeneficiaryField('firstName', e.target.value)}
           fullWidth={true}
           variant='standard'
         />
@@ -67,9 +35,9 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           variant='standard'
           placeholder='Niño'
           id='typeSelector'
-          value={type}
+          value={beneficiaryFields.type}
           label='Tipo'
-          onChange={e => setType(e.target.value)}
+          onChange={e => setBeneficiaryField('type', e.target.value)}
         >
           <MenuItem value='Adult'>Adulto</MenuItem>
           <MenuItem value='Child'>Niño</MenuItem>
@@ -81,9 +49,9 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           label='Fecha de Nacimiento'
           InputLabelProps={{ shrink: true }}
           placeholder='23/04/1998'
-          value={birthday}
+          value={beneficiaryFields.birthday}
           onChange={e => {
-            setBirthday(e.target.value);
+            setBeneficiaryField('birthday', e.target.value);
           }}
           fullWidth={true}
           variant='standard'
@@ -92,11 +60,11 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           sx={{ padding: '1em' }}
           id='comments'
           type='text'
-          label='Comentarios sobre Beneficiario'
+          label='Comentarios'
           placeholder='Es buena gente'
-          value={comments}
+          value={beneficiaryFields.comments}
           onChange={e => {
-            setComments(e.target.value);
+            setBeneficiaryField('comments', e.target.value);
           }}
           fullWidth={true}
           variant='standard'
@@ -110,9 +78,9 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           inputProps={{ pattern: '[0-9]*$' }}
           label='Apellido'
           placeholder='Montoya'
-          value={lastName}
+          value={beneficiaryFields.lastName}
           onChange={e => {
-            setLastName(e.target.value);
+            setBeneficiaryField('lastName', e.target.value);
           }}
           fullWidth={true}
           variant='standard'
@@ -124,8 +92,8 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           variant='standard'
           label='Género'
           placeholder='Masculino'
-          value={gender}
-          onChange={e => setGender(e.target.value)}
+          value={beneficiaryFields.gender}
+          onChange={e => setBeneficiaryField('gender', e.target.value)}
         >
           <MenuItem value='Male'>Masculino</MenuItem>
           <MenuItem value='Female'>Femenino</MenuItem>
@@ -135,11 +103,11 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           style={{ padding: '1em' }}
           id='dni'
           type='text'
-          label='DNI del Beneficiario'
+          label='DNI'
           placeholder='23456654'
-          value={dni}
+          value={beneficiaryFields.dni}
           onChange={e => {
-            setDni(e.target.value);
+            setBeneficiaryField('dni', e.target.value);
           }}
           fullWidth={true}
           variant='standard'
@@ -148,11 +116,11 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           style={{ padding: '1em' }}
           id='likes'
           type='text'
-          label='Cosas que le gustan al Beneficiario'
+          label='Cosas que le gustan'
           placeholder='La familia de José'
-          value={likes}
+          value={beneficiaryFields.likes}
           onChange={e => {
-            setLikes(e.target.value);
+            setBeneficiaryField('likes', e.target.value);
           }}
           fullWidth={true}
           variant='standard'

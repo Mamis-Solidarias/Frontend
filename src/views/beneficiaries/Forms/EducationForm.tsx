@@ -7,30 +7,28 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
+import { CreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
 
 interface EducationFormProps {
-  year: string;
-  setYear: (value: string) => void;
-  school: string;
-  setSchool: (value: string) => void;
-  transportationMethod: string;
-  setTransportationMethod: (value: string) => void;
-  setAddEducation: (value: boolean) => void;
+  beneficiaryFields: CreateBeneficiaryFields;
+  setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
+  setBeneficiaryExtra: (key: keyof CreateBeneficiaryExtras, value: any) => void;
 }
 
 export const EducationForm: FC<EducationFormProps> = props => {
-  const { year, setYear, school, setSchool, transportationMethod, setTransportationMethod, setAddEducation } = props;
+  const { beneficiaryFields, setBeneficiaryField, setBeneficiaryExtra } = props;
 
   return (
     <>
-      <Typography>Datos de Educación</Typography>
+      <Typography>Educación</Typography>
       <TextField
         style={{ padding: '1em' }}
         type='text'
         label='Escuela a la que va'
         placeholder='ITBA'
-        value={school}
-        onChange={e => setSchool(e.target.value)}
+        value={beneficiaryFields.school}
+        onChange={e => setBeneficiaryField('school', e.target.value)}
         fullWidth={true}
         variant='standard'
       />
@@ -42,10 +40,8 @@ export const EducationForm: FC<EducationFormProps> = props => {
         inputProps={{
           pattern: '^(3[0-1]|2[[0-9]|1[0-9]|0{0,1}[1-9])/([1-9]|1[0-2])/(19[2-9][0-9]|20[0-9][0-9])$'
         }}
-        value={year}
-        onChange={e => {
-          setYear(e.target.value);
-        }}
+        value={beneficiaryFields.year}
+        onChange={e => setBeneficiaryField('year', e.target.value)}
         fullWidth={true}
         variant='standard'
       />
@@ -56,11 +52,11 @@ export const EducationForm: FC<EducationFormProps> = props => {
           fullWidth={true}
           variant='standard'
           placeholder='Caminando'
-          value={transportationMethod}
+          value={beneficiaryFields.transportationMethod}
           defaultValue={'BIKE'}
           label='Método de Transporte'
           onChange={e => {
-            setTransportationMethod(e.target.value);
+            setBeneficiaryField('transportationMethod', e.target.value);
           }}
         >
           <MenuItem value='' hidden={true}></MenuItem>
@@ -77,10 +73,10 @@ export const EducationForm: FC<EducationFormProps> = props => {
         variant='contained'
         color='warning'
         onClick={() => {
-          setYear('');
-          setSchool('');
-          setTransportationMethod('');
-          setAddEducation(false);
+          setBeneficiaryField('year', '');
+          setBeneficiaryField('school', '');
+          setBeneficiaryField('transportationMethod', '');
+          setBeneficiaryExtra('addEducation', false);
         }}
       >
         Borrar Educación

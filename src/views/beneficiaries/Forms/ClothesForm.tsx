@@ -3,30 +3,28 @@ import TextField from '@mui/material/TextField';
 
 import { FC } from 'react';
 import Typography from '@mui/material/Typography';
+import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
+import { CreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
 
 interface ClothesFormProps {
-  shoeSize: string;
-  setShoeSize: (value: string) => void;
-  pantsSize: string;
-  setPantsSize: (value: string) => void;
-  shirtSize: string;
-  setShirtSize: (value: string) => void;
-  setAddClothes: (value: boolean) => void;
+  beneficiaryFields: CreateBeneficiaryFields;
+  setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
+  setBeneficiaryExtra: (key: keyof CreateBeneficiaryExtras, value: any) => void;
 }
 
 export const ClothesForm: FC<ClothesFormProps> = props => {
-  const { shoeSize, setShoeSize, pantsSize, setPantsSize, shirtSize, setShirtSize, setAddClothes } = props;
+  const { beneficiaryFields, setBeneficiaryField, setBeneficiaryExtra } = props;
 
   return (
     <>
-      <Typography>Datos de Ropa</Typography>
+      <Typography>Ropa</Typography>
       <TextField
         style={{ padding: '1em' }}
         type='text'
         label='Talle de Calzado'
         placeholder='42'
-        value={shoeSize}
-        onChange={e => setShoeSize(e.target.value)}
+        value={beneficiaryFields.shoeSize}
+        onChange={e => setBeneficiaryField('shoeSize', e.target.value)}
         fullWidth={true}
         variant='standard'
       />
@@ -35,9 +33,9 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
         type='text'
         label='Talle de Remera'
         placeholder='L'
-        value={shirtSize}
+        value={beneficiaryFields.shirtSize}
         onChange={e => {
-          setShirtSize(e.target.value);
+          setBeneficiaryField('shirtSize', e.target.value);
         }}
         fullWidth={true}
         variant='standard'
@@ -47,9 +45,9 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
         type='text'
         label='Talle de Pantalones'
         placeholder='42'
-        value={pantsSize}
+        value={beneficiaryFields.pantsSize}
         onChange={e => {
-          setPantsSize(e.target.value);
+          setBeneficiaryField('pantsSize', e.target.value);
         }}
         fullWidth={true}
         variant='standard'
@@ -59,10 +57,10 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
         variant='contained'
         color='warning'
         onClick={() => {
-          setShoeSize('');
-          setPantsSize('');
-          setShirtSize('');
-          setAddClothes(false);
+          setBeneficiaryField('shoeSize', '');
+          setBeneficiaryField('pantsSize', '');
+          setBeneficiaryField('shirtSize', '');
+          setBeneficiaryExtra('addClothes', false);
         }}
       >
         Borrar Ropa

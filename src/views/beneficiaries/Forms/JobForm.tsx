@@ -3,26 +3,28 @@ import TextField from '@mui/material/TextField';
 
 import { FC } from 'react';
 import Typography from '@mui/material/Typography';
+import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
+import { CreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
 
 interface JobFormProps {
-  title: string;
-  setTitle: (value: string) => void;
-  setAddJob: (value: boolean) => void;
+  beneficiaryFields: CreateBeneficiaryFields;
+  setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
+  setBeneficiaryExtra: (key: keyof CreateBeneficiaryExtras, value: any) => void;
 }
 
 export const JobForm: FC<JobFormProps> = props => {
-  const { title, setTitle, setAddJob } = props;
+  const { beneficiaryFields, setBeneficiaryField, setBeneficiaryExtra } = props;
 
   return (
     <>
-      <Typography>Datos de Educación</Typography>
+      <Typography>Trabajo</Typography>
       <TextField
         style={{ padding: '1em' }}
         type='text'
         label='Título'
         placeholder='Albañil'
-        value={title}
-        onChange={e => setTitle(e.target.value)}
+        value={beneficiaryFields.title}
+        onChange={e => setBeneficiaryField('title', e.target.value)}
         fullWidth={true}
         variant='standard'
       />
@@ -31,8 +33,8 @@ export const JobForm: FC<JobFormProps> = props => {
         variant='contained'
         color='warning'
         onClick={() => {
-          setTitle('');
-          setAddJob(false);
+          setBeneficiaryField('title', '');
+          setBeneficiaryExtra('addJob', false);
         }}
       >
         Borrar Trabajo

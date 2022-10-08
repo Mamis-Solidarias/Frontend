@@ -6,41 +6,37 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import InputLabel from '@mui/material/InputLabel';
+import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
+import { CreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
 
 interface HealthFormProps {
-  observations: string;
-  setObservations: (value: string) => void;
-  hasCovidVaccine: boolean;
-  setHasCovidVaccine: (value: boolean) => void;
-  hasMandatoryVaccines: boolean;
-  setHasMandatoryVaccines: (value: boolean) => void;
-  setAddHealth: (value: boolean) => void;
+  beneficiaryFields: CreateBeneficiaryFields;
+  setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
+  setBeneficiaryExtra: (key: keyof CreateBeneficiaryExtras, value: any) => void;
 }
 
 export const HealthForm: FC<HealthFormProps> = props => {
-  const {
-    observations,
-    setObservations,
-    hasCovidVaccine,
-    setHasCovidVaccine,
-    hasMandatoryVaccines,
-    setHasMandatoryVaccines,
-    setAddHealth
-  } = props;
+  const { beneficiaryFields, setBeneficiaryField, setBeneficiaryExtra } = props;
 
   return (
     <>
-      <Typography>Datos de Salud</Typography>
+      <Typography>Salud</Typography>
       <InputLabel>¿Tiene Vacuna COVID?</InputLabel>
       <Stack direction='row' spacing={1} alignItems='center'>
         <Typography>Sí</Typography>
-        <Switch onChange={e => setHasCovidVaccine(e.target.checked)} checked={hasCovidVaccine} />
+        <Switch
+          onChange={e => setBeneficiaryField('hasCovidVaccine', e.target.checked)}
+          checked={beneficiaryFields.hasCovidVaccine}
+        />
         <Typography>No</Typography>
       </Stack>
       <InputLabel>¿Tiene Vacunas Mandatorias?</InputLabel>
       <Stack direction='row' spacing={1} alignItems='center'>
         <Typography>Sí</Typography>
-        <Switch onChange={e => setHasMandatoryVaccines(e.target.checked)} checked={hasMandatoryVaccines} />
+        <Switch
+          onChange={e => setBeneficiaryField('hasMandatoryVaccines', e.target.checked)}
+          checked={beneficiaryFields.hasMandatoryVaccines}
+        />
         <Typography>No</Typography>
       </Stack>
       <TextField
@@ -48,10 +44,8 @@ export const HealthForm: FC<HealthFormProps> = props => {
         type='text'
         label='Observaciones'
         placeholder='Tiene diabetes tipo 2'
-        value={observations}
-        onChange={e => {
-          setObservations(e.target.value);
-        }}
+        value={beneficiaryFields.observations}
+        onChange={e => setBeneficiaryField('observations', e.target.value)}
         fullWidth={true}
         variant='standard'
       />
@@ -60,10 +54,10 @@ export const HealthForm: FC<HealthFormProps> = props => {
         variant='contained'
         color='warning'
         onClick={() => {
-          setHasMandatoryVaccines(false);
-          setHasCovidVaccine(false);
-          setObservations('');
-          setAddHealth(false);
+          setBeneficiaryField('hasCovidVaccine', false);
+          setBeneficiaryField('hasMandatoryVaccines', false);
+          setBeneficiaryField('observations', '');
+          setBeneficiaryExtra('addHealth', false);
         }}
       >
         Borrar Salud

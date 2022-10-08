@@ -31,6 +31,17 @@ import { LikesCard } from './BeneficiaryCard/Likes';
 import { JobCard } from './BeneficiaryCard/Job';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import {
+  defaultCreateBeneficiaryFields,
+  useCreateBeneficiaryFields
+} from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
+import {
+  defaultCreateBeneficiaryExtras,
+  useCreateBeneficiaryExtras
+} from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
+import Clothes from 'src/types/Clothes';
+import Job from 'src/types/Job';
+import Health from 'src/types/Health';
 
 interface CreateBeneficiariesProps {
   familyId: string;
@@ -40,49 +51,14 @@ interface CreateBeneficiariesProps {
 
 export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const { openDialog, handleClose, familyId } = props;
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [type, setType] = useState<string>('');
-  const [gender, setGender] = useState<string>('');
-  const [birthday, setBirthday] = useState<string>('');
-  const [dni, setDni] = useState<string>('');
-  const [comments, setComments] = useState<string>('');
-  const [likes, setLikes] = useState<string>('');
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
-  const [school, setSchool] = useState<string>('');
-  const [transportationMethod, setTransportationMethod] = useState<string>('');
-  const [year, setYear] = useState<string>('');
-  const [addEducation, setAddEducation] = useState<boolean>(false);
-  const [addClothes, setAddClothes] = useState<boolean>(false);
-  const [pantsSize, setPantsSize] = useState<string>('');
-  const [shirtSize, setShirtSize] = useState<string>('');
-  const [shoeSize, setShoeSize] = useState<string>('');
-  const [addHealth, setAddHealth] = useState<boolean>(false);
-  const [hasMandatoryVaccines, setHasMandatoryVaccines] = useState<boolean>(false);
-  const [hasCovidVaccine, setHasCovidVaccine] = useState<boolean>(false);
-  const [observations, setObservations] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [addJob, setAddJob] = useState<boolean>(false);
+  const { beneficiaryFields, setBeneficiaryField, setBeneficiaryFields } = useCreateBeneficiaryFields();
+  const { beneficiaryExtras, setBeneficiaryExtra, setBeneficiaryExtras } = useCreateBeneficiaryExtras();
   const [open, setOpen] = useState<boolean[]>([]);
 
   const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setType('');
-    setGender('');
-    setBirthday('');
-    setDni('');
-    setComments('');
-    setLikes('');
-    setYear('');
-    setTransportationMethod('');
-    setSchool('');
-    setAddEducation(false);
-    setHasCovidVaccine(false);
-    setHasMandatoryVaccines(false);
-    setObservations('');
-    setAddHealth(false);
-    setAddClothes(false);
+    setBeneficiaryFields(defaultCreateBeneficiaryFields);
+    setBeneficiaryExtras(defaultCreateBeneficiaryExtras);
     setOpen([]);
   };
 
@@ -109,74 +85,49 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
       <DialogContent>
         <Box>
           <Grid item xs={12}>
-            <GeneralForm
-              dni={dni}
-              setDni={setDni}
-              gender={gender}
-              setGender={setGender}
-              birthday={birthday}
-              setBirthday={setBirthday}
-              likes={likes}
-              setLikes={setLikes}
-              comments={comments}
-              setComments={setComments}
-              firstName={firstName}
-              setFirstName={setFirstName}
-              lastName={lastName}
-              setLastName={setLastName}
-              type={type}
-              setType={setType}
-            />
+            <GeneralForm beneficiaryFields={beneficiaryFields} setBeneficiaryField={setBeneficiaryField} />
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
               <Grid xs={5}>
-                {addEducation && (
+                {beneficiaryExtras.addEducation && (
                   <EducationForm
-                    year={year}
-                    school={school}
-                    setYear={setYear}
-                    setSchool={setSchool}
-                    transportationMethod={transportationMethod}
-                    setTransportationMethod={setTransportationMethod}
-                    setAddEducation={setAddEducation}
+                    beneficiaryFields={beneficiaryFields}
+                    setBeneficiaryField={setBeneficiaryField}
+                    setBeneficiaryExtra={setBeneficiaryExtra}
                   />
                 )}
-                {!addEducation && (
+                {!beneficiaryExtras.addEducation && (
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
                     color='info'
                     onClick={() => {
-                      setTransportationMethod('');
-                      setSchool('');
-                      setYear('');
-                      setAddEducation(true);
+                      setBeneficiaryField('year', '');
+                      setBeneficiaryField('school', '');
+                      setBeneficiaryField('transportationMethod', '');
+                      setBeneficiaryExtra('addEducation', true);
                     }}
                   >
                     Añadir Educación
                   </Button>
                 )}
 
-                {addClothes && (
+                {beneficiaryExtras.addClothes && (
                   <ClothesForm
-                    pantsSize={pantsSize}
-                    setPantsSize={setPantsSize}
-                    shirtSize={shirtSize}
-                    setShirtSize={setShirtSize}
-                    shoeSize={shoeSize}
-                    setShoeSize={setShoeSize}
-                    setAddClothes={setAddClothes}
+                    beneficiaryFields={beneficiaryFields}
+                    setBeneficiaryField={setBeneficiaryField}
+                    setBeneficiaryExtra={setBeneficiaryExtra}
                   />
                 )}
-                {!addClothes && (
+                {!beneficiaryExtras.addClothes && (
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
                     color='info'
                     onClick={() => {
-                      setShoeSize('');
-                      setPantsSize('');
-                      setShirtSize('');
-                      setAddClothes(true);
+                      setBeneficiaryField('shoeSize', '');
+                      setBeneficiaryField('pantsSize', '');
+                      setBeneficiaryField('shirtSize', '');
+                      setBeneficiaryExtra('addClothes', true);
                     }}
                   >
                     Añadir Ropa
@@ -184,42 +135,44 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                 )}
               </Grid>
               <Grid xs={5}>
-                {addHealth && (
+                {beneficiaryExtras.addHealth && (
                   <HealthForm
-                    hasMandatoryVaccines={hasMandatoryVaccines}
-                    setHasMandatoryVaccines={setHasMandatoryVaccines}
-                    hasCovidVaccine={hasCovidVaccine}
-                    setHasCovidVaccine={setHasCovidVaccine}
-                    observations={observations}
-                    setObservations={setObservations}
-                    setAddHealth={setAddHealth}
+                    beneficiaryFields={beneficiaryFields}
+                    setBeneficiaryField={setBeneficiaryField}
+                    setBeneficiaryExtra={setBeneficiaryExtra}
                   />
                 )}
-                {!addHealth && (
+                {!beneficiaryExtras.addHealth && (
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
                     color='info'
                     onClick={() => {
-                      setShoeSize('');
-                      setPantsSize('');
-                      setShirtSize('');
-                      setAddHealth(true);
+                      setBeneficiaryField('hasCovidVaccine', false);
+                      setBeneficiaryField('hasMandatoryVaccines', false);
+                      setBeneficiaryField('observations', '');
+                      setBeneficiaryExtra('addHealth', true);
                     }}
                   >
                     Añadir Salud
                   </Button>
                 )}
 
-                {addJob && <JobForm title={title} setTitle={setTitle} setAddJob={setAddJob} />}
-                {!addJob && (
+                {beneficiaryExtras.addJob && (
+                  <JobForm
+                    beneficiaryFields={beneficiaryFields}
+                    setBeneficiaryField={setBeneficiaryField}
+                    setBeneficiaryExtra={setBeneficiaryExtra}
+                  />
+                )}
+                {!beneficiaryExtras.addJob && (
                   <Button
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
                     variant='contained'
                     color='info'
                     onClick={() => {
-                      setTitle('');
-                      setAddJob(true);
+                      setBeneficiaryField('title', '');
+                      setBeneficiaryExtra('addJob', true);
                     }}
                   >
                     Añadir Trabajo
@@ -233,17 +186,45 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             variant='contained'
             onClick={() => {
               const education: Education | undefined =
-                !!school && !!year && !!transportationMethod ? { school, year, transportationMethod } : undefined;
+                !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
+                  ? {
+                      school: beneficiaryFields.school,
+                      year: beneficiaryFields.year,
+                      transportationMethod: beneficiaryFields.transportationMethod
+                    }
+                  : undefined;
+              const clothes: Clothes | undefined =
+                !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
+                  ? {
+                      shoeSize: beneficiaryFields.shoeSize,
+                      pantsSize: beneficiaryFields.pantsSize,
+                      shirtSize: beneficiaryFields.shirtSize
+                    }
+                  : undefined;
+              const job: Job | undefined = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : undefined;
+              const health: Health | undefined =
+                !!beneficiaryFields.hasCovidVaccine ||
+                !!beneficiaryFields.hasMandatoryVaccines ||
+                !!beneficiaryFields.observations
+                  ? {
+                      hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
+                      hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
+                      observations: beneficiaryFields.observations
+                    }
+                  : undefined;
               beneficiaries.push({
-                firstName,
-                lastName,
-                type,
-                gender,
-                birthday,
-                dni,
-                comments,
-                likes,
-                education
+                firstName: beneficiaryFields.firstName,
+                lastName: beneficiaryFields.lastName,
+                type: beneficiaryFields.type,
+                gender: beneficiaryFields.gender,
+                birthday: beneficiaryFields.birthday,
+                dni: beneficiaryFields.dni,
+                comments: beneficiaryFields.comments,
+                likes: beneficiaryFields.likes,
+                education,
+                job,
+                clothes,
+                health
               });
               open.push(false);
               resetFields();
