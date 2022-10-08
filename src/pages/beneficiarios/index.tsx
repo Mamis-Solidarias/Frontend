@@ -14,8 +14,12 @@ import Family from 'src/types/Family';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
-import { useBeneficiariesFilters } from 'src/hooks/useBeneficiariesFilters';
+import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersView';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import ChevronUp from 'mdi-material-ui/ChevronUp';
+import ChevronDown from 'mdi-material-ui/ChevronDown';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -24,6 +28,7 @@ const Dashboard = () => {
   const { filters, setFilter } = useBeneficiariesFilters();
   const [communities, setCommunities] = useState<Community[]>([]);
   const [families, setFamilies] = useState<Family[]>([]);
+  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
@@ -56,29 +61,38 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Card sx={{ my: '2em', py: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
-              Filtros {filtersApplied.dniStarts}
+              Filtros
             </Typography>
-            <BeneficiariesFiltersView
-              filters={filters}
-              setFilter={setFilter}
-              communities={communities}
-              families={families}
-            />
-            <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
-              <Button
-                onClick={() => {
-                  const filtersToApply = filters;
-                  for (const fk in filtersToApply) {
-                    if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                      filtersToApply[fk as keyof BeneficiariesFilters] = null;
+            <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
+              {openCollapse ? (
+                <ChevronUp sx={{ fontSize: '1.875rem' }} />
+              ) : (
+                <ChevronDown sx={{ fontSize: '1.875rem' }} />
+              )}
+            </IconButton>
+            <Collapse in={openCollapse}>
+              <BeneficiariesFiltersView
+                filters={filters}
+                setFilter={setFilter}
+                communities={communities}
+                families={families}
+              />
+              <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
+                <Button
+                  onClick={() => {
+                    const filtersToApply = filters;
+                    for (const fk in filtersToApply) {
+                      if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                        filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                      }
                     }
-                  }
-                  setFiltersApplied(filtersToApply);
-                }}
-              >
-                Aplicar Filtros
-              </Button>
-            </Typography>
+                    setFiltersApplied(filtersToApply);
+                  }}
+                >
+                  Aplicar Filtros
+                </Button>
+              </Typography>
+            </Collapse>
           </Card>
 
           <Button
@@ -88,9 +102,8 @@ const Dashboard = () => {
               setOpenWindow(true);
               setOpenCreateBeneficiaries(true);
             }}
-            disabled={!filters.familyId}
           >
-            Añadir Beneficiarios a Familia {filters.familyId}
+            Añadir Beneficiarios
           </Button>
 
           <BeneficiariesTable filters={filtersApplied} />

@@ -1,4 +1,4 @@
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -17,84 +17,21 @@ import Beneficiary from 'src/types/Beneficiary';
 import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
 import GENDERS from 'src/types/Genders';
 import { BeneficiariesFilters } from 'src/types/BeneficiariesFilters';
+import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { BeneficiariesPaging } from 'src/types/BeneficiariesPaging';
 
-const GET_BENEFICIARIES = gql`
-  query filterQuery(
-    $dniStarts: String
-    $ageStart: Int
-    $ageEnd: Int
-    $firstName: String
-    $lastName: String
-    $type: String
-    $familyId: String
-    $communityId: String
-    $school: String
-    $gender: String
-    $isActive: Boolean
-  ) {
-    filteredBeneficiaries(
-      filter: {
-        dniStarts: $dniStarts
-        ageStart: $ageStart
-        ageEnd: $ageEnd
-        lastName: $lastName
-        firstName: $firstName
-        type: $type
-        familyId: $familyId
-        communityId: $communityId
-        school: $school
-        gender: $gender
-        isActive: $isActive
-      }
-    ) {
-      nodes {
-        dni
-        birthday
-        comments
-        familyId
-        family {
-          communityId
-        }
-        firstName
-        gender
-        id
-        isActive
-        lastName
-        likes
-        type
-        clothes {
-          pantsSize
-          shoeSize
-          shirtSize
-        }
-        health {
-          hasCovidVaccine
-          hasMandatoryVaccines
-          observations
-        }
-        education {
-          school
-          year
-          transportationMethod
-        }
-        job {
-          title
-        }
-      }
-    }
-  }
-`;
 interface GetBeneficiariesProps {
   open: boolean[];
   setOpen: (value: boolean[]) => void;
   filters: BeneficiariesFilters;
+  paging: BeneficiariesPaging;
+  setPaging: (field: keyof BeneficiariesPaging, value: any) => void;
 }
 
 export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
-  const { filters } = props;
+  const { open, setOpen, filters, paging, setPaging } = props;
 
-  const { open, setOpen } = props;
-  const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
+  const { loading, error, data, refetch, fetchMore } = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
       ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
@@ -106,7 +43,9 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
       communityId: filters.communityCode,
       school: filters.school,
       gender: filters.gender,
-      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null
+      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null,
+      after: paging.pageCursor,
+      limit: paging.limit
     }
   });
 
@@ -122,10 +61,42 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
       communityId: filters.communityCode,
       school: filters.school,
       gender: filters.gender,
-      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null
+      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null,
+      after: paging.pageCursor,
+      limit: paging.limit
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, [filters, paging.limit]);
+
+  useEffect(() => {
+    if (!!pageInfo && !!edges) {
+      setPaging('previousCursor', paging.pageCursor);
+      setPaging('nextCursor', pageInfo.endCursor);
+      setPaging('pageCursor', edges.cursor);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageInfo, edges]);
+
+  useEffect(() => {
+    fetchMore({
+      variables: {
+        ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
+        ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
+        lastName: filters.lastName,
+        firstName: filters.firstName,
+        type: filters.type,
+        dniStarts: filters.dniStarts,
+        familyId: filters.familyId,
+        communityId: filters.communityCode,
+        school: filters.school,
+        gender: filters.gender,
+        isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null,
+        after: paging.nextCursor,
+        limit: paging.limit
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paging.nextCursor]);
 
   if (loading)
     return (
@@ -133,6 +104,7 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
         <TableCell>Loading...</TableCell>
       </TableRow>
     );
+
   if (error) {
     return (
       <TableRow>
@@ -142,6 +114,8 @@ export const GetBeneficiaries: FC<GetBeneficiariesProps> = props => {
   }
 
   const nodes = data.filteredBeneficiaries.nodes;
+  const pageInfo = data.filteredBeneficiaries.pageInfo;
+  const edges = data.filteredBeneficiaries.edges;
 
   return nodes.map((row: Beneficiary, index: number) => (
     <React.Fragment key={row.id}>

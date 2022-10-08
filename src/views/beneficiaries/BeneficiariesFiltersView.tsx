@@ -29,7 +29,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
         <TextField
           select
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Comunidad'
           value={filters.communityCode}
@@ -47,7 +46,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
         <TextField
           select
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Familia'
           value={filters.familyId}
@@ -64,7 +62,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
       <Box sx={{ padding: '1em' }}>
         <TextField
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Edad Mínima'
           value={filters.ageStart}
@@ -74,7 +71,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
       <Box sx={{ padding: '1em' }}>
         <TextField
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Edad Máxima'
           value={filters.ageEnd}
@@ -84,7 +80,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
       <Box sx={{ padding: '1em' }}>
         <TextField
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='DNI'
           value={filters.dniStarts}
@@ -94,7 +89,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
       <Box sx={{ padding: '1em' }}>
         <TextField
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Nombre'
           value={filters.firstName}
@@ -104,7 +98,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
       <Box sx={{ padding: '1em' }}>
         <TextField
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Apellido'
           value={filters.lastName}
@@ -115,7 +108,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
         <TextField
           select
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Tipo'
           value={filters.type}
@@ -136,7 +128,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
       <Box sx={{ padding: '1em' }}>
         <TextField
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Escuela'
           value={filters.school}
@@ -147,7 +138,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
         <TextField
           select
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Género'
           value={filters.gender}
