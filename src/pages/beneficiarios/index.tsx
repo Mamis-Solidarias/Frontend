@@ -108,13 +108,11 @@ const Dashboard = () => {
 
           <BeneficiariesTable filters={filtersApplied} />
 
-          {!!filters.familyId && (
-            <CreateBeneficiaries
-              openDialog={openCreateBeneficiaries}
-              handleClose={() => setOpenCreateBeneficiaries(false)}
-              familyId={filters.familyId}
-            />
-          )}
+          <CreateBeneficiaries
+            openDialog={openCreateBeneficiaries}
+            handleClose={() => setOpenCreateBeneficiaries(false)}
+            communities={communities}
+          />
         </Grid>
       </Grid>
     </ApexChartWrapper>

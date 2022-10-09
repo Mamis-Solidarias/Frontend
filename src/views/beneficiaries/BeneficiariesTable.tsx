@@ -39,7 +39,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   const [open, setOpen] = useState<boolean[]>([]);
   const { filters } = props;
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
-  const { loading, error, data, refetch, fetchMore } = useQuery(GET_BENEFICIARIES, {
+  const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
       ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
@@ -77,22 +77,20 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   }, [filters, paging.limit]);
 
   useEffect(() => {
-    fetchMore({
-      variables: {
-        ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
-        ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
-        lastName: filters.lastName,
-        firstName: filters.firstName,
-        type: filters.type,
-        dniStarts: filters.dniStarts,
-        familyId: filters.familyId,
-        communityId: filters.communityCode,
-        school: filters.school,
-        gender: filters.gender,
-        isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null,
-        after: paging.pageCursor,
-        limit: paging.limit
-      }
+    refetch({
+      ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
+      ageEnd: isNaN(parseInt(filters.ageEnd as string)) ? filters.ageEnd : parseInt(filters.ageEnd as string),
+      lastName: filters.lastName,
+      firstName: filters.firstName,
+      type: filters.type,
+      dniStarts: filters.dniStarts,
+      familyId: filters.familyId,
+      communityId: filters.communityCode,
+      school: filters.school,
+      gender: filters.gender,
+      isActive: !!filters.isActive ? (filters.isActive === 'true' ? true : false) : null,
+      after: paging.pageCursor,
+      limit: paging.limit
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paging.pageCursor]);

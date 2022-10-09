@@ -42,15 +42,18 @@ import {
 import Clothes from 'src/types/Clothes';
 import Job from 'src/types/Job';
 import Health from 'src/types/Health';
+import Community from 'src/types/Community';
+import GENDERS from 'src/types/Genders';
+import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
 
 interface CreateBeneficiariesProps {
-  familyId: string;
   openDialog: boolean;
   handleClose: () => void;
+  communities: Community[];
 }
 
 export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
-  const { openDialog, handleClose, familyId } = props;
+  const { openDialog, handleClose, communities } = props;
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
   const { beneficiaryFields, setBeneficiaryField, setBeneficiaryFields } = useCreateBeneficiaryFields();
   const { beneficiaryExtras, setBeneficiaryExtra, setBeneficiaryExtras } = useCreateBeneficiaryExtras();
@@ -85,7 +88,11 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
       <DialogContent>
         <Box>
           <Grid item xs={12}>
-            <GeneralForm beneficiaryFields={beneficiaryFields} setBeneficiaryField={setBeneficiaryField} />
+            <GeneralForm
+              beneficiaryFields={beneficiaryFields}
+              setBeneficiaryField={setBeneficiaryField}
+              communities={communities}
+            />
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
               <Grid xs={5}>
                 {beneficiaryExtras.addEducation && (
@@ -237,6 +244,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
+                <TableCell></TableCell>
                 <TableCell>Nombre Completo</TableCell>
                 <TableCell>Género</TableCell>
                 <TableCell>Fecha de Nacimiento</TableCell>
@@ -283,9 +291,9 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                         </IconButton>
                       </TableCell>
                       <TableCell>{beneficiary.firstName + ' ' + beneficiary.lastName}</TableCell>
-                      <TableCell>{beneficiary.gender}</TableCell>
+                      <TableCell>{GENDERS[beneficiary.gender as keyof typeof GENDERS]}</TableCell>
                       <TableCell>{beneficiary.birthday}</TableCell>
-                      <TableCell>{beneficiary.dni}</TableCell>
+                      <TableCell>{BENEFICIARY_TYPES[beneficiary.type as keyof typeof BENEFICIARY_TYPES]}</TableCell>
                       <TableCell>{beneficiary.type}</TableCell>
                       <TableCell>
                         <IconButton aria-label='delete' size='small' onClick={() => deleteBeneficiary(beneficiary)}>
@@ -296,17 +304,25 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                     <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                       <TableCell colSpan={12}>
                         <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                          <Box
+                            sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', flexWrap: 'wrap' }}
+                          >
                             {!!beneficiary.education && (
-                              <EducationCard education={beneficiary.education} sx={{ mx: '1em' }} />
+                              <EducationCard education={beneficiary.education} sx={{ mx: '1em', my: '1em' }} />
                             )}
-                            {!!beneficiary.health && <HealthCard health={beneficiary.health} sx={{ mx: '1em' }} />}
-                            {!!beneficiary.clothes && <ClothesCard clothes={beneficiary.clothes} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.health && (
+                              <HealthCard health={beneficiary.health} sx={{ mx: '1em', my: '1em' }} />
+                            )}
+                            {!!beneficiary.clothes && (
+                              <ClothesCard clothes={beneficiary.clothes} sx={{ mx: '1em', my: '1em' }} />
+                            )}
                             {!!beneficiary.comments && (
-                              <CommentsCard comments={beneficiary.comments} sx={{ mx: '1em' }} />
+                              <CommentsCard comments={beneficiary.comments} sx={{ mx: '1em', my: '1em' }} />
                             )}
-                            {!!beneficiary.likes && <LikesCard likes={beneficiary.likes} sx={{ mx: '1em' }} />}
-                            {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.likes && (
+                              <LikesCard likes={beneficiary.likes} sx={{ mx: '1em', my: '1em' }} />
+                            )}
+                            {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{ mx: '1em', my: '1em' }} />}
                           </Box>
                         </Collapse>
                       </TableCell>
@@ -320,7 +336,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={() => {
-            createBeneficiaries(localStorage.getItem('user'), familyId, beneficiaries);
+            createBeneficiaries(localStorage.getItem('user'), beneficiaryFields.familyId, beneficiaries);
             resetAllFields();
             handleClose();
           }}

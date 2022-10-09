@@ -1,22 +1,53 @@
 import TextField from '@mui/material/TextField';
 
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
+import Community from 'src/types/Community';
+import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
+import Family from 'src/types/Family';
 
 interface GeneralFormProps {
   beneficiaryFields: CreateBeneficiaryFields;
   setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
+  communities: Community[];
 }
 
 export const GeneralForm: FC<GeneralFormProps> = props => {
-  const { beneficiaryFields, setBeneficiaryField } = props;
+  const { beneficiaryFields, setBeneficiaryField, communities } = props;
+  const [families, setFamilies] = useState<Family[]>([]);
+  const [selectedCommunity, setSelectedCommunity] = useState<string>('');
+
+  useEffect(() => {
+    if (!!selectedCommunity) {
+      getFamiliesByCommunity(localStorage.getItem('user'), selectedCommunity, 0, 100).then(result => {
+        setFamilies(result.data.families);
+      });
+    }
+  }, [selectedCommunity]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
       <Grid xs={5}>
+        <TextField
+          select
+          fullWidth={true}
+          style={{ padding: '1em' }}
+          variant='standard'
+          label='Comunidad'
+          placeholder='Misiones'
+          value={selectedCommunity}
+          onChange={e => setSelectedCommunity(e.target.value)}
+        >
+          <MenuItem value=''>Ninguna</MenuItem>
+          {communities.map((community: Community) => (
+            <MenuItem value={community.id} key={community.id}>
+              {community.name}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           style={{ padding: '1em' }}
           id='firstName'
@@ -63,14 +94,29 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           label='Comentarios'
           placeholder='Es buena gente'
           value={beneficiaryFields.comments}
-          onChange={e => {
-            setBeneficiaryField('comments', e.target.value);
-          }}
+          onChange={e => setBeneficiaryField('comments', e.target.value)}
           fullWidth={true}
           variant='standard'
         />
       </Grid>
       <Grid xs={5}>
+        <TextField
+          select
+          fullWidth={true}
+          style={{ padding: '1em' }}
+          variant='standard'
+          label='Familia'
+          placeholder='Gómez'
+          value={beneficiaryFields.familyId}
+          onChange={e => setBeneficiaryField('familyId', e.target.value)}
+        >
+          <MenuItem value=''>Ninguna</MenuItem>
+          {families.map((family: Family) => (
+            <MenuItem value={family.id} key={family.id}>
+              {family.name}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           style={{ padding: '1em' }}
           id='lastName'
@@ -79,9 +125,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           label='Apellido'
           placeholder='Montoya'
           value={beneficiaryFields.lastName}
-          onChange={e => {
-            setBeneficiaryField('lastName', e.target.value);
-          }}
+          onChange={e => setBeneficiaryField('lastName', e.target.value)}
           fullWidth={true}
           variant='standard'
         />
