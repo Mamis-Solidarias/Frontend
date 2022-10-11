@@ -18,4 +18,5 @@ export default interface Beneficiary {
   education?: Education;
   health?: Health;
   job?: Job;
+  isActive?: boolean;
 }

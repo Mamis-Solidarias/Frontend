@@ -24,10 +24,12 @@ export const updateBeneficiary = async (
     comments?: string;
     likes?: string;
     clothes?: any;
-    education?: Education;
-    health?: Health;
-    job: Job;
+    education?: Education | null;
+    health?: Health | null;
+    job?: Job | null;
   }
 ) => {
+  console.log(data);
+
   return authAxiosClient(loginData).patch('/beneficiaries/' + id, data);
 };

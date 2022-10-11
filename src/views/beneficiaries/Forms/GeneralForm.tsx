@@ -13,15 +13,18 @@ interface GeneralFormProps {
   beneficiaryFields: CreateBeneficiaryFields;
   setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
   communities: Community[];
+  startingCommunityInput?: string;
 }
 
 export const GeneralForm: FC<GeneralFormProps> = props => {
-  const { beneficiaryFields, setBeneficiaryField, communities } = props;
+  const { beneficiaryFields, setBeneficiaryField, communities, startingCommunityInput } = props;
   const [families, setFamilies] = useState<Family[]>([]);
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
 
   useEffect(() => {
     if (!!selectedCommunity) {
+      setBeneficiaryField('familyId', '');
+      console.log('to bien to');
       getFamiliesByCommunity(localStorage.getItem('user'), selectedCommunity, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
@@ -31,23 +34,25 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
       <Grid xs={5}>
-        <TextField
-          select
-          fullWidth={true}
-          style={{ padding: '1em' }}
-          variant='standard'
-          label='Comunidad'
-          placeholder='Misiones'
-          value={selectedCommunity}
-          onChange={e => setSelectedCommunity(e.target.value)}
-        >
-          <MenuItem value=''>Ninguna</MenuItem>
-          {communities.map((community: Community) => (
-            <MenuItem value={community.id} key={community.id}>
-              {community.name}
-            </MenuItem>
-          ))}
-        </TextField>
+        {!startingCommunityInput && (
+          <TextField
+            select
+            fullWidth={true}
+            style={{ padding: '1em' }}
+            variant='standard'
+            label='Comunidad'
+            placeholder='Misiones'
+            value={selectedCommunity}
+            onChange={e => setSelectedCommunity(e.target.value)}
+          >
+            <MenuItem value=''>Ninguna</MenuItem>
+            {communities.map((community: Community) => (
+              <MenuItem value={community.id} key={community.id}>
+                {community.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
         <TextField
           style={{ padding: '1em' }}
           id='firstName'
@@ -100,23 +105,25 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         />
       </Grid>
       <Grid xs={5}>
-        <TextField
-          select
-          fullWidth={true}
-          style={{ padding: '1em' }}
-          variant='standard'
-          label='Familia'
-          placeholder='Gómez'
-          value={beneficiaryFields.familyId}
-          onChange={e => setBeneficiaryField('familyId', e.target.value)}
-        >
-          <MenuItem value=''>Ninguna</MenuItem>
-          {families.map((family: Family) => (
-            <MenuItem value={family.id} key={family.id}>
-              {family.name}
-            </MenuItem>
-          ))}
-        </TextField>
+        {!startingCommunityInput && (
+          <TextField
+            select
+            fullWidth={true}
+            style={{ padding: '1em' }}
+            variant='standard'
+            label='Familia'
+            placeholder='Gómez'
+            value={beneficiaryFields.familyId}
+            onChange={e => setBeneficiaryField('familyId', e.target.value)}
+          >
+            <MenuItem value=''>Ninguna</MenuItem>
+            {families.map((family: Family) => (
+              <MenuItem value={family.id} key={family.id}>
+                {family.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
         <TextField
           style={{ padding: '1em' }}
           id='lastName'

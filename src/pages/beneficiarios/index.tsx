@@ -79,6 +79,7 @@ const Dashboard = () => {
               />
               <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
                 <Button
+                  variant='contained'
                   onClick={() => {
                     const filtersToApply = filters;
                     for (const fk in filtersToApply) {
@@ -106,7 +107,7 @@ const Dashboard = () => {
             Añadir Beneficiarios
           </Button>
 
-          <BeneficiariesTable filters={filtersApplied} />
+          <BeneficiariesTable filters={filtersApplied} communities={communities} />
 
           <CreateBeneficiaries
             openDialog={openCreateBeneficiaries}

@@ -23,7 +23,7 @@ export const beneficiariesFiltersDefaults: BeneficiariesFilters = {
   communityCode: '',
   school: '',
   gender: '',
-  isActive: ''
+  isActive: 'true'
 };
 
 export const beneficiariesFiltersNull: BeneficiariesFilters = {
@@ -37,5 +37,5 @@ export const beneficiariesFiltersNull: BeneficiariesFilters = {
   communityCode: null,
   school: null,
   gender: null,
-  isActive: ''
+  isActive: 'true'
 };
