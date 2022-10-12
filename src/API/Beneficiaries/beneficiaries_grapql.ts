@@ -77,3 +77,23 @@ export const GET_BENEFICIARIES = gql`
     }
   }
 `;
+
+export const GET_COMMUNITIES = gql`
+  query filterQuery($after: String, $limit: Int) {
+    communities(after: $after, first: $limit) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+      }
+      nodes {
+        id
+        address
+        description
+        name
+      }
+    }
+  }
+`;

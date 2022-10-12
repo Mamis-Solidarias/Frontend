@@ -24,7 +24,8 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
     setDescription('');
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     const addressToSend = !!address ? address : null;
     const descriptionToSend = !!description ? description : null;
     await updateCommunity(id, { address: addressToSend, description: descriptionToSend });
