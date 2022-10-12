@@ -56,7 +56,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Comunidad</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Comunidades</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
@@ -64,7 +64,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             id='communityName'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Nombre de Nueva Comunidad'
+            label='Nombre'
             placeholder='Misiones'
             value={name}
             onChange={e => {
@@ -78,7 +78,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Dirección de Nueva Comunidad'
+            label='Dirección'
             placeholder='Cataratas 123'
             value={address}
             onChange={e => {
@@ -92,7 +92,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             style={{ padding: '1em' }}
             id='description'
             type='text'
-            label='Descripción de Nueva Comunidad (opcional)'
+            label='Descripción (opcional)'
             placeholder='Es un lindo pueblo'
             value={description}
             onChange={e => {
@@ -105,7 +105,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             style={{ padding: '1em' }}
             id='communityCode'
             type='text'
-            label='Código de Comunidad de Nueva Comunidad (opcional)'
+            label='Código (opcional)'
             placeholder='MI'
             value={communityCode}
             onChange={e => {
@@ -135,7 +135,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                 <TableCell>Nombre</TableCell>
                 <TableCell>Dirección</TableCell>
                 <TableCell>Descripción</TableCell>
-                <TableCell>Código de Comunidad</TableCell>
+                <TableCell>Código</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -168,7 +168,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           }}
           disabled={communities.length === 0}
         >
-          Crear Comunidades
+          Crear
         </Button>
       </DialogContent>
     </Dialog>

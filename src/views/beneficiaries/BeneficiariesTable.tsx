@@ -78,7 +78,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   if (loading)
     return (
       <TableRow>
-        <TableCell>Loading...</TableCell>
+        <TableCell>Cargando...</TableCell>
       </TableRow>
     );
 

@@ -1,11 +1,11 @@
-import { axiosClient } from './initialization';
+import { authAxiosClient } from './initialization';
 
 export const loginUser = async (email: string, password: string) => {
   const data = { email, password };
 
-  return axiosClient.post('login', data);
+  return authAxiosClient.post('login', data);
 };
 
 export const logoutUser = async () => {
-  return axiosClient.post('logout');
+  return authAxiosClient.post('logout');
 };
