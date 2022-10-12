@@ -42,18 +42,14 @@ type ExtendedAppProps = AppProps & {
 
 // ** Apollo Client auth token
 const httpLink = createHttpLink({
-  uri: 'http://localhost:8080/graphql'
+  uri: 'http://localhost/query'
 });
 
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('user');
-
   // return the headers to the context so httpLink can read them
   return {
     headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : ''
+      ...headers
     }
   };
 });

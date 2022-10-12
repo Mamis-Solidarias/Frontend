@@ -21,10 +21,12 @@ import User from 'src/types/User';
 
 interface TableUsersProps {
   openWindow: boolean;
+  userAdded: boolean;
+  setUserAdded: (userAdded: boolean) => void;
 }
 
 const TableUsers: FC<TableUsersProps> = props => {
-  const { openWindow } = props;
+  const { openWindow, userAdded, setUserAdded } = props;
   const INITIAL_SIZE = 5,
     MEDIUM_SIZE = 10,
     LARGE_SIZE = 15;
@@ -38,7 +40,7 @@ const TableUsers: FC<TableUsersProps> = props => {
   const [openUpdateUser, setOpenUpdateUser] = useState<boolean>(false);
   const [actualUserId, setActualUserId] = useState<string>('-1');
 
-  useEffect(() => {
+  const reloadUsers = () => {
     if (!!localStorage.getItem('user')) {
       if (!!localStorage.getItem('pageUsers')) {
         setRowsPerPage(parseInt(localStorage.getItem('pageSize') as string));
@@ -53,12 +55,26 @@ const TableUsers: FC<TableUsersProps> = props => {
       }
       setActualUserId(JSON.parse(localStorage.getItem('user') as string).id);
     }
+  };
+
+  useEffect(() => {
+    reloadUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (userAdded) {
+      reloadUsers();
+      setUserAdded(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userAdded]);
 
   useEffect(() => {
     if (!openWindow) {
       changePage(actualPage, rowsPerPage);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openWindow]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -90,11 +106,9 @@ const TableUsers: FC<TableUsersProps> = props => {
                 <TableCell>ID</TableCell>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell></TableCell>
                 <TableCell>Teléfono</TableCell>
                 <TableCell>Activo</TableCell>
-                <TableCell>Permisos</TableCell>
-                <TableCell></TableCell>
+                <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,34 +120,45 @@ const TableUsers: FC<TableUsersProps> = props => {
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{row.phone}</TableCell>
                     <TableCell>
+                      <Checkbox
+                        checked={row.isActive}
+                        onClick={async () => {
+                          if (row.isActive) {
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            await deleteUser(row.id).then(_ => (row.isActive = false));
+                          } else {
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            await reactivateUser(row.id).then(_ => (row.isActive = true));
+                          }
+                          reloadUsers();
+                        }}
+                        disabled={row.id === parseInt(actualUserId)}
+                      />
+                    </TableCell>
+                    <TableCell sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Button
                         variant='contained'
+                        sx={{ fontSize: 9, width: '30%' }}
                         onClick={() => {
                           setId(row.id);
                           setOpenUpdateUser(true);
                         }}
                       >
-                        Editar Datos de Usuario
+                        Editar Datos
                       </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={row.isActive}
-                        onClick={() => {
-                          if (row.isActive) {
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            deleteUser(row.id).then(_ => (row.isActive = false));
-                          } else {
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            reactivateUser(row.id).then(_ => (row.isActive = true));
-                          }
-                        }}
-                        disabled={row.id === parseInt(actualUserId)}
-                      />
-                    </TableCell>
-                    <TableCell>
                       <Button
                         variant='contained'
+                        sx={{ fontSize: 9, width: '30%' }}
+                        onClick={() => {
+                          setId(row.id);
+                          setOpenEditPassword(true);
+                        }}
+                      >
+                        Editar Contraseña
+                      </Button>
+                      <Button
+                        variant='contained'
+                        sx={{ fontSize: 9, width: '30%' }}
                         onClick={() => {
                           setId(row.id);
                           setOpenEditPermissions(true);
@@ -141,17 +166,6 @@ const TableUsers: FC<TableUsersProps> = props => {
                         disabled={row.id === parseInt(actualUserId)}
                       >
                         Editar Permisos
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant='contained'
-                        onClick={() => {
-                          setId(row.id);
-                          setOpenEditPassword(true);
-                        }}
-                      >
-                        Editar Contraseña
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -174,6 +188,7 @@ const TableUsers: FC<TableUsersProps> = props => {
             id={id}
             handleClose={() => {
               setOpenEditPermissions(false);
+              reloadUsers();
             }}
           />
         )}
@@ -183,6 +198,7 @@ const TableUsers: FC<TableUsersProps> = props => {
             id={id}
             handleClose={() => {
               setOpenEditPassword(false);
+              reloadUsers();
             }}
           />
         )}
@@ -192,6 +208,7 @@ const TableUsers: FC<TableUsersProps> = props => {
             id={id}
             handleClose={() => {
               setOpenUpdateUser(false);
+              reloadUsers();
             }}
           />
         )}

@@ -167,7 +167,7 @@ export const UserProfileDisplay: FC = () => {
               }}
               sx={{ width: '100%' }}
             >
-              Editar Datos de Usuario
+              Editar Datos
             </Button>
           </Box>
         )}

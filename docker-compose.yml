@@ -117,10 +117,13 @@ services:
       ReverseProxy__Clusters__users__Destinations__users-1__Address: 'http://users/'
       ReverseProxy__Clusters__beneficiaries__Destinations__beneficiaries-1__Address: 'http://beneficiaries/'
       ReverseProxy__Clusters__donors__Destinations__donors-1__Address: 'http://donors/'
+      ReverseProxy__Clusters__campaigns__Destinations__campaigns-1__Address: 'http://campaigns/'
       OpenTelemetry__Jaeger__Host: 'http://jaeger:14268'
       UsersHttpClient__BaseUrl: "http://users"
       GraphQl__Beneficiaries__Url: 'http://localhost/api/beneficiaries/graphql'
       GraphQl__Donors__Url: 'http://localhost/api/donors/graphql'
+      GraphQl__Users__Url: 'http://localhost/api/users/graphql'
+      GraphQl__Campaigns__Url: ''
       ReverseProxy__Clusters__frontend__Destinations__frontend-1__Address: "http://host.docker.internal:3000/"
       
       

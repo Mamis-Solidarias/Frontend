@@ -72,7 +72,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
                           setOpenUpdateCommunity(true);
                         }}
                       >
-                        Editar Datos de Comunidad
+                        Editar Datos
                       </Button>
                     </TableCell>
                   </TableRow>

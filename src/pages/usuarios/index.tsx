@@ -12,6 +12,7 @@ import { CreateUser } from 'src/views/users/CreateUser';
 const Dashboard = () => {
   const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
+  const [userAdded, setUserAdded] = useState<boolean>(false);
 
   useEffect(() => {
     if (openWindow && openCreateUser === false) {
@@ -24,7 +25,7 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <TableUsers openWindow={openWindow} />
+          <TableUsers openWindow={openWindow} userAdded={userAdded} setUserAdded={setUserAdded} />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -35,7 +36,13 @@ const Dashboard = () => {
           >
             Añadir Nuevo Usuario
           </Button>
-          <CreateUser openDialog={openCreateUser} handleClose={() => setOpenCreateUser(false)} />
+          <CreateUser
+            openDialog={openCreateUser}
+            handleClose={() => {
+              setOpenCreateUser(false);
+              setUserAdded(true);
+            }}
+          />
         </Grid>
       </Grid>
     </ApexChartWrapper>
