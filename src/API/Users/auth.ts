@@ -5,3 +5,7 @@ export const loginUser = async (email: string, password: string) => {
 
   return axiosClient.post('login', data);
 };
+
+export const logoutUser = async () => {
+  return axiosClient.post('logout');
+};

@@ -17,6 +17,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline';
 
 import Button from '@mui/material/Button';
 import User from 'src/types/User';
+import { logoutUser } from 'src/API/Users/auth';
 
 const UserDropdown = () => {
   // ** States
@@ -56,7 +57,7 @@ const UserDropdown = () => {
   useEffect(() => {
     setMounted(true);
     if (!!localStorage.getItem('user')) {
-      setUser(JSON.parse(localStorage.getItem('user')));
+      setUser(JSON.parse(localStorage.getItem('user') as string));
     }
   }, []);
 
@@ -95,8 +96,9 @@ const UserDropdown = () => {
             <Divider />
             <MenuItem
               sx={{ py: 2 }}
-              onClick={() => {
+              onClick={async () => {
                 localStorage.clear();
+                await logoutUser();
                 router.push('/').then(() => router.reload());
               }}
             >
