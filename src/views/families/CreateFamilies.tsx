@@ -15,7 +15,8 @@ import TableBody from '@mui/material/TableBody';
 import { createFamilies } from 'src/API/Beneficiaries/communities_data';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ContactForm } from './ContactForm';
+
+// import { ContactForm } from './ContactForm';
 
 interface CreateFamiliesProps {
   communityCode: string;
@@ -45,7 +46,8 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [families, setFamilies] = useState<Family[]>([]);
-  const [contacts, setContacts] = useState<Contact[]>([]);
+
+  // const [contacts, setContacts] = useState<Contact[]>([]);
   const [addContact, setAddContact] = useState<number>(0);
   const [types, setTypes] = useState<string[]>([]);
   const [contents, setContents] = useState<string[]>([]);
@@ -62,7 +64,8 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
   const resetAllFields = () => {
     resetFields();
     setAddContact(0);
-    setContacts([]);
+
+    // setContacts([]);
     setTypes([]);
     setContents([]);
     setTitles([]);

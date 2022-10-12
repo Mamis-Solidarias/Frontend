@@ -25,10 +25,11 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
     if (!!selectedCommunity) {
       setBeneficiaryField('familyId', '');
       console.log('to bien to');
-      getFamiliesByCommunity(localStorage.getItem('user'), selectedCommunity, 0, 100).then(result => {
+      getFamiliesByCommunity(selectedCommunity, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCommunity]);
 
   return (

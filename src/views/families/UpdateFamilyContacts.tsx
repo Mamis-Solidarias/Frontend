@@ -24,15 +24,13 @@ interface UpdateContactsProps {
 }
 
 export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
-  const { openDialog, handleClose, id, contacts } = props;
+  const { openDialog, handleClose } = props;
   const [contactsFinal, setContactsFinal] = useState<Contact[]>([]);
   const [contact, setContact] = useState<Contact>({ type: '', title: '', isPreferred: false, content: '' });
 
   const resetFields = () => {
     setContact({ type: '', title: '', isPreferred: false, content: '' });
   };
-
-  const resetAllFields = () => {};
 
   const deleteContact = (contactToDelete: Contact) => {
     const index = contactsFinal.indexOf(contactToDelete);
@@ -46,7 +44,6 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
     <Dialog
       open={openDialog}
       onClose={() => {
-        resetAllFields();
         handleClose();
       }}
       maxWidth='lg'
@@ -99,7 +96,6 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={() => {
-            resetAllFields();
             handleClose();
           }}
           disabled={contactsFinal.length === 0}

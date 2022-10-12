@@ -1,0 +1,115 @@
+version: '3.1'
+networks:
+  mamis-net:
+    driver: "bridge"
+    name: mamis-net
+
+volumes:
+  db:
+    
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    restart: always
+    networks:
+        - mamis-net
+    ports:
+        - 14250:14250/tcp
+        - 14268:14268/tcp
+        - 16686:16686/tcp
+        - 5775:5775/udp
+        - 5778:5778/tcp
+        - 6831:6831/udp
+        - 6832:6832/udp
+        
+  mamis-db:
+    image: postgres:13-alpine
+    container_name: mamis-db
+    restart: always
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      PGTZ: America/Argentina/Buenos_Aires
+    volumes:
+      - db:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - mamis-net
+
+  users:
+    image: ghcr.io/mamis-solidarias/users:1.0.5
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+      - jaeger
+    ports:
+      - 8000:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      
+
+  beneficiaries:
+    image: ghcr.io/mamis-solidarias/beneficiaries:1.1.3
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+      - jaeger
+    ports:
+      - 8001:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+
+  donors:
+    image: ghcr.io/mamis-solidarias/donors:1.0.2
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+      - jaeger
+    ports:
+      - 8002:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+
+  campaigns:
+    image: ghcr.io/mamis-solidarias/campaigns:1.0.0
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+      - jaeger
+    ports:
+      - 8003:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+
+  gateway:
+    image: ghcr.io/mamis-solidarias/gateway:1.0.2
+    container_name: "gateway"
+    restart: unless-stopped
+    depends_on:
+      - jaeger
+      - donors
+      - users
+      - beneficiaries
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+
+
+      
+      
+      
+      

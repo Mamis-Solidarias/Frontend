@@ -31,10 +31,10 @@
         "build": "next build",
         "start": "next start",
         "export": "next export",
-        "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
+        "lint": "next lint",
+        "lint-fix": "next lint --fix",
         "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
     },
-    "proxy": "http://localhost:80",
     "dependencies": {
         "@apollo/client": "^3.6.9",
         "@emotion/cache": "^11.6.0",
