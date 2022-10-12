@@ -65,7 +65,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
     const emailToSend = !!email ? email : null;
     const nameToSend = !!name ? name : null;
     const phoneToSend = !!phone ? phone : null;
-    await updateUser(localStorage.getItem('user'), id, { email: emailToSend, name: nameToSend, phone: phoneToSend });
+    await updateUser(id, { email: emailToSend, name: nameToSend, phone: phoneToSend });
     resetFields();
     handleClose();
   };

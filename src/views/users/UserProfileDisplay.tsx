@@ -6,15 +6,15 @@ import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { FC, useEffect, useState } from 'react';
-import { verifyJwt } from 'src/API/Users/initialization';
-import { getUser, updateUser } from 'src/API/Users/user_data';
+import { updateUser } from 'src/API/Users/user_data';
+import User from 'src/types/User';
 import { EditPassword } from './EditPassword';
 
 const emailPattern = /^[^@]+@[^@]+$/;
 const namePattern = /.{5,100}/;
 
 export const UserProfileDisplay: FC = () => {
-  const [profileUser, setProfileUserUser] = useState();
+  const [profileUser, setProfileUserUser] = useState<User | undefined>();
   const [openEditPassword, setOpenEditPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -30,16 +30,17 @@ export const UserProfileDisplay: FC = () => {
   };
 
   const handleSubmit = async () => {
-    const emailToSend = email === userProfile?.email ? null : email;
-    const nameToSend = name === userProfile?.name ? null : name;
-    const phoneToSend = phone === userProfile?.phone ? null : phone;
-
-    await updateUser(localStorage.getItem('user'), profileUser?.id, {
-      email: emailToSend,
-      name: nameToSend,
-      phone: phoneToSend
-    });
-    resetFields();
+    if (!!profileUser) {
+      const emailToSend = email === profileUser.email ? null : email;
+      const nameToSend = name === profileUser.name ? null : name;
+      const phoneToSend = phone === profileUser.phone ? null : phone;
+      await updateUser(profileUser.id.toString(), {
+        email: emailToSend,
+        name: nameToSend,
+        phone: phoneToSend
+      });
+      resetFields();
+    }
   };
 
   const detectInvalidEmail = (email: string) => {
@@ -59,12 +60,11 @@ export const UserProfileDisplay: FC = () => {
   };
 
   useEffect(() => {
-    getUser(localStorage.getItem('user'), verifyJwt(localStorage.getItem('user') as any).Id).then(response => {
-      setProfileUserUser(response.data.user);
-      setEmail(response.data.user.email);
-      setPhone(response.data.user.phone);
-      setName(response.data.user.name);
-    });
+    const user = JSON.parse(localStorage.getItem('user') as string) as User;
+    setProfileUserUser(user);
+    setEmail(user.email);
+    setPhone(user.phone);
+    setName(user.name);
   }, []);
 
   return (

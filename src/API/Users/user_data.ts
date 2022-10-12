@@ -1,53 +1,48 @@
 import Role from 'src/types/Role';
 import User, { UserNoId, UsersHttp } from 'src/types/User';
-import { authAxiosClient } from './initialization';
+import { axiosClient } from './initialization';
 
-export const getUsers = async (loginData: any, page: number, pageSize: number): Promise<{ data: UsersHttp }> => {
+export const getUsers = async (page: number, pageSize: number): Promise<{ data: UsersHttp }> => {
   const query = '?page=' + page + '&pageSize=' + pageSize;
 
-  return authAxiosClient(loginData).get('users' + query);
+  return axiosClient.get('/api/users/' + query);
 };
 
-export const getUser = async (loginData: any, id: string): Promise<{ data: User }> => {
-  return authAxiosClient(loginData).get('users/' + id);
+export const getUser = async (id: string): Promise<{ data: { user: User } }> => {
+  return axiosClient.get('/api/users/' + id.toString());
 };
 
-export const reactivateUser = async (loginData: any, id: number) => {
-  return authAxiosClient(loginData).post('users/' + id);
+export const reactivateUser = async (id: number) => {
+  return axiosClient.post('/api/users/' + id.toString());
 };
 
-export const createUser = async (loginData: any, data: UserNoId) => {
-  return authAxiosClient(loginData).post('users', data);
+export const createUser = async (data: UserNoId) => {
+  return axiosClient.post('/api/users/', data);
 };
 
 export const updateUser = async (
-  loginData: any,
   id: string,
   data: { email: string | null; name?: string | null; phone?: string | null }
 ) => {
-  return authAxiosClient(loginData).patch('users/' + id, data);
+  return axiosClient.patch('/api/users/' + id.toString(), data);
 };
 
-export const deleteUser = async (loginData: any, id: number) => {
-  return authAxiosClient(loginData).delete('users/' + id);
+export const deleteUser = async (id: number) => {
+  return axiosClient.delete('/api/users/' + id.toString());
 };
 
-export const updateUserPassword = async (
-  loginData: any,
-  id: string,
-  passwordData: { oldPassword: string; newPassword: string }
-) => {
-  return authAxiosClient(loginData).put('users/' + id + '/password', passwordData);
+export const updateUserPassword = async (id: string, passwordData: { oldPassword: string; newPassword: string }) => {
+  return axiosClient.put('/api/users/' + id + '/password', passwordData);
 };
 
-export const updateUserRole = async (loginData: any, id: number, roles: Role[]) => {
-  return authAxiosClient(loginData).put('users/' + id + '/roles', { roles: roles });
+export const updateUserRole = async (id: number, roles: Role[]) => {
+  return axiosClient.put('/api/users/' + id + '/roles', { roles: roles });
 };
 
-export const getUserRoles = async (loginData: any, id: number) => {
-  return authAxiosClient(loginData).get('users/' + id + '/roles');
+export const getUserRoles = async (id: number) => {
+  return axiosClient.get('/api/users/' + id + '/roles');
 };
 
-export const getRoles = async (loginData: any) => {
-  return authAxiosClient(loginData).get('users/roles');
+export const getRoles = async () => {
+  return axiosClient.get('/api/users/roles');
 };

@@ -207,7 +207,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
                     }
                   : null;
 
-              updateBeneficiary(localStorage.getItem('user'), beneficiary.id as string, {
+              updateBeneficiary(beneficiary.id as string, {
                 firstName: beneficiaryFields.firstName,
                 lastName: beneficiaryFields.lastName,
                 type: beneficiaryFields.type,

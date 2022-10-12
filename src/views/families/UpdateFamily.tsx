@@ -30,7 +30,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
     const addressToSend = !!address ? address : null;
     const detailsToSend = !!details ? details : null;
     const nameToSend = !!name ? name : null;
-    await updateFamily(localStorage.getItem('user'), id, {
+    await updateFamily(id, {
       address: addressToSend,
       details: detailsToSend,
       name: nameToSend

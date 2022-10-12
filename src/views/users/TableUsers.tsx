@@ -13,7 +13,6 @@ import { getUsers, deleteUser, reactivateUser } from 'src/API/Users/user_data';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 
-import { verifyJwt } from 'src/API/Users/initialization';
 import { EditPermissions } from './EditPermissions';
 import TablePagination from '@mui/material/TablePagination';
 import { EditPassword } from './EditPassword';
@@ -52,7 +51,7 @@ const TableUsers: FC<TableUsersProps> = props => {
         localStorage.setItem('pageSize', INITIAL_SIZE.toString());
         changePage(0, INITIAL_SIZE);
       }
-      setActualUserId(verifyJwt(localStorage.getItem('user') as string).Id);
+      setActualUserId(JSON.parse(localStorage.getItem('user') as string).id);
     }
   }, []);
 
@@ -73,7 +72,7 @@ const TableUsers: FC<TableUsersProps> = props => {
   };
 
   const changePage = async (newPage: number, size: number) => {
-    getUsers(localStorage.getItem('user'), newPage, size).then(users => {
+    getUsers(newPage, size).then(users => {
       localStorage.setItem('pageUsers', newPage.toString());
       setTotalPages(users.data.totalPages);
       setActualPage(users.data.page);
@@ -123,10 +122,10 @@ const TableUsers: FC<TableUsersProps> = props => {
                         onClick={() => {
                           if (row.isActive) {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            deleteUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = false));
+                            deleteUser(row.id).then(_ => (row.isActive = false));
                           } else {
                             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            reactivateUser(localStorage.getItem('user'), row.id).then(_ => (row.isActive = true));
+                            reactivateUser(row.id).then(_ => (row.isActive = true));
                           }
                         }}
                         disabled={row.id === parseInt(actualUserId)}

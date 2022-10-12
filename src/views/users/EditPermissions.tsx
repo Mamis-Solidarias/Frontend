@@ -40,9 +40,10 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
   useEffect(() => {
     if (!!id && !starterCall) {
       setStarterCall(true);
-      if (allRoles.length == 0) getRoles(localStorage.getItem('user')).then(result => setAllRoles(result.data.roles));
+      if (allRoles.length == 0) getRoles().then(result => setAllRoles(result.data.roles));
       if (userRoles.length == 0) {
-        getUserRoles(localStorage.getItem('user'), id).then(result => {
+        console.log(id);
+        getUserRoles(id).then(result => {
           setUserRoles(result.data.roles);
           setPermissions(result.data.roles.length);
         });
@@ -145,7 +146,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
             onClick={async () => {
-              await updateUserRole(localStorage.getItem('user'), id, userRoles);
+              await updateUserRole(id, userRoles);
               handleClose();
             }}
           >

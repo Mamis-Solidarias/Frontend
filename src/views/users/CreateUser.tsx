@@ -95,7 +95,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await createUser(localStorage.getItem('user'), { email, name, phone, password });
+    await createUser({ email, name, phone, password });
     resetFields();
     handleClose();
   };

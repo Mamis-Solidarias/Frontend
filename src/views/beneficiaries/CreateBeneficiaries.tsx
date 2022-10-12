@@ -336,7 +336,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={() => {
-            createBeneficiaries(localStorage.getItem('user'), beneficiaryFields.familyId, beneficiaries);
+            createBeneficiaries(beneficiaryFields.familyId, beneficiaries);
             resetAllFields();
             handleClose();
           }}

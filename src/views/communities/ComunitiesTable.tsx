@@ -27,7 +27,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
 
   const refreshCommunities = () => {
     if (!!localStorage.getItem('user')) {
-      getCommunities(localStorage.getItem('user')).then(communities => {
+      getCommunities().then(communities => {
         setRows(communities.data.communities);
       });
     }

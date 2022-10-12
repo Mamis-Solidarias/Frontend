@@ -210,7 +210,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={async () => {
-            await createFamilies(localStorage.getItem('user'), communityCode, families);
+            await createFamilies(communityCode, families);
             resetAllFields();
             handleClose();
           }}

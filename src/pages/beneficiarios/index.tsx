@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
-      getCommunities(localStorage.getItem('user')).then(result => {
+      getCommunities().then(result => {
         if (!!result.data.communities && result.data.communities.length > 0) {
           setCommunities(result.data.communities);
         }
@@ -49,7 +49,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!!filters.communityCode && filters.communityCode !== '#') {
-      getFamiliesByCommunity(localStorage.getItem('user'), filters.communityCode, 0, 100).then(result => {
+      getFamiliesByCommunity(filters.communityCode, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
     }

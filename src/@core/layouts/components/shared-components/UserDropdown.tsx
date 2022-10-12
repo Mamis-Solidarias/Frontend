@@ -15,8 +15,8 @@ import Typography from '@mui/material/Typography';
 import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import AccountOutline from 'mdi-material-ui/AccountOutline';
 
-import { verifyJwt } from 'src/API/Users/initialization';
 import Button from '@mui/material/Button';
+import User from 'src/types/User';
 
 const UserDropdown = () => {
   // ** States
@@ -25,7 +25,7 @@ const UserDropdown = () => {
   // ** Hooks
   const router = useRouter();
 
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [mounted, setMounted] = useState<boolean>(false);
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
@@ -56,8 +56,7 @@ const UserDropdown = () => {
   useEffect(() => {
     setMounted(true);
     if (!!localStorage.getItem('user')) {
-      const user = verifyJwt(localStorage.getItem('user') as any);
-      setUser(user);
+      setUser(JSON.parse(localStorage.getItem('user')));
     }
   }, []);
 
@@ -66,7 +65,7 @@ const UserDropdown = () => {
       {mounted && !!localStorage.getItem('user') && (
         <>
           <Button onClick={handleDropdownOpen} sx={{ ml: 2, cursor: 'pointer' }}>
-            {user?.Name}
+            {user?.name}
           </Button>
           <Menu
             anchorEl={anchorEl}
@@ -79,9 +78,9 @@ const UserDropdown = () => {
             <Box sx={{ pt: 2, pb: 3, px: 4 }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-                  <Typography sx={{ fontWeight: 600 }}>{user?.Name}</Typography>
+                  <Typography sx={{ fontWeight: 600 }}>{user?.name}</Typography>
                   <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                    {user?.Email}
+                    {user?.email}
                   </Typography>
                 </Box>
               </Box>

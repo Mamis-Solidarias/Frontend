@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!!localStorage.getItem('user')) {
-      getCommunities(localStorage.getItem('user')).then(result => {
+      getCommunities().then(result => {
         setCommunities(result.data.communities);
         if (result.data.communities.length > 0) {
           setCommunityCode(result.data.communities[0].id as string);

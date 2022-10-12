@@ -10,7 +10,7 @@ volumes:
     
 services:
   jaeger:
-    image: jaegertracing/all-in-one:1.37
+    image: jaegertracing/all-in-one:latest
     container_name: jaeger
     restart: always
     networks:
@@ -40,10 +40,72 @@ services:
       - mamis-net
 
   users:
-    image: ghcr.io/mamis-solidarias/users:main
+    image: ghcr.io/mamis-solidarias/users:latest
     restart: unless-stopped
     depends_on:
       - mamis-db
+      - jaeger
+    ports:
+      - 8000:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: development
+      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=users;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=users;Username=dev;Password=dev'
+      JWT__Key: 'This is a very secret key that i will use to sign my tokens'
+      OpenTelemetry__Jaeger__Host: 'http://jaeger:14268'
+      OpenTelemetry__Service__Name: 'Users'
+      OpenTelemetry__Service__Version: '1.0.0'
+      
+
+  beneficiaries:
+    image: ghcr.io/mamis-solidarias/beneficiaries:latest
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+      - jaeger
+    ports:
+      - 8001:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: development
+      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
+      JWT__Key: 'This is a very secret key that i will use to sign my tokens'
+      OpenTelemetry__Jaeger__Host: 'http://jaeger:14268'
+      OpenTelemetry__Service__Name: 'Beneficiaries'
+      OpenTelemetry__Service__Version: '1.0.0'
+
+  donors:
+    image: ghcr.io/mamis-solidarias/donors:latest
+    restart: unless-stopped
+    depends_on:
+      - mamis-db
+      - jaeger
+    ports:
+      - 8002:80
+    networks:
+      - mamis-net
+    environment:
+      ASPNETCORE_ENVIRONMENT: development
+      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=donors;Username=dev;Password=dev'
+      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=donors;Username=dev;Password=dev'
+      JWT__Key: 'This is a very secret key that i will use to sign my tokens'
+      OpenTelemetry__Jaeger__Host: 'http://jaeger:14268'
+      OpenTelemetry__Service__Name: 'Donors'
+      OpenTelemetry__Service__Version: '1.0.0'
+
+  gateway:
+    image: ghcr.io/mamis-solidarias/gateway:main
+    container_name: "gateway"
+    restart: unless-stopped
+    depends_on:
+      - jaeger
+      - donors
+      - users
+      - beneficiaries
     ports:
       - 80:80
       - 443:443
@@ -51,40 +113,15 @@ services:
       - mamis-net
     environment:
       ASPNETCORE_ENVIRONMENT: development
-      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=users;Username=dev;Password=dev'
-      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=users;Username=dev;Password=dev'
-      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
+      Jwt__Key: 'This is a very secret key that i will use to sign my tokens'
+      ReverseProxy__Clusters__users__Destinations__users-1__Address: 'http://users/'
+      ReverseProxy__Clusters__beneficiaries__Destinations__beneficiaries-1__Address: 'http://beneficiaries/'
+      ReverseProxy__Clusters__donors__Destinations__donors-1__Address: 'http://donors/'
+      OpenTelemetry__Jaeger__Host: 'http://jaeger:14268'
+      UsersHttpClient__BaseUrl: "http://users"
+      GraphQl__Beneficiaries__Url: 'http://localhost/api/beneficiaries/graphql'
+      GraphQl__Donors__Url: 'http://localhost/api/donors/graphql'
+      ReverseProxy__Clusters__frontend__Destinations__frontend-1__Address: "http://host.docker.internal:3000/"
       
-
-  beneficiaries:
-    image: ghcr.io/mamis-solidarias/beneficiaries:main
-    restart: unless-stopped
-    depends_on:
-      - mamis-db
-    ports:
-      - 8080:80
-      - 8081:443
-    networks:
-      - mamis-net
-    environment:
-      ASPNETCORE_ENVIRONMENT: development
-      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
-      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
-      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
       
-  donors:
-    image: ghcr.io/mamis-solidarias/donors:main
-    restart: unless-stopped
-    depends_on:
-      - mamis-db
-    ports:
-      - 8082:80
-      - 8083:443
-    networks:
-      - mamis-net
-    environment:
-      ASPNETCORE_ENVIRONMENT: development
-      ConnectionStrings__Production: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
-      ConnectionStrings__Development: 'Host=mamis-db:5432;Database=beneficiaries;Username=dev;Password=dev'
-      JWT__Key: 'Super long key no one will ever find out and definitely not typed by hand'
-   
+      

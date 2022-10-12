@@ -1,7 +1,6 @@
 // ** Types Import
 import { Settings } from 'src/@core/context/settingsContext';
 import { NavLink, NavSectionTitle, VerticalNavItemsType } from 'src/@core/layouts/types';
-import { verifyJwt } from 'src/API/Users/initialization';
 
 // ** Custom Menu Components
 import VerticalNavLink from './VerticalNavLink';
@@ -18,14 +17,11 @@ interface Props {
   setCurrentActiveGroup: (item: string[]) => void;
 }
 
-const resolveNavItemComponent = (item: NavLink | NavSectionTitle, allowed: string[]) => {
-  const allowedServiceState = allowed.map(permission => {
-    const service = permission.split('/')[0];
-    const state = permission.split('/')[1];
-
-    return { service, state };
-  });
-  if (!item.service || allowedServiceState.find(permission => permission.service === item.service))
+const resolveNavItemComponent = (
+  item: NavLink | NavSectionTitle,
+  allowed: { service: string; canWrite: boolean; canRead: boolean }[]
+) => {
+  if (!item.service || allowed.find(permission => permission.service === item.service))
     if ((item as NavSectionTitle).sectionTitle) return VerticalNavSectionTitle;
 
   return VerticalNavLink;
@@ -37,7 +33,7 @@ const VerticalNavItems = (props: Props) => {
 
   const RenderMenuItems = verticalNavItems?.map((item: NavLink | NavSectionTitle, index: number) => {
     if (typeof window !== 'undefined' && !!localStorage.getItem('user')) {
-      const TagName: any = resolveNavItemComponent(item, verifyJwt(localStorage.getItem('user') as string).permissions);
+      const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
 
       return <TagName {...props} key={index} item={item} />;
     } else return <div key='none'></div>;

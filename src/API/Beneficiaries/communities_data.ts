@@ -1,40 +1,34 @@
-import { authAxiosClient } from './initialization';
+import { axiosClient } from './initialization';
 import Community from 'src/types/Community';
 import { FamiliesHttp } from 'src/types/Family';
 
-export const createCommunities = async (loginData: any, data: Community[]) => {
-  return authAxiosClient(loginData).post('communities', { communities: data });
+export const createCommunities = async (data: Community[]) => {
+  return axiosClient.post('communities', { communities: data });
 };
 
-export const getCommunities = async (loginData: any): Promise<{ data: { communities: Community[] } }> => {
-  return authAxiosClient(loginData).get('communities');
+export const getCommunities = async (): Promise<{ data: { communities: Community[] } }> => {
+  return axiosClient.get('communities');
 };
 
-export const getCommunity = async (loginData: any, id: string): Promise<{ data: Community }> => {
-  return authAxiosClient(loginData).get('communities/' + id);
+export const getCommunity = async (id: string): Promise<{ data: Community }> => {
+  return axiosClient.get('communities/' + id);
 };
 
-export const updateCommunity = async (
-  loginData: any,
-  id: string,
-  data: { address?: string | null; description?: string | null }
-) => {
-  return authAxiosClient(loginData).patch('communities/' + id, data);
+export const updateCommunity = async (id: string, data: { address?: string | null; description?: string | null }) => {
+  return axiosClient.patch('communities/' + id, data);
 };
 
 export const getFamiliesByCommunity = async (
-  loginData: any,
   id: string,
   page: number,
   pageSize: number
 ): Promise<{ data: FamiliesHttp }> => {
   const query = '?page=' + page + '&pageSize=' + pageSize;
 
-  return authAxiosClient(loginData).get('communities/' + id + '/families' + query);
+  return axiosClient.get('communities/' + id + '/families' + query);
 };
 
 export const createFamilies = async (
-  loginData: any,
   communityId: string,
   families: {
     familyNumber: number | null;
@@ -49,5 +43,5 @@ export const createFamilies = async (
     }[];
   }[]
 ) => {
-  return authAxiosClient(loginData).post('communities/' + communityId + '/families', { families });
+  return axiosClient.post('communities/' + communityId + '/families', { families });
 };

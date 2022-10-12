@@ -162,7 +162,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           variant='contained'
           onClick={async e => {
             e.preventDefault();
-            await createCommunities(localStorage.getItem('user'), communities);
+            await createCommunities(communities);
             resetAllFields();
             handleClose();
           }}

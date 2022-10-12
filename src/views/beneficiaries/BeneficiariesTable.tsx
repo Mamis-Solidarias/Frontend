@@ -127,9 +127,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                         variant='contained'
                         sx={{ my: '.5em' }}
                         onClick={() =>
-                          deleteBeneficiary(localStorage.getItem('user'), row.id ? row.id : '-1').then(() =>
-                            refetchWithSameParameters()
-                          )
+                          deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters())
                         }
                       >
                         Desactivar
@@ -140,9 +138,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                         variant='contained'
                         sx={{ my: '.5em' }}
                         onClick={() =>
-                          activateBeneficiary(localStorage.getItem('user'), row.id ? row.id : '-1').then(() =>
-                            refetchWithSameParameters()
-                          )
+                          activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters())
                         }
                       >
                         Activar

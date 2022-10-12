@@ -33,6 +33,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout';
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
 import FormHelperText from '@mui/material/FormHelperText';
 import { loginUser } from 'src/API/Users/auth';
+import { getUser } from 'src/API/Users/user_data';
 
 interface State {
   password: string;
@@ -80,7 +81,9 @@ const LoginPage = () => {
     loginUser(event.target.email.value, values.password)
       .then(response => {
         if (response.status === 200) {
-          localStorage.setItem('user', response.data.jwt);
+          getUser(response.data.id).then(getUserResponse =>
+            localStorage.setItem('user', JSON.stringify(getUserResponse.data.user))
+          );
           router.push('/');
         }
       })

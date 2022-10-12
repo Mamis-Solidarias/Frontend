@@ -57,7 +57,7 @@ export const EditPassword: FC<EditPasswordProps> = props => {
   };
 
   const handleSubmit = async () => {
-    await updateUserPassword(localStorage.getItem('user'), id, { oldPassword, newPassword: password });
+    await updateUserPassword(id, { oldPassword, newPassword: password });
     resetFields();
     handleClose();
   };

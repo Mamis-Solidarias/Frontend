@@ -27,7 +27,7 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
   const handleSubmit = async () => {
     const addressToSend = !!address ? address : null;
     const descriptionToSend = !!description ? description : null;
-    await updateCommunity(localStorage.getItem('user'), id, { address: addressToSend, description: descriptionToSend });
+    await updateCommunity(id, { address: addressToSend, description: descriptionToSend });
     resetFields();
     handleClose();
   };

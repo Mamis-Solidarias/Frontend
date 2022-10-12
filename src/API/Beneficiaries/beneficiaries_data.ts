@@ -1,18 +1,17 @@
 import Education from 'src/types/Education';
 import Health from 'src/types/Health';
 import Job from 'src/types/Job';
-import { authAxiosClient } from './initialization';
+import { axiosClient } from './initialization';
 
-export const activateBeneficiary = async (loginData: any, id: string) => {
-  return authAxiosClient(loginData).post('/beneficiaries/' + id);
+export const activateBeneficiary = async (id: string) => {
+  return axiosClient.post('/beneficiaries/' + id);
 };
 
-export const deleteBeneficiary = async (loginData: any, id: string) => {
-  return authAxiosClient(loginData).delete('/beneficiaries/' + id);
+export const deleteBeneficiary = async (id: string) => {
+  return axiosClient.delete('/beneficiaries/' + id);
 };
 
 export const updateBeneficiary = async (
-  loginData: any,
   id: string,
   data: {
     firstName?: string;
@@ -31,5 +30,5 @@ export const updateBeneficiary = async (
 ) => {
   console.log(data);
 
-  return authAxiosClient(loginData).patch('/beneficiaries/' + id, data);
+  return axiosClient.patch('/beneficiaries/' + id, data);
 };
