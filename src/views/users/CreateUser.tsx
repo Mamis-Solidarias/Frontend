@@ -113,7 +113,6 @@ export const CreateUser: FC<CreateUserProps> = props => {
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
             error={invalidEmail}
-            style={{ padding: '1em' }}
             id='email'
             type='email'
             inputProps={{ pattern: '^[^@]+@[^@]+$' }}
@@ -153,7 +152,6 @@ export const CreateUser: FC<CreateUserProps> = props => {
           )}
           <TextField
             error={invalidPhone}
-            style={{ padding: '1em' }}
             id='phone'
             type='tel'
             inputProps={{ pattern: ' ^.+$' }}
@@ -170,7 +168,6 @@ export const CreateUser: FC<CreateUserProps> = props => {
           {invalidPhone && <FormHelperText error>El número de teléfono es inválido</FormHelperText>}
           <TextField
             error={invalidPassword}
-            style={{ padding: '1em' }}
             id='password'
             type='password'
             label='Contraseña'
@@ -191,7 +188,6 @@ export const CreateUser: FC<CreateUserProps> = props => {
           )}
           <TextField
             error={passwordMismatch}
-            style={{ padding: '1em' }}
             id='confirmPassword'
             type='password'
             label='Confirmar Contraseña'

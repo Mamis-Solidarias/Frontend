@@ -23,7 +23,6 @@ export const EducationForm: FC<EducationFormProps> = props => {
     <>
       <Typography>Educación</Typography>
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Escuela a la que va'
         placeholder='ITBA'
@@ -33,7 +32,6 @@ export const EducationForm: FC<EducationFormProps> = props => {
         variant='standard'
       />
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Año lectivo'
         placeholder='2do Año'

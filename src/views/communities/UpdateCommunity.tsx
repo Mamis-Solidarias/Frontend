@@ -45,7 +45,6 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
-            style={{ padding: '1em' }}
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}

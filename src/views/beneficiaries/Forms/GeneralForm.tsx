@@ -39,7 +39,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           <TextField
             select
             fullWidth={true}
-            style={{ padding: '1em' }}
             variant='standard'
             label='Comunidad'
             placeholder='Misiones'
@@ -55,7 +54,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           </TextField>
         )}
         <TextField
-          style={{ padding: '1em' }}
           id='firstName'
           type='text'
           inputProps={{ pattern: '[0-9]*$' }}
@@ -110,7 +108,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           <TextField
             select
             fullWidth={true}
-            style={{ padding: '1em' }}
             variant='standard'
             label='Familia'
             placeholder='Gómez'
@@ -126,7 +123,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           </TextField>
         )}
         <TextField
-          style={{ padding: '1em' }}
           id='lastName'
           type='text'
           inputProps={{ pattern: '[0-9]*$' }}
@@ -140,7 +136,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           select
           fullWidth={true}
-          style={{ padding: '1em' }}
           variant='standard'
           label='Género'
           placeholder='Masculino'
@@ -152,7 +147,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           <MenuItem value='Other'>Otro</MenuItem>
         </TextField>
         <TextField
-          style={{ padding: '1em' }}
           id='dni'
           type='text'
           label='DNI'
@@ -165,7 +159,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           variant='standard'
         />
         <TextField
-          style={{ padding: '1em' }}
           id='likes'
           type='text'
           label='Cosas que le gustan'

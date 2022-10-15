@@ -60,7 +60,6 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
       <DialogContent>
         <Box>
           <TextField
-            style={{ padding: '1em' }}
             id='communityName'
             type='text'
             inputProps={{ pattern: '^.+$' }}
@@ -89,7 +88,6 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           />
 
           <TextField
-            style={{ padding: '1em' }}
             id='description'
             type='text'
             label='Descripción (opcional)'
@@ -102,7 +100,6 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             variant='standard'
           />
           <TextField
-            style={{ padding: '1em' }}
             id='communityCode'
             type='text'
             label='Código (opcional)'

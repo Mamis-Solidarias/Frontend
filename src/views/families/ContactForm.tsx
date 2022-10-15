@@ -27,7 +27,6 @@ export const ContactForm: FC<ContactFormProps> = props => {
   return (
     <>
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Título'
         placeholder='Instagram'
@@ -42,7 +41,6 @@ export const ContactForm: FC<ContactFormProps> = props => {
         variant='standard'
       />
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Contenido'
         placeholder='@miguel.sanchez77'

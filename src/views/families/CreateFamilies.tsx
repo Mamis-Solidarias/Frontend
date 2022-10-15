@@ -91,7 +91,6 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
       <DialogContent>
         <Box>
           <TextField
-            style={{ padding: '1em' }}
             id='familyId'
             type='text'
             inputProps={{ pattern: '[0-9]*$' }}
@@ -105,7 +104,6 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             variant='standard'
           />
           <TextField
-            style={{ padding: '1em' }}
             id='familyName'
             type='text'
             inputProps={{ pattern: '^.+$' }}
@@ -133,7 +131,6 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             variant='standard'
           />
           <TextField
-            style={{ padding: '1em' }}
             id='details'
             type='text'
             label='Detalle (opcional)'

@@ -19,7 +19,6 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
     <>
       <Typography>Ropa</Typography>
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Talle de Calzado'
         placeholder='42'
@@ -29,7 +28,6 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
         variant='standard'
       />
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Talle de Remera'
         placeholder='L'
@@ -41,7 +39,6 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
         variant='standard'
       />
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Talle de Pantalones'
         placeholder='42'

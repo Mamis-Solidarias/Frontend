@@ -51,7 +51,6 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
-            style={{ padding: '1em' }}
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
@@ -65,7 +64,6 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             variant='standard'
           />
           <TextField
-            style={{ padding: '1em' }}
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
