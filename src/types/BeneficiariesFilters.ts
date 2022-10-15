@@ -10,6 +10,7 @@ export interface BeneficiariesFilters {
   school?: string | null;
   gender?: string | null;
   isActive?: string | null;
+  familyName?: string | null;
 }
 
 export const beneficiariesFiltersDefaults: BeneficiariesFilters = {
@@ -23,7 +24,8 @@ export const beneficiariesFiltersDefaults: BeneficiariesFilters = {
   communityCode: '',
   school: '',
   gender: '',
-  isActive: 'true'
+  isActive: 'true',
+  familyName: ''
 };
 
 export const beneficiariesFiltersNull: BeneficiariesFilters = {

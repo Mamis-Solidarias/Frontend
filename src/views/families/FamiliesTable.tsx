@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { FC } from 'react';
 
 // ** MUI Imports
 import Card from '@mui/material/Card';
@@ -11,8 +11,6 @@ import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
 import { useEffect, useState } from 'react';
-import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
-import TablePagination from '@mui/material/TablePagination';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -23,89 +21,66 @@ import { UpdateFamily } from './UpdateFamily';
 import { UpdateFamilyContacts } from './UpdateFamilyContacts';
 import Contact from 'src/types/Contact';
 import Family from 'src/types/Family';
+import { BeneficiariesFilters } from 'src/types/BeneficiariesFilters';
+import Community from 'src/types/Community';
+import { GET_FAMILIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiariesPaging';
+import { useQuery } from '@apollo/client';
+import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
 
 interface FamiliesTableProps {
-  communityCode?: string;
+  communities: Community[];
+  filters: BeneficiariesFilters;
   openCreateFamilies: boolean;
 }
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {
-  const INITIAL_SIZE = 5,
-    MEDIUM_SIZE = 10,
-    LARGE_SIZE = 15;
-  const { communityCode, openCreateFamilies } = props;
-  const [rows, setRows] = useState<any>();
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [actualPage, setActualPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(INITIAL_SIZE);
+  const { filters, openCreateFamilies } = props;
   const [open, setOpen] = useState<boolean[]>([]);
   const [id, setId] = useState<number>(-1);
   const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
   const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
-
-  useEffect(() => {
-    if (!!localStorage.getItem('user')) {
-      if (!!localStorage.getItem('pageFamilies')) {
-        setRowsPerPage(parseInt(localStorage.getItem('pageSize') as string));
-        changePage(
-          parseInt(localStorage.getItem('pageFamilies') as string),
-          parseInt(localStorage.getItem('pageSize') as string)
-        );
-      } else {
-        localStorage.setItem('pageFamilies', '0');
-        localStorage.setItem('pageSize', INITIAL_SIZE.toString());
-        changePage(0, INITIAL_SIZE);
-      }
+  const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
+  const { loading, error, data, refetch } = useQuery(GET_FAMILIES, {
+    variables: {
+      communityCode: filters.communityCode,
+      familyName: filters.familyName
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    changePage(newPage, rowsPerPage);
+  const refetchWithSameParameters = () => {
+    refetch({
+      communityCode: filters.communityCode,
+      familyName: filters.familyName
+    });
   };
-
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    localStorage.setItem('pageSize', (+event.target.value).toString());
-    changePage(0, +event.target.value);
-  };
-
-  const changePage = async (newPage: number, size: number) => {
-    if (!!communityCode && communityCode !== '#') {
-      getFamiliesByCommunity(communityCode, newPage, size).then(result => {
-        localStorage.setItem('pageFamilies', newPage.toString());
-        if (!!result.data.totalPages && !!result.data.page) {
-          setTotalPages(result.data.totalPages);
-          setActualPage(result.data.page);
-        }
-        setRows(result.data.families);
-      });
-    }
-  };
-
-  const getFamilies = () => {
-    if (!!localStorage.getItem('user') && !!communityCode && communityCode !== '#') {
-      getFamiliesByCommunity(communityCode, 0, rowsPerPage).then(result => {
-        localStorage.setItem('pageFamilies', '0');
-        setTotalPages(result.data.totalPages);
-        setActualPage(result.data.page);
-        setRows(result.data.families);
-      });
-    }
-  };
-
-  useEffect(() => {
-    getFamilies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [communityCode]);
 
   useEffect(() => {
     if (!!localStorage.getItem('user') && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
-      getFamilies();
+      refetchWithSameParameters();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openUpdateContacts, openUpdateFamily, openCreateFamilies]);
+
+  if (loading)
+    return (
+      <TableRow>
+        <TableCell>Cargando...</TableCell>
+      </TableRow>
+    );
+
+  if (error) {
+    return (
+      <TableRow>
+        <TableCell>Error :(</TableCell>
+      </TableRow>
+    );
+  }
+
+  const nodes = data.families.nodes;
+  const pageInfo = data.families.pageInfo;
+  const edges = data.families.edges;
 
   return (
     <>
@@ -122,91 +97,85 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!!rows &&
-                rows.length > 0 &&
-                rows.map((row: Family, index: number) => (
-                  <>
-                    <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                      <TableCell>
-                        <IconButton
-                          aria-label='expand row'
-                          size='small'
-                          onClick={() => {
-                            if (open.length === 0) {
-                              setOpen(
-                                Array.from({ length: rows.length }, (l, openIndex) => {
-                                  if (openIndex === index) return true;
+              {nodes.map((row: Family, index: number) => (
+                <>
+                  <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                    <TableCell>
+                      <IconButton
+                        aria-label='expand row'
+                        size='small'
+                        onClick={() => {
+                          if (open.length === 0) {
+                            setOpen(
+                              Array.from({ length: nodes.length }, (l, openIndex) => {
+                                if (openIndex === index) return true;
 
-                                  return false;
-                                })
-                              );
-                            } else {
-                              setOpen(
-                                Array.from({ length: rows.length }, (l, openIndex) => {
-                                  if (openIndex === index) {
-                                    return !open[index];
-                                  }
+                                return false;
+                              })
+                            );
+                          } else {
+                            setOpen(
+                              Array.from({ length: nodes.length }, (l, openIndex) => {
+                                if (openIndex === index) {
+                                  return !open[index];
+                                }
 
-                                  return open[openIndex];
-                                })
-                              );
-                            }
-                          }}
-                        >
-                          {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
-                      </TableCell>
-                      <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.address}</TableCell>
-                      <TableCell>{row.details}</TableCell>
-                    </TableRow>
-                    <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                      <TableCell colSpan={12}>
-                        <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
-                            <TableCell>
-                              <Button
-                                variant='contained'
-                                onClick={() => {
-                                  setId(row.id as number);
-                                  setOpenUpdateFamily(true);
-                                }}
-                              >
-                                Editar Datos
-                              </Button>
-                            </TableCell>
-                            <TableCell>
-                              <Button
-                                variant='contained'
-                                onClick={() => {
-                                  setId(row.id as number);
-                                  setContacts(row.contacts);
-                                  setOpenUpdateContacts(true);
-                                }}
-                              >
-                                Editar Contactos
-                              </Button>
-                            </TableCell>
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))}
+                                return open[openIndex];
+                              })
+                            );
+                          }
+                        }}
+                      >
+                        {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                      </IconButton>
+                    </TableCell>
+                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.address}</TableCell>
+                    <TableCell>{row.details}</TableCell>
+                  </TableRow>
+                  <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                    <TableCell colSpan={12}>
+                      <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                          <TableCell>
+                            <Button
+                              variant='contained'
+                              onClick={() => {
+                                setId(row.id as number);
+                                setOpenUpdateFamily(true);
+                              }}
+                            >
+                              Editar Datos
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant='contained'
+                              onClick={() => {
+                                setId(row.id as number);
+                                setContacts(row.contacts);
+                                setOpenUpdateContacts(true);
+                              }}
+                            >
+                              Editar Contactos
+                            </Button>
+                          </TableCell>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[INITIAL_SIZE, MEDIUM_SIZE, LARGE_SIZE]}
-          component='div'
-          count={
-            rows ? (rows.length < 5 ? (rows.length !== 0 ? (totalPages - 1) * rowsPerPage + rows.length : 0) : -1) : 1
-          }
-          rowsPerPage={rowsPerPage}
-          page={actualPage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <BeneficiaryTablePagination
+          paging={paging}
+          setBeneficiariesPaging={setBeneficiariesPaging}
+          pageInfo={pageInfo}
+          nodes={nodes}
+          edges={edges}
         />
         {openUpdateFamily && (
           <UpdateFamily

@@ -87,7 +87,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Familia</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Familias</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
@@ -95,7 +95,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             id='familyId'
             type='text'
             inputProps={{ pattern: '[0-9]*$' }}
-            label='Número de Nueva Familia (opcional)'
+            label='Código (opcional)'
             placeholder='23'
             value={number}
             onChange={e => {
@@ -109,7 +109,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             id='familyName'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Nombre de Nueva Familia'
+            label='Nombre'
             placeholder='García'
             value={name}
             onChange={e => {
@@ -123,7 +123,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Dirección de Nueva Familia'
+            label='Dirección'
             placeholder='Cataratas 123'
             value={address}
             onChange={e => {
@@ -136,7 +136,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             style={{ padding: '1em' }}
             id='details'
             type='text'
-            label='Detalle de Nueva Familia (opcional)'
+            label='Detalle (opcional)'
             placeholder='La familia de José'
             value={description}
             onChange={e => {
@@ -219,7 +219,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
           }}
           disabled={families.length === 0}
         >
-          Crear Familias
+          Crear
         </Button>
       </DialogContent>
     </Dialog>

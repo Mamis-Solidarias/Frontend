@@ -29,7 +29,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
       <TextField
         style={{ padding: '1em' }}
         type='text'
-        label='Título de Nuevo Contacto'
+        label='Título'
         placeholder='Instagram'
         value={contact.title}
         onChange={e => {
@@ -44,7 +44,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
       <TextField
         style={{ padding: '1em' }}
         type='text'
-        label='Contenido de Nuevo Contacto'
+        label='Contenido'
         placeholder='@miguel.sanchez77'
         value={contact.content}
         onChange={e => {
@@ -58,7 +58,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
       />
 
       <FormControl fullWidth sx={{ padding: '1em' }}>
-        <InputLabel id={'types'}>Nueva Forma de Contacto</InputLabel>
+        <InputLabel id={'types'}>Forma de Contacto</InputLabel>
         <Select
           labelId={'types'}
           fullWidth={true}

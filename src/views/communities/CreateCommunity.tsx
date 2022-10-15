@@ -132,10 +132,10 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>
               <TableRow>
+                <TableCell>Código</TableCell>
                 <TableCell>Nombre</TableCell>
                 <TableCell>Dirección</TableCell>
                 <TableCell>Descripción</TableCell>
-                <TableCell>Código</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -143,10 +143,10 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
               {!!communities &&
                 communities.map((community: Community) => (
                   <TableRow hover key={community.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                    <TableCell>{community.communityCode}</TableCell>
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{community.name}</TableCell>
                     <TableCell>{community.address}</TableCell>
                     <TableCell>{community.description}</TableCell>
-                    <TableCell>{community.id}</TableCell>
                     <TableCell>
                       <IconButton aria-label='delete' size='small' onClick={() => deleteCommunity(community)}>
                         <DeleteIcon />

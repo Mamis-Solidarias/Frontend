@@ -78,6 +78,32 @@ export const GET_BENEFICIARIES = gql`
   }
 `;
 
+export const GET_FAMILIES = gql`
+  query filterQuery($after: String, $limit: Int, $communityCode: String, $familyName: String) {
+    families(after: $after, first: $limit, filter: { name: $familyName, communityId: $communityCode }) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+      }
+      nodes {
+        id
+        address
+        details
+        name
+        contacts {
+          content
+          isPreferred
+          type
+          title
+        }
+      }
+    }
+  }
+`;
+
 export const GET_COMMUNITIES = gql`
   query filterQuery($after: String, $limit: Int) {
     communities(after: $after, first: $limit) {
