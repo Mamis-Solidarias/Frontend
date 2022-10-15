@@ -84,7 +84,6 @@ export const UserProfileDisplay: FC = () => {
       >
         <TextField
           error={invalidEmail}
-          style={{ padding: '1em' }}
           id='email'
           type='email'
           inputProps={{ pattern: '^[^@]+@[^@]+$' }}
@@ -124,7 +123,6 @@ export const UserProfileDisplay: FC = () => {
           <FormHelperText error>El nombre es inválido. Tiene que tener entre 5 y 100 caracteres</FormHelperText>
         )}
         <TextField
-          style={{ padding: '1em' }}
           id='phone'
           type='tel'
           label='Teléfono'

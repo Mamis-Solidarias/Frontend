@@ -40,7 +40,6 @@ export const HealthForm: FC<HealthFormProps> = props => {
         <Typography>No</Typography>
       </Stack>
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Observaciones'
         placeholder='Tiene diabetes tipo 2'
