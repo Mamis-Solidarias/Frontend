@@ -78,9 +78,9 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
     );
   }
 
-  const nodes = data.families.nodes;
-  const pageInfo = data.families.pageInfo;
-  const edges = data.families.edges;
+  const nodes = data.filteredFamilies.nodes;
+  const pageInfo = data.filteredFamilies.pageInfo;
+  const edges = data.filteredFamilies.edges;
 
   return (
     <>

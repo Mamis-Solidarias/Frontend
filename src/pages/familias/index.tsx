@@ -16,7 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import ChevronUp from 'mdi-material-ui/ChevronUp';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import Collapse from '@mui/material/Collapse';
-import { BeneficiariesFilters, beneficiariesFiltersDefaults } from 'src/types/BeneficiariesFilters';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import FamiliesFiltersView from 'src/views/families/FamiliesFiltersView';
 
@@ -25,7 +25,7 @@ const Dashboard = () => {
   const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [communityCode, setCommunityCode] = useState<string>('#');
   const [communities, setCommunities] = useState<Community[]>([]);
-  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersDefaults);
+  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { filters, setFilter } = useBeneficiariesFilters();
 

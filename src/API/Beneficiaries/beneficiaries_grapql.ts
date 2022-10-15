@@ -80,7 +80,7 @@ export const GET_BENEFICIARIES = gql`
 
 export const GET_FAMILIES = gql`
   query filterQuery($after: String, $limit: Int, $communityCode: String, $familyName: String) {
-    families(after: $after, first: $limit, filter: { name: $familyName, communityId: $communityCode }) {
+    filteredFamilies(after: $after, first: $limit, filter: { name: $familyName, communityId: $communityCode }) {
       pageInfo {
         endCursor
         hasNextPage
