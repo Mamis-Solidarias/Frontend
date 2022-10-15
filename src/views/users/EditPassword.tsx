@@ -74,7 +74,6 @@ export const EditPassword: FC<EditPasswordProps> = props => {
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
-            style={{ padding: '1em' }}
             id='oldPassword'
             type='password'
             label='Contraseña Anterior'
@@ -88,7 +87,6 @@ export const EditPassword: FC<EditPasswordProps> = props => {
           />
           <TextField
             error={invalidPassword}
-            style={{ padding: '1em' }}
             id='password'
             type='password'
             label='Nueva Contraseña'
@@ -109,7 +107,6 @@ export const EditPassword: FC<EditPasswordProps> = props => {
           )}
           <TextField
             error={passwordMismatch}
-            style={{ padding: '1em' }}
             id='confirmPassword'
             type='password'
             label='Confirmar Contraseña'

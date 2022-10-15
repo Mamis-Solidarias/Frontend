@@ -2,7 +2,6 @@
 import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react';
 
 // ** Next Imports
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // ** MUI Components
@@ -34,6 +33,9 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
 import FormHelperText from '@mui/material/FormHelperText';
 import { loginUser } from 'src/API/Users/auth';
 import { getUser } from 'src/API/Users/user_data';
+import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import React from 'react';
 
 interface State {
   password: string;
@@ -41,14 +43,20 @@ interface State {
 }
 
 // ** Styled Components
-const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9'
+  }
 }));
 
-const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
-  textDecoration: 'none',
-  color: theme.palette.primary.main
+const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
+  [theme.breakpoints.up('sm')]: { width: '28rem' }
 }));
 
 const LoginPage = () => {
@@ -92,6 +100,16 @@ const LoginPage = () => {
           setShowBadRequest(true);
         }
       });
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
   };
 
   return (
@@ -205,9 +223,34 @@ const LoginPage = () => {
             <Box
               sx={{ my: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
             >
-              <Link passHref href='/'>
-                <LinkStyled onClick={e => e.preventDefault()}>Olvidé la contraseña</LinkStyled>
-              </Link>
+              <ClickAwayListener onClickAway={handleTooltipClose}>
+                <div>
+                  <HtmlTooltip
+                    PopperProps={{
+                      disablePortal: true
+                    }}
+                    onClose={handleTooltipClose}
+                    open={open}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title={
+                      <React.Fragment>
+                        {'Enviar mail a '}
+                        <a href='mailto:admin@mamis.com'>admin@mamis.com</a>
+                        {' para poder proceder a la restitución de la contraseña'}
+                      </React.Fragment>
+                    }
+                  >
+                    <Button
+                      sx={{ fontSize: '0.875rem', textDecoration: 'none', color: theme.palette.primary.main }}
+                      onClick={handleTooltipOpen}
+                    >
+                      Olvidé la contraseña
+                    </Button>
+                  </HtmlTooltip>
+                </div>
+              </ClickAwayListener>
             </Box>
             <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} type='submit'>
               Login

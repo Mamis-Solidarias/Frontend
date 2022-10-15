@@ -83,7 +83,6 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
             error={invalidEmail}
-            style={{ padding: '1em' }}
             id='email'
             type='email'
             inputProps={{ pattern: '^[^@]+@[^@]+$' }}
@@ -123,7 +122,6 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
           )}
           <TextField
             error={invalidPhone}
-            style={{ padding: '1em' }}
             id='phone'
             type='tel'
             inputProps={{ pattern: ' ^+?(?:(?:00)?549?)?0?(?:11|[2368]d)(?:(?=d{0,2}15)d{2})??d{8}$' }}

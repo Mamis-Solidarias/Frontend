@@ -48,7 +48,7 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nueva Familia</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Actualizar Contactos</DialogTitle>
       <DialogContent>
         <Box>
           <ContactForm contact={contact} setContact={setContact} />

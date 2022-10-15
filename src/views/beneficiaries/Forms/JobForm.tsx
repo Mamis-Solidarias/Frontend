@@ -19,7 +19,6 @@ export const JobForm: FC<JobFormProps> = props => {
     <>
       <Typography>Trabajo</Typography>
       <TextField
-        style={{ padding: '1em' }}
         type='text'
         label='Título'
         placeholder='Albañil'
