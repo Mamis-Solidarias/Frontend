@@ -42,7 +42,7 @@ type ExtendedAppProps = AppProps & {
 
 // ** Apollo Client auth token
 const httpLink = createHttpLink({
-  uri: 'http://localhost/query'
+  uri: process.env.NEXT_PUBLIC_BASE_URL + 'query'
 });
 
 const authLink = setContext((_, { headers }) => {
