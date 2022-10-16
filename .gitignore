@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# Jetbrains
+/.idea/
+
 # testing
 /coverage
 
@@ -17,7 +20,6 @@
 
 # misc
 .DS_Store
-.env*
 
 # debug
 npm-debug.log*
