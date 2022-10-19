@@ -75,7 +75,7 @@ const Dashboard = () => {
               <Collapse in={openCollapse}></Collapse>
               <Collapse in={openCollapse}>
                 <FamiliesFiltersView filters={filters} setFilter={setFilter} communities={communities} />
-                <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
+                <Typography align='center'>
                   <Button
                     variant='contained'
                     onClick={() => {
@@ -107,11 +107,7 @@ const Dashboard = () => {
             Añadir Familias
           </Button>
           {!!communityCode && (
-            <CreateFamilies
-              openDialog={openCreateFamilies}
-              handleClose={() => setOpenCreateFamilies(false)}
-              communityCode={communityCode}
-            />
+            <CreateFamilies openDialog={openCreateFamilies} handleClose={() => setOpenCreateFamilies(false)} />
           )}
         </Grid>
       </Grid>

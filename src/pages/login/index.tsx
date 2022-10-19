@@ -87,11 +87,10 @@ const LoginPage = () => {
     event.preventDefault();
 
     loginUser(event.target.email.value, values.password)
-      .then(response => {
+      .then(async response => {
         if (response.status === 200) {
-          getUser(response.data.id).then(getUserResponse =>
-            localStorage.setItem('user', JSON.stringify(getUserResponse.data.user))
-          );
+          const getUserResponse = await getUser(response.data.id);
+          localStorage.setItem('user', JSON.stringify(getUserResponse.data.user));
           router.push('/');
         }
       })

@@ -19,7 +19,7 @@ const FamiliesFiltersView: FC<FamiliesFiltersViewProps> = props => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           select
           fullWidth={true}
@@ -36,7 +36,7 @@ const FamiliesFiltersView: FC<FamiliesFiltersViewProps> = props => {
           ))}
         </TextField>
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'

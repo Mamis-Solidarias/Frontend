@@ -88,7 +88,7 @@ const Dashboard = () => {
                   communities={communities}
                   families={families}
                 />
-                <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
+                <Typography align='center'>
                   <Button
                     variant='contained'
                     onClick={() => {

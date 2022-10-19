@@ -5,21 +5,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import { createFamilies } from 'src/API/Beneficiaries/communities_data';
+import { createFamilies, getCommunities } from 'src/API/Beneficiaries/communities_data';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import MenuItem from '@mui/material/MenuItem';
+import Community from 'src/types/Community';
 
 // import { ContactForm } from './ContactForm';
 
 interface CreateFamiliesProps {
-  communityCode: string;
   openDialog: boolean;
   handleClose: () => void;
 }
@@ -40,43 +41,38 @@ interface Family {
 }
 
 export const CreateFamilies: FC<CreateFamiliesProps> = props => {
-  const { openDialog, handleClose, communityCode } = props;
+  const { openDialog, handleClose } = props;
   const [number, setNumber] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [families, setFamilies] = useState<Family[]>([]);
-
-  // const [contacts, setContacts] = useState<Contact[]>([]);
-  const [addContact, setAddContact] = useState<number>(0);
-  const [types, setTypes] = useState<string[]>([]);
-  const [contents, setContents] = useState<string[]>([]);
-  const [titles, setTitles] = useState<string[]>([]);
-  const [arrayIsPreferred, setArrayIsPreferred] = useState<boolean[]>([]);
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const [selectedCommunity, setSelectedCommunity] = useState<string>('');
 
   const resetFields = () => {
     setNumber('');
     setName('');
     setAddress('');
     setDescription('');
+    setSelectedCommunity('');
   };
 
   const resetAllFields = () => {
     resetFields();
-    setAddContact(0);
-
-    // setContacts([]);
-    setTypes([]);
-    setContents([]);
-    setTitles([]);
     setFamilies([]);
-    setArrayIsPreferred([]);
   };
 
   const deleteFamily = (family: Family) => {
     const newFamilies = families.filter(newFamily => newFamily !== family);
     setFamilies(newFamilies);
   };
+
+  useEffect(() => {
+    getCommunities().then(result => {
+      setCommunities(result.data.communities);
+    });
+  }, []);
 
   return (
     <Dialog
@@ -90,6 +86,22 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Familias</DialogTitle>
       <DialogContent>
         <Box>
+          <TextField
+            select
+            fullWidth={true}
+            variant='standard'
+            label='Comunidad'
+            placeholder='Misiones'
+            value={selectedCommunity}
+            onChange={e => setSelectedCommunity(e.target.value)}
+          >
+            <MenuItem value=''>Ninguna</MenuItem>
+            {communities.map((community: Community) => (
+              <MenuItem value={community.id} key={community.id}>
+                {community.name}
+              </MenuItem>
+            ))}
+          </TextField>
           <TextField
             id='familyId'
             type='text'
@@ -117,7 +129,6 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             variant='standard'
           />
           <TextField
-            sx={{ padding: '1em' }}
             id='address'
             type='text'
             inputProps={{ pattern: '^.+$' }}
@@ -144,18 +155,9 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
           />
 
           <Button
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+            sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
             variant='contained'
             onClick={() => {
-              const familyContacts = [];
-              for (let index = 0; index < addContact; index++) {
-                familyContacts.push({
-                  content: contents[index],
-                  isPreferred: arrayIsPreferred[index],
-                  type: types[index],
-                  title: titles[index]
-                });
-              }
               const finalDescription = !!description ? description : null;
               const finalFamilyNumber: number | null = !!number ? parseInt(number) : null;
               families.push({
@@ -163,7 +165,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                 name,
                 address,
                 details: finalDescription,
-                contacts: familyContacts
+                contacts: []
               });
               resetFields();
             }}
@@ -210,7 +212,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={async () => {
-            await createFamilies(communityCode, families);
+            await createFamilies(selectedCommunity, families);
             resetAllFields();
             handleClose();
           }}

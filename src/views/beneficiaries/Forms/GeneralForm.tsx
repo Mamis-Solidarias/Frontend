@@ -24,7 +24,6 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
   useEffect(() => {
     if (!!selectedCommunity) {
       setBeneficiaryField('familyId', '');
-      console.log('to bien to');
       getFamiliesByCommunity(selectedCommunity, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
