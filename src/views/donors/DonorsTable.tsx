@@ -13,11 +13,12 @@ import TableContainer from '@mui/material/TableContainer';
 import { useEffect, useState } from 'react';
 import { UpdateDonor } from './UpdateDonor';
 import { useQuery } from '@apollo/client';
-import { useDonorsPaging } from 'src/hooks/beneficiaries/useDonorsPaging';
+import { useDonorsPaging } from 'src/hooks/donors/useDonorsPaging';
 import { GET_DONORS } from 'src/API/Donors/donors_graphql';
 import DonorsTablePagination from './DonorsTablePagination';
 import { Donor } from 'src/types/Donor';
 import Button from '@mui/material/Button';
+import { useRouter } from 'next/router';
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -25,6 +26,7 @@ interface DonorsTableProps {
 
 const FamiliesTable: FC<DonorsTableProps> = props => {
   const { openCreateDonor } = props;
+  const router = useRouter();
   const [donor, setDonor] = useState<Donor | null>(null);
   const [openUpdateDonor, setOpenUpdateDonor] = useState<boolean>(false);
   const { paging, setDonorsPaging } = useDonorsPaging();
@@ -41,6 +43,13 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
       limit: paging.limit
     });
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!!localStorage.getItem('user') && !openUpdateDonor && !openCreateDonor) {

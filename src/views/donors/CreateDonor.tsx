@@ -10,7 +10,7 @@ import { createDonor } from 'src/API/Donors/donors_data';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import { defaultDonor, useModifyDonor } from 'src/hooks/beneficiaries/useModifyDonor';
+import { defaultDonor, useModifyDonor } from 'src/hooks/donors/useModifyDonor';
 
 interface CreateDonorProps {
   openDialog: boolean;

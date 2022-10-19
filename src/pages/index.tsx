@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Box from '@mui/material/Box';
 
 // ** Styled Component Import
@@ -6,6 +8,15 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 // ** Demo Components Imports
 
 const Dashboard = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!!localStorage.getItem('user')) {
+      router.push('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <ApexChartWrapper>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mx: '5em' }}>

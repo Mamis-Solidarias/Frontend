@@ -16,6 +16,7 @@ import { GET_COMMUNITIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiariesPaging';
 import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
+import { useRouter } from 'next/router';
 
 interface CommunitiesTableProps {
   openCreateCommunities: boolean;
@@ -24,6 +25,7 @@ interface CommunitiesTableProps {
 
 const CommunitiesTable: FC<CommunitiesTableProps> = props => {
   const { openCreateCommunities, openWindow } = props;
+  const router = useRouter();
   const [id, setId] = useState<string>('');
   const [openUpdateCommunity, setOpenUpdateCommunity] = useState<boolean>(false);
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
@@ -40,6 +42,13 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
       limit: paging.limit
     });
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!!localStorage.getItem('user') && !openWindow) {

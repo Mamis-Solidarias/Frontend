@@ -36,14 +36,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
-      router.push('/');
+      router.push('/login');
     }
     if (!!localStorage.getItem('user')) {
-      getCommunities().then(result => {
-        if (!!result.data.communities && result.data.communities.length > 0) {
-          setCommunities(result.data.communities);
-        }
-      });
+      getCommunities()
+        .then(result => {
+          if (!!result.data.communities && result.data.communities.length > 0) {
+            setCommunities(result.data.communities);
+          }
+        })
+        .catch(err => {
+          if (err.status === 401) {
+            router.push('/login');
+          }
+        });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

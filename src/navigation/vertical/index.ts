@@ -36,7 +36,7 @@ const navigation = (): VerticalNavItemsType => {
       icon: VolunteerActivismIcon,
       title: 'Donantes',
       path: '/donantes',
-      service: 'Beneficiaries'
+      service: 'Donors'
     },
     {
       sectionTitle: 'Usuarios',

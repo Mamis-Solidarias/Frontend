@@ -17,7 +17,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
-      router.push('/');
+      router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

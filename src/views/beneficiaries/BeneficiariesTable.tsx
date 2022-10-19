@@ -22,6 +22,7 @@ import { deleteBeneficiary } from 'src/API/Beneficiaries/beneficiaries_data';
 import { activateBeneficiary } from './../../API/Beneficiaries/beneficiaries_data';
 import { BeneficiaryEditForm } from './BeneficiaryEditForm';
 import Community from 'src/types/Community';
+import { useRouter } from 'next/router';
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
@@ -29,10 +30,11 @@ interface BeneficiariesTableProps {
 }
 
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
+  const { filters, communities } = props;
+  const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
   const [openEditBeneficiary, setOpenEditBeneficiary] = useState<boolean>(false);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary | undefined>();
-  const { filters, communities } = props;
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
   const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
@@ -69,6 +71,13 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
       limit: paging.limit
     });
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     refetchWithSameParameters();
