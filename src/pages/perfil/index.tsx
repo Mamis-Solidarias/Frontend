@@ -1,5 +1,7 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
@@ -8,6 +10,15 @@ import { UserProfileDisplay } from 'src/views/users/UserProfileDisplay';
 // ** Demo Components Imports
 
 const Dashboard = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>

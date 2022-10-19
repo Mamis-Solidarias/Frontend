@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 // ** Styled Component Import
@@ -12,6 +13,14 @@ import { CreateCommunity } from 'src/views/communities/CreateCommunity';
 const Dashboard = () => {
   const [openCreateCommunities, setOpenCreateCommunities] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (openWindow && openCreateCommunities === false) {

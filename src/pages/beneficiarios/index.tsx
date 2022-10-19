@@ -22,6 +22,7 @@ import ChevronUp from 'mdi-material-ui/ChevronUp';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import { useRouter } from 'next/router';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -31,8 +32,12 @@ const Dashboard = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const [families, setFamilies] = useState<Family[]>([]);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/');
+    }
     if (!!localStorage.getItem('user')) {
       getCommunities().then(result => {
         if (!!result.data.communities && result.data.communities.length > 0) {
@@ -40,6 +45,7 @@ const Dashboard = () => {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -17,6 +17,7 @@ import { useDonorsPaging } from 'src/hooks/beneficiaries/useDonorsPaging';
 import { GET_DONORS } from 'src/API/Donors/donors_graphql';
 import DonorsTablePagination from './DonorsTablePagination';
 import { Donor } from 'src/types/Donor';
+import Button from '@mui/material/Button';
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -80,6 +81,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                 <TableCell>Teléfono</TableCell>
                 <TableCell>Padrinazgo</TableCell>
                 <TableCell>Creador</TableCell>
+                <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -91,6 +93,20 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                   <TableCell>{row.phone ? row.phone : '-'}</TableCell>
                   <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
                   <TableCell>{row.owner?.name}</TableCell>
+                  <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Button
+                      variant='contained'
+                      sx={{ my: '.5em' }}
+                      onClick={() => {
+                        if (!!row.id) {
+                          setId(parseInt(row.id));
+                          setOpenUpdateDonor(true);
+                        }
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
               ``
