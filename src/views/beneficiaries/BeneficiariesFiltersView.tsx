@@ -25,7 +25,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           select
           fullWidth={true}
@@ -42,7 +42,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           ))}
         </TextField>
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           select
           fullWidth={true}
@@ -59,7 +59,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           ))}
         </TextField>
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'
@@ -68,7 +68,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           onChange={e => setFilter('ageStart', e.target.value)}
         />
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'
@@ -77,7 +77,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           onChange={e => setFilter('ageEnd', e.target.value)}
         />
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'
@@ -86,7 +86,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           onChange={e => setFilter('dniStarts', e.target.value)}
         />
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'
@@ -95,7 +95,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           onChange={e => setFilter('firstName', e.target.value)}
         />
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'
@@ -104,7 +104,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           onChange={e => setFilter('lastName', e.target.value)}
         />
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           select
           fullWidth={true}
@@ -125,7 +125,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           })}
         </TextField>
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           fullWidth={true}
           variant='standard'
@@ -134,7 +134,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           onChange={e => setFilter('school', e.target.value)}
         />
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <TextField
           select
           fullWidth={true}
@@ -154,7 +154,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           })}
         </TextField>
       </Box>
-      <Box sx={{ padding: '1em' }}>
+      <Box sx={{ padding: '0.25em' }}>
         <FormControlLabel
           label='Está activo'
           labelPlacement='bottom'
