@@ -76,7 +76,8 @@ services:
     networks:
       - mamis-net
     environment:
-      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Development: "Host=mamis-db:5432;Database=users;Username=dev;Password=dev"
 
   campaigns:
     image: ghcr.io/mamis-solidarias/campaigns:1.0.0
