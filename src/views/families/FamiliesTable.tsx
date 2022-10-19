@@ -42,12 +42,12 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
-  const { loading, error, data, refetch } = useQuery(GET_FAMILIES, {
-    variables: {
-      communityCode: filters.communityCode,
-      familyName: filters.familyName
-    }
-  });
+  // const { loading, error, data, refetch } = useQuery(GET_FAMILIES, {
+  //   variables: {
+  //     communityCode: filters.communityCode,
+  //     familyName: filters.familyName
+  //   }
+  // });
 
   const refetchWithSameParameters = () => {
     refetch({
