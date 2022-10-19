@@ -16,9 +16,13 @@ interface UpdateDonorProps {
 export const UpdateDonor: FC<UpdateDonorProps> = props => {
   const { openDialog, handleClose, id } = props;
 
-  const resetFields = () => {};
+  const resetFields = () => {
+    console.log(id);
+  };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    console.log(id);
+  };
 
   return (
     <Dialog
@@ -37,7 +41,9 @@ export const UpdateDonor: FC<UpdateDonorProps> = props => {
             inputProps={{ pattern: '^.+$' }}
             label='Nuevo Nombre'
             placeholder='Paso de los Libres 428'
-            onChange={e => {}}
+            onChange={() => {
+              console.log(id);
+            }}
             fullWidth={true}
             variant='standard'
           />

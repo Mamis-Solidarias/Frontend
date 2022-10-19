@@ -8,11 +8,20 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 // ** Demo Components Imports
 import TableUsers from 'src/views/users/TableUsers';
 import { CreateUser } from 'src/views/users/CreateUser';
+import { useRouter } from 'next/router';
 
 const Dashboard = () => {
   const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [userAdded, setUserAdded] = useState<boolean>(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (openWindow && openCreateUser === false) {

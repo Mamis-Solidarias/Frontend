@@ -66,6 +66,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
         addJob: !!beneficiary.job
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [beneficiary]);
 
   return (

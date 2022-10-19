@@ -21,6 +21,7 @@ import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiarie
 import FamiliesFiltersView from 'src/views/families/FamiliesFiltersView';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
+import { useRouter } from 'next/router';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
@@ -30,9 +31,12 @@ const Dashboard = () => {
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { filters, setFilter } = useBeneficiariesFilters();
+  const router = useRouter();
 
   useEffect(() => {
-    if (!!localStorage.getItem('user')) {
+    if (!localStorage.getItem('user')) {
+      router.push('/');
+    } else {
       getCommunities().then(result => {
         setCommunities(result.data.communities);
         if (result.data.communities.length > 0) {
@@ -40,6 +44,7 @@ const Dashboard = () => {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

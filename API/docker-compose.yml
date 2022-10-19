@@ -39,7 +39,7 @@ services:
       - mamis-net
 
   users:
-    image: ghcr.io/mamis-solidarias/users:1.0.5
+    image: ghcr.io/mamis-solidarias/users:1.0.6
     restart: unless-stopped
     depends_on:
       - mamis-db

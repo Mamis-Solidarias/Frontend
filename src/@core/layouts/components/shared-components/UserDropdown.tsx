@@ -98,7 +98,7 @@ const UserDropdown = () => {
               sx={{ py: 2 }}
               onClick={async () => {
                 localStorage.clear();
-                await logoutUser();
+                logoutUser();
                 router.push('/').then(() => router.reload());
               }}
             >
