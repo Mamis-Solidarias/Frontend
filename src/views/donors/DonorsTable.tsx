@@ -25,7 +25,7 @@ interface DonorsTableProps {
 
 const FamiliesTable: FC<DonorsTableProps> = props => {
   const { openCreateDonor } = props;
-  const [id, setId] = useState<number>(-1);
+  const [donor, setDonor] = useState<Donor | null>(null);
   const [openUpdateDonor, setOpenUpdateDonor] = useState<boolean>(false);
   const { paging, setDonorsPaging } = useDonorsPaging();
   const { loading, error, data, refetch } = useQuery(GET_DONORS, {
@@ -99,7 +99,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                       sx={{ my: '.5em' }}
                       onClick={() => {
                         if (!!row.id) {
-                          setId(parseInt(row.id));
+                          setDonor(row);
                           setOpenUpdateDonor(true);
                         }
                       }}
@@ -109,7 +109,6 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                   </TableCell>
                 </TableRow>
               ))}
-              ``
             </TableBody>
           </Table>
         </TableContainer>
@@ -123,7 +122,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
         {openUpdateDonor && (
           <UpdateDonor
             openDialog={openUpdateDonor}
-            id={id}
+            donor={donor}
             handleClose={() => {
               setOpenUpdateDonor(false);
             }}

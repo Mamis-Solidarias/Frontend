@@ -6,56 +6,110 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
 import { FC } from 'react';
+import { createDonor } from 'src/API/Donors/donors_data';
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import { useModifyDonor } from 'src/hooks/beneficiaries/useModifyDonor';
+import { Donor } from 'src/types/Donor';
 
 interface UpdateDonorProps {
-  id: any;
+  donor: Donor | null;
   openDialog: boolean;
   handleClose: () => void;
 }
 
 export const UpdateDonor: FC<UpdateDonorProps> = props => {
-  const { openDialog, handleClose, id } = props;
+  const { openDialog, handleClose, donor } = props;
+  const { donor: donorNewValues, setDonor, setDonorField } = useModifyDonor(donor);
 
   const resetFields = () => {
-    console.log(id);
+    if (!!donor) {
+      setDonor(donor);
+    }
   };
 
-  const handleSubmit = async () => {
-    console.log(id);
+  const resetAllFields = () => {
+    resetFields();
   };
 
   return (
     <Dialog
       open={openDialog}
       onClose={() => {
-        resetFields();
+        resetAllFields();
         handleClose();
       }}
+      maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Usuario</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Donante</DialogTitle>
       <DialogContent>
-        <Box component='form' onSubmit={handleSubmit}>
+        <Box>
           <TextField
-            id='address'
+            id='name'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Nuevo Nombre'
-            placeholder='Paso de los Libres 428'
-            onChange={() => {
-              console.log(id);
+            label='Nombre'
+            placeholder='Pedro Mendoza'
+            value={donorNewValues.name}
+            onChange={(e: any) => {
+              setDonorField('name', e.target.value);
             }}
             fullWidth={true}
             variant='standard'
           />
-          <Button
-            type='submit'
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
-            variant='contained'
-            onClick={handleSubmit}
-          >
-            Editar
-          </Button>
+          <TextField
+            id='email'
+            type='text'
+            inputProps={{ pattern: '^.+$' }}
+            label='Email'
+            placeholder='pmendoza@gmail.com'
+            value={donorNewValues.email}
+            onChange={(e: any) => {
+              setDonorField('email', e.target.value);
+            }}
+            fullWidth={true}
+            variant='standard'
+          />
+          <TextField
+            id='phone'
+            type='text'
+            inputProps={{ pattern: '^.+$' }}
+            label='Teléfono'
+            placeholder='+5492995077824'
+            value={donorNewValues.phone}
+            onChange={(e: any) => {
+              setDonorField('phone', e.target.value);
+            }}
+            fullWidth={true}
+            variant='standard'
+          />
+          <Stack direction='row' spacing={1} alignItems='center'>
+            <Typography>No es padrino</Typography>
+            <Switch
+              onChange={(e: any) => setDonorField('isGodFather', e.target.checked)}
+              checked={donorNewValues.isGodFather}
+            />
+            <Typography>Es padrino</Typography>
+          </Stack>
         </Box>
+        <Button
+          sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+          variant='contained'
+          onClick={async () => {
+            await createDonor({
+              name: donorNewValues.name,
+              email: donorNewValues.email,
+              phone: donorNewValues.phone,
+              isGodFather: donorNewValues.isGodFather
+            });
+            resetAllFields();
+            handleClose();
+          }}
+          disabled={!donorNewValues.name || (!donorNewValues.phone && !donorNewValues.email)}
+        >
+          Editar
+        </Button>
       </DialogContent>
     </Dialog>
   );
