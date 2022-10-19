@@ -5,11 +5,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { createDonor } from 'src/API/Donors/donors_data';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { defaultDonor, useModifyDonor } from 'src/hooks/beneficiaries/useModifyDonor';
 
 interface CreateDonorProps {
   openDialog: boolean;
@@ -18,16 +19,10 @@ interface CreateDonorProps {
 
 export const CreateDonor: FC<CreateDonorProps> = props => {
   const { openDialog, handleClose } = props;
-  const [isGodFather, setIsGodFather] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
+  const { donor, setDonor, setDonorField } = useModifyDonor();
 
   const resetFields = () => {
-    setIsGodFather(false);
-    setName('');
-    setEmail('');
-    setPhone('');
+    setDonor(defaultDonor);
   };
 
   const resetAllFields = () => {
@@ -52,9 +47,9 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
             inputProps={{ pattern: '^.+$' }}
             label='Nombre'
             placeholder='Pedro Mendoza'
-            value={name}
+            value={donor.name}
             onChange={(e: any) => {
-              setName(e.target.value);
+              setDonorField('name', e.target.value);
             }}
             fullWidth={true}
             variant='standard'
@@ -65,9 +60,9 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
             inputProps={{ pattern: '^.+$' }}
             label='Email'
             placeholder='pmendoza@gmail.com'
-            value={email}
+            value={donor.email}
             onChange={(e: any) => {
-              setEmail(e.target.value);
+              setDonorField('email', e.target.value);
             }}
             fullWidth={true}
             variant='standard'
@@ -78,16 +73,16 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
             inputProps={{ pattern: '^.+$' }}
             label='Teléfono'
             placeholder='+5492995077824'
-            value={phone}
+            value={donor.phone}
             onChange={(e: any) => {
-              setPhone(e.target.value);
+              setDonorField('phone', e.target.value);
             }}
             fullWidth={true}
             variant='standard'
           />
           <Stack direction='row' spacing={1} alignItems='center'>
             <Typography>No es padrino</Typography>
-            <Switch onChange={(e: any) => setIsGodFather(e.target.checked)} checked={isGodFather} />
+            <Switch onChange={(e: any) => setDonorField('isGodFather', e.target.checked)} checked={donor.isGodFather} />
             <Typography>Es padrino</Typography>
           </Stack>
         </Box>
@@ -95,11 +90,16 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={async () => {
-            await createDonor({ name, email, phone, isGodFather });
+            await createDonor({
+              name: donor.name,
+              email: donor.email,
+              phone: donor.phone,
+              isGodFather: donor.isGodFather
+            });
             resetAllFields();
             handleClose();
           }}
-          disabled={!name || (!phone && !email)}
+          disabled={!donor.name || (!donor.phone && !donor.email)}
         >
           Crear
         </Button>

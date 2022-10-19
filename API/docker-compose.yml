@@ -77,7 +77,7 @@ services:
       - mamis-net
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Development: "Host=mamis-db:5432;Database=users;Username=dev;Password=dev"
+      ConnectionStrings__Development: "Host=mamis-db:5432;Database=donors;Username=dev;Password=dev"
 
   campaigns:
     image: ghcr.io/mamis-solidarias/campaigns:1.0.0
