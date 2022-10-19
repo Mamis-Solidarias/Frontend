@@ -19,6 +19,8 @@ import Collapse from '@mui/material/Collapse';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import FamiliesFiltersView from 'src/views/families/FamiliesFiltersView';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
@@ -51,36 +53,41 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Card sx={{ my: '2em', py: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
-              Filtros
-            </Typography>
-            <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
-              {openCollapse ? (
-                <ChevronUp sx={{ fontSize: '1.875rem' }} />
-              ) : (
-                <ChevronDown sx={{ fontSize: '1.875rem' }} />
-              )}
-            </IconButton>
-            <Collapse in={openCollapse}>
-              <FamiliesFiltersView filters={filters} setFilter={setFilter} communities={communities} />
-              <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
-                <Button
-                  variant='contained'
-                  onClick={() => {
-                    const filtersToApply = filters;
-                    for (const fk in filtersToApply) {
-                      if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                        filtersToApply[fk as keyof BeneficiariesFilters] = null;
+          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardHeader
+              title='Filtros'
+              action={
+                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
+                  {openCollapse ? (
+                    <ChevronUp sx={{ fontSize: '1.875rem' }} />
+                  ) : (
+                    <ChevronDown sx={{ fontSize: '1.875rem' }} />
+                  )}
+                </IconButton>
+              }
+            />
+            <CardContent>
+              <Collapse in={openCollapse}></Collapse>
+              <Collapse in={openCollapse}>
+                <FamiliesFiltersView filters={filters} setFilter={setFilter} communities={communities} />
+                <Typography align='center' variant='h6' sx={{ textDecoration: 'underline' }}>
+                  <Button
+                    variant='contained'
+                    onClick={() => {
+                      const filtersToApply = filters;
+                      for (const fk in filtersToApply) {
+                        if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                          filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                        }
                       }
-                    }
-                    setFiltersApplied(filtersToApply);
-                  }}
-                >
-                  Aplicar Filtros
-                </Button>
-              </Typography>
-            </Collapse>
+                      setFiltersApplied(filtersToApply);
+                    }}
+                  >
+                    Aplicar Filtros
+                  </Button>
+                </Typography>
+              </Collapse>
+            </CardContent>
           </Card>
           <FamiliesTable communities={communities} filters={filtersApplied} openCreateFamilies={openCreateFamilies} />
           <Button
