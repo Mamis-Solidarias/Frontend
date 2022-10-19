@@ -11,7 +11,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!!localStorage.getItem('user')) {
+    if (!localStorage.getItem('user')) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

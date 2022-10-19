@@ -102,7 +102,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                   }}
                   disabled={permissions >= 2}
                 >
-                  Añadir Nuevo Servicio
+                  Añadir
                 </Button>
               </TableRow>
               {userRoles.length > 0 &&
@@ -118,6 +118,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                         <MenuItem value='#' style={{ display: 'none' }}></MenuItem>
                         <MenuItem value='Users'>Usuarios</MenuItem>
                         <MenuItem value='Beneficiaries'>Beneficiarios</MenuItem>
+                        <MenuItem value='Donors'>Donantes</MenuItem>
                       </Select>
                     </TableCell>
                     <TableCell>
@@ -141,18 +142,16 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
             </TableBody>
           </Table>
         </TableContainer>
-        {userRoles.length > 0 && (
-          <Button
-            variant='contained'
-            sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={async () => {
-              await updateUserRole(id, userRoles);
-              handleClose();
-            }}
-          >
-            Cargar Permisos
-          </Button>
-        )}
+        <Button
+          variant='contained'
+          sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+          onClick={async () => {
+            await updateUserRole(id, userRoles);
+            handleClose();
+          }}
+        >
+          Cargar
+        </Button>
       </DialogContent>
     </Dialog>
   );
