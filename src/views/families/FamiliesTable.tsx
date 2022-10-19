@@ -27,6 +27,7 @@ import { GET_FAMILIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiariesPaging';
 import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
+import { useRouter } from 'next/router';
 
 interface FamiliesTableProps {
   communities: Community[];
@@ -36,6 +37,7 @@ interface FamiliesTableProps {
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {
   const { filters, openCreateFamilies } = props;
+  const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
   const [id, setId] = useState<number>(-1);
   const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
@@ -55,6 +57,13 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
       familyName: filters.familyName
     });
   };
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+      router.push('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!!localStorage.getItem('user') && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {

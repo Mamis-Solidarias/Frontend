@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
-      router.push('/');
+      router.push('/login');
     } else {
       getCommunities().then(result => {
         setCommunities(result.data.communities);

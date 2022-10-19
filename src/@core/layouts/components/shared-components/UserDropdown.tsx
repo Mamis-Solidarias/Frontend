@@ -99,7 +99,7 @@ const UserDropdown = () => {
               onClick={async () => {
                 localStorage.clear();
                 logoutUser();
-                router.push('/').then(() => router.reload());
+                router.push('/login').then(() => router.reload());
               }}
             >
               <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />

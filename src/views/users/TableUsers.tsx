@@ -18,6 +18,8 @@ import TablePagination from '@mui/material/TablePagination';
 import { EditPassword } from './EditPassword';
 import { UpdateUser } from './UpdateUser';
 import User from 'src/types/User';
+import { useRouter } from 'next/router';
+import { hasNoPermission, isNotLoggedIn, redirectToLogin } from 'src/utils/sessionManagement';
 
 interface TableUsersProps {
   openWindow: boolean;
@@ -30,6 +32,7 @@ const TableUsers: FC<TableUsersProps> = props => {
   const INITIAL_SIZE = 5,
     MEDIUM_SIZE = 10,
     LARGE_SIZE = 15;
+  const router = useRouter();
   const [rows, setRows] = useState<any>();
   const [id, setId] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -58,7 +61,11 @@ const TableUsers: FC<TableUsersProps> = props => {
   };
 
   useEffect(() => {
-    reloadUsers();
+    if (!localStorage.getItem('user')) {
+      router.push('/login');
+    } else {
+      reloadUsers();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -88,12 +95,20 @@ const TableUsers: FC<TableUsersProps> = props => {
   };
 
   const changePage = async (newPage: number, size: number) => {
-    getUsers(newPage, size).then(users => {
-      localStorage.setItem('pageUsers', newPage.toString());
-      setTotalPages(users.data.totalPages);
-      setActualPage(users.data.page);
-      setRows(users.data.entries);
-    });
+    getUsers(newPage, size)
+      .then(users => {
+        localStorage.setItem('pageUsers', newPage.toString());
+        setTotalPages(users.data.totalPages);
+        setActualPage(users.data.page);
+        setRows(users.data.entries);
+      })
+      .catch(err => {
+        if (hasNoPermission(err)) {
+          redirectToLogin(router);
+        } else if (isNotLoggedIn(err)) {
+          redirectToLogin(router);
+        }
+      });
   };
 
   return (
