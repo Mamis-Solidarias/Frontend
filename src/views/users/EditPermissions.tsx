@@ -85,7 +85,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
             <TableBody>
               {userRoles.length == 0 && (
                 <TableRow key='noroles'>
-                  <TableCell>Este usuario aún no tiene roles cargados</TableCell>
+                  <TableCell>Este usuario aún no tiene permisos cargados</TableCell>
                 </TableRow>
               )}
               <TableRow hover key='button'>
@@ -124,7 +124,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                       <Stack direction='row' spacing={1} alignItems='center'>
                         <Typography>Lectura</Typography>
                         <Switch
-                          onChange={e => changeRoleInUserRoles(role, role.service, true, e.target.checked)}
+                          onChange={(e: any) => changeRoleInUserRoles(role, role.service, true, e.target.checked)}
                           checked={role.canWrite}
                         />
                         <Typography>Lectura y Escritura</Typography>

@@ -34,7 +34,7 @@ const Dashboard = () => {
               setOpenCreateUser(true);
             }}
           >
-            Añadir Nuevo Usuario
+            Añadir Usuario
           </Button>
           <CreateUser
             openDialog={openCreateUser}
