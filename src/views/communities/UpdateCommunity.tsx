@@ -41,7 +41,7 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
         handleClose();
       }}
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Usuario</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Comunidad</DialogTitle>
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField

@@ -13,11 +13,12 @@ interface GeneralFormProps {
   beneficiaryFields: CreateBeneficiaryFields;
   setBeneficiaryField: (key: keyof CreateBeneficiaryFields, value: any) => void;
   communities: Community[];
+  setFamilyId?: (familyId: string) => void;
   startingCommunityInput?: string;
 }
 
 export const GeneralForm: FC<GeneralFormProps> = props => {
-  const { beneficiaryFields, setBeneficiaryField, communities, startingCommunityInput } = props;
+  const { beneficiaryFields, setBeneficiaryField, communities, setFamilyId, startingCommunityInput } = props;
   const [families, setFamilies] = useState<Family[]>([]);
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
 
@@ -111,7 +112,12 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             label='Familia'
             placeholder='Gómez'
             value={beneficiaryFields.familyId}
-            onChange={e => setBeneficiaryField('familyId', e.target.value)}
+            onChange={e => {
+              setBeneficiaryField('familyId', e.target.value);
+              if (!!setFamilyId) {
+                setFamilyId(e.target.value);
+              }
+            }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
             {families.map((family: Family) => (

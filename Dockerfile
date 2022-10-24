@@ -1,15 +1,19 @@
-FROM node:alpine as BUILD_IMAGE
+FROM node as BUILD_IMAGE
 WORKDIR /app
 COPY package.json yarn.lock ./
+
 # install dependencies
-RUN npm install -g -s --no-progress yarn
 RUN yarn
 COPY . .
+
 # build
-RUN yarn build
+RUN yarn build && \
+    yarn run prune && \
+    yarn cache clean
 
 FROM node:alpine
 WORKDIR /app
+
 # copy from build image
 COPY --from=BUILD_IMAGE /app/package.json ./package.json
 COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
