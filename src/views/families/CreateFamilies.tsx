@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MenuItem from '@mui/material/MenuItem';
 import Community from 'src/types/Community';
+import Grid from '@mui/material/Grid';
 
 // import { ContactForm } from './ContactForm';
 
@@ -86,74 +87,79 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Familias</DialogTitle>
       <DialogContent>
         <Box>
-          <TextField
-            select
-            fullWidth={true}
-            variant='standard'
-            label='Comunidad'
-            placeholder='Misiones'
-            value={selectedCommunity}
-            onChange={e => setSelectedCommunity(e.target.value)}
-          >
-            <MenuItem value=''>Ninguna</MenuItem>
-            {communities.map((community: Community) => (
-              <MenuItem value={community.id} key={community.id}>
-                {community.name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            id='familyId'
-            type='text'
-            inputProps={{ pattern: '[0-9]*$' }}
-            label='Código (opcional)'
-            placeholder='23'
-            value={number}
-            onChange={e => {
-              setNumber(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            id='familyName'
-            type='text'
-            inputProps={{ pattern: '^.+$' }}
-            label='Nombre'
-            placeholder='García'
-            value={name}
-            onChange={e => {
-              setName(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            id='address'
-            type='text'
-            inputProps={{ pattern: '^.+$' }}
-            label='Dirección'
-            placeholder='Cataratas 123'
-            value={address}
-            onChange={e => {
-              setAddress(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-          <TextField
-            id='details'
-            type='text'
-            label='Detalle (opcional)'
-            placeholder='La familia de José'
-            value={description}
-            onChange={e => {
-              setDescription(e.target.value);
-            }}
-            fullWidth={true}
-            variant='standard'
-          />
-
+          <Grid xs={12} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Grid xs={5}>
+              <TextField
+                select
+                fullWidth={true}
+                variant='standard'
+                label='Comunidad'
+                placeholder='Misiones'
+                value={selectedCommunity}
+                onChange={e => setSelectedCommunity(e.target.value)}
+              >
+                <MenuItem value=''>Ninguna</MenuItem>
+                {communities.map((community: Community) => (
+                  <MenuItem value={community.id} key={community.id}>
+                    {community.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                id='familyId'
+                type='text'
+                inputProps={{ pattern: '[0-9]*$' }}
+                label='Código (opcional)'
+                placeholder='23'
+                value={number}
+                onChange={e => {
+                  setNumber(e.target.value);
+                }}
+                fullWidth={true}
+                variant='standard'
+              />
+              <TextField
+                id='familyName'
+                type='text'
+                inputProps={{ pattern: '^.+$' }}
+                label='Nombre'
+                placeholder='García'
+                value={name}
+                onChange={e => {
+                  setName(e.target.value);
+                }}
+                fullWidth={true}
+                variant='standard'
+              />
+            </Grid>
+            <Grid xs={5}>
+              <TextField
+                id='address'
+                type='text'
+                inputProps={{ pattern: '^.+$' }}
+                label='Dirección'
+                placeholder='Cataratas 123'
+                value={address}
+                onChange={e => {
+                  setAddress(e.target.value);
+                }}
+                fullWidth={true}
+                variant='standard'
+              />
+              <TextField
+                id='details'
+                type='text'
+                label='Detalle (opcional)'
+                placeholder='La familia de José'
+                value={description}
+                onChange={e => {
+                  setDescription(e.target.value);
+                }}
+                fullWidth={true}
+                variant='standard'
+              />
+            </Grid>
+          </Grid>
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
             variant='contained'

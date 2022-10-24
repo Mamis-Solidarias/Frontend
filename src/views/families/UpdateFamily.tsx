@@ -47,7 +47,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
         handleClose();
       }}
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Usuario</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Editar Familia</DialogTitle>
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField

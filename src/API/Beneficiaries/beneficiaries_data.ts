@@ -28,7 +28,5 @@ export const updateBeneficiary = async (
     job?: Job | null;
   }
 ) => {
-  console.log(data);
-
   return axiosClient.patch('/beneficiaries/' + id, data);
 };

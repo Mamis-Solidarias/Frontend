@@ -58,6 +58,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const { beneficiaryFields, setBeneficiaryField, setBeneficiaryFields } = useCreateBeneficiaryFields();
   const { beneficiaryExtras, setBeneficiaryExtra, setBeneficiaryExtras } = useCreateBeneficiaryExtras();
   const [open, setOpen] = useState<boolean[]>([]);
+  const [familyId, setFamilyId] = useState<string>('');
 
   const resetFields = () => {
     setBeneficiaryFields(defaultCreateBeneficiaryFields);
@@ -90,6 +91,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           <Grid item xs={12}>
             <GeneralForm
               beneficiaryFields={beneficiaryFields}
+              setFamilyId={setFamilyId}
               setBeneficiaryField={setBeneficiaryField}
               communities={communities}
             />
@@ -293,8 +295,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                       <TableCell>{beneficiary.firstName + ' ' + beneficiary.lastName}</TableCell>
                       <TableCell>{GENDERS[beneficiary.gender as keyof typeof GENDERS]}</TableCell>
                       <TableCell>{beneficiary.birthday}</TableCell>
+                      <TableCell>{beneficiary.dni}</TableCell>
                       <TableCell>{BENEFICIARY_TYPES[beneficiary.type as keyof typeof BENEFICIARY_TYPES]}</TableCell>
-                      <TableCell>{beneficiary.type}</TableCell>
                       <TableCell>
                         <IconButton aria-label='delete' size='small' onClick={() => deleteBeneficiary(beneficiary)}>
                           <DeleteIcon />
@@ -336,7 +338,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={() => {
-            createBeneficiaries(beneficiaryFields.familyId, beneficiaries);
+            createBeneficiaries(familyId, beneficiaries);
             resetAllFields();
             handleClose();
           }}
