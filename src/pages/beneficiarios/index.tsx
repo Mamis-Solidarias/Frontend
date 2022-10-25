@@ -23,6 +23,9 @@ import ChevronDown from 'mdi-material-ui/ChevronDown';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import { useRouter } from 'next/router';
+import ActionToast from 'src/views/pages/misc/ActionToast';
+import { useAction } from 'src/hooks/actionHook';
+import Portal from '@mui/material/Portal';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -32,6 +35,7 @@ const Dashboard = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const [families, setFamilies] = useState<Family[]>([]);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+  const { action, setAction, setCompletion } = useAction();
   const router = useRouter();
 
   useEffect(() => {
@@ -46,6 +50,12 @@ const Dashboard = () => {
           }
         })
         .catch(err => {
+          setAction({
+            complete: true,
+            success: false,
+            message: err.message,
+            status: err.status
+          });
           if (err.status === 401) {
             router.push('/login');
           }
@@ -105,6 +115,12 @@ const Dashboard = () => {
                         }
                       }
                       setFiltersApplied(filtersToApply);
+                      setAction({
+                        complete: true,
+                        success: true,
+                        message: 'Filtros aplicados exitosamente',
+                        status: 200
+                      });
                     }}
                   >
                     Aplicar Filtros
@@ -125,15 +141,25 @@ const Dashboard = () => {
             Añadir Beneficiarios
           </Button>
 
-          <BeneficiariesTable filters={filtersApplied} communities={communities} />
+          <BeneficiariesTable
+            filters={filtersApplied}
+            communities={communities}
+            openCreateBeneficiaries={openCreateBeneficiaries}
+            openWindow={openWindow}
+            setAction={setAction}
+          />
 
           <CreateBeneficiaries
             openDialog={openCreateBeneficiaries}
+            setAction={setAction}
             handleClose={() => setOpenCreateBeneficiaries(false)}
             communities={communities}
           />
         </Grid>
       </Grid>
+      <Portal>
+        <ActionToast action={action} setActionCompletion={setCompletion} />
+      </Portal>
     </ApexChartWrapper>
   );
 };

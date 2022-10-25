@@ -19,6 +19,7 @@ import Job from 'src/types/Job';
 import Health from 'src/types/Health';
 import Community from 'src/types/Community';
 import { updateBeneficiary } from './../../API/Beneficiaries/beneficiaries_data';
+import { Action } from 'src/types/Action';
 
 interface BeneficiaryEditFormProps {
   openDialog: boolean;
@@ -26,10 +27,11 @@ interface BeneficiaryEditFormProps {
   communities: Community[];
   action: string;
   beneficiary: Beneficiary;
+  setAction: (action: Action) => void;
 }
 
 export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
-  const { openDialog, handleClose, communities, action, beneficiary } = props;
+  const { openDialog, handleClose, communities, action, beneficiary, setAction } = props;
   const { beneficiaryFields, setBeneficiaryField, setBeneficiaryFields } = useCreateBeneficiaryFields();
   const { beneficiaryExtras, setBeneficiaryExtra, setBeneficiaryExtras } = useCreateBeneficiaryExtras();
   const [startingCommunity, setStartingCommunity] = useState<string>('');
@@ -179,7 +181,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
-            onClick={() => {
+            onClick={async () => {
               const education: Education | null =
                 !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
                   ? {
@@ -208,20 +210,35 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
                     }
                   : null;
 
-              updateBeneficiary(beneficiary.id as string, {
-                firstName: beneficiaryFields.firstName,
-                lastName: beneficiaryFields.lastName,
-                type: beneficiaryFields.type,
-                gender: beneficiaryFields.gender,
-                birthday: beneficiaryFields.birthday,
-                dni: beneficiaryFields.dni,
-                comments: beneficiaryFields.comments,
-                likes: beneficiaryFields.likes,
-                education,
-                job,
-                clothes,
-                health
-              });
+              try {
+                await updateBeneficiary(beneficiary.id as string, {
+                  firstName: beneficiaryFields.firstName,
+                  lastName: beneficiaryFields.lastName,
+                  type: beneficiaryFields.type,
+                  gender: beneficiaryFields.gender,
+                  birthday: beneficiaryFields.birthday,
+                  dni: beneficiaryFields.dni,
+                  comments: beneficiaryFields.comments,
+                  likes: beneficiaryFields.likes,
+                  education,
+                  job,
+                  clothes,
+                  health
+                });
+                setAction({
+                  complete: true,
+                  success: true,
+                  message: 'Usuario actualizado exitosamente',
+                  status: 200
+                });
+              } catch (err) {
+                setAction({
+                  complete: true,
+                  success: false,
+                  message: 'Algo ha ocurrido actualizando el usuario. Intente nuevamente más tarde',
+                  status: 400
+                });
+              }
             }}
           >
             Modificar Datos
