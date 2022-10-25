@@ -15,12 +15,14 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ContactForm } from './ContactForm';
 import Contact from 'src/types/Contact';
+import { Action } from 'src/types/Action';
 
 interface UpdateContactsProps {
   id: number;
   contacts: Contact[];
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {

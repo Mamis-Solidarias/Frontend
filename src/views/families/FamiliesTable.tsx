@@ -28,15 +28,17 @@ import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiaries
 import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
 import { useRouter } from 'next/router';
+import { Action } from 'src/types/Action';
 
 interface FamiliesTableProps {
   communities: Community[];
   filters: BeneficiariesFilters;
   openCreateFamilies: boolean;
+  setAction: (action: Action) => void;
 }
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {
-  const { filters, openCreateFamilies } = props;
+  const { filters, openCreateFamilies, setAction } = props;
   const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
   const [id, setId] = useState<number>(-1);
@@ -193,6 +195,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
             handleClose={() => {
               setOpenUpdateFamily(false);
             }}
+            setAction={setAction}
           />
         )}
         {openUpdateContacts && (
@@ -203,6 +206,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
             handleClose={() => {
               setOpenUpdateContacts(false);
             }}
+            setAction={setAction}
           />
         )}
       </Card>

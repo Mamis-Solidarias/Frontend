@@ -22,6 +22,9 @@ import FamiliesFiltersView from 'src/views/families/FamiliesFiltersView';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import { useRouter } from 'next/router';
+import Portal from '@mui/material/Portal';
+import ActionToast from 'src/views/pages/misc/ActionToast';
+import { useAction } from 'src/hooks/actionHook';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
@@ -31,6 +34,7 @@ const Dashboard = () => {
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { filters, setFilter } = useBeneficiariesFilters();
+  const { action, setAction, setCompletion } = useAction();
   const router = useRouter();
 
   useEffect(() => {
@@ -86,6 +90,12 @@ const Dashboard = () => {
                         }
                       }
                       setFiltersApplied(filtersToApply);
+                      setAction({
+                        complete: true,
+                        success: true,
+                        status: 200,
+                        message: 'Filtros aplicados correctamente'
+                      });
                     }}
                   >
                     Aplicar Filtros
@@ -94,7 +104,12 @@ const Dashboard = () => {
               </Collapse>
             </CardContent>
           </Card>
-          <FamiliesTable communities={communities} filters={filtersApplied} openCreateFamilies={openCreateFamilies} />
+          <FamiliesTable
+            communities={communities}
+            filters={filtersApplied}
+            openCreateFamilies={openCreateFamilies}
+            setAction={setAction}
+          />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -107,10 +122,17 @@ const Dashboard = () => {
             Añadir Familias
           </Button>
           {!!communityCode && (
-            <CreateFamilies openDialog={openCreateFamilies} handleClose={() => setOpenCreateFamilies(false)} />
+            <CreateFamilies
+              openDialog={openCreateFamilies}
+              handleClose={() => setOpenCreateFamilies(false)}
+              setAction={setAction}
+            />
           )}
         </Grid>
       </Grid>
+      <Portal>
+        <ActionToast action={action} setActionCompletion={setCompletion} />
+      </Portal>
     </ApexChartWrapper>
   );
 };
