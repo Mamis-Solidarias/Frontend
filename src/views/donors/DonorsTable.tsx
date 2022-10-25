@@ -19,13 +19,15 @@ import DonorsTablePagination from './DonorsTablePagination';
 import { Donor } from 'src/types/Donor';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
+import { Action } from 'src/types/Action';
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
+  setAction: (action: Action) => void;
 }
 
 const FamiliesTable: FC<DonorsTableProps> = props => {
-  const { openCreateDonor } = props;
+  const { openCreateDonor, setAction } = props;
   const router = useRouter();
   const [donor, setDonor] = useState<Donor | null>(null);
   const [openUpdateDonor, setOpenUpdateDonor] = useState<boolean>(false);
@@ -98,6 +100,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                 <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }} key={row.id}>
                   <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                   <TableCell>{row.name}</TableCell>
+
                   <TableCell>{row.email ? row.email : '-'}</TableCell>
                   <TableCell>{row.phone ? row.phone : '-'}</TableCell>
                   <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
@@ -135,6 +138,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
             handleClose={() => {
               setOpenUpdateDonor(false);
             }}
+            setAction={setAction}
           />
         )}
       </Card>

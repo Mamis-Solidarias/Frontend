@@ -11,14 +11,16 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { defaultDonor, useModifyDonor } from 'src/hooks/donors/useModifyDonor';
+import { Action } from 'src/types/Action';
 
 interface CreateDonorProps {
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 export const CreateDonor: FC<CreateDonorProps> = props => {
-  const { openDialog, handleClose } = props;
+  const { openDialog, handleClose, setAction } = props;
   const { donor, setDonor, setDonorField } = useModifyDonor();
 
   const resetFields = () => {
@@ -90,14 +92,29 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={async () => {
-            await createDonor({
-              name: donor.name,
-              email: donor.email,
-              phone: donor.phone,
-              isGodFather: donor.isGodFather
-            });
-            resetAllFields();
-            handleClose();
+            try {
+              await createDonor({
+                name: donor.name,
+                email: donor.email,
+                phone: donor.phone,
+                isGodFather: donor.isGodFather
+              });
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Donante creado exitosamente',
+                status: 201
+              });
+              resetAllFields();
+              handleClose();
+            } catch (error) {
+              setAction({
+                complete: true,
+                success: false,
+                message: 'Ocurrió un error creando el donante. Intente nuevamente más tarde',
+                status: 201
+              });
+            }
           }}
           disabled={!donor.name || (!donor.phone && !donor.email)}
         >

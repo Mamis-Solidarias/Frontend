@@ -19,6 +19,9 @@ import CardContent from '@mui/material/CardContent';
 import DonorsTable from 'src/views/donors/DonorsTable';
 import { CreateDonor } from 'src/views/donors/CreateDonor';
 import { useRouter } from 'next/router';
+import { useAction } from 'src/hooks/actionHook';
+import Portal from '@mui/material/Portal';
+import ActionToast from 'src/views/pages/misc/ActionToast';
 
 const Dashboard = () => {
   const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
@@ -28,6 +31,7 @@ const Dashboard = () => {
   // const { filters, setFilter } = useDonorsFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const router = useRouter();
+  const { action, setAction, setCompletion } = useAction();
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -64,7 +68,7 @@ const Dashboard = () => {
               <Collapse in={openCollapse}></Collapse>
             </CardContent>
           </Card>
-          <DonorsTable openCreateDonor={openCreateDonor} />
+          <DonorsTable openCreateDonor={openCreateDonor} setAction={setAction} />
           <Button
             variant='contained'
             sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
@@ -76,10 +80,17 @@ const Dashboard = () => {
             Añadir Donante
           </Button>
           {openCreateDonor && (
-            <CreateDonor openDialog={openCreateDonor} handleClose={() => setOpenCreateDonor(false)} />
+            <CreateDonor
+              openDialog={openCreateDonor}
+              handleClose={() => setOpenCreateDonor(false)}
+              setAction={setAction}
+            />
           )}
         </Grid>
       </Grid>
+      <Portal>
+        <ActionToast action={action} setActionCompletion={setCompletion} />
+      </Portal>
     </ApexChartWrapper>
   );
 };
