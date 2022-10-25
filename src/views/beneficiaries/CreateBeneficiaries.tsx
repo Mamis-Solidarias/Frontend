@@ -45,15 +45,17 @@ import Health from 'src/types/Health';
 import Community from 'src/types/Community';
 import GENDERS from 'src/types/Genders';
 import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
+import { Action } from 'src/types/Action';
 
 interface CreateBeneficiariesProps {
   openDialog: boolean;
   handleClose: () => void;
   communities: Community[];
+  setAction: (action: Action) => void;
 }
 
 export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
-  const { openDialog, handleClose, communities } = props;
+  const { openDialog, handleClose, communities, setAction } = props;
   const [beneficiaries, setBeneficiaries] = useState<Beneficiary[]>([]);
   const { beneficiaryFields, setBeneficiaryField, setBeneficiaryFields } = useCreateBeneficiaryFields();
   const { beneficiaryExtras, setBeneficiaryExtra, setBeneficiaryExtras } = useCreateBeneficiaryExtras();
@@ -337,10 +339,26 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
-          onClick={() => {
-            createBeneficiaries(familyId, beneficiaries);
-            resetAllFields();
-            handleClose();
+          onClick={async () => {
+            try {
+              await createBeneficiaries(familyId, beneficiaries);
+              resetAllFields();
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Beneficiarios creados exitosamente',
+                status: 201
+              });
+              handleClose();
+            } catch (e: any) {
+              setAction({
+                complete: true,
+                success: false,
+                message:
+                  'No se han podido cargar los beneficiarios. Revisar que no haya datos repetidos y reintentar nuevamente',
+                status: e.statusCode
+              });
+            }
           }}
           disabled={beneficiaries.length === 0}
         >

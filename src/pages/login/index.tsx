@@ -36,6 +36,9 @@ import { getUser } from 'src/API/Users/user_data';
 import Tooltip, { tooltipClasses, TooltipProps } from '@mui/material/Tooltip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import React from 'react';
+import { useAction } from 'src/hooks/actionHook';
+import ActionToast from 'src/views/pages/misc/ActionToast';
+import Portal from '@mui/material/Portal';
 
 interface State {
   password: string;
@@ -60,6 +63,8 @@ const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
 }));
 
 const LoginPage = () => {
+  const { action, setAction, setCompletion } = useAction();
+
   // ** State
   const [values, setValues] = useState<State>({
     password: '',
@@ -90,12 +95,25 @@ const LoginPage = () => {
       .then(async response => {
         if (response.status === 200) {
           const getUserResponse = await getUser(response.data.id);
+          setAction({
+            complete: true,
+            success: true,
+            message: 'Sesión iniciada correctamente',
+            status: 200
+          });
           localStorage.setItem('user', JSON.stringify(getUserResponse.data.user));
           router.push('/');
         }
       })
       .catch(err => {
         if (err.response.status === 400) {
+          setAction({
+            complete: true,
+            success: false,
+            message:
+              'Hubo un error iniciando sesión con los datos cargados. Revisar que sean correctos e intentar nuevamente',
+            status: 400
+          });
           setShowBadRequest(true);
         }
       });
@@ -203,6 +221,9 @@ const LoginPage = () => {
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
+      <Portal>
+        <ActionToast action={action} setActionCompletion={setCompletion} />
+      </Portal>
     </Box>
   );
 };

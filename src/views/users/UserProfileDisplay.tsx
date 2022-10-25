@@ -7,13 +7,15 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { FC, useEffect, useState } from 'react';
 import { updateUser } from 'src/API/Users/user_data';
+import { Action } from 'src/types/Action';
 import User from 'src/types/User';
 import { EditPassword } from './EditPassword';
 
 const emailPattern = /^[^@]+@[^@]+$/;
 const namePattern = /.{5,100}/;
 
-export const UserProfileDisplay: FC = () => {
+export const UserProfileDisplay: FC<{ setAction: (action: Action) => void }> = props => {
+  const { setAction } = props;
   const [profileUser, setProfileUserUser] = useState<User | undefined>();
   const [openEditPassword, setOpenEditPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
@@ -34,12 +36,27 @@ export const UserProfileDisplay: FC = () => {
       const emailToSend = email === profileUser.email ? null : email;
       const nameToSend = name === profileUser.name ? null : name;
       const phoneToSend = phone === profileUser.phone ? null : phone;
-      await updateUser(profileUser.id.toString(), {
-        email: emailToSend,
-        name: nameToSend,
-        phone: phoneToSend
-      });
-      resetFields();
+      try {
+        await updateUser(profileUser.id.toString(), {
+          email: emailToSend,
+          name: nameToSend,
+          phone: phoneToSend
+        });
+        resetFields();
+        setAction({
+          complete: true,
+          success: true,
+          message: 'Datos de usuario actualizados exitosamente',
+          status: 200
+        });
+      } catch (e) {
+        setAction({
+          complete: true,
+          success: false,
+          message: 'Ha ocurrido un error modificando el usuario. Intente nuevamente más tarde',
+          status: 400
+        });
+      }
     }
   };
 
@@ -194,6 +211,7 @@ export const UserProfileDisplay: FC = () => {
             handleClose={() => {
               setOpenEditPassword(false);
             }}
+            setAction={setAction}
           />
         )}
       </Card>

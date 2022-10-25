@@ -12,15 +12,17 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { useModifyDonor } from 'src/hooks/donors/useModifyDonor';
 import { Donor } from 'src/types/Donor';
+import { Action } from 'src/types/Action';
 
 interface UpdateDonorProps {
   donor: Donor | null;
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 export const UpdateDonor: FC<UpdateDonorProps> = props => {
-  const { openDialog, handleClose, donor } = props;
+  const { openDialog, handleClose, donor, setAction } = props;
   const { donor: donorNewValues, setDonor, setDonorField } = useModifyDonor(donor);
 
   const resetFields = () => {
@@ -97,14 +99,29 @@ export const UpdateDonor: FC<UpdateDonorProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={async () => {
-            await createDonor({
-              name: donorNewValues.name,
-              email: donorNewValues.email,
-              phone: donorNewValues.phone,
-              isGodFather: donorNewValues.isGodFather
-            });
-            resetAllFields();
-            handleClose();
+            try {
+              await createDonor({
+                name: donorNewValues.name,
+                email: donorNewValues.email,
+                phone: donorNewValues.phone,
+                isGodFather: donorNewValues.isGodFather
+              });
+              setAction({
+                complete: true,
+                success: true,
+                status: 200,
+                message: 'Donante modificado exitosamente'
+              });
+              resetAllFields();
+              handleClose();
+            } catch (e) {
+              setAction({
+                complete: true,
+                success: false,
+                status: 400,
+                message: 'Ha ocurrido un problema modificando los datos del donante. Intente nuevamente más tarde'
+              });
+            }
           }}
           disabled={!donorNewValues.name || (!donorNewValues.phone && !donorNewValues.email)}
         >

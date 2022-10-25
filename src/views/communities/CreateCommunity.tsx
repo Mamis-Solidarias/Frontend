@@ -16,14 +16,16 @@ import TableBody from '@mui/material/TableBody';
 import { createCommunities } from 'src/API/Beneficiaries/communities_data';
 import Community from 'src/types/Community';
 import IconButton from '@mui/material/IconButton';
+import { Action } from 'src/types/Action';
 
 interface CreateCommunityProps {
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 export const CreateCommunity: FC<CreateCommunityProps> = props => {
-  const { openDialog, handleClose } = props;
+  const { openDialog, handleClose, setAction } = props;
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -159,9 +161,24 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
           variant='contained'
           onClick={async e => {
             e.preventDefault();
-            await createCommunities(communities);
-            resetAllFields();
-            handleClose();
+            try {
+              await createCommunities(communities);
+              resetAllFields();
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Comunidad creada exitosamente',
+                status: 201
+              });
+              handleClose();
+            } catch (e) {
+              setAction({
+                complete: true,
+                success: false,
+                message: 'Hubo un problema creando la comunidad. Intente nuevamente más tarde',
+                status: 400
+              });
+            }
           }}
           disabled={communities.length === 0}
         >

@@ -18,12 +18,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MenuItem from '@mui/material/MenuItem';
 import Community from 'src/types/Community';
 import Grid from '@mui/material/Grid';
-
-// import { ContactForm } from './ContactForm';
+import { Action } from 'src/types/Action';
 
 interface CreateFamiliesProps {
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 interface Contact {
@@ -42,7 +42,7 @@ interface Family {
 }
 
 export const CreateFamilies: FC<CreateFamiliesProps> = props => {
-  const { openDialog, handleClose } = props;
+  const { openDialog, handleClose, setAction } = props;
   const [number, setNumber] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [address, setAddress] = useState<string>('');
@@ -218,9 +218,24 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
           variant='contained'
           onClick={async () => {
-            await createFamilies(selectedCommunity, families);
-            resetAllFields();
-            handleClose();
+            try {
+              await createFamilies(selectedCommunity, families);
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Familias creadas exitosamente',
+                status: 201
+              });
+              resetAllFields();
+              handleClose();
+            } catch (error) {
+              setAction({
+                complete: true,
+                success: false,
+                message: 'Ha ocurrido un problema creando las familias. Intente nuevamente más tarde',
+                status: 201
+              });
+            }
           }}
           disabled={families.length === 0}
         >

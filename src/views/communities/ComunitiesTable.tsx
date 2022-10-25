@@ -17,14 +17,16 @@ import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiaries
 import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
 import { useRouter } from 'next/router';
+import { Action } from 'src/types/Action';
 
 interface CommunitiesTableProps {
   openCreateCommunities: boolean;
   openWindow: boolean;
+  setAction: (action: Action) => void;
 }
 
 const CommunitiesTable: FC<CommunitiesTableProps> = props => {
-  const { openCreateCommunities, openWindow } = props;
+  const { openCreateCommunities, openWindow, setAction } = props;
   const router = useRouter();
   const [id, setId] = useState<string>('');
   const [openUpdateCommunity, setOpenUpdateCommunity] = useState<boolean>(false);
@@ -121,6 +123,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
               setOpenUpdateCommunity(false);
               refetchWithSameParameters();
             }}
+            setAction={setAction}
           />
         )}
         <BeneficiaryTablePagination

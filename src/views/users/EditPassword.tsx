@@ -8,17 +8,19 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
 import { updateUserPassword } from 'src/API/Users/user_data';
+import { Action } from 'src/types/Action';
 
 interface EditPasswordProps {
   id: any;
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,50}$/;
 
 export const EditPassword: FC<EditPasswordProps> = props => {
-  const { openDialog, handleClose, id } = props;
+  const { openDialog, handleClose, id, setAction } = props;
   const [oldPassword, setOldPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -57,9 +59,24 @@ export const EditPassword: FC<EditPasswordProps> = props => {
   };
 
   const handleSubmit = async () => {
-    await updateUserPassword(id, { oldPassword, newPassword: password });
-    resetFields();
-    handleClose();
+    try {
+      await updateUserPassword(id, { oldPassword, newPassword: password });
+      setAction({
+        complete: true,
+        success: true,
+        message: 'Contraseña modificada exitosamente',
+        status: 200
+      });
+      resetFields();
+      handleClose();
+    } catch (err) {
+      setAction({
+        complete: true,
+        success: false,
+        message: 'Ha ocurrido un error actualizando la contraseña',
+        status: 400
+      });
+    }
   };
 
   return (

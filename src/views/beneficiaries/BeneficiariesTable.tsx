@@ -23,14 +23,18 @@ import { activateBeneficiary } from './../../API/Beneficiaries/beneficiaries_dat
 import { BeneficiaryEditForm } from './BeneficiaryEditForm';
 import Community from 'src/types/Community';
 import { useRouter } from 'next/router';
+import { Action } from 'src/types/Action';
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
   communities: Community[];
+  openCreateBeneficiaries: boolean;
+  openWindow: boolean;
+  setAction: (action: Action) => void;
 }
 
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
-  const { filters, communities } = props;
+  const { filters, communities, openCreateBeneficiaries, openWindow, setAction } = props;
   const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
   const [openEditBeneficiary, setOpenEditBeneficiary] = useState<boolean>(false);
@@ -71,6 +75,13 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
       limit: paging.limit
     });
   };
+
+  useEffect(() => {
+    if (openWindow && !openCreateBeneficiaries) {
+      refetchWithSameParameters();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openCreateBeneficiaries]);
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -135,9 +146,24 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                       <Button
                         variant='contained'
                         sx={{ my: '.5em' }}
-                        onClick={() =>
-                          deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters())
-                        }
+                        onClick={async () => {
+                          try {
+                            await deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
+                            setAction({
+                              complete: true,
+                              success: true,
+                              message: 'Usuario desactivado exitosamente',
+                              status: 200
+                            });
+                          } catch (err) {
+                            setAction({
+                              complete: true,
+                              success: false,
+                              message: 'Algo ha ocurrido desactivando el usuario. Intente nuevamente más tarde',
+                              status: 400
+                            });
+                          }
+                        }}
                       >
                         Desactivar
                       </Button>
@@ -146,9 +172,24 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                       <Button
                         variant='contained'
                         sx={{ my: '.5em' }}
-                        onClick={() =>
-                          activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters())
-                        }
+                        onClick={async () => {
+                          try {
+                            await activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
+                            setAction({
+                              complete: true,
+                              success: true,
+                              message: 'Usuario activado exitosamente',
+                              status: 200
+                            });
+                          } catch (err) {
+                            setAction({
+                              complete: true,
+                              success: false,
+                              message: 'Algo ha ocurrido activando el usuario. Intente nuevamente más tarde',
+                              status: 400
+                            });
+                          }
+                        }}
                       >
                         Activar
                       </Button>
@@ -185,6 +226,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
             communities={communities}
             action='Editar'
             beneficiary={selectedBeneficiary}
+            setAction={setAction}
           />
         )}
       </Card>

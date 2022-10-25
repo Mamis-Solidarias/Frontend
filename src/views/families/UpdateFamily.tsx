@@ -7,15 +7,17 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
 import { updateFamily } from 'src/API/Beneficiaries/families_data';
+import { Action } from 'src/types/Action';
 
 interface UpdateFamilyProps {
   id: any;
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 export const UpdateFamily: FC<UpdateFamilyProps> = props => {
-  const { openDialog, handleClose, id } = props;
+  const { openDialog, handleClose, id, setAction } = props;
   const [address, setAddress] = useState<string>('');
   const [details, setDetails] = useState<string>('');
   const [name, setName] = useState<string>('');
@@ -30,13 +32,28 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
     const addressToSend = !!address ? address : null;
     const detailsToSend = !!details ? details : null;
     const nameToSend = !!name ? name : null;
-    await updateFamily(id, {
-      address: addressToSend,
-      details: detailsToSend,
-      name: nameToSend
-    });
-    resetFields();
-    handleClose();
+    try {
+      await updateFamily(id, {
+        address: addressToSend,
+        details: detailsToSend,
+        name: nameToSend
+      });
+      resetFields();
+      setAction({
+        complete: true,
+        success: true,
+        message: 'La familia ha sido modificada exitosamente',
+        status: 200
+      });
+      handleClose();
+    } catch (e) {
+      setAction({
+        complete: true,
+        success: false,
+        message: 'Ha ocurrido un error modificando la familia. Intente nuevamente más tarde',
+        status: 400
+      });
+    }
   };
 
   return (

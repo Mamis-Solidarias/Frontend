@@ -17,11 +17,13 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Action } from 'src/types/Action';
 
 interface EditPermissionsProps {
   openDialog: boolean;
   handleClose: () => void;
   id: number;
+  setAction: (action: Action) => void;
 }
 
 interface Role {
@@ -31,7 +33,7 @@ interface Role {
 }
 
 export const EditPermissions: FC<EditPermissionsProps> = props => {
-  const { openDialog, id, handleClose } = props;
+  const { openDialog, id, handleClose, setAction } = props;
   const [allRoles, setAllRoles] = useState<Role[]>([]);
   const [userRoles, setUserRoles] = useState<Role[]>([]);
   const [starterCall, setStarterCall] = useState<boolean>(false);
@@ -146,8 +148,23 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
           variant='contained'
           sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
           onClick={async () => {
-            await updateUserRole(id, userRoles);
-            handleClose();
+            try {
+              await updateUserRole(id, userRoles);
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Permisos modificados exitosamente',
+                status: 200
+              });
+              handleClose();
+            } catch (err) {
+              setAction({
+                complete: true,
+                success: false,
+                message: 'Ha ocurrido un error modificando los permisos. Intente nuevamente más tarde',
+                status: 400
+              });
+            }
           }}
         >
           Cargar
