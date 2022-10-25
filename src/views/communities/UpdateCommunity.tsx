@@ -7,15 +7,17 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
 import { updateCommunity } from 'src/API/Beneficiaries/communities_data';
+import { Action } from 'src/types/Action';
 
 interface UpdateCommunityProps {
   id: any;
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
-  const { openDialog, handleClose, id } = props;
+  const { openDialog, handleClose, id, setAction } = props;
   const [address, setAddress] = useState<string>('');
   const [description, setDescription] = useState<string>('');
 
@@ -26,11 +28,26 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const addressToSend = !!address ? address : null;
-    const descriptionToSend = !!description ? description : null;
-    await updateCommunity(id, { address: addressToSend, description: descriptionToSend });
-    resetFields();
-    handleClose();
+    try {
+      const addressToSend = !!address ? address : null;
+      const descriptionToSend = !!description ? description : null;
+      await updateCommunity(id, { address: addressToSend, description: descriptionToSend });
+      resetFields();
+      setAction({
+        complete: true,
+        success: true,
+        message: 'Comunidad modificada exitosamente',
+        status: 201
+      });
+      handleClose();
+    } catch (e) {
+      setAction({
+        complete: true,
+        success: false,
+        message: 'Ocurrió un error modificando la comunidad. Intente nuevamente más tarde',
+        status: 400
+      });
+    }
   };
 
   return (
