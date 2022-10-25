@@ -1,16 +1,20 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Portal from '@mui/material/Portal';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
+import { useAction } from 'src/hooks/actionHook';
+import ActionToast from 'src/views/pages/misc/ActionToast';
 import { UserProfileDisplay } from 'src/views/users/UserProfileDisplay';
 
 // ** Demo Components Imports
 
 const Dashboard = () => {
   const router = useRouter();
+  const { action, setAction, setCompletion } = useAction();
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -32,10 +36,13 @@ const Dashboard = () => {
               lineHeight: '3em'
             }}
           >
-            <UserProfileDisplay />
+            <UserProfileDisplay setAction={setAction} />
           </Box>
         </Grid>
       </Grid>
+      <Portal>
+        <ActionToast action={action} setActionCompletion={setCompletion} />
+      </Portal>
     </ApexChartWrapper>
   );
 };

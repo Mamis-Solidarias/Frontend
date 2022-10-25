@@ -20,15 +20,17 @@ import { UpdateUser } from './UpdateUser';
 import User from 'src/types/User';
 import { useRouter } from 'next/router';
 import { hasNoPermission, isNotLoggedIn, redirectToLogin } from 'src/utils/sessionManagement';
+import { Action } from 'src/types/Action';
 
 interface TableUsersProps {
   openWindow: boolean;
   userAdded: boolean;
   setUserAdded: (userAdded: boolean) => void;
+  setAction: (action: Action) => void;
 }
 
 const TableUsers: FC<TableUsersProps> = props => {
-  const { openWindow, userAdded, setUserAdded } = props;
+  const { openWindow, userAdded, setUserAdded, setAction } = props;
   const INITIAL_SIZE = 5,
     MEDIUM_SIZE = 10,
     LARGE_SIZE = 15;
@@ -205,6 +207,7 @@ const TableUsers: FC<TableUsersProps> = props => {
               setOpenEditPermissions(false);
               reloadUsers();
             }}
+            setAction={setAction}
           />
         )}
         {openEditPassword && (
@@ -215,6 +218,7 @@ const TableUsers: FC<TableUsersProps> = props => {
               setOpenEditPassword(false);
               reloadUsers();
             }}
+            setAction={setAction}
           />
         )}
         {openUpdateUser && (
@@ -225,6 +229,7 @@ const TableUsers: FC<TableUsersProps> = props => {
               setOpenUpdateUser(false);
               reloadUsers();
             }}
+            setAction={setAction}
           />
         )}
       </Card>

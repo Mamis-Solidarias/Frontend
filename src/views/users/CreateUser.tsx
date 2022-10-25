@@ -8,10 +8,12 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
 import { createUser } from 'src/API/Users/user_data';
+import { Action } from 'src/types/Action';
 
 interface CreateUserProps {
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 const emailPattern = /^[^@]+@[^@]+$/;
@@ -20,7 +22,7 @@ const phonePattern = /^.+$/;
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,50}$/;
 
 export const CreateUser: FC<CreateUserProps> = props => {
-  const { openDialog, handleClose } = props;
+  const { openDialog, handleClose, setAction } = props;
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
@@ -95,9 +97,24 @@ export const CreateUser: FC<CreateUserProps> = props => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await createUser({ email, name, phone, password });
-    resetFields();
-    handleClose();
+    try {
+      await createUser({ email, name, phone, password });
+      resetFields();
+      setAction({
+        complete: true,
+        success: true,
+        message: 'Usuario creado con éxito',
+        status: 200
+      });
+      handleClose();
+    } catch (err) {
+      setAction({
+        complete: true,
+        success: false,
+        message: 'Hubo un error creando al usuario. Intente nuevamente más tarde',
+        status: 400
+      });
+    }
   };
 
   return (

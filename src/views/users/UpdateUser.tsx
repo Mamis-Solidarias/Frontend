@@ -8,11 +8,13 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
 import { updateUser } from 'src/API/Users/user_data';
+import { Action } from 'src/types/Action';
 
 interface UpdateUserProps {
   id: any;
   openDialog: boolean;
   handleClose: () => void;
+  setAction: (action: Action) => void;
 }
 
 const emailPattern = /^[^@]+@[^@]+$/;
@@ -20,7 +22,7 @@ const namePattern = /.{5,100}/;
 const phonePattern = /^\+?(?:(?:00)?549?)?0?(?:11|[2368]\d)(?:(?=\d{0,2}15)\d{2})??\d{8}$/;
 
 export const UpdateUser: FC<UpdateUserProps> = props => {
-  const { openDialog, handleClose, id } = props;
+  const { openDialog, handleClose, id, setAction } = props;
   const [email, setEmail] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
@@ -65,9 +67,24 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
     const emailToSend = !!email ? email : null;
     const nameToSend = !!name ? name : null;
     const phoneToSend = !!phone ? phone : null;
-    await updateUser(id, { email: emailToSend, name: nameToSend, phone: phoneToSend });
-    resetFields();
-    handleClose();
+    try {
+      await updateUser(id, { email: emailToSend, name: nameToSend, phone: phoneToSend });
+      setAction({
+        complete: true,
+        success: true,
+        message: 'Datos de usuario modificados exitosamente',
+        status: 200
+      });
+      resetFields();
+      handleClose();
+    } catch (err) {
+      setAction({
+        complete: true,
+        success: false,
+        message: 'Ocurrió un error modificando los datos del usuario. Intente nuevamente más tarde',
+        status: 200
+      });
+    }
   };
 
   return (
