@@ -10,8 +10,7 @@ COPY package.json yarn.lock ./
 
 RUN yarn --frozen-lockfile
 RUN yarn cache clean
-RUN ls
-RUN ls .next
+
 
 
 # Build Image
@@ -20,10 +19,8 @@ FROM node:16 AS BUILD
 WORKDIR /app
 COPY --from=BASE /app/node_modules ./node_modules
 COPY . .
-RUN ls
-RUN ls .next
 
-
+RUN yarn build
 RUN curl -sf https://gobinaries.com/tj/node-prune | sh -s -- -b /usr/local/bin
 RUN cd .next/standalone
 RUN node-prune
