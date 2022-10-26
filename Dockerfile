@@ -3,7 +3,7 @@
 
 
 # Build BASE
-FROM node:16-alpine as BASE
+FROM node:16 as BASE
 
 WORKDIR /app
 COPY package.json yarn.lock ./
@@ -13,7 +13,7 @@ RUN apk add --no-cache git \
 
 
 # Build Image
-FROM node:16-alpine AS BUILD
+FROM node:16 AS BUILD
 
 WORKDIR /app
 COPY --from=BASE /app/node_modules ./node_modules
