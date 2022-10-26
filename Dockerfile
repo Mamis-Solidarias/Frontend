@@ -7,9 +7,9 @@ FROM node:16 as BASE
 
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN apk add --no-cache git \
-    && yarn --frozen-lockfile \
-    && yarn cache clean
+RUN apt-get install git 
+RUN yarn --frozen-lockfile
+RUN yarn cache clean
 
 
 # Build Image
