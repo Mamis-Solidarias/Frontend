@@ -105,17 +105,15 @@ const LoginPage = () => {
           router.push('/');
         }
       })
-      .catch(err => {
-        if (err.response.status === 400) {
-          setAction({
-            complete: true,
-            success: false,
-            message:
-              'Hubo un error iniciando sesión con los datos cargados. Revisar que sean correctos e intentar nuevamente',
-            status: 400
-          });
-          setShowBadRequest(true);
-        }
+      .catch(() => {
+        setAction({
+          complete: true,
+          success: false,
+          message:
+            'Hubo un error iniciando sesión con los datos cargados. Revisar que sean correctos e intentar nuevamente',
+          status: 400
+        });
+        setShowBadRequest(true);
       });
   };
 
