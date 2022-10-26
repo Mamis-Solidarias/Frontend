@@ -3,27 +3,27 @@
 
 
 # Build BASE
-FROM node:16-alpine as BASE
+FROM node:16 as BASE
 
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN apk add --no-cache git \
-    && yarn --frozen-lockfile \
-    && yarn cache clean
+
+RUN yarn --frozen-lockfile
+RUN yarn cache clean
+
 
 
 # Build Image
-FROM node:16-alpine AS BUILD
+FROM node:16 AS BUILD
 
 WORKDIR /app
 COPY --from=BASE /app/node_modules ./node_modules
 COPY . .
-RUN apk add --no-cache git curl \
-    && yarn build \
-    && curl -sf https://gobinaries.com/tj/node-prune | sh -s -- -b /usr/local/bin \
-    && apk del curl \
-    && cd .next/standalone \
-    && node-prune
+
+RUN yarn build
+RUN curl -sf https://gobinaries.com/tj/node-prune | sh -s -- -b /usr/local/bin
+RUN cd .next/standalone
+RUN node-prune
 
 
 # Build production
