@@ -6,7 +6,7 @@ networks:
 
 volumes:
   db:
-    
+
 services:
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -22,7 +22,7 @@ services:
         - 5778:5778/tcp
         - 6831:6831/udp
         - 6832:6832/udp
-        
+
   mamis-db:
     image: postgres:13-alpine
     container_name: mamis-db
@@ -34,12 +34,13 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     ports:
-      - 5433:5432
+      - 5432:5432
     networks:
       - mamis-net
 
   users:
-    image: ghcr.io/mamis-solidarias/users:1.0.6
+    image: ghcr.io/mamis-solidarias/users:1.1
+    container_name: users
     restart: unless-stopped
     depends_on:
       - mamis-db
@@ -50,10 +51,12 @@ services:
       - mamis-net
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
-      
+    volumes:
+          - ./keys/users:/app/keys
 
   beneficiaries:
-    image: ghcr.io/mamis-solidarias/beneficiaries:1.1.3
+    image: ghcr.io/mamis-solidarias/beneficiaries:1.2
+    container_name: beneficiaries
     restart: unless-stopped
     depends_on:
       - mamis-db
@@ -64,9 +67,12 @@ services:
       - mamis-net
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
+    volumes:
+          - ./keys/users:/app/keys
 
   donors:
-    image: ghcr.io/mamis-solidarias/donors:1.0.2
+    image: ghcr.io/mamis-solidarias/donors:1.1
+    container_name: donors
     restart: unless-stopped
     depends_on:
       - mamis-db
@@ -76,11 +82,13 @@ services:
     networks:
       - mamis-net
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Development: "Host=mamis-db:5432;Database=donors;Username=dev;Password=dev"
+      ASPNETCORE_ENVIRONMENT: Docker
+    volumes:
+      - ./keys/donors:/app/keys
 
   campaigns:
-    image: ghcr.io/mamis-solidarias/campaigns:1.0.0
+    image: ghcr.io/mamis-solidarias/campaigns:1.1
+    container_name: campaigns
     restart: unless-stopped
     depends_on:
       - mamis-db
@@ -91,9 +99,11 @@ services:
       - mamis-net
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
+    volumes:
+        - ./keys/beneficiaries:/app/keys
 
   gateway:
-    image: ghcr.io/mamis-solidarias/gateway:1.0.2
+    image: ghcr.io/mamis-solidarias/gateway:1.1
     container_name: "gateway"
     restart: unless-stopped
     depends_on:
@@ -101,16 +111,29 @@ services:
       - donors
       - users
       - beneficiaries
+      - campaigns
     ports:
       - 80:80
       - 443:443
     networks:
       - mamis-net
+    volumes:
+      - ./keys/gateway:/app/keys
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
+      # ReverseProxy__Clusters__campaigns__Destinations__campaigns-1__Address: "http://host.docker.internal:5001"
+      # ReverseProxy__Clusters__donors__Destinations__donors-1__Address: "http://host.docker.internal:5002"
+      # ReverseProxy__Clusters__frontend__Destinations__frontend-1__Address: "http://host.docker.internal:3000"
+      ReverseProxy__Clusters__frontend__Destinations__frontend-1__Address: "http://host.docker.internal:3000"
+      # ReverseProxy__Clusters__donors__Destinations__donors-1__Address: "http://host.docker.internal:5279"
+      # ReverseProxy__Clusters__users__Destinations__users-1__Address: "http://host.docker.internal:5002"
 
-
-      
-      
-      
-      
+  frontend:
+    image: ghcr.io/mamis-solidarias/frontend:main
+    container_name: frontend
+    depends_on:
+      - gateway
+    # ports:
+      # - 3000:3000
+    networks:
+      - mamis-net
