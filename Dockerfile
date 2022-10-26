@@ -7,7 +7,7 @@ FROM node:16 as BASE
 
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN apt-get install git 
+
 RUN yarn --frozen-lockfile
 RUN yarn cache clean
 
@@ -18,12 +18,10 @@ FROM node:16 AS BUILD
 WORKDIR /app
 COPY --from=BASE /app/node_modules ./node_modules
 COPY . .
-RUN apk add --no-cache git curl \
-    && yarn build \
-    && curl -sf https://gobinaries.com/tj/node-prune | sh -s -- -b /usr/local/bin \
-    && apk del curl \
-    && cd .next/standalone \
-    && node-prune
+
+RUN curl -sf https://gobinaries.com/tj/node-prune | sh -s -- -b /usr/local/bin
+RUN cd .next/standalone
+RUN node-prune
 
 
 # Build production
