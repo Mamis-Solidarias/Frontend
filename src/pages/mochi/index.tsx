@@ -27,8 +27,9 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { useQuery } from '@apollo/client';
-import { GET_MOCHI_EDITIONS } from 'src/API/Campaigns/campaigns_graphql';
+import { GET_MOCHI_EDITIONS, GET_MOCHI } from 'src/API/Campaigns/campaigns_graphql';
 import { CreateMochi } from 'src/views/campaigns/CreateMochi';
+import { MochiEdition } from 'src/types/MochiEdition';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
@@ -38,7 +39,17 @@ const Dashboard = () => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { action, setCompletion, setAction } = useAction();
   const router = useRouter();
-  const { loading, error, data } = useQuery(GET_MOCHI_EDITIONS);
+  const {
+    loading: loadingEditions,
+    error: errorEditions,
+    data: dataEditions,
+    refetch: refetchEditions
+  } = useQuery(GET_MOCHI_EDITIONS);
+  const [editionSelected, setEditionSelected] = useState<string | null>(null);
+  const [editionSelectedData, setEditionSelectedData] = useState<MochiEdition | null>(null);
+  const { data: dataEdition, refetch: refetchEdition } = useQuery(GET_MOCHI, {
+    variables: { where: { edition: { eq: editionSelected } } }
+  });
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -49,12 +60,33 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) return <Box>Cargando ediciones de Mochi...</Box>;
+  useEffect(() => {
+    if (!openCreateMochi) {
+      refetchEditions({ where: { edition: editionSelected } });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openCreateMochi]);
 
-  if (error) {
+  useEffect(() => {
+    if (!!dataEdition) {
+      setEditionSelectedData(dataEdition);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataEdition]);
+
+  useEffect(() => {
+    if (!!editionSelected) {
+      refetchEdition({ edition: { eq: editionSelected } });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editionSelected]);
+
+  if (loadingEditions) return <Box>Cargando ediciones de Mochi...</Box>;
+
+  if (errorEditions) {
     return <Box>Error :(</Box>;
   }
-  const editions = data.mochiEditions;
+  const editions = dataEditions.mochiEditions;
 
   return (
     <ApexChartWrapper>
@@ -64,16 +96,18 @@ const Dashboard = () => {
             <TextField
               select
               variant='standard'
+              type='text'
               label='Edición'
-              value={filters.edition}
-              onChange={e =>
-                setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }))
-              }
+              value={filtersApplied.edition}
+              onChange={e => {
+                setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }));
+                setEditionSelected(e.target.value);
+              }}
             >
-              {editions.map((edition: string) => {
+              {editions.map((editionJson: { edition: string }) => {
                 return (
-                  <MenuItem value={edition} key={edition}>
-                    {edition}
+                  <MenuItem value={editionJson.edition} key={editionJson.edition}>
+                    {editionJson.edition}
                   </MenuItem>
                 );
               })}
@@ -85,6 +119,7 @@ const Dashboard = () => {
               </Button>
             </Box>
           </Box>
+
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
