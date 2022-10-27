@@ -1,44 +1,43 @@
-##  SET MODE "standalone"
-##  More infor: "https://nextjs.org/docs/advanced-features/output-file-tracing"
+# STAGE 1
 
-
-# Build BASE
-FROM node:16-alpine as BASE
-
+FROM node:current-alpine3.15 AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN apk add --no-cache git \
-    && yarn --frozen-lockfile \
-    && yarn cache clean
+
+COPY package.json package-lock.json tsconfig.json ./
+RUN npm ci
 
 
-# Build Image
-FROM node:16-alpine AS BUILD
+# STAGE 2
 
+FROM node:current-alpine3.15 AS builder
 WORKDIR /app
-COPY --from=BASE /app/node_modules ./node_modules
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN apk add --no-cache git curl \
-    && yarn build \
-    && curl -sf https://gobinaries.com/tj/node-prune | sh -s -- -b /usr/local/bin \
-    && apk del curl \
-    && cd .next/standalone \
-    && node-prune
 
+RUN npm run build
 
-# Build production
-FROM node:16-alpine AS PRODUCTION
-
+# Production image, copy all the files and run next
+FROM node:current-alpine3.15 AS runner
 WORKDIR /app
 
-COPY --from=BUILD /app/yarn.lock ./
-COPY --from=BUILD /app/public ./public
-COPY --from=BUILD /app/next.config.js ./
+ENV NODE_ENV production
 
-# Set mode "standalone" in file "next.config.js"
-COPY --from=BUILD /app/.next/standalone ./
-COPY --from=BUILD /app/.next/static ./.next/static
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# You only need to copy next.config.js if you are NOT using the default configuration
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
 
 EXPOSE 3000
+
+ENV PORT 3000
 
 CMD ["node", "server.js"]

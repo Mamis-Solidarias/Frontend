@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 
@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
+// import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
-import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
-import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersView';
+
+// import Typography from '@mui/material/Typography';
+// import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+// import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
+// import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersView';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import ChevronUp from 'mdi-material-ui/ChevronUp';
@@ -24,11 +25,11 @@ import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 
 const Dashboard = () => {
-  const [openWindow, setOpenWindow] = useState<boolean>(false);
-  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const { filters, setFilter } = useBeneficiariesFilters();
+  // const [openWindow, setOpenWindow] = useState<boolean>(false);
+  // const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
+  // const { filters, setFilter } = useBeneficiariesFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const { action, setAction, setCompletion } = useAction();
+  const { action, setCompletion } = useAction();
   const router = useRouter();
 
   useEffect(() => {
@@ -59,13 +60,13 @@ const Dashboard = () => {
             />
             <CardContent>
               <Collapse in={openCollapse}>
-                <BeneficiariesFiltersView
+                {/* <BeneficiariesFiltersView
                   filters={filters}
                   setFilter={setFilter}
                   communities={communities}
                   families={families}
-                />
-                <Typography align='center'>
+                /> */}
+                {/* <Typography align='center'>
                   <Button
                     variant='contained'
                     onClick={() => {
@@ -86,7 +87,7 @@ const Dashboard = () => {
                   >
                     Aplicar Filtros
                   </Button>
-                </Typography>
+                </Typography> */}
               </Collapse>
             </CardContent>
           </Card>
