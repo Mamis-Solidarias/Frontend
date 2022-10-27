@@ -155,7 +155,7 @@ const TableUsers: FC<TableUsersProps> = props => {
                     <TableCell sx={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Button
                         variant='contained'
-                        sx={{ fontSize: 9, width: '30%' }}
+                        sx={{ fontSize: 12, width: '30%' }}
                         onClick={() => {
                           setId(row.id);
                           setOpenUpdateUser(true);
@@ -165,7 +165,7 @@ const TableUsers: FC<TableUsersProps> = props => {
                       </Button>
                       <Button
                         variant='contained'
-                        sx={{ fontSize: 9, width: '30%' }}
+                        sx={{ fontSize: 12, width: '30%' }}
                         onClick={() => {
                           setId(row.id);
                           setOpenEditPassword(true);
@@ -175,7 +175,7 @@ const TableUsers: FC<TableUsersProps> = props => {
                       </Button>
                       <Button
                         variant='contained'
-                        sx={{ fontSize: 9, width: '30%' }}
+                        sx={{ fontSize: 12, width: '30%' }}
                         onClick={() => {
                           setId(row.id);
                           setOpenEditPermissions(true);

@@ -1,5 +1,5 @@
 export interface MochiEdition {
-  edition: number;
+  edition: string;
   communityId: string;
   beneficiaries: number[];
   description: string;
@@ -7,7 +7,7 @@ export interface MochiEdition {
 }
 
 export const defaultEdition: MochiEdition = {
-  edition: -1,
+  edition: '',
   communityId: '',
   beneficiaries: [],
   description: '',

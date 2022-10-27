@@ -56,12 +56,12 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
     setName('');
     setAddress('');
     setDescription('');
-    setSelectedCommunity('');
   };
 
   const resetAllFields = () => {
     resetFields();
     setFamilies([]);
+    setSelectedCommunity('');
   };
 
   const deleteFamily = (family: Family) => {

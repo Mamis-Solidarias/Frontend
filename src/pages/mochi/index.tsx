@@ -6,13 +6,8 @@ import { useEffect, useState } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-// import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import Card from '@mui/material/Card';
 
-// import Typography from '@mui/material/Typography';
-// import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
-// import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
-// import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersView';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import ChevronUp from 'mdi-material-ui/ChevronUp';
@@ -23,14 +18,27 @@ import { useRouter } from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { useCampaignsFilters } from 'src/hooks/campaigns/useCampaignsFilters';
+import { CampaignsFilters, campaignsFiltersNull } from 'src/types/CampaignsFilters';
+import CampaignsFiltersView from 'src/views/campaigns/CampaignsFiltersView';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { useQuery } from '@apollo/client';
+import { GET_MOCHI_EDITIONS } from 'src/API/Campaigns/campaigns_graphql';
+import { CreateMochi } from 'src/views/campaigns/CreateMochi';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
-  // const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  // const { filters, setFilter } = useBeneficiariesFilters();
+  const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
+  const [openCreateMochi, setOpenCreateMochi] = useState<boolean>(false);
+  const { filters, setFilter } = useCampaignsFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const { action, setCompletion } = useAction();
+  const { action, setCompletion, setAction } = useAction();
   const router = useRouter();
+  const { loading, error, data } = useQuery(GET_MOCHI_EDITIONS);
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -41,10 +49,42 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (loading) return <Box>Cargando ediciones de Mochi...</Box>;
+
+  if (error) {
+    return <Box>Error :(</Box>;
+  }
+  const editions = data.mochiEditions;
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
+          <Box display='flex' flexDirection='row' justifyContent='space-between'>
+            <TextField
+              select
+              variant='standard'
+              label='Edición'
+              value={filters.edition}
+              onChange={e =>
+                setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }))
+              }
+            >
+              {editions.map((edition: string) => {
+                return (
+                  <MenuItem value={edition} key={edition}>
+                    {edition}
+                  </MenuItem>
+                );
+              })}
+            </TextField>
+            <Button variant='contained'>Editar</Button>
+            <Box width='70%' display='flex' justifyContent='flex-end'>
+              <Button variant='contained' onClick={() => setOpenCreateMochi(true)}>
+                Crear
+              </Button>
+            </Box>
+          </Box>
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
@@ -60,20 +100,15 @@ const Dashboard = () => {
             />
             <CardContent>
               <Collapse in={openCollapse}>
-                {/* <BeneficiariesFiltersView
-                  filters={filters}
-                  setFilter={setFilter}
-                  communities={communities}
-                  families={families}
-                /> */}
-                {/* <Typography align='center'>
+                <CampaignsFiltersView filters={filters} setFilter={setFilter} />
+                <Typography align='center'>
                   <Button
                     variant='contained'
                     onClick={() => {
                       const filtersToApply = filters;
                       for (const fk in filtersToApply) {
-                        if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                          filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                        if (!filtersToApply[fk as keyof CampaignsFilters]) {
+                          filtersToApply[fk as keyof CampaignsFilters] = null;
                         }
                       }
                       setFiltersApplied(filtersToApply);
@@ -87,10 +122,15 @@ const Dashboard = () => {
                   >
                     Aplicar Filtros
                   </Button>
-                </Typography> */}
+                </Typography>
               </Collapse>
             </CardContent>
           </Card>
+          <CreateMochi
+            openDialog={openCreateMochi}
+            handleClose={() => setOpenCreateMochi(false)}
+            setAction={setAction}
+          />
         </Grid>
       </Grid>
       <Portal>

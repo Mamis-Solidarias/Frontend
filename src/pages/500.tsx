@@ -53,14 +53,14 @@ const Error500 = () => {
         <BoxWrapper>
           <Typography variant='h1'>500</Typography>
           <Typography variant='h5' sx={{ mb: 1, fontSize: '1.5rem !important' }}>
-            Internal server error 👨🏻‍💻
+            Error Interno del Servidor 👨🏻‍💻
           </Typography>
-          <Typography variant='body2'>Oops, something went wrong!</Typography>
+          <Typography variant='body2'>Ups, Algo salió mal!</Typography>
         </BoxWrapper>
         <Img height='487' alt='error-illustration' src='/images/pages/500.png' />
         <Link passHref href='/'>
           <Button component='a' variant='contained' sx={{ px: 5.5 }}>
-            Back to Home
+            Volver al inicio
           </Button>
         </Link>
       </Box>

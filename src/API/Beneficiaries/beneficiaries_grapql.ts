@@ -1,5 +1,17 @@
 import { gql } from '@apollo/client';
 
+export const GET_BENEFICIARIES_LIST = gql`
+  query filterQuery($communityId: String) {
+    filteredBeneficiaries(filter: { communityId: $communityId }) {
+      nodes {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
 export const GET_BENEFICIARIES = gql`
   query filterQuery(
     $dniStarts: String

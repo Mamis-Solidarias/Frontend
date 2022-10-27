@@ -121,6 +121,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                         <MenuItem value='Users'>Usuarios</MenuItem>
                         <MenuItem value='Beneficiaries'>Beneficiarios</MenuItem>
                         <MenuItem value='Donors'>Donantes</MenuItem>
+                        <MenuItem value='Campaigns'>Campañas </MenuItem>
                       </Select>
                     </TableCell>
                     <TableCell>

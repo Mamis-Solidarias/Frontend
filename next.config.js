@@ -1,14 +1,13 @@
-import { resolve } from 'path';
+const path = require('path');
 
 module.exports = {
     trailingSlash: true,
     output: 'standalone',
     reactStrictMode: false,
-
-    // experimental: {
-    //     esmExternals: false,
-    //     jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
-    // },
+    experimental: {
+        esmExternals: false,
+        jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
+    },
     webpack: config => {
         config.resolve.alias = {
             ...config.resolve.alias,
@@ -18,11 +17,3 @@ module.exports = {
         return config;
     }
 };
-export function webpack(config) {
-    config.resolve.alias = {
-        ...config.resolve.alias,
-        apexcharts: resolve(__dirname, './node_modules/apexcharts-clevision')
-    };
-
-    return config;
-}
