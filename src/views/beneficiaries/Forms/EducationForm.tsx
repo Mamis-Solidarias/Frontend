@@ -29,11 +29,12 @@ export const EducationForm: FC<EducationFormProps> = props => {
         placeholder='ITBA'
         value={beneficiaryFields.school}
         onChange={e => setBeneficiaryField('school', e.target.value)}
+        sx={{ py: '1em' }}
         fullWidth={true}
         variant='standard'
       />
       <FormControl fullWidth sx={{ py: '1em' }}>
-        <InputLabel id='transportation'>Método de Transporte</InputLabel>
+        <InputLabel id='transportation'>Año académico</InputLabel>
         <Select
           labelId='transportation'
           fullWidth={true}
