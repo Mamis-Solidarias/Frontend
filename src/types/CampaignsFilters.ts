@@ -6,6 +6,7 @@ export interface CampaignsFilters {
   donorName?: string | null;
   state?: string | null;
   edition?: string | null;
+  community?: string | null;
 }
 
 export const campaignsFiltersDefault: CampaignsFilters = {
@@ -15,7 +16,8 @@ export const campaignsFiltersDefault: CampaignsFilters = {
   bonusKits: '',
   donorName: '',
   state: '',
-  edition: ''
+  edition: '',
+  community: ''
 };
 
 export const campaignsFiltersNull: CampaignsFilters = {
@@ -25,5 +27,6 @@ export const campaignsFiltersNull: CampaignsFilters = {
   bonusKits: null,
   donorName: null,
   state: null,
-  edition: null
+  edition: null,
+  community: null
 };

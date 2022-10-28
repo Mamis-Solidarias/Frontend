@@ -30,6 +30,9 @@ import { useQuery } from '@apollo/client';
 import { GET_MOCHI_EDITIONS, GET_MOCHI } from 'src/API/Campaigns/campaigns_graphql';
 import { CreateMochi } from 'src/views/campaigns/CreateMochi';
 import { MochiEdition } from 'src/types/MochiEdition';
+import Community from 'src/types/Community';
+import { getCommunities } from 'src/API/Beneficiaries/communities_data';
+import { MochiEditionBrief } from 'src/views/campaigns/MochiEditionBrief';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
@@ -45,10 +48,9 @@ const Dashboard = () => {
     data: dataEditions,
     refetch: refetchEditions
   } = useQuery(GET_MOCHI_EDITIONS);
-  const [editionSelected, setEditionSelected] = useState<string | null>(null);
-  const [editionSelectedData, setEditionSelectedData] = useState<MochiEdition | null>(null);
+  const [communities, setCommunities] = useState<Community[]>([]);
   const { data: dataEdition, refetch: refetchEdition } = useQuery(GET_MOCHI, {
-    variables: { where: { edition: { eq: editionSelected } } }
+    variables: { edition: filtersApplied.edition, community: filtersApplied.community }
   });
 
   useEffect(() => {
@@ -56,30 +58,27 @@ const Dashboard = () => {
       router.push('/login');
     }
     if (!!localStorage.getItem('user')) {
+      getCommunities().then(result => {
+        setCommunities(result.data.communities);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!openCreateMochi) {
-      refetchEditions({ where: { edition: editionSelected } });
+    if (!openCreateMochi && !!filtersApplied.community && !!filtersApplied.edition) {
+      refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCreateMochi]);
 
   useEffect(() => {
-    if (!!dataEdition) {
-      setEditionSelectedData(dataEdition);
+    if (!!filtersApplied.community && !!filtersApplied.edition) {
+      console.log('b');
+      refetchEdition({ edition: filtersApplied.edition, community: filtersApplied.community });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataEdition]);
-
-  useEffect(() => {
-    if (!!editionSelected) {
-      refetchEdition({ edition: { eq: editionSelected } });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editionSelected]);
+  }, [filtersApplied.community, filtersApplied.edition]);
 
   if (loadingEditions) return <Box>Cargando ediciones de Mochi...</Box>;
 
@@ -92,34 +91,60 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
+          <Typography gutterBottom variant='h3' component='div' align='center'>
+            Una Mochi Como la Tuya
+          </Typography>
           <Box display='flex' flexDirection='row' justifyContent='space-between'>
-            <TextField
-              select
-              variant='standard'
-              type='text'
-              label='Edición'
-              value={filtersApplied.edition}
-              onChange={e => {
-                setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }));
-                setEditionSelected(e.target.value);
-              }}
-            >
-              {editions.map((editionJson: { edition: string }) => {
-                return (
-                  <MenuItem value={editionJson.edition} key={editionJson.edition}>
-                    {editionJson.edition}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
-            <Button variant='contained'>Editar</Button>
+            <Box sx={{ mx: '0.25em' }}>
+              <TextField
+                select
+                variant='standard'
+                type='text'
+                label='Edición'
+                value={filtersApplied.edition}
+                onChange={e => {
+                  setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }));
+                }}
+              >
+                {editions.map((editionJson: { edition: string }) => {
+                  return (
+                    <MenuItem value={editionJson.edition} key={editionJson.edition}>
+                      {editionJson.edition}
+                    </MenuItem>
+                  );
+                })}
+              </TextField>
+            </Box>
+            <Box sx={{ mx: '0.25em' }}>
+              <TextField
+                select
+                variant='standard'
+                type='text'
+                label='Comunidad'
+                value={filtersApplied.community}
+                onChange={e => {
+                  setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ community: e.target.value } }));
+                }}
+              >
+                {communities.map(community => {
+                  return (
+                    <MenuItem value={community.id} key={community.id}>
+                      {community.id + ' - ' + community.name}
+                    </MenuItem>
+                  );
+                })}
+              </TextField>
+            </Box>
+            <Box sx={{ mx: '0.25em' }}>
+              <Button variant='contained'>Editar</Button>
+            </Box>
+
             <Box width='70%' display='flex' justifyContent='flex-end'>
               <Button variant='contained' onClick={() => setOpenCreateMochi(true)}>
                 Crear
               </Button>
             </Box>
           </Box>
-
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
@@ -161,11 +186,16 @@ const Dashboard = () => {
               </Collapse>
             </CardContent>
           </Card>
-          <CreateMochi
-            openDialog={openCreateMochi}
-            handleClose={() => setOpenCreateMochi(false)}
-            setAction={setAction}
-          />
+          {!!dataEdition && !!dataEdition.mochiEdition && (
+            <MochiEditionBrief dataEdition={dataEdition.mochiEdition}></MochiEditionBrief>
+          )}
+          {!!openCreateMochi && (
+            <CreateMochi
+              openDialog={openCreateMochi}
+              handleClose={() => setOpenCreateMochi(false)}
+              setAction={setAction}
+            />
+          )}
         </Grid>
       </Grid>
       <Portal>

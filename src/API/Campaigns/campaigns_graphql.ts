@@ -1,13 +1,16 @@
 import { gql } from '@apollo/client';
 
 export const GET_MOCHI = gql`
-  query filterQuery($edition: String) {
-    mochiEditions(where: { edition: $edition }) {
+  query getMochi($edition: String!, $community: String!) {
+    mochiEdition(edition: $edition, community: $community) {
       communityId
       description
       edition
       id
       participants {
+        beneficiary {
+          familyId
+        }
         beneficiaryGender
         beneficiaryId
         beneficiaryName
