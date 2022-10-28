@@ -26,6 +26,7 @@ import { useRouter } from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
+import Box from '@mui/material/Box';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -83,6 +84,9 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
+          <Typography gutterBottom variant='h3' component='div' align='center'>
+            Beneficiarios
+          </Typography>
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
@@ -104,7 +108,7 @@ const Dashboard = () => {
                   communities={communities}
                   families={families}
                 />
-                <Typography align='center'>
+                <Typography display='flex' justifyContent='flex-end'>
                   <Button
                     variant='contained'
                     onClick={() => {
@@ -129,26 +133,27 @@ const Dashboard = () => {
               </Collapse>
             </CardContent>
           </Card>
+          <Card>
+            <Box width='100%' display='flex' justifyContent='flex-end'>
+              <Button
+                variant='contained'
+                onClick={() => {
+                  setOpenWindow(true);
+                  setOpenCreateBeneficiaries(true);
+                }}
+              >
+                Añadir Beneficiarios
+              </Button>
+            </Box>
 
-          <Button
-            variant='contained'
-            sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={() => {
-              setOpenWindow(true);
-              setOpenCreateBeneficiaries(true);
-            }}
-          >
-            Añadir Beneficiarios
-          </Button>
-
-          <BeneficiariesTable
-            filters={filtersApplied}
-            communities={communities}
-            openCreateBeneficiaries={openCreateBeneficiaries}
-            openWindow={openWindow}
-            setAction={setAction}
-          />
-
+            <BeneficiariesTable
+              filters={filtersApplied}
+              communities={communities}
+              openCreateBeneficiaries={openCreateBeneficiaries}
+              openWindow={openWindow}
+              setAction={setAction}
+            />
+          </Card>
           <CreateBeneficiaries
             openDialog={openCreateBeneficiaries}
             setAction={setAction}

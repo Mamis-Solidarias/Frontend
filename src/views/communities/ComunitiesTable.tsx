@@ -1,5 +1,4 @@
 // ** MUI Imports
-import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
@@ -80,60 +79,58 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
 
   return (
     <>
-      <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-            <TableHead>
-              <TableRow>
-                <TableCell>Código</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Dirección</TableCell>
-                <TableCell>Descripción</TableCell>
-                <TableCell>Acciones</TableCell>
+      <TableContainer>
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Código</TableCell>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Dirección</TableCell>
+              <TableCell>Descripción</TableCell>
+              <TableCell>Acciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {nodes.map((row: Community) => (
+              <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.address}</TableCell>
+                <TableCell>{!!row.description ? row.description : '-'}</TableCell>
+                <TableCell>
+                  <Button
+                    variant='contained'
+                    onClick={() => {
+                      setId(row.id as string);
+                      setOpenUpdateCommunity(true);
+                    }}
+                  >
+                    Editar Datos
+                  </Button>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {nodes.map((row: Community) => (
-                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.address}</TableCell>
-                  <TableCell>{!!row.description ? row.description : '-'}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant='contained'
-                      onClick={() => {
-                        setId(row.id as string);
-                        setOpenUpdateCommunity(true);
-                      }}
-                    >
-                      Editar Datos
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        {openUpdateCommunity && (
-          <UpdateCommunity
-            openDialog={openUpdateCommunity}
-            id={id}
-            handleClose={() => {
-              setOpenUpdateCommunity(false);
-              refetchWithSameParameters();
-            }}
-            setAction={setAction}
-          />
-        )}
-        <BeneficiaryTablePagination
-          paging={paging}
-          setBeneficiariesPaging={setBeneficiariesPaging}
-          pageInfo={pageInfo}
-          nodes={nodes}
-          edges={edges}
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {openUpdateCommunity && (
+        <UpdateCommunity
+          openDialog={openUpdateCommunity}
+          id={id}
+          handleClose={() => {
+            setOpenUpdateCommunity(false);
+            refetchWithSameParameters();
+          }}
+          setAction={setAction}
         />
-      </Card>
+      )}
+      <BeneficiaryTablePagination
+        paging={paging}
+        setBeneficiariesPaging={setBeneficiariesPaging}
+        pageInfo={pageInfo}
+        nodes={nodes}
+        edges={edges}
+      />
     </>
   );
 };

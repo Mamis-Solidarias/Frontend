@@ -1,7 +1,6 @@
 import React, { useState, FC, useEffect } from 'react';
 
 // ** MUI Imports
-import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
@@ -24,6 +23,7 @@ import { BeneficiaryEditForm } from './BeneficiaryEditForm';
 import Community from 'src/types/Community';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
+import Box from '@mui/material/Box';
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
@@ -116,36 +116,36 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
 
   return (
     <>
-      <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>DNI</TableCell>
-                <TableCell>ID de Familia</TableCell>
-                <TableCell>Nombre Completo</TableCell>
-                <TableCell>Género</TableCell>
-                <TableCell>Fecha de Nacimiento</TableCell>
-                <TableCell>Tipo</TableCell>
-                <TableCell>Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {nodes.map((row: Beneficiary, index: number) => (
-                <DisplayBeneficiary
-                  key={index}
-                  index={index}
-                  benef={row}
-                  open={open}
-                  setOpen={setOpen}
-                  benefsQ={nodes.length}
-                >
-                  <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
+      <TableContainer>
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>DNI</TableCell>
+              <TableCell>ID de Familia</TableCell>
+              <TableCell>Nombre Completo</TableCell>
+              <TableCell>Género</TableCell>
+              <TableCell>Fecha de Nacimiento</TableCell>
+              <TableCell>Tipo</TableCell>
+              <TableCell>Acciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {nodes.map((row: Beneficiary, index: number) => (
+              <DisplayBeneficiary
+                key={index}
+                index={index}
+                benef={row}
+                open={open}
+                setOpen={setOpen}
+                benefsQ={nodes.length}
+              >
+                <TableCell>
+                  <Box display='flex' flexDirection='row' justifyContent='space-between'>
                     {row.isActive && (
                       <Button
                         variant='contained'
-                        sx={{ my: '.5em' }}
+                        sx={{ mx: '.25em' }}
                         onClick={async () => {
                           try {
                             await deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
@@ -171,7 +171,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                     {!row.isActive && (
                       <Button
                         variant='contained'
-                        sx={{ my: '.5em' }}
+                        sx={{ mx: '.25em' }}
                         onClick={async () => {
                           try {
                             await activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
@@ -197,7 +197,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                     {row.isActive && (
                       <Button
                         variant='contained'
-                        sx={{ my: '.5em' }}
+                        sx={{ mx: '.25em' }}
                         onClick={() => {
                           setSelectedBeneficiary(row);
                           setOpenEditBeneficiary(true);
@@ -206,30 +206,30 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                         Editar
                       </Button>
                     )}
-                  </TableCell>
-                </DisplayBeneficiary>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <BeneficiaryTablePagination
-          paging={paging}
-          setBeneficiariesPaging={setBeneficiariesPaging}
-          pageInfo={pageInfo}
-          nodes={nodes}
-          edges={edges}
+                  </Box>
+                </TableCell>
+              </DisplayBeneficiary>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <BeneficiaryTablePagination
+        paging={paging}
+        setBeneficiariesPaging={setBeneficiariesPaging}
+        pageInfo={pageInfo}
+        nodes={nodes}
+        edges={edges}
+      />
+      {openEditBeneficiary && !!selectedBeneficiary && (
+        <BeneficiaryEditForm
+          openDialog={openEditBeneficiary}
+          handleClose={() => setOpenEditBeneficiary(false)}
+          communities={communities}
+          action='Editar'
+          beneficiary={selectedBeneficiary}
+          setAction={setAction}
         />
-        {openEditBeneficiary && !!selectedBeneficiary && (
-          <BeneficiaryEditForm
-            openDialog={openEditBeneficiary}
-            handleClose={() => setOpenEditBeneficiary(false)}
-            communities={communities}
-            action='Editar'
-            beneficiary={selectedBeneficiary}
-            setAction={setAction}
-          />
-        )}
-      </Card>
+      )}
     </>
   );
 };

@@ -1,6 +1,9 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Portal from '@mui/material/Portal';
+import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -37,26 +40,35 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <CommunitiesTable
-            openCreateCommunities={openCreateCommunities}
-            openWindow={openWindow}
-            setAction={setAction}
-          />
-          <Button
-            variant='contained'
-            sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={() => {
-              setOpenWindow(true);
-              setOpenCreateCommunities(true);
-            }}
-          >
-            Añadir Comunidades
-          </Button>
-          <CreateCommunity
-            openDialog={openCreateCommunities}
-            handleClose={() => setOpenCreateCommunities(false)}
-            setAction={setAction}
-          />
+          <Typography gutterBottom variant='h3' component='div' align='center'>
+            Comunidades
+          </Typography>
+          <Card>
+            <Box width='100%' display='flex' justifyContent='flex-end'>
+              <Button
+                variant='contained'
+                onClick={() => {
+                  setOpenWindow(true);
+                  setOpenCreateCommunities(true);
+                }}
+              >
+                Añadir Comunidades
+              </Button>
+            </Box>
+            <CommunitiesTable
+              openCreateCommunities={openCreateCommunities}
+              openWindow={openWindow}
+              setAction={setAction}
+            />
+          </Card>
+
+          {openCreateCommunities && (
+            <CreateCommunity
+              openDialog={openCreateCommunities}
+              handleClose={() => setOpenCreateCommunities(false)}
+              setAction={setAction}
+            />
+          )}
         </Grid>
       </Grid>
       <Portal>

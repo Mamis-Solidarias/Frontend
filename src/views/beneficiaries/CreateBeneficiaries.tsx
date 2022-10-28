@@ -63,7 +63,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [familyId, setFamilyId] = useState<string>('');
 
   const resetFields = () => {
-    setBeneficiaryFields(defaultCreateBeneficiaryFields);
+    setBeneficiaryFields(oldBeneficiaryFields => ({
+      ...defaultCreateBeneficiaryFields,
+      ...{ familyId: oldBeneficiaryFields.familyId }
+    }));
     setBeneficiaryExtras(defaultCreateBeneficiaryExtras);
     setOpen([]);
   };
@@ -71,6 +74,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const resetAllFields = () => {
     resetFields();
     beneficiaries.length = 0;
+    setBeneficiaryFields(defaultCreateBeneficiaryFields);
   };
 
   const deleteBeneficiary = (beneficiary: Beneficiary) => {

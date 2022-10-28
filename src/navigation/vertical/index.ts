@@ -3,6 +3,7 @@ import AccountCogOutline from 'mdi-material-ui/AccountCogOutline';
 import HomeGroup from 'mdi-material-ui/HomeGroup';
 import HomeAccount from 'mdi-material-ui/HomeAccount';
 import AccountGroup from 'mdi-material-ui/AccountGroup';
+import BackpackIcon from '@mui/icons-material/Backpack';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 
 // ** Type import
@@ -37,6 +38,16 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Donantes',
       path: '/donantes',
       service: 'Donors'
+    },
+    {
+      sectionTitle: 'Campañas',
+      service: ''
+    },
+    {
+      icon: BackpackIcon,
+      title: 'Una Mochi',
+      path: '/mochi',
+      service: 'Campaigns'
     },
     {
       sectionTitle: 'Usuarios',

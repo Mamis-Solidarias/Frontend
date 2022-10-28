@@ -12,6 +12,9 @@ import { useRouter } from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import Portal from '@mui/material/Portal';
 import { useAction } from 'src/hooks/actionHook';
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 const Dashboard = () => {
   const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
@@ -38,17 +41,28 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <TableUsers openWindow={openWindow} userAdded={userAdded} setUserAdded={setUserAdded} setAction={setAction} />
-          <Button
-            variant='contained'
-            sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={() => {
-              setOpenWindow(true);
-              setOpenCreateUser(true);
-            }}
-          >
-            Añadir Usuario
-          </Button>
+          <Typography gutterBottom variant='h3' component='div' align='center'>
+            Administrar Usuarios
+          </Typography>
+          <Card>
+            <Box width='100%' display='flex' justifyContent='flex-end'>
+              <Button
+                variant='contained'
+                onClick={() => {
+                  setOpenWindow(true);
+                  setOpenCreateUser(true);
+                }}
+              >
+                Añadir Usuario
+              </Button>
+            </Box>
+            <TableUsers
+              openWindow={openWindow}
+              userAdded={userAdded}
+              setUserAdded={setUserAdded}
+              setAction={setAction}
+            />
+          </Card>
           <CreateUser
             openDialog={openCreateUser}
             setAction={setAction}

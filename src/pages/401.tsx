@@ -44,14 +44,16 @@ const Error401 = () => {
         <BoxWrapper>
           <Typography variant='h1'>401</Typography>
           <Typography variant='h5' sx={{ mb: 1, fontSize: '1.5rem !important' }}>
-            You are not authorized! 🔐
+            No tienes suficiente autorización! 🔐
           </Typography>
-          <Typography variant='body2'>You don&prime;t have permission to access this page. Go Home!</Typography>
+          <Typography variant='body2'>
+            No tienes el suficiente permiso para acceder a esta página. Vuelve al inicio!
+          </Typography>
         </BoxWrapper>
         <Img height='487' alt='error-illustration' src='/images/pages/401.png' />
         <Link passHref href='/'>
           <Button component='a' variant='contained' sx={{ px: 5.5 }}>
-            Back to Home
+            Ir al inicio
           </Button>
         </Link>
       </Box>

@@ -1,5 +1,7 @@
+import Beneficiary from './Beneficiary';
+
 export interface MochiEdition {
-  edition: number;
+  edition: string;
   communityId: string;
   beneficiaries: number[];
   description: string;
@@ -7,7 +9,7 @@ export interface MochiEdition {
 }
 
 export const defaultEdition: MochiEdition = {
-  edition: -1,
+  edition: '',
   communityId: '',
   beneficiaries: [],
   description: '',
@@ -39,3 +41,24 @@ export const defaultMochiImport: MochiImport = {
   edition: '',
   communityId: ''
 };
+
+export interface Participant {
+  beneficiary: Beneficiary;
+  beneficiaryGender: string;
+  beneficiaryId: number;
+  beneficiaryName: string;
+  donationDropOffLocation: string | null;
+  donationType: string | null;
+  donorName: string;
+  id: number;
+  schoolCycle: string | null;
+  state: string;
+}
+
+export interface MochiEditionLoaded {
+  edition: string;
+  communityId: string;
+  participants: Participant[];
+  description: string;
+  provider: string;
+}
