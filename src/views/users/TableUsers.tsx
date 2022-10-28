@@ -18,7 +18,13 @@ import { EditPassword } from './EditPassword';
 import { UpdateUser } from './UpdateUser';
 import User from 'src/types/User';
 import { useRouter } from 'next/router';
-import { hasNoPermission, isNotLoggedIn, redirectToLogin, userIsLoggedIn } from 'src/utils/sessionManagement';
+import {
+  hasNoPermission,
+  hasWriteAccess,
+  isNotLoggedIn,
+  redirectToLogin,
+  userIsLoggedIn
+} from 'src/utils/sessionManagement';
 import { Action } from 'src/types/Action';
 
 interface TableUsersProps {
@@ -38,6 +44,7 @@ const TableUsers: FC<TableUsersProps> = props => {
   const [id, setId] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [actualPage, setActualPage] = useState<number>(0);
+  const [hasWriteUsers, setHasWriteUsers] = useState<boolean>();
   const [rowsPerPage, setRowsPerPage] = useState<number>(INITIAL_SIZE);
   const [openEditPermissions, setOpenEditPermissions] = useState<boolean>(false);
   const [openEditPassword, setOpenEditPassword] = useState<boolean>(false);
@@ -66,6 +73,8 @@ const TableUsers: FC<TableUsersProps> = props => {
       router.push('/login');
     } else {
       reloadUsers();
+
+      setHasWriteUsers(hasWriteAccess('Users'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -123,7 +132,7 @@ const TableUsers: FC<TableUsersProps> = props => {
               <TableCell>Email</TableCell>
               <TableCell>Teléfono</TableCell>
               <TableCell>Activo</TableCell>
-              <TableCell>Acciones</TableCell>
+              {hasWriteUsers && <TableCell>Acciones</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -147,41 +156,45 @@ const TableUsers: FC<TableUsersProps> = props => {
                         }
                         reloadUsers();
                       }}
-                      disabled={row.id === parseInt(actualUserId)}
+                      disabled={row.id === parseInt(actualUserId) || !hasWriteUsers}
                     />
                   </TableCell>
                   <TableCell sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button
-                      variant='contained'
-                      sx={{ fontSize: 12, width: '30%' }}
-                      onClick={() => {
-                        setId(row.id);
-                        setOpenUpdateUser(true);
-                      }}
-                    >
-                      Editar Datos
-                    </Button>
-                    <Button
-                      variant='contained'
-                      sx={{ fontSize: 12, width: '30%' }}
-                      onClick={() => {
-                        setId(row.id);
-                        setOpenEditPassword(true);
-                      }}
-                    >
-                      Editar Contraseña
-                    </Button>
-                    <Button
-                      variant='contained'
-                      sx={{ fontSize: 12, width: '30%' }}
-                      onClick={() => {
-                        setId(row.id);
-                        setOpenEditPermissions(true);
-                      }}
-                      disabled={row.id === parseInt(actualUserId)}
-                    >
-                      Editar Permisos
-                    </Button>
+                    {hasWriteUsers && (
+                      <>
+                        <Button
+                          variant='contained'
+                          sx={{ fontSize: 12, width: '30%' }}
+                          onClick={() => {
+                            setId(row.id);
+                            setOpenUpdateUser(true);
+                          }}
+                        >
+                          Editar Datos
+                        </Button>
+                        <Button
+                          variant='contained'
+                          sx={{ fontSize: 12, width: '30%' }}
+                          onClick={() => {
+                            setId(row.id);
+                            setOpenEditPassword(true);
+                          }}
+                        >
+                          Editar Contraseña
+                        </Button>
+                        <Button
+                          variant='contained'
+                          sx={{ fontSize: 12, width: '30%' }}
+                          onClick={() => {
+                            setId(row.id);
+                            setOpenEditPermissions(true);
+                          }}
+                          disabled={row.id === parseInt(actualUserId)}
+                        >
+                          Editar Permisos
+                        </Button>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

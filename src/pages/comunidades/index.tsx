@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import { useAction } from 'src/hooks/actionHook';
-import { userIsLoggedIn } from 'src/utils/sessionManagement';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 import CommunitiesTable from 'src/views/communities/ComunitiesTable';
 
 // ** Demo Components Imports
@@ -20,6 +20,7 @@ import ActionToast from 'src/views/pages/misc/ActionToast';
 const Dashboard = () => {
   const [openCreateCommunities, setOpenCreateCommunities] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
+  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
   const router = useRouter();
 
@@ -27,6 +28,7 @@ const Dashboard = () => {
     if (!userIsLoggedIn()) {
       router.push('/login');
     }
+    setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,15 +48,17 @@ const Dashboard = () => {
           </Typography>
           <Card>
             <Box width='100%' display='flex' justifyContent='flex-end'>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenWindow(true);
-                  setOpenCreateCommunities(true);
-                }}
-              >
-                Añadir Comunidades
-              </Button>
+              {hasWriteBenefs && (
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenWindow(true);
+                    setOpenCreateCommunities(true);
+                  }}
+                >
+                  Añadir Comunidades
+                </Button>
+              )}
             </Box>
             <CommunitiesTable
               openCreateCommunities={openCreateCommunities}
