@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
 import { CreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
+import { SCHOOL_YEARS } from 'src/types/SchoolYear';
 
 interface EducationFormProps {
   beneficiaryFields: CreateBeneficiaryFields;
@@ -31,18 +32,31 @@ export const EducationForm: FC<EducationFormProps> = props => {
         fullWidth={true}
         variant='standard'
       />
-      <TextField
-        type='text'
-        label='Año lectivo'
-        placeholder='2do Año'
-        inputProps={{
-          pattern: '^(3[0-1]|2[[0-9]|1[0-9]|0{0,1}[1-9])/([1-9]|1[0-2])/(19[2-9][0-9]|20[0-9][0-9])$'
-        }}
-        value={beneficiaryFields.year}
-        onChange={e => setBeneficiaryField('year', e.target.value)}
-        fullWidth={true}
-        variant='standard'
-      />
+      <FormControl fullWidth sx={{ py: '1em' }}>
+        <InputLabel id='transportation'>Método de Transporte</InputLabel>
+        <Select
+          labelId='transportation'
+          fullWidth={true}
+          variant='standard'
+          placeholder='Caminando'
+          value={beneficiaryFields.transportationMethod}
+          defaultValue={'BIKE'}
+          label='Año académico'
+          onChange={e => {
+            setBeneficiaryField('transportationMethod', e.target.value);
+          }}
+        >
+          {Object.entries(SCHOOL_YEARS).map(entry => {
+            const [schoolYearEnglish, schoolYearSpanish] = entry;
+
+            return (
+              <MenuItem value={schoolYearEnglish} key={schoolYearEnglish}>
+                {schoolYearSpanish}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
       <FormControl fullWidth sx={{ py: '1em' }}>
         <InputLabel id='transportation'>Método de Transporte</InputLabel>
         <Select
