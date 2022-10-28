@@ -23,21 +23,21 @@ export const HealthForm: FC<HealthFormProps> = props => {
       <Typography>Salud</Typography>
       <InputLabel>¿Tiene Vacuna COVID?</InputLabel>
       <Stack direction='row' spacing={1} alignItems='center'>
-        <Typography>Sí</Typography>
+        <Typography>No</Typography>
         <Switch
           onChange={e => setBeneficiaryField('hasCovidVaccine', e.target.checked)}
           checked={beneficiaryFields.hasCovidVaccine}
         />
-        <Typography>No</Typography>
+        <Typography>Sí</Typography>
       </Stack>
       <InputLabel>¿Tiene Vacunas Mandatorias?</InputLabel>
       <Stack direction='row' spacing={1} alignItems='center'>
-        <Typography>Sí</Typography>
+        <Typography>No</Typography>
         <Switch
           onChange={e => setBeneficiaryField('hasMandatoryVaccines', e.target.checked)}
           checked={beneficiaryFields.hasMandatoryVaccines}
         />
-        <Typography>No</Typography>
+        <Typography>Sí</Typography>
       </Stack>
       <TextField
         type='text'
