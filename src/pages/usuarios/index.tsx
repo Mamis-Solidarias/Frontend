@@ -15,18 +15,22 @@ import { useAction } from 'src/hooks/actionHook';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { userIsLoggedIn } from 'src/utils/sessionManagement';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [userAdded, setUserAdded] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
+  const [hasWriteAccessConst, setHasWriteAccessConst] = useState<boolean>(false);
+
   const router = useRouter();
 
   useEffect(() => {
     if (!userIsLoggedIn()) {
       router.push('/login');
+    } else {
+      setHasWriteAccessConst(hasWriteAccess('Users'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -46,17 +50,19 @@ const Dashboard = () => {
             Administrar Usuarios
           </Typography>
           <Card>
-            <Box width='100%' display='flex' justifyContent='flex-end'>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenWindow(true);
-                  setOpenCreateUser(true);
-                }}
-              >
-                Añadir Usuario
-              </Button>
-            </Box>
+            {hasWriteAccessConst && (
+              <Box width='100%' display='flex' justifyContent='flex-end'>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenWindow(true);
+                    setOpenCreateUser(true);
+                  }}
+                >
+                  Añadir Usuario
+                </Button>
+              </Box>
+            )}
             <TableUsers
               openWindow={openWindow}
               userAdded={userAdded}

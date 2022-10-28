@@ -102,7 +102,7 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                       canWrite: false
                     });
                   }}
-                  disabled={permissions >= 2}
+                  disabled={permissions >= 4}
                 >
                   Añadir
                 </Button>
