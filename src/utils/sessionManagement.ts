@@ -1,7 +1,8 @@
 import { NextRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 export const userIsLoggedIn = () => {
-  return !!localStorage.getItem('user');
+  return !!Cookies.get('MamisSolidarias.Auth');
 };
 
 export const redirectToLogin = (router: NextRouter) => {
