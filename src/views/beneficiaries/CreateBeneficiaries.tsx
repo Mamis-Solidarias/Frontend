@@ -172,26 +172,29 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                     Añadir Salud
                   </Button>
                 )}
-
-                {beneficiaryExtras.addJob && (
-                  <JobForm
-                    beneficiaryFields={beneficiaryFields}
-                    setBeneficiaryField={setBeneficiaryField}
-                    setBeneficiaryExtra={setBeneficiaryExtra}
-                  />
-                )}
-                {!beneficiaryExtras.addJob && (
-                  <Button
-                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
-                    variant='contained'
-                    color='info'
-                    onClick={() => {
-                      setBeneficiaryField('title', '');
-                      setBeneficiaryExtra('addJob', true);
-                    }}
-                  >
-                    Añadir Trabajo
-                  </Button>
+                {beneficiaryFields.type !== 'Child' && beneficiaryFields.type !== 'CHILD' && (
+                  <>
+                    {beneficiaryExtras.addJob && (
+                      <JobForm
+                        beneficiaryFields={beneficiaryFields}
+                        setBeneficiaryField={setBeneficiaryField}
+                        setBeneficiaryExtra={setBeneficiaryExtra}
+                      />
+                    )}
+                    {!beneficiaryExtras.addJob && (
+                      <Button
+                        sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: '1em' }}
+                        variant='contained'
+                        color='info'
+                        onClick={() => {
+                          setBeneficiaryField('title', '');
+                          setBeneficiaryExtra('addJob', true);
+                        }}
+                      >
+                        Añadir Trabajo
+                      </Button>
+                    )}
+                  </>
                 )}
               </Grid>
             </Box>
