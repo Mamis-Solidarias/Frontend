@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { SCHOOL_YEARS } from 'src/types/SchoolYear';
 import { DefaultCard } from './DefaultCard';
 
 export const EducationCard: FC<{ education: any; sx?: any }> = props => {
@@ -17,7 +18,9 @@ export const EducationCard: FC<{ education: any; sx?: any }> = props => {
       title='Educación'
       fields={{
         Institución: !!education.school ? education.school : 'Falta Información',
-        'Año académico': !!education.year ? education.year : 'Falta Información',
+        'Año académico': !!education.year
+          ? SCHOOL_YEARS[education.year as keyof typeof SCHOOL_YEARS]
+          : 'Falta Información',
         'Método de Transporte': !!education.transportationMethod
           ? TRANSPORT_METHODS[education.transportationMethod as keyof typeof TRANSPORT_METHODS]
           : 'Falta Información'
