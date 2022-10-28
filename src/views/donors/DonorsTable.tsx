@@ -19,6 +19,7 @@ import { Donor } from 'src/types/Donor';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -30,6 +31,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
   const router = useRouter();
   const [donor, setDonor] = useState<Donor | null>(null);
   const [openUpdateDonor, setOpenUpdateDonor] = useState<boolean>(false);
+  const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
   const { paging, setDonorsPaging } = useDonorsPaging();
   const { loading, error, data, refetch } = useQuery(GET_DONORS, {
     variables: {
@@ -46,14 +48,16 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
+    } else {
+      setHasWriteDonors(hasWriteAccess('Donors'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!!localStorage.getItem('user') && !openUpdateDonor && !openCreateDonor) {
+    if (userIsLoggedIn() && !openUpdateDonor && !openCreateDonor) {
       refetchWithSameParameters();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,7 +94,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
               <TableCell>Teléfono</TableCell>
               <TableCell>Padrinazgo</TableCell>
               <TableCell>Creador</TableCell>
-              <TableCell>Acciones</TableCell>
+              {hasWriteDonors && <TableCell>Acciones</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -103,20 +107,22 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                 <TableCell>{row.phone ? row.phone : '-'}</TableCell>
                 <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
                 <TableCell>{row.owner?.name}</TableCell>
-                <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Button
-                    variant='contained'
-                    sx={{ my: '.5em' }}
-                    onClick={() => {
-                      if (!!row.id) {
-                        setDonor(row);
-                        setOpenUpdateDonor(true);
-                      }
-                    }}
-                  >
-                    Editar
-                  </Button>
-                </TableCell>
+                {hasWriteDonors && (
+                  <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Button
+                      variant='contained'
+                      sx={{ my: '.5em' }}
+                      onClick={() => {
+                        if (!!row.id) {
+                          setDonor(row);
+                          setOpenUpdateDonor(true);
+                        }
+                      }}
+                    >
+                      Editar
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

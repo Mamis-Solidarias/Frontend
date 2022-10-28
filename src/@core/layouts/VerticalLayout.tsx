@@ -23,6 +23,7 @@ import ScrollToTop from 'src/@core/components/scroll-to-top';
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
@@ -62,7 +63,7 @@ const VerticalLayout = (props: LayoutProps) => {
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible);
 
-  if (typeof window !== 'undefined' && localStorage.getItem('user') !== undefined) {
+  if (typeof window !== 'undefined' && userIsLoggedIn()) {
     return (
       <>
         <VerticalLayoutWrapper className='layout-wrapper'>

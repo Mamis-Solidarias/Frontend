@@ -24,6 +24,7 @@ import Community from 'src/types/Community';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
 import Box from '@mui/material/Box';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
@@ -41,6 +42,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   const [beneficiaryEdited, setBeneficiaryEdited] = useState<boolean>(false);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary | undefined>();
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
+  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
@@ -93,9 +95,10 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   }, [openEditBeneficiary]);
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
+    setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -136,7 +139,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
               <TableCell>Género</TableCell>
               <TableCell>Fecha de Nacimiento</TableCell>
               <TableCell>Tipo</TableCell>
-              <TableCell>Acciones</TableCell>
+              {hasWriteBenefs && <TableCell>Acciones</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -149,74 +152,76 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                 setOpen={setOpen}
                 benefsQ={nodes.length}
               >
-                <TableCell>
-                  <Box display='flex' flexDirection='row' justifyContent='space-between'>
-                    {row.isActive && (
-                      <Button
-                        variant='contained'
-                        sx={{ mx: '.25em' }}
-                        onClick={async () => {
-                          try {
-                            await deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
-                            setAction({
-                              complete: true,
-                              success: true,
-                              message: 'Usuario desactivado exitosamente',
-                              status: 200
-                            });
-                          } catch (err) {
-                            setAction({
-                              complete: true,
-                              success: false,
-                              message: 'Algo ha ocurrido desactivando el usuario. Intente nuevamente más tarde',
-                              status: 400
-                            });
-                          }
-                        }}
-                      >
-                        Desactivar
-                      </Button>
-                    )}
-                    {!row.isActive && (
-                      <Button
-                        variant='contained'
-                        sx={{ mx: '.25em' }}
-                        onClick={async () => {
-                          try {
-                            await activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
-                            setAction({
-                              complete: true,
-                              success: true,
-                              message: 'Usuario activado exitosamente',
-                              status: 200
-                            });
-                          } catch (err) {
-                            setAction({
-                              complete: true,
-                              success: false,
-                              message: 'Algo ha ocurrido activando el usuario. Intente nuevamente más tarde',
-                              status: 400
-                            });
-                          }
-                        }}
-                      >
-                        Activar
-                      </Button>
-                    )}
-                    {row.isActive && (
-                      <Button
-                        variant='contained'
-                        sx={{ mx: '.25em' }}
-                        onClick={() => {
-                          setSelectedBeneficiary(row);
-                          setOpenEditBeneficiary(true);
-                        }}
-                      >
-                        Editar
-                      </Button>
-                    )}
-                  </Box>
-                </TableCell>
+                {hasWriteBenefs && (
+                  <TableCell>
+                    <Box display='flex' flexDirection='row' justifyContent='space-between'>
+                      {row.isActive && (
+                        <Button
+                          variant='contained'
+                          sx={{ mx: '.25em' }}
+                          onClick={async () => {
+                            try {
+                              await deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
+                              setAction({
+                                complete: true,
+                                success: true,
+                                message: 'Usuario desactivado exitosamente',
+                                status: 200
+                              });
+                            } catch (err) {
+                              setAction({
+                                complete: true,
+                                success: false,
+                                message: 'Algo ha ocurrido desactivando el usuario. Intente nuevamente más tarde',
+                                status: 400
+                              });
+                            }
+                          }}
+                        >
+                          Desactivar
+                        </Button>
+                      )}
+                      {!row.isActive && (
+                        <Button
+                          variant='contained'
+                          sx={{ mx: '.25em' }}
+                          onClick={async () => {
+                            try {
+                              await activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
+                              setAction({
+                                complete: true,
+                                success: true,
+                                message: 'Usuario activado exitosamente',
+                                status: 200
+                              });
+                            } catch (err) {
+                              setAction({
+                                complete: true,
+                                success: false,
+                                message: 'Algo ha ocurrido activando el usuario. Intente nuevamente más tarde',
+                                status: 400
+                              });
+                            }
+                          }}
+                        >
+                          Activar
+                        </Button>
+                      )}
+                      {row.isActive && (
+                        <Button
+                          variant='contained'
+                          sx={{ mx: '.25em' }}
+                          onClick={() => {
+                            setSelectedBeneficiary(row);
+                            setOpenEditBeneficiary(true);
+                          }}
+                        >
+                          Editar
+                        </Button>
+                      )}
+                    </Box>
+                  </TableCell>
+                )}
               </DisplayBeneficiary>
             ))}
           </TableBody>

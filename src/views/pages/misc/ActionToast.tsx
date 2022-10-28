@@ -15,7 +15,7 @@ const ActionToast = (props: ActionToastProps) => {
   return (
     <Snackbar
       open={action.complete}
-      autoHideDuration={6000}
+      autoHideDuration={2000}
       onClose={() => setActionCompletion(false)}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >

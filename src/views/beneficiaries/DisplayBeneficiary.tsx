@@ -63,7 +63,7 @@ const DisplayBeneficiary: FC<DisplayBeneficiaryProps> = props => {
         {props.children}
       </TableRow>
       <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-        <TableCell colSpan={12}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
           <Collapse in={open[index]} timeout='auto' unmountOnExit>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
               {!!benef.education && <EducationCard education={benef.education} sx={{ mx: '1em' }} />}

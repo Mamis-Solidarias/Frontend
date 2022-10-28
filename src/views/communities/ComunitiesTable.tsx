@@ -17,6 +17,7 @@ import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface CommunitiesTableProps {
   openCreateCommunities: boolean;
@@ -29,6 +30,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
   const router = useRouter();
   const [id, setId] = useState<string>('');
   const [openUpdateCommunity, setOpenUpdateCommunity] = useState<boolean>(false);
+  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
   const { loading, error, data, refetch } = useQuery(GET_COMMUNITIES, {
     variables: {
@@ -45,14 +47,15 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
+    setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!!localStorage.getItem('user') && !openWindow) {
+    if (userIsLoggedIn() && !openWindow) {
       refetchWithSameParameters();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,7 +90,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
               <TableCell>Nombre</TableCell>
               <TableCell>Dirección</TableCell>
               <TableCell>Descripción</TableCell>
-              <TableCell>Acciones</TableCell>
+              {hasWriteBenefs && <TableCell>Acciones</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,17 +100,19 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.address}</TableCell>
                 <TableCell>{!!row.description ? row.description : '-'}</TableCell>
-                <TableCell>
-                  <Button
-                    variant='contained'
-                    onClick={() => {
-                      setId(row.id as string);
-                      setOpenUpdateCommunity(true);
-                    }}
-                  >
-                    Editar Datos
-                  </Button>
-                </TableCell>
+                {hasWriteBenefs && (
+                  <TableCell>
+                    <Button
+                      variant='contained'
+                      onClick={() => {
+                        setId(row.id as string);
+                        setOpenUpdateCommunity(true);
+                      }}
+                    >
+                      Editar Datos
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>

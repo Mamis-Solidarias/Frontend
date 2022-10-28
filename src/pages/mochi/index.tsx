@@ -33,6 +33,7 @@ import Community from 'src/types/Community';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import { MochiEditionBrief } from 'src/views/campaigns/MochiEditionBrief';
 import { EditMochi } from 'src/views/campaigns/EditMochi';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
@@ -44,6 +45,7 @@ const Dashboard = () => {
   const { filters, setFilter } = useCampaignsFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { action, setCompletion, setAction } = useAction();
+  const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
   const router = useRouter();
   const {
     loading: loadingEditions,
@@ -57,10 +59,10 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
-    }
-    if (!!localStorage.getItem('user')) {
+    } else {
+      setHasWriteCampaigns(hasWriteAccess('Campaigns'));
       getCommunities().then(result => {
         setCommunities(result.data.communities);
       });
@@ -158,30 +160,34 @@ const Dashboard = () => {
                 })}
               </TextField>
             </Box>
-            <Box sx={{ mx: '0.25em' }}>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenEditMochi(true);
-                  setEditMochiFinished(false);
-                }}
-                disabled={!dataEdition || dataEdition.length === 0}
-              >
-                Editar
-              </Button>
-            </Box>
+            {hasWriteCampaigns && (
+              <Box sx={{ mx: '0.25em' }}>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenEditMochi(true);
+                    setEditMochiFinished(false);
+                  }}
+                  disabled={!dataEdition || dataEdition.length === 0}
+                >
+                  Editar
+                </Button>
+              </Box>
+            )}
 
-            <Box width='70%' display='flex' justifyContent='flex-end'>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenCreateMochi(true);
-                  setCreateMochiFinished(false);
-                }}
-              >
-                Crear
-              </Button>
-            </Box>
+            {hasWriteCampaigns && (
+              <Box width='70%' display='flex' justifyContent='flex-end'>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenCreateMochi(true);
+                    setCreateMochiFinished(false);
+                  }}
+                >
+                  Crear
+                </Button>
+              </Box>
+            )}
           </Box>
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader

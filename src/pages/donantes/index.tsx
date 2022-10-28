@@ -24,6 +24,7 @@ import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
@@ -33,11 +34,14 @@ const Dashboard = () => {
   // const { filters, setFilter } = useDonorsFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const router = useRouter();
+  const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
+    } else {
+      setHasWriteDonors(hasWriteAccess('Donors'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -74,17 +78,19 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           <Card>
-            <Box width='100%' display='flex' justifyContent='flex-end'>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenWindow(true);
-                  setOpenCreateDonor(true);
-                }}
-              >
-                Añadir Donante
-              </Button>
-            </Box>
+            {hasWriteDonors && (
+              <Box width='100%' display='flex' justifyContent='flex-end'>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenWindow(true);
+                    setOpenCreateDonor(true);
+                  }}
+                >
+                  Añadir Donante
+                </Button>
+              </Box>
+            )}
             <DonorsTable openCreateDonor={openCreateDonor} setAction={setAction} />
           </Card>
           {openCreateDonor && (
