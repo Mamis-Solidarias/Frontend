@@ -32,7 +32,12 @@ const VerticalNavItems = (props: Props) => {
   const { verticalNavItems } = props;
 
   const RenderMenuItems = verticalNavItems?.map((item: NavLink | NavSectionTitle, index: number) => {
-    if (typeof window !== 'undefined' && !!localStorage.getItem('user')) {
+    if (
+      typeof window !== 'undefined' &&
+      !!localStorage.getItem('user') &&
+      JSON.parse(localStorage.getItem('user') as string).roles.length > 0
+    ) {
+      console.log(JSON.parse(localStorage.getItem('user') as string));
       const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
 
       return <TagName {...props} key={index} item={item} />;
