@@ -144,32 +144,30 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                   <TableCell>{row.details}</TableCell>
                 </TableRow>
                 <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell colSpan={12}>
+                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                     <Collapse in={open[index]} timeout='auto' unmountOnExit>
                       <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
-                        <TableCell>
-                          <Button
-                            variant='contained'
-                            onClick={() => {
-                              setId(row.id as number);
-                              setOpenUpdateFamily(true);
-                            }}
-                          >
-                            Editar Datos
-                          </Button>
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            variant='contained'
-                            onClick={() => {
-                              setId(row.id as number);
-                              setContacts(row.contacts);
-                              setOpenUpdateContacts(true);
-                            }}
-                          >
-                            Editar Contactos
-                          </Button>
-                        </TableCell>
+                        <Button
+                          variant='contained'
+                          sx={{ mx: '.5em' }}
+                          onClick={() => {
+                            setId(row.id as number);
+                            setOpenUpdateFamily(true);
+                          }}
+                        >
+                          Editar Datos
+                        </Button>
+                        <Button
+                          variant='contained'
+                          sx={{ mx: '.5em' }}
+                          onClick={() => {
+                            setId(row.id as number);
+                            setContacts(row.contacts);
+                            setOpenUpdateContacts(true);
+                          }}
+                        >
+                          Editar Contactos
+                        </Button>
                       </Box>
                     </Collapse>
                   </TableCell>
