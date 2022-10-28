@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 // ** MUI Imports
-import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
@@ -95,121 +94,119 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
 
   return (
     <>
-      <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Dirección</TableCell>
-                <TableCell>Detalles</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {nodes.map((row: Family, index: number) => (
-                <>
-                  <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell>
-                      <IconButton
-                        aria-label='expand row'
-                        size='small'
-                        onClick={() => {
-                          if (open.length === 0) {
-                            setOpen(
-                              Array.from({ length: nodes.length }, (l, openIndex) => {
-                                if (openIndex === index) return true;
+      <TableContainer>
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+          <TableHead>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>ID</TableCell>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Dirección</TableCell>
+              <TableCell>Detalles</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {nodes.map((row: Family, index: number) => (
+              <>
+                <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableCell>
+                    <IconButton
+                      aria-label='expand row'
+                      size='small'
+                      onClick={() => {
+                        if (open.length === 0) {
+                          setOpen(
+                            Array.from({ length: nodes.length }, (l, openIndex) => {
+                              if (openIndex === index) return true;
 
-                                return false;
-                              })
-                            );
-                          } else {
-                            setOpen(
-                              Array.from({ length: nodes.length }, (l, openIndex) => {
-                                if (openIndex === index) {
-                                  return !open[index];
-                                }
+                              return false;
+                            })
+                          );
+                        } else {
+                          setOpen(
+                            Array.from({ length: nodes.length }, (l, openIndex) => {
+                              if (openIndex === index) {
+                                return !open[index];
+                              }
 
-                                return open[openIndex];
-                              })
-                            );
-                          }
-                        }}
-                      >
-                        {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                      </IconButton>
-                    </TableCell>
-                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.address}</TableCell>
-                    <TableCell>{row.details}</TableCell>
-                  </TableRow>
-                  <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell colSpan={12}>
-                      <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
-                          <TableCell>
-                            <Button
-                              variant='contained'
-                              onClick={() => {
-                                setId(row.id as number);
-                                setOpenUpdateFamily(true);
-                              }}
-                            >
-                              Editar Datos
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            <Button
-                              variant='contained'
-                              onClick={() => {
-                                setId(row.id as number);
-                                setContacts(row.contacts);
-                                setOpenUpdateContacts(true);
-                              }}
-                            >
-                              Editar Contactos
-                            </Button>
-                          </TableCell>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <BeneficiaryTablePagination
-          paging={paging}
-          setBeneficiariesPaging={setBeneficiariesPaging}
-          pageInfo={pageInfo}
-          nodes={nodes}
-          edges={edges}
+                              return open[openIndex];
+                            })
+                          );
+                        }
+                      }}
+                    >
+                      {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                  </TableCell>
+                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.address}</TableCell>
+                  <TableCell>{row.details}</TableCell>
+                </TableRow>
+                <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableCell colSpan={12}>
+                    <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                        <TableCell>
+                          <Button
+                            variant='contained'
+                            onClick={() => {
+                              setId(row.id as number);
+                              setOpenUpdateFamily(true);
+                            }}
+                          >
+                            Editar Datos
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant='contained'
+                            onClick={() => {
+                              setId(row.id as number);
+                              setContacts(row.contacts);
+                              setOpenUpdateContacts(true);
+                            }}
+                          >
+                            Editar Contactos
+                          </Button>
+                        </TableCell>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <BeneficiaryTablePagination
+        paging={paging}
+        setBeneficiariesPaging={setBeneficiariesPaging}
+        pageInfo={pageInfo}
+        nodes={nodes}
+        edges={edges}
+      />
+      {openUpdateFamily && (
+        <UpdateFamily
+          openDialog={openUpdateFamily}
+          id={id}
+          handleClose={() => {
+            setOpenUpdateFamily(false);
+          }}
+          setAction={setAction}
         />
-        {openUpdateFamily && (
-          <UpdateFamily
-            openDialog={openUpdateFamily}
-            id={id}
-            handleClose={() => {
-              setOpenUpdateFamily(false);
-            }}
-            setAction={setAction}
-          />
-        )}
-        {openUpdateContacts && (
-          <UpdateFamilyContacts
-            openDialog={openUpdateContacts}
-            id={id}
-            contacts={contacts}
-            handleClose={() => {
-              setOpenUpdateContacts(false);
-            }}
-            setAction={setAction}
-          />
-        )}
-      </Card>
+      )}
+      {openUpdateContacts && (
+        <UpdateFamilyContacts
+          openDialog={openUpdateContacts}
+          id={id}
+          contacts={contacts}
+          handleClose={() => {
+            setOpenUpdateContacts(false);
+          }}
+          setAction={setAction}
+        />
+      )}
     </>
   );
 };

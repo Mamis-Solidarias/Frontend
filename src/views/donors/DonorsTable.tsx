@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 // ** MUI Imports
-import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
@@ -81,67 +80,65 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
 
   return (
     <>
-      <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Teléfono</TableCell>
-                <TableCell>Padrinazgo</TableCell>
-                <TableCell>Creador</TableCell>
-                <TableCell>Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {nodes.map((row: Donor) => (
-                <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }} key={row.id}>
-                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                  <TableCell>{row.name}</TableCell>
+      <TableContainer>
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Teléfono</TableCell>
+              <TableCell>Padrinazgo</TableCell>
+              <TableCell>Creador</TableCell>
+              <TableCell>Acciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {nodes.map((row: Donor) => (
+              <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }} key={row.id}>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
+                <TableCell>{row.name}</TableCell>
 
-                  <TableCell>{row.email ? row.email : '-'}</TableCell>
-                  <TableCell>{row.phone ? row.phone : '-'}</TableCell>
-                  <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
-                  <TableCell>{row.owner?.name}</TableCell>
-                  <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Button
-                      variant='contained'
-                      sx={{ my: '.5em' }}
-                      onClick={() => {
-                        if (!!row.id) {
-                          setDonor(row);
-                          setOpenUpdateDonor(true);
-                        }
-                      }}
-                    >
-                      Editar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <DonorsTablePagination
-          paging={paging}
-          setDonorsPaging={setDonorsPaging}
-          pageInfo={pageInfo}
-          nodes={nodes}
-          edges={edges}
+                <TableCell>{row.email ? row.email : '-'}</TableCell>
+                <TableCell>{row.phone ? row.phone : '-'}</TableCell>
+                <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
+                <TableCell>{row.owner?.name}</TableCell>
+                <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Button
+                    variant='contained'
+                    sx={{ my: '.5em' }}
+                    onClick={() => {
+                      if (!!row.id) {
+                        setDonor(row);
+                        setOpenUpdateDonor(true);
+                      }
+                    }}
+                  >
+                    Editar
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <DonorsTablePagination
+        paging={paging}
+        setDonorsPaging={setDonorsPaging}
+        pageInfo={pageInfo}
+        nodes={nodes}
+        edges={edges}
+      />
+      {openUpdateDonor && (
+        <UpdateDonor
+          openDialog={openUpdateDonor}
+          donor={donor}
+          handleClose={() => {
+            setOpenUpdateDonor(false);
+          }}
+          setAction={setAction}
         />
-        {openUpdateDonor && (
-          <UpdateDonor
-            openDialog={openUpdateDonor}
-            donor={donor}
-            handleClose={() => {
-              setOpenUpdateDonor(false);
-            }}
-            setAction={setAction}
-          />
-        )}
-      </Card>
+      )}
     </>
   );
 };

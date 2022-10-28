@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
+import Box from '@mui/material/Box';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
@@ -62,6 +63,9 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
+          <Typography gutterBottom variant='h3' component='div' align='center'>
+            Familias
+          </Typography>
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
@@ -79,7 +83,7 @@ const Dashboard = () => {
               <Collapse in={openCollapse}></Collapse>
               <Collapse in={openCollapse}>
                 <FamiliesFiltersView filters={filters} setFilter={setFilter} communities={communities} />
-                <Typography align='center'>
+                <Typography display='flex' justifyContent='flex-end'>
                   <Button
                     variant='contained'
                     onClick={() => {
@@ -104,23 +108,26 @@ const Dashboard = () => {
               </Collapse>
             </CardContent>
           </Card>
-          <FamiliesTable
-            communities={communities}
-            filters={filtersApplied}
-            openCreateFamilies={openCreateFamilies}
-            setAction={setAction}
-          />
-          <Button
-            variant='contained'
-            sx={{ my: 3, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            onClick={() => {
-              setOpenWindow(true);
-              setOpenCreateFamilies(true);
-            }}
-            disabled={!communityCode}
-          >
-            Añadir Familias
-          </Button>
+          <Card>
+            <Box width='100%' display='flex' justifyContent='flex-end'>
+              <Button
+                variant='contained'
+                onClick={() => {
+                  setOpenWindow(true);
+                  setOpenCreateFamilies(true);
+                }}
+                disabled={!communityCode}
+              >
+                Añadir Familias
+              </Button>
+            </Box>
+            <FamiliesTable
+              communities={communities}
+              filters={filtersApplied}
+              openCreateFamilies={openCreateFamilies}
+              setAction={setAction}
+            />
+          </Card>
           {!!communityCode && (
             <CreateFamilies
               openDialog={openCreateFamilies}

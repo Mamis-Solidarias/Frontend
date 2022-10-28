@@ -1,5 +1,4 @@
 // ** MUI Imports
-import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow';
 import TableHead from '@mui/material/TableHead';
@@ -115,124 +114,122 @@ const TableUsers: FC<TableUsersProps> = props => {
 
   return (
     <>
-      <Card>
-        <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Teléfono</TableCell>
-                <TableCell>Activo</TableCell>
-                <TableCell>Acciones</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!!rows &&
-                rows.map((row: User) => (
-                  <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.phone}</TableCell>
-                    <TableCell>
-                      <Checkbox
-                        checked={row.isActive}
-                        onClick={async () => {
-                          if (row.isActive) {
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            await deleteUser(row.id).then(_ => (row.isActive = false));
-                          } else {
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            await reactivateUser(row.id).then(_ => (row.isActive = true));
-                          }
-                          reloadUsers();
-                        }}
-                        disabled={row.id === parseInt(actualUserId)}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Button
-                        variant='contained'
-                        sx={{ fontSize: 12, width: '30%' }}
-                        onClick={() => {
-                          setId(row.id);
-                          setOpenUpdateUser(true);
-                        }}
-                      >
-                        Editar Datos
-                      </Button>
-                      <Button
-                        variant='contained'
-                        sx={{ fontSize: 12, width: '30%' }}
-                        onClick={() => {
-                          setId(row.id);
-                          setOpenEditPassword(true);
-                        }}
-                      >
-                        Editar Contraseña
-                      </Button>
-                      <Button
-                        variant='contained'
-                        sx={{ fontSize: 12, width: '30%' }}
-                        onClick={() => {
-                          setId(row.id);
-                          setOpenEditPermissions(true);
-                        }}
-                        disabled={row.id === parseInt(actualUserId)}
-                      >
-                        Editar Permisos
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[INITIAL_SIZE, MEDIUM_SIZE, LARGE_SIZE]}
-          component='div'
-          count={rows ? (rows.length < rowsPerPage ? (totalPages - 1) * rowsPerPage + rows.length : -1) : 1}
-          rowsPerPage={rowsPerPage}
-          page={actualPage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+      <TableContainer>
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Nombre</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Teléfono</TableCell>
+              <TableCell>Activo</TableCell>
+              <TableCell>Acciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!!rows &&
+              rows.map((row: User) => (
+                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.email}</TableCell>
+                  <TableCell>{row.phone}</TableCell>
+                  <TableCell>
+                    <Checkbox
+                      checked={row.isActive}
+                      onClick={async () => {
+                        if (row.isActive) {
+                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                          await deleteUser(row.id).then(_ => (row.isActive = false));
+                        } else {
+                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                          await reactivateUser(row.id).then(_ => (row.isActive = true));
+                        }
+                        reloadUsers();
+                      }}
+                      disabled={row.id === parseInt(actualUserId)}
+                    />
+                  </TableCell>
+                  <TableCell sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button
+                      variant='contained'
+                      sx={{ fontSize: 12, width: '30%' }}
+                      onClick={() => {
+                        setId(row.id);
+                        setOpenUpdateUser(true);
+                      }}
+                    >
+                      Editar Datos
+                    </Button>
+                    <Button
+                      variant='contained'
+                      sx={{ fontSize: 12, width: '30%' }}
+                      onClick={() => {
+                        setId(row.id);
+                        setOpenEditPassword(true);
+                      }}
+                    >
+                      Editar Contraseña
+                    </Button>
+                    <Button
+                      variant='contained'
+                      sx={{ fontSize: 12, width: '30%' }}
+                      onClick={() => {
+                        setId(row.id);
+                        setOpenEditPermissions(true);
+                      }}
+                      disabled={row.id === parseInt(actualUserId)}
+                    >
+                      Editar Permisos
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[INITIAL_SIZE, MEDIUM_SIZE, LARGE_SIZE]}
+        component='div'
+        count={rows ? (rows.length < rowsPerPage ? (totalPages - 1) * rowsPerPage + rows.length : -1) : 1}
+        rowsPerPage={rowsPerPage}
+        page={actualPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      {openEditPermissions && (
+        <EditPermissions
+          openDialog={openEditPermissions}
+          id={id}
+          handleClose={() => {
+            setOpenEditPermissions(false);
+            reloadUsers();
+          }}
+          setAction={setAction}
         />
-        {openEditPermissions && (
-          <EditPermissions
-            openDialog={openEditPermissions}
-            id={id}
-            handleClose={() => {
-              setOpenEditPermissions(false);
-              reloadUsers();
-            }}
-            setAction={setAction}
-          />
-        )}
-        {openEditPassword && (
-          <EditPassword
-            openDialog={openEditPassword}
-            id={id}
-            handleClose={() => {
-              setOpenEditPassword(false);
-              reloadUsers();
-            }}
-            setAction={setAction}
-          />
-        )}
-        {openUpdateUser && (
-          <UpdateUser
-            openDialog={openUpdateUser}
-            id={id}
-            handleClose={() => {
-              setOpenUpdateUser(false);
-              reloadUsers();
-            }}
-            setAction={setAction}
-          />
-        )}
-      </Card>
+      )}
+      {openEditPassword && (
+        <EditPassword
+          openDialog={openEditPassword}
+          id={id}
+          handleClose={() => {
+            setOpenEditPassword(false);
+            reloadUsers();
+          }}
+          setAction={setAction}
+        />
+      )}
+      {openUpdateUser && (
+        <UpdateUser
+          openDialog={openUpdateUser}
+          id={id}
+          handleClose={() => {
+            setOpenUpdateUser(false);
+            reloadUsers();
+          }}
+          setAction={setAction}
+        />
+      )}
     </>
   );
 };

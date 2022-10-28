@@ -29,7 +29,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { useQuery } from '@apollo/client';
 import { GET_MOCHI_EDITIONS, GET_MOCHI } from 'src/API/Campaigns/campaigns_graphql';
 import { CreateMochi } from 'src/views/campaigns/CreateMochi';
-import { MochiEdition } from 'src/types/MochiEdition';
 import Community from 'src/types/Community';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import { MochiEditionBrief } from 'src/views/campaigns/MochiEditionBrief';
@@ -104,6 +103,12 @@ const Dashboard = () => {
                 value={filtersApplied.edition}
                 onChange={e => {
                   setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }));
+                  setAction({
+                    complete: true,
+                    success: true,
+                    message: 'Cambiada la edición a ' + e.target.value,
+                    status: 200
+                  });
                 }}
               >
                 {editions.map((editionJson: { edition: string }) => {
@@ -124,6 +129,12 @@ const Dashboard = () => {
                 value={filtersApplied.community}
                 onChange={e => {
                   setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ community: e.target.value } }));
+                  setAction({
+                    complete: true,
+                    success: true,
+                    message: 'Cambiada la comunidad a ' + e.target.value,
+                    status: 200
+                  });
                 }}
               >
                 {communities.map(community => {
