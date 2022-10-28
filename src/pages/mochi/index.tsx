@@ -32,6 +32,7 @@ import { CreateMochi } from 'src/views/campaigns/CreateMochi';
 import Community from 'src/types/Community';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import { MochiEditionBrief } from 'src/views/campaigns/MochiEditionBrief';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
@@ -53,10 +54,10 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
-    if (!!localStorage.getItem('user')) {
+    if (userIsLoggedIn()) {
       getCommunities().then(result => {
         setCommunities(result.data.communities);
       });

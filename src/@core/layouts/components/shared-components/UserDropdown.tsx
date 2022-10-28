@@ -18,6 +18,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline';
 import Button from '@mui/material/Button';
 import User from 'src/types/User';
 import { logoutUser } from 'src/API/Users/auth';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const UserDropdown = () => {
   // ** States
@@ -56,14 +57,14 @@ const UserDropdown = () => {
 
   useEffect(() => {
     setMounted(true);
-    if (!!localStorage.getItem('user')) {
+    if (userIsLoggedIn()) {
       setUser(JSON.parse(localStorage.getItem('user') as string));
     }
   }, []);
 
   return (
     <Fragment>
-      {mounted && !!localStorage.getItem('user') && (
+      {mounted && userIsLoggedIn() && (
         <>
           <Button onClick={handleDropdownOpen} sx={{ ml: 2, cursor: 'pointer' }}>
             {user?.name}
@@ -108,7 +109,7 @@ const UserDropdown = () => {
           </Menu>
         </>
       )}
-      {typeof window !== 'undefined' && !localStorage.getItem('user') && (
+      {typeof window !== 'undefined' && !userIsLoggedIn() && (
         <>
           <Button onClick={() => router.push('/login')} variant='contained'>
             Iniciar Sesión

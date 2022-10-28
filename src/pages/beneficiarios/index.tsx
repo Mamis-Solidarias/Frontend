@@ -27,6 +27,7 @@ import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -40,10 +41,10 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
-    if (!!localStorage.getItem('user')) {
+    if (!!userIsLoggedIn()) {
       getCommunities()
         .then(result => {
           if (!!result.data.communities && result.data.communities.length > 0) {

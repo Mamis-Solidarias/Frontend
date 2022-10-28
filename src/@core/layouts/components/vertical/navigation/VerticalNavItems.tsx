@@ -1,6 +1,7 @@
 // ** Types Import
 import { Settings } from 'src/@core/context/settingsContext';
 import { NavLink, NavSectionTitle, VerticalNavItemsType } from 'src/@core/layouts/types';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 // ** Custom Menu Components
 import VerticalNavLink from './VerticalNavLink';
@@ -34,10 +35,9 @@ const VerticalNavItems = (props: Props) => {
   const RenderMenuItems = verticalNavItems?.map((item: NavLink | NavSectionTitle, index: number) => {
     if (
       typeof window !== 'undefined' &&
-      !!localStorage.getItem('user') &&
+      userIsLoggedIn() &&
       JSON.parse(localStorage.getItem('user') as string).roles.length > 0
     ) {
-      console.log(JSON.parse(localStorage.getItem('user') as string));
       const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
 
       return <TagName {...props} key={index} item={item} />;

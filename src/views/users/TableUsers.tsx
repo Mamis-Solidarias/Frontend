@@ -18,7 +18,7 @@ import { EditPassword } from './EditPassword';
 import { UpdateUser } from './UpdateUser';
 import User from 'src/types/User';
 import { useRouter } from 'next/router';
-import { hasNoPermission, isNotLoggedIn, redirectToLogin } from 'src/utils/sessionManagement';
+import { hasNoPermission, isNotLoggedIn, redirectToLogin, userIsLoggedIn } from 'src/utils/sessionManagement';
 import { Action } from 'src/types/Action';
 
 interface TableUsersProps {
@@ -45,7 +45,7 @@ const TableUsers: FC<TableUsersProps> = props => {
   const [actualUserId, setActualUserId] = useState<string>('-1');
 
   const reloadUsers = () => {
-    if (!!localStorage.getItem('user')) {
+    if (userIsLoggedIn()) {
       if (!!localStorage.getItem('pageUsers')) {
         setRowsPerPage(parseInt(localStorage.getItem('pageSize') as string));
         changePage(
@@ -62,7 +62,7 @@ const TableUsers: FC<TableUsersProps> = props => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     } else {
       reloadUsers();

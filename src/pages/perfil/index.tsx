@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import { useAction } from 'src/hooks/actionHook';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { UserProfileDisplay } from 'src/views/users/UserProfileDisplay';
 
@@ -17,7 +18,7 @@ const Dashboard = () => {
   const { action, setAction, setCompletion } = useAction();
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

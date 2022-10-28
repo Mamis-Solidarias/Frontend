@@ -28,6 +28,7 @@ import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface FamiliesTableProps {
   communities: Community[];
@@ -60,14 +61,14 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!!localStorage.getItem('user') && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
+    if (userIsLoggedIn() && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
       refetchWithSameParameters();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
