@@ -28,7 +28,7 @@ import { useQuery } from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
-import { userIsLoggedIn } from 'src/utils/sessionManagement';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface FamiliesTableProps {
   communities: Community[];
@@ -46,6 +46,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
+  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { loading, error, data, refetch } = useQuery(GET_FAMILIES, {
     variables: {
       communityCode: filters.communityCode,
@@ -64,6 +65,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
     if (!userIsLoggedIn()) {
       router.push('/login');
     }
+    setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -99,7 +101,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              {hasWriteBenefs && <TableCell></TableCell>}
               <TableCell>ID</TableCell>
               <TableCell>Nombre</TableCell>
               <TableCell>Dirección</TableCell>
@@ -110,69 +112,73 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
             {nodes.map((row: Family, index: number) => (
               <>
                 <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell>
-                    <IconButton
-                      aria-label='expand row'
-                      size='small'
-                      onClick={() => {
-                        if (open.length === 0) {
-                          setOpen(
-                            Array.from({ length: nodes.length }, (l, openIndex) => {
-                              if (openIndex === index) return true;
+                  {hasWriteBenefs && (
+                    <TableCell>
+                      <IconButton
+                        aria-label='expand row'
+                        size='small'
+                        onClick={() => {
+                          if (open.length === 0) {
+                            setOpen(
+                              Array.from({ length: nodes.length }, (l, openIndex) => {
+                                if (openIndex === index) return true;
 
-                              return false;
-                            })
-                          );
-                        } else {
-                          setOpen(
-                            Array.from({ length: nodes.length }, (l, openIndex) => {
-                              if (openIndex === index) {
-                                return !open[index];
-                              }
+                                return false;
+                              })
+                            );
+                          } else {
+                            setOpen(
+                              Array.from({ length: nodes.length }, (l, openIndex) => {
+                                if (openIndex === index) {
+                                  return !open[index];
+                                }
 
-                              return open[openIndex];
-                            })
-                          );
-                        }
-                      }}
-                    >
-                      {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                  </TableCell>
+                                return open[openIndex];
+                              })
+                            );
+                          }
+                        }}
+                      >
+                        {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                      </IconButton>
+                    </TableCell>
+                  )}
                   <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>{row.address}</TableCell>
                   <TableCell>{row.details}</TableCell>
                 </TableRow>
-                <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                    <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
-                        <Button
-                          variant='contained'
-                          sx={{ mx: '.5em' }}
-                          onClick={() => {
-                            setId(row.id as number);
-                            setOpenUpdateFamily(true);
-                          }}
-                        >
-                          Editar Datos
-                        </Button>
-                        <Button
-                          variant='contained'
-                          sx={{ mx: '.5em' }}
-                          onClick={() => {
-                            setId(row.id as number);
-                            setContacts(row.contacts);
-                            setOpenUpdateContacts(true);
-                          }}
-                        >
-                          Editar Contactos
-                        </Button>
-                      </Box>
-                    </Collapse>
-                  </TableCell>
-                </TableRow>
+                {hasWriteBenefs && (
+                  <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                      <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                          <Button
+                            variant='contained'
+                            sx={{ mx: '.5em' }}
+                            onClick={() => {
+                              setId(row.id as number);
+                              setOpenUpdateFamily(true);
+                            }}
+                          >
+                            Editar Datos
+                          </Button>
+                          <Button
+                            variant='contained'
+                            sx={{ mx: '.5em' }}
+                            onClick={() => {
+                              setId(row.id as number);
+                              setContacts(row.contacts);
+                              setOpenUpdateContacts(true);
+                            }}
+                          >
+                            Editar Contactos
+                          </Button>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                )}
               </>
             ))}
           </TableBody>

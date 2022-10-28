@@ -27,7 +27,7 @@ import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import Box from '@mui/material/Box';
-import { userIsLoggedIn } from 'src/utils/sessionManagement';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -37,6 +37,7 @@ const Dashboard = () => {
   const [communities, setCommunities] = useState<Community[]>([]);
   const [families, setFamilies] = useState<Family[]>([]);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
   const router = useRouter();
 
@@ -45,6 +46,7 @@ const Dashboard = () => {
       router.push('/login');
     }
     if (!!userIsLoggedIn()) {
+      setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
       getCommunities()
         .then(result => {
           if (!!result.data.communities && result.data.communities.length > 0) {
@@ -135,17 +137,19 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           <Card>
-            <Box width='100%' display='flex' justifyContent='flex-end'>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenWindow(true);
-                  setOpenCreateBeneficiaries(true);
-                }}
-              >
-                Añadir Beneficiarios
-              </Button>
-            </Box>
+            {hasWriteBenefs && (
+              <Box width='100%' display='flex' justifyContent='flex-end'>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenWindow(true);
+                    setOpenCreateBeneficiaries(true);
+                  }}
+                >
+                  Añadir Beneficiarios
+                </Button>
+              </Box>
+            )}
 
             <BeneficiariesTable
               filters={filtersApplied}

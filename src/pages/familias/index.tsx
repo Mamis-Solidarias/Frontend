@@ -26,7 +26,7 @@ import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Box from '@mui/material/Box';
-import { userIsLoggedIn } from 'src/utils/sessionManagement';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [communityCode, setCommunityCode] = useState<string>('#');
   const [communities, setCommunities] = useState<Community[]>([]);
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
+  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { filters, setFilter } = useBeneficiariesFilters();
   const { action, setAction, setCompletion } = useAction();
@@ -43,6 +44,7 @@ const Dashboard = () => {
     if (!userIsLoggedIn()) {
       router.push('/login');
     } else {
+      setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
       getCommunities().then(result => {
         setCommunities(result.data.communities);
         if (result.data.communities.length > 0) {
@@ -110,18 +112,20 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           <Card>
-            <Box width='100%' display='flex' justifyContent='flex-end'>
-              <Button
-                variant='contained'
-                onClick={() => {
-                  setOpenWindow(true);
-                  setOpenCreateFamilies(true);
-                }}
-                disabled={!communityCode}
-              >
-                Añadir Familias
-              </Button>
-            </Box>
+            {hasWriteBenefs && (
+              <Box width='100%' display='flex' justifyContent='flex-end'>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenWindow(true);
+                    setOpenCreateFamilies(true);
+                  }}
+                  disabled={!communityCode}
+                >
+                  Añadir Familias
+                </Button>
+              </Box>
+            )}
             <FamiliesTable
               communities={communities}
               filters={filtersApplied}
