@@ -26,6 +26,7 @@ import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Box from '@mui/material/Box';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateFamilies, setOpenCreateFamilies] = useState<boolean>(false);
@@ -39,7 +40,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     } else {
       getCommunities().then(result => {

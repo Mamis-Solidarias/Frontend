@@ -24,6 +24,7 @@ import Community from 'src/types/Community';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
 import Box from '@mui/material/Box';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
@@ -93,7 +94,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   }, [openEditBeneficiary]);
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

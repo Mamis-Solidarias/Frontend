@@ -19,6 +19,7 @@ import { Donor } from 'src/types/Donor';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -46,14 +47,14 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (!!localStorage.getItem('user') && !openUpdateDonor && !openCreateDonor) {
+    if (userIsLoggedIn() && !openUpdateDonor && !openCreateDonor) {
       refetchWithSameParameters();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

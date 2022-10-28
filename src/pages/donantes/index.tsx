@@ -24,6 +24,7 @@ import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
@@ -36,7 +37,7 @@ const Dashboard = () => {
   const { action, setAction, setCompletion } = useAction();
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

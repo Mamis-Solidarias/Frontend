@@ -15,6 +15,7 @@ import { useAction } from 'src/hooks/actionHook';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem('user')) {
+    if (!userIsLoggedIn()) {
       router.push('/login');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
