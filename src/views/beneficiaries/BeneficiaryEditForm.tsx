@@ -28,10 +28,11 @@ interface BeneficiaryEditFormProps {
   action: string;
   beneficiary: Beneficiary;
   setAction: (action: Action) => void;
+  setBeneficiaryEdited: (value: boolean) => void;
 }
 
 export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
-  const { openDialog, handleClose, communities, action, beneficiary, setAction } = props;
+  const { openDialog, handleClose, communities, action, beneficiary, setAction, setBeneficiaryEdited } = props;
   const { beneficiaryFields, setBeneficiaryField, setBeneficiaryFields } = useCreateBeneficiaryFields();
   const { beneficiaryExtras, setBeneficiaryExtra, setBeneficiaryExtras } = useCreateBeneficiaryExtras();
   const [startingCommunity, setStartingCommunity] = useState<string>('');
@@ -225,6 +226,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
                   clothes,
                   health
                 });
+                setBeneficiaryEdited(true);
                 setAction({
                   complete: true,
                   success: true,

@@ -38,6 +38,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
   const [openEditBeneficiary, setOpenEditBeneficiary] = useState<boolean>(false);
+  const [beneficiaryEdited, setBeneficiaryEdited] = useState<boolean>(false);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary | undefined>();
   const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
   const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
@@ -82,6 +83,14 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCreateBeneficiaries]);
+
+  useEffect(() => {
+    if (!!openEditBeneficiary && beneficiaryEdited) {
+      refetchWithSameParameters();
+      setBeneficiaryEdited(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openEditBeneficiary]);
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -224,6 +233,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
         <BeneficiaryEditForm
           openDialog={openEditBeneficiary}
           handleClose={() => setOpenEditBeneficiary(false)}
+          setBeneficiaryEdited={setBeneficiaryEdited}
           communities={communities}
           action='Editar'
           beneficiary={selectedBeneficiary}
