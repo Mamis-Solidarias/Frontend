@@ -124,7 +124,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             <MenuItem value=''>Ninguna</MenuItem>
             {families.map((family: Family) => (
               <MenuItem value={family.id} key={family.id}>
-                {family.name}
+                {family.id + ' : ' +family.name}
               </MenuItem>
             ))}
           </TextField>
