@@ -179,8 +179,16 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
               </Grid>
             </Box>
           </Grid>
+          <div style={{display:'flex', flexDirection:'row',justifyContent: 'space-evenly'}}>
           <Button
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+              sx={{ display: 'flex', justifyContent: 'center',margin: '1%', width: '100%'}}
+              variant='outlined'
+              onClick={() => handleClose()}
+          > 
+            Cancelar 
+          </Button>
+          <Button
+            sx={{ display: 'flex', justifyContent: 'center',margin:'1%', width: '100%' }}
             variant='contained'
             onClick={async () => {
               const education: Education | null =
@@ -233,6 +241,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
                   message: 'Usuario actualizado exitosamente',
                   status: 200
                 });
+                handleClose();
               } catch (err) {
                 setAction({
                   complete: true,
@@ -245,7 +254,9 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
           >
             Modificar Datos
           </Button>
+          </div>
         </Box>
+        
       </DialogContent>
     </Dialog>
   );
