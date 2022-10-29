@@ -343,8 +343,16 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             </TableBody>
           </Table>
         </TableContainer>
+        <div style={{display:'flex', flexDirection:'row',justifyContent: 'space-evenly'}}>
+          <Button
+              sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%'}}
+              variant='outlined'
+              onClick={() => {handleClose(); resetAllFields();}}
+          >
+            Cancelar
+          </Button>
         <Button
-          sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+          sx={{ display: 'flex', justifyContent: 'center', margin: '1%',  width: '100%' }}
           variant='contained'
           onClick={async () => {
             try {
@@ -371,6 +379,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
         >
           Crear
         </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
