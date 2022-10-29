@@ -115,7 +115,9 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             onChange={e => {
               setBeneficiaryField('familyId', e.target.value);
               if (!!setFamilyId) {
-                setFamilyId(e.target.value);
+                const family: Family|undefined = families.find((family) => family.id === e.target.value);
+                setFamilyId(family?.id || e.target.value);
+                setBeneficiaryField('lastName',family?.name || '');
               }
             }}
           >
