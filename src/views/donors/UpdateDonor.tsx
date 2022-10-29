@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
 import {FC} from 'react';
-import {createDonor} from 'src/API/Donors/donors_data';
+import {updateDonor} from 'src/API/Donors/donors_data';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -111,7 +111,7 @@ export const UpdateDonor: FC<UpdateDonorProps> = props => {
                         variant='contained'
                         onClick={async () => {
                             try {
-                                await createDonor({
+                                await updateDonor( props.donor?.id as string,{
                                     name: donorNewValues.name,
                                     email: donorNewValues.email,
                                     phone: donorNewValues.phone,

@@ -7,7 +7,7 @@ export const createDonor = async (data: Donor) => {
 
 export const updateDonor = async (
   id: string,
-  data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: string | null }
+  data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: boolean | null }
 ) => {
   return axiosClient.put('donors/' + id, data);
 };
