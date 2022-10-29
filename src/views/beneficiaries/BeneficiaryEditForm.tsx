@@ -18,7 +18,7 @@ import { useCreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBen
 import Job from 'src/types/Job';
 import Health from 'src/types/Health';
 import Community from 'src/types/Community';
-import { updateBeneficiary } from './../../API/Beneficiaries/beneficiaries_data';
+import { updateBeneficiary } from '../../API/Beneficiaries/beneficiaries_data';
 import { Action } from 'src/types/Action';
 
 interface BeneficiaryEditFormProps {

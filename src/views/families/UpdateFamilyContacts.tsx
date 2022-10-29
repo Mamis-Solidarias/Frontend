@@ -18,7 +18,7 @@ import Contact from 'src/types/Contact';
 import {Action} from 'src/types/Action';
 
 interface UpdateContactsProps {
-    id: number;
+    id: string;
     contacts: Contact[];
     openDialog: boolean;
     handleClose: () => void;

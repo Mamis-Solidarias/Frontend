@@ -34,17 +34,17 @@ export const EducationForm: FC<EducationFormProps> = props => {
         variant='standard'
       />
       <FormControl fullWidth sx={{ py: '1em' }}>
-        <InputLabel id='transportation'>Año académico</InputLabel>
+        <InputLabel id='schoolYear'>Año académico</InputLabel>
         <Select
-          labelId='transportation'
+          labelId='schoolYear'
           fullWidth={true}
           variant='standard'
-          placeholder='Caminando'
-          value={beneficiaryFields.transportationMethod}
-          defaultValue={'BIKE'}
+          placeholder='Escuela Primaria, 1er Año'
+          value={beneficiaryFields.year}
+          defaultValue={'PRIMARY_SCHOOL1'}
           label='Año académico'
           onChange={e => {
-            setBeneficiaryField('transportationMethod', e.target.value);
+            setBeneficiaryField('year', e.target.value === '' ? null : e.target.value);
           }}
         >
           {Object.entries(SCHOOL_YEARS).map(entry => {
@@ -69,7 +69,7 @@ export const EducationForm: FC<EducationFormProps> = props => {
           defaultValue={'BIKE'}
           label='Método de Transporte'
           onChange={e => {
-            setBeneficiaryField('transportationMethod', e.target.value);
+            setBeneficiaryField('transportationMethod', e.target.value === '' ? null : e.target.value);
           }}
         >
           <MenuItem value='' hidden={true}></MenuItem>
@@ -86,9 +86,9 @@ export const EducationForm: FC<EducationFormProps> = props => {
         variant='contained'
         color='warning'
         onClick={() => {
-          setBeneficiaryField('year', '');
+          setBeneficiaryField('year', null);
           setBeneficiaryField('school', '');
-          setBeneficiaryField('transportationMethod', '');
+          setBeneficiaryField('transportationMethod', null);
           setBeneficiaryExtra('addEducation', false);
         }}
       >

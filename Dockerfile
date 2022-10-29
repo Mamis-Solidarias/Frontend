@@ -3,6 +3,7 @@
 FROM node:current-alpine3.15 AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY package.json package-lock.json tsconfig.json ./
 RUN npm ci
@@ -15,6 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN npm run build
 
 # Production image, copy all the files and run next
@@ -22,6 +25,8 @@ FROM node:current-alpine3.15 AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED=1
+
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
