@@ -89,6 +89,13 @@ const Dashboard = () => {
   }, [openEditMochi]);
 
   useEffect(() => {
+    if (action.complete) {
+      refetchEdition({ edition: filtersApplied.edition, community: filtersApplied.community });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [action.complete]);
+
+  useEffect(() => {
     if (!!filtersApplied.community && !!filtersApplied.edition) {
       refetchEdition({ edition: filtersApplied.edition, community: filtersApplied.community });
     }
@@ -233,7 +240,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           {!!dataEdition && !!dataEdition.mochiEdition && (
-            <MochiEditionBrief dataEdition={dataEdition.mochiEdition}></MochiEditionBrief>
+            <MochiEditionBrief dataEdition={dataEdition.mochiEdition} setAction={setAction} />
           )}
           {!!openCreateMochi && (
             <CreateMochi
