@@ -4,6 +4,7 @@ export interface MochiEdition {
   edition: string;
   communityId: string;
   beneficiaries: number[];
+  participants?: Participant[];
   description: string;
   provider: string;
 }
@@ -11,15 +12,15 @@ export interface MochiEdition {
 export const defaultEdition: MochiEdition = {
   edition: '',
   communityId: '',
-  beneficiaries: [],
   description: '',
-  provider: ''
+  provider: '',
+  beneficiaries: []
 };
 
 export interface MochiEditionModify {
   description: string;
   provider: string;
-  fundraiserGoal: number;
+  fundraiserGoal?: number;
   addedBeneficiaries: number[];
   removedBeneficiaries: number[];
 }
@@ -56,6 +57,7 @@ export interface Participant {
 }
 
 export interface MochiEditionLoaded {
+  id: string;
   edition: string;
   communityId: string;
   participants: Participant[];

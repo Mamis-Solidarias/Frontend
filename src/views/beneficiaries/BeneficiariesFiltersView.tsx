@@ -33,7 +33,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
     const [families, setFamilies] = useState<Family[]>([]);
 
     const {filters, setFilter} = useBeneficiariesFilters();
-
+    
     useEffect(() => {
         if (!!filters.communityCode && filters.communityCode !== '#') {
             getFamiliesByCommunity(filters.communityCode, 0, 100)

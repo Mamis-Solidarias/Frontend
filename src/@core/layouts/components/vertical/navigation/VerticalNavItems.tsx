@@ -36,6 +36,7 @@ const VerticalNavItems = (props: Props) => {
     if (
       typeof window !== 'undefined' &&
       userIsLoggedIn() &&
+      !!localStorage.getItem('user') &&
       JSON.parse(localStorage.getItem('user') as string).roles.length > 0
     ) {
       const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
