@@ -32,12 +32,16 @@ import { CreateMochi } from 'src/views/campaigns/CreateMochi';
 import Community from 'src/types/Community';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import { MochiEditionBrief } from 'src/views/campaigns/MochiEditionBrief';
+import { EditMochi } from 'src/views/campaigns/EditMochi';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
   const [openCreateMochi, setOpenCreateMochi] = useState<boolean>(false);
+  const [createMochiFinished, setCreateMochiFinished] = useState<boolean>(false);
+  const [openEditMochi, setOpenEditMochi] = useState<boolean>(false);
+  const [editMochiFinished, setEditMochiFinished] = useState<boolean>(false);
   const { filters, setFilter } = useCampaignsFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { action, setCompletion, setAction } = useAction();
@@ -67,15 +71,25 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (!openCreateMochi && !!filtersApplied.community && !!filtersApplied.edition) {
+    if (createMochiFinished) {
+      console.log('refetcheado');
       refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
+      setCreateMochiFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openCreateMochi]);
 
   useEffect(() => {
+    if (editMochiFinished) {
+      console.log('refetcheado');
+      refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
+      setEditMochiFinished(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openEditMochi]);
+
+  useEffect(() => {
     if (!!filtersApplied.community && !!filtersApplied.edition) {
-      console.log('b');
       refetchEdition({ edition: filtersApplied.edition, community: filtersApplied.community });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -150,13 +164,28 @@ const Dashboard = () => {
             </Box>
             {hasWriteCampaigns && (
               <Box sx={{ mx: '0.25em' }}>
-                <Button variant='contained'>Editar</Button>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenEditMochi(true);
+                    setEditMochiFinished(false);
+                  }}
+                  disabled={!dataEdition || dataEdition.length === 0}
+                >
+                  Editar
+                </Button>
               </Box>
             )}
 
             {hasWriteCampaigns && (
               <Box width='70%' display='flex' justifyContent='flex-end'>
-                <Button variant='contained' onClick={() => setOpenCreateMochi(true)}>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    setOpenCreateMochi(true);
+                    setCreateMochiFinished(false);
+                  }}
+                >
                   Crear
                 </Button>
               </Box>
@@ -209,7 +238,21 @@ const Dashboard = () => {
           {!!openCreateMochi && (
             <CreateMochi
               openDialog={openCreateMochi}
-              handleClose={() => setOpenCreateMochi(false)}
+              handleClose={() => {
+                setCreateMochiFinished(true);
+                setOpenCreateMochi(false);
+              }}
+              setAction={setAction}
+            />
+          )}
+          {!!openEditMochi && !!dataEdition.mochiEdition && (
+            <EditMochi
+              openDialog={openEditMochi}
+              mochiEdition={dataEdition.mochiEdition}
+              handleClose={() => {
+                setEditMochiFinished(true);
+                setOpenEditMochi(false);
+              }}
               setAction={setAction}
             />
           )}

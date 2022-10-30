@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { defaultEdition, MochiEdition } from 'src/types/MochiEdition';
+import { defaultEdition, MochiEdition, MochiEditionLoaded } from 'src/types/MochiEdition';
 
-export const useModifyMochi = (entryMochi?: MochiEdition | null) => {
-  const [mochiEdition, setMochiEdition] = useState<MochiEdition>(!!entryMochi ? entryMochi : defaultEdition);
+export const useModifyMochi = (entryMochi?: MochiEdition | MochiEditionLoaded | null) => {
+  const [mochiEdition, setMochiEdition] = useState<MochiEdition | MochiEditionLoaded>(
+    !!entryMochi ? entryMochi : defaultEdition
+  );
 
-  const setMochiEditionField = (field: keyof MochiEdition, value: any) => {
+  const setMochiEditionField = (field: keyof MochiEdition | keyof MochiEditionLoaded, value: any) => {
     setMochiEdition(oldEdition => ({ ...oldEdition, ...{ [field]: value } }));
   };
 

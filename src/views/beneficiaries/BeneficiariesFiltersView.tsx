@@ -14,7 +14,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface BeneficiariesFiltersViewProps {
-  communities: Community[];
+  communities?: Community[];
   families: Family[];
   filters: BeneficiariesFilters;
   setFilter: (field: keyof BeneficiariesFilters, value: any) => void;
@@ -25,23 +25,25 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-      <Box sx={{ padding: '0.25em' }}>
-        <TextField
-          select
-          fullWidth={true}
-          variant='standard'
-          label='Comunidad'
-          value={filters.communityCode}
-          onChange={e => setFilter('communityCode', e.target.value)}
-        >
-          <MenuItem value=''>Todas</MenuItem>
-          {communities.map(community => (
-            <MenuItem value={community.id} key={community.id}>
-              {community.id + ' - ' + community.name}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Box>
+      {!!communities && (
+        <Box sx={{ padding: '0.25em' }}>
+          <TextField
+            select
+            fullWidth={true}
+            variant='standard'
+            label='Comunidad'
+            value={filters.communityCode}
+            onChange={e => setFilter('communityCode', e.target.value)}
+          >
+            <MenuItem value=''>Todas</MenuItem>
+            {communities.map(community => (
+              <MenuItem value={community.id} key={community.id}>
+                {community.id + ' - ' + community.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+      )}
       <Box sx={{ padding: '0.25em' }}>
         <TextField
           select
@@ -154,20 +156,22 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewProps> = props => {
           })}
         </TextField>
       </Box>
-      <Box sx={{ padding: '0.25em' }}>
-        <FormControlLabel
-          label='Está activo'
-          labelPlacement='bottom'
-          control={
-            <Checkbox
-              checked={filters.isActive === 'true'}
-              onChange={e => {
-                setFilter('isActive', e.target.checked ? 'true' : 'false');
-              }}
-            />
-          }
-        />
-      </Box>
+      {!!communities && (
+        <Box sx={{ padding: '0.25em' }}>
+          <FormControlLabel
+            label='Está activo'
+            labelPlacement='bottom'
+            control={
+              <Checkbox
+                checked={filters.isActive === 'true'}
+                onChange={e => {
+                  setFilter('isActive', e.target.checked ? 'true' : 'false');
+                }}
+              />
+            }
+          />
+        </Box>
+      )}
     </Box>
   );
 };
