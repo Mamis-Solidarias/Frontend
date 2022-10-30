@@ -9,18 +9,10 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import FamiliesTable from 'src/views/families/FamiliesTable';
 import {getCommunities} from 'src/API/Beneficiaries/communities_data';
 import {CreateFamilies} from 'src/views/families/CreateFamilies';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
 import Community from 'src/types/Community';
-import IconButton from '@mui/material/IconButton';
-import ChevronUp from 'mdi-material-ui/ChevronUp';
-import ChevronDown from 'mdi-material-ui/ChevronDown';
-import Collapse from '@mui/material/Collapse';
 import {BeneficiariesFilters, beneficiariesFiltersNull} from 'src/types/BeneficiariesFilters';
 import {useBeneficiariesFilters} from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import FamiliesFiltersView from 'src/views/families/FamiliesFiltersView';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import {useRouter} from 'next/router';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
@@ -32,11 +24,10 @@ const Dashboard = () => {
     const [openWindow, setOpenWindow] = useState<boolean>(false);
     const [communityCode, setCommunityCode] = useState<string>('#');
     const [communities, setCommunities] = useState<Community[]>([]);
-    const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
     const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
-    const [openCollapse, setOpenCollapse] = useState<boolean>(false);
     const {filters, setFilter} = useBeneficiariesFilters();
     const {action, setAction, setCompletion} = useAction();
+    const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
     const router = useRouter();
 
     useEffect(() => {
@@ -53,6 +44,16 @@ const Dashboard = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    
+    const onSetFiltersAction = (filter: BeneficiariesFilters) => {
+        setFiltersApplied(filter);
+        setAction({
+            complete: true,
+            success: true,
+            status: 200,
+            message: 'Filtros aplicados correctamente'
+        })
+    };
 
     useEffect(() => {
         if (openWindow && openCreateFamilies === false) {
@@ -65,48 +66,12 @@ const Dashboard = () => {
         <ApexChartWrapper>
             <Grid container spacing={6}>
                 <Grid item xs={12}>
-                    <Card sx={{my: '2em', width: '100%', display: 'flex', flexDirection: 'column'}}>
-                        <CardHeader
-                            title='Filtros'
-                            action={
-                                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
-                                    {openCollapse ? (
-                                        <ChevronUp sx={{fontSize: '1.875rem'}}/>
-                                    ) : (
-                                        <ChevronDown sx={{fontSize: '1.875rem'}}/>
-                                    )}
-                                </IconButton>
-                            }
-                        />
-                        <CardContent>
-                            <Collapse in={openCollapse}></Collapse>
-                            <Collapse in={openCollapse}>
-                                <FamiliesFiltersView filters={filters} setFilter={setFilter} communities={communities}/>
-                                <Typography display='flex' justifyContent='flex-end'>
-                                    <Button
-                                        variant='contained'
-                                        onClick={() => {
-                                            const filtersToApply = filters;
-                                            for (const fk in filtersToApply) {
-                                                if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                                                    filtersToApply[fk as keyof BeneficiariesFilters] = null;
-                                                }
-                                            }
-                                            setFiltersApplied(filtersToApply);
-                                            setAction({
-                                                complete: true,
-                                                success: true,
-                                                status: 200,
-                                                message: 'Filtros aplicados correctamente'
-                                            });
-                                        }}
-                                    >
-                                        Aplicar Filtros
-                                    </Button>
-                                </Typography>
-                            </Collapse>
-                        </CardContent>
-                    </Card>
+                    <FamiliesFiltersView 
+                        filters={filters} 
+                        setFilter={setFilter} 
+                        communities={communities}
+                        onSetFiltersAction={onSetFiltersAction}
+                    />
                     <FamiliesTable
                         communities={communities}
                         filters={filtersApplied}
