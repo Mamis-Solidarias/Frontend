@@ -7,12 +7,26 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useEffect, useState } from 'react';
 import { Action } from 'src/types/Action';
-import { defaultEdition, MochiEditionLoaded, MochiEditionModify } from 'src/types/MochiEdition';
+import { defaultEdition, MochiEditionLoaded, MochiEditionModify, Participant } from 'src/types/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
 import { modifyMochiEdition } from 'src/API/Campaigns/campaigns_data';
-import MenuItem from '@mui/material/MenuItem';
-import { GET_BENEFICIARIES_LIST } from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import ChevronUp from 'mdi-material-ui/ChevronUp';
+import ChevronDown from 'mdi-material-ui/ChevronDown';
+import CardContent from '@mui/material/CardContent';
+import Collapse from '@mui/material/Collapse';
+import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersView';
+import Typography from '@mui/material/Typography';
+import BeneficiariesTable from '../beneficiaries/BeneficiariesTableJustView';
+import Beneficiary from 'src/types/Beneficiary';
+import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
+import Family from 'src/types/Family';
 
 interface EditMochiProps {
   openDialog: boolean;
@@ -23,19 +37,63 @@ interface EditMochiProps {
 
 export const EditMochi: FC<EditMochiProps> = props => {
   const { openDialog, handleClose, setAction, mochiEdition } = props;
-  const [beneficiaries, setBeneficiaries] = useState<number[]>(
-    mochiEdition.participants.map(participant => participant.id)
-  );
+  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
+  const { filters, setFilter } = useBeneficiariesFilters();
+  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+  const [families, setFamilies] = useState<Family[]>([]);
   const { mochiEdition: mochiEditionFinal, setMochiEdition, setMochiEditionField } = useModifyMochi(mochiEdition);
-  const { data, error, loading } = useQuery(GET_BENEFICIARIES_LIST, {
+  const { data, error, loading, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
-      communityId: mochiEdition.communityId
+      ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
+        ? filtersApplied.ageStart
+        : parseInt(filtersApplied.ageStart as string),
+      ageEnd: isNaN(parseInt(filtersApplied.ageEnd as string))
+        ? filtersApplied.ageEnd
+        : parseInt(filtersApplied.ageEnd as string),
+      lastName: filtersApplied.lastName,
+      firstName: filtersApplied.firstName,
+      type: filtersApplied.type,
+      dniStarts: filtersApplied.dniStarts,
+      familyId: filtersApplied.familyId,
+      communityId: mochiEdition.communityId,
+      school: filtersApplied.school,
+      gender: filtersApplied.gender,
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
     }
   });
 
+  const refetchWithSameParameters = () => {
+    refetch({
+      ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
+        ? filtersApplied.ageStart
+        : parseInt(filtersApplied.ageStart as string),
+      ageEnd: isNaN(parseInt(filtersApplied.ageEnd as string))
+        ? filtersApplied.ageEnd
+        : parseInt(filtersApplied.ageEnd as string),
+      lastName: filtersApplied.lastName,
+      firstName: filtersApplied.firstName,
+      type: filtersApplied.type,
+      dniStarts: filtersApplied.dniStarts,
+      familyId: filtersApplied.familyId,
+      communityId: mochiEdition.communityId,
+      school: filtersApplied.school,
+      gender: filtersApplied.gender,
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+    });
+  };
+
   useEffect(() => {
-    console.log(mochiEdition);
+    if (!!mochiEdition.communityId) {
+      getFamiliesByCommunity(mochiEdition.communityId, 0, 100).then(result => {
+        setFamilies(result.data.families);
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    refetchWithSameParameters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersApplied]);
 
   const resetFields = () => {
     setMochiEdition(defaultEdition);
@@ -117,45 +175,68 @@ export const EditMochi: FC<EditMochiProps> = props => {
             fullWidth={true}
             variant='standard'
           />
-          <TextField
-            select
-            fullWidth={true}
-            variant='standard'
-            label='Beneficiarios'
-            placeholder='Juan Ortega'
-            value={beneficiaries}
-            onChange={e => {
-              setBeneficiaries(e.target.value as any);
-            }}
-            SelectProps={{ multiple: true }}
-          >
-            {!!data &&
-              data.filteredBeneficiaries.nodes.map(
-                (beneficiary: { id: string; firstName: string; lastName: string }) => (
-                  <MenuItem value={beneficiary.id} key={beneficiary.id}>
-                    {beneficiary.firstName + ' ' + beneficiary.lastName + ' - ' + beneficiary.id}
-                  </MenuItem>
-                )
-              )}
-          </TextField>
+          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardHeader
+              title='Filtros'
+              action={
+                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
+                  {openCollapse ? (
+                    <ChevronUp sx={{ fontSize: '1.875rem' }} />
+                  ) : (
+                    <ChevronDown sx={{ fontSize: '1.875rem' }} />
+                  )}
+                </IconButton>
+              }
+            />
+            <CardContent>
+              <Collapse in={openCollapse}>
+                <BeneficiariesFiltersView filters={filters} setFilter={setFilter} families={families} />
+                <Typography display='flex' justifyContent='flex-end'>
+                  <Button
+                    variant='contained'
+                    onClick={() => {
+                      const filtersToApply = filters;
+                      for (const fk in filtersToApply) {
+                        if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                          filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                        }
+                      }
+                      setFiltersApplied(filtersToApply);
+                      setAction({
+                        complete: true,
+                        success: true,
+                        message: 'Filtros aplicados exitosamente',
+                        status: 200
+                      });
+                    }}
+                  >
+                    Importar
+                  </Button>
+                </Typography>
+              </Collapse>
+            </CardContent>
+          </Card>
+          <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
         </Box>
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
           variant='contained'
           onClick={async () => {
             try {
-              const mochiEditionParticipantIds = mochiEdition.participants.map(participant => participant.id);
-              const benefsAdded = beneficiaries.filter(
-                newParticipant => !mochiEditionParticipantIds.includes(newParticipant)
+              const incomeBeneficiaries = mochiEdition.participants.map(
+                (participant: Participant) => participant.beneficiaryId
               );
-              console.log(benefsAdded, 'a');
-              const benefsRemoved = mochiEditionParticipantIds.filter(
-                oldParticipant => !beneficiaries.includes(oldParticipant)
+              const importedBeneficiaries = data.filteredBeneficiaries.nodes.map((node: Beneficiary) => node.id);
+              const addedBeneficiaries = importedBeneficiaries.filter(
+                (beneficiaryId: number) => !incomeBeneficiaries.includes(beneficiaryId)
               );
-              console.log(benefsRemoved, 'r');
+              const removedBeneficiaries = incomeBeneficiaries.filter(
+                (beneficiaryId: number) => !importedBeneficiaries.includes(beneficiaryId)
+              );
+
               const mochiEditionFinalRevision: MochiEditionModify = {
-                addedBeneficiaries: benefsAdded.map(benef => benef),
-                removedBeneficiaries: benefsRemoved.map(benef => benef.id),
+                addedBeneficiaries: addedBeneficiaries,
+                removedBeneficiaries: removedBeneficiaries,
                 description: mochiEditionFinal.description,
                 provider: mochiEditionFinal.provider
               };
