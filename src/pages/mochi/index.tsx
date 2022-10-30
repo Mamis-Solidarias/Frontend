@@ -71,7 +71,8 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (!openCreateMochi && createMochiFinished) {
+    if (createMochiFinished) {
+      console.log('refetcheado');
       refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
       setCreateMochiFinished(false);
     }
@@ -79,7 +80,8 @@ const Dashboard = () => {
   }, [openCreateMochi]);
 
   useEffect(() => {
-    if (!openEditMochi && !!filtersApplied.community && !!filtersApplied.edition && editMochiFinished) {
+    if (editMochiFinished) {
+      console.log('refetcheado');
       refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
       setEditMochiFinished(false);
     }
@@ -248,8 +250,8 @@ const Dashboard = () => {
               openDialog={openEditMochi}
               mochiEdition={dataEdition.mochiEdition}
               handleClose={() => {
-                setOpenEditMochi(false);
                 setEditMochiFinished(true);
+                setOpenEditMochi(false);
               }}
               setAction={setAction}
             />
