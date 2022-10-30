@@ -26,6 +26,8 @@ import {
   userIsLoggedIn
 } from 'src/utils/sessionManagement';
 import { Action } from 'src/types/Action';
+import {Card} from "@mui/material";
+import CardHeader from "@mui/material/CardHeader";
 
 interface TableUsersProps {
   openWindow: boolean;
@@ -122,7 +124,12 @@ const TableUsers: FC<TableUsersProps> = props => {
   };
 
   return (
-    <>
+    <Card>
+      <CardHeader
+          action={props.children} 
+          title='Usuarios' 
+          titleTypographyProps={{ variant: 'h6' }}
+      />
       <TableContainer>
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
@@ -243,7 +250,7 @@ const TableUsers: FC<TableUsersProps> = props => {
           setAction={setAction}
         />
       )}
-    </>
+    </Card>
   );
 };
 
