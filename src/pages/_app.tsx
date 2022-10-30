@@ -1,6 +1,6 @@
 // ** Next Imports
 import Head from 'next/head';
-import { Router } from 'next/router';
+import {Router, useRouter} from 'next/router';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
@@ -33,6 +33,8 @@ import '../../styles/globals.css';
 // ** Apollo Client - for GraphQL
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import {useEffect} from "react";
+import {userIsLoggedIn} from "../utils/sessionManagement";
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -76,6 +78,15 @@ if (themeConfig.routingLoader) {
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!userIsLoggedIn()) {
+      router.push('/login');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   // Variables
