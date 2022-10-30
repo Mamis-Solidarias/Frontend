@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 // ** MUI Imports
 import Table from '@mui/material/Table';
@@ -20,6 +20,7 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import {Card, CardHeader, LinearProgress} from "@mui/material";
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -63,13 +64,6 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openUpdateDonor, openCreateDonor]);
 
-  if (loading)
-    return (
-      <TableRow>
-        <TableCell>Cargando...</TableCell>
-      </TableRow>
-    );
-
   if (error && !data) {
     return (
       <TableRow>
@@ -78,13 +72,19 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
     );
   }
 
-  const nodes = data.donors.nodes;
-  const pageInfo = data.donors.pageInfo;
-  const edges = data.donors.edges;
+  const nodes = data === undefined ? [] : data.donors.nodes;
+  const pageInfo = data === undefined ? undefined : data.donors.pageInfo;
+  const edges = data === undefined ? [] : data.donors.edges;
 
   return (
-    <>
+    <Card>
+      <CardHeader
+          action={props.children} 
+          title='Donantes' 
+          titleTypographyProps={{ variant: 'h6' }}
+      />
       <TableContainer>
+        {loading && <LinearProgress/>}
         <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
@@ -128,13 +128,17 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
           </TableBody>
         </Table>
       </TableContainer>
-      <DonorsTablePagination
-        paging={paging}
-        setDonorsPaging={setDonorsPaging}
-        pageInfo={pageInfo}
-        nodes={nodes}
-        edges={edges}
-      />
+      
+      {pageInfo !== undefined && (
+          <DonorsTablePagination
+              paging={paging}
+              setDonorsPaging={setDonorsPaging}
+              pageInfo={pageInfo}
+              nodes={nodes}
+              edges={edges}
+          />
+      )}
+     
       {openUpdateDonor && (
         <UpdateDonor
           openDialog={openUpdateDonor}
@@ -145,7 +149,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
           setAction={setAction}
         />
       )}
-    </>
+    </Card>
   );
 };
 

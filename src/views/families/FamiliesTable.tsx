@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, {FC} from 'react';
 
 // ** MUI Imports
 import Table from '@mui/material/Table';
@@ -9,211 +9,220 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { UpdateFamily } from './UpdateFamily';
-import { UpdateFamilyContacts } from './UpdateFamilyContacts';
+import {UpdateFamily} from './UpdateFamily';
+import {UpdateFamilyContacts} from './UpdateFamilyContacts';
 import Contact from 'src/types/Contact';
 import Family from 'src/types/Family';
-import { BeneficiariesFilters } from 'src/types/BeneficiariesFilters';
+import {BeneficiariesFilters} from 'src/types/BeneficiariesFilters';
 import Community from 'src/types/Community';
-import { GET_FAMILIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
-import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiariesPaging';
-import { useQuery } from '@apollo/client';
+import {GET_FAMILIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
+import {useBeneficiariesPaging} from 'src/hooks/beneficiaries/useBeneficiariesPaging';
+import {useQuery} from '@apollo/client';
 import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePagination';
-import { useRouter } from 'next/router';
-import { Action } from 'src/types/Action';
-import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import {useRouter} from 'next/router';
+import {Action} from 'src/types/Action';
+import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
+import {Card, CardHeader, LinearProgress, Typography} from "@mui/material";
 
 interface FamiliesTableProps {
-  communities: Community[];
-  filters: BeneficiariesFilters;
-  openCreateFamilies: boolean;
-  setAction: (action: Action) => void;
+    communities: Community[];
+    filters: BeneficiariesFilters;
+    openCreateFamilies: boolean;
+    setAction: (action: Action) => void;
 }
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {
-  const { filters, openCreateFamilies, setAction } = props;
-  const router = useRouter();
-  const [open, setOpen] = useState<boolean[]>([]);
-  const [id, setId] = useState<string>('');
-  const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
-  const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
-  const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
-  const { loading, error, data, refetch } = useQuery(GET_FAMILIES, {
-    variables: {
-      communityCode: filters.communityCode,
-      familyName: filters.familyName
-    }
-  });
-
-  const refetchWithSameParameters = () => {
-    refetch({
-      communityCode: filters.communityCode,
-      familyName: filters.familyName
+    const {filters, openCreateFamilies, setAction} = props;
+    const router = useRouter();
+    const [open, setOpen] = useState<boolean[]>([]);
+    const [id, setId] = useState<string>('');
+    const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
+    const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
+    const [contacts, setContacts] = useState<Contact[]>([]);
+    const {paging, setBeneficiariesPaging} = useBeneficiariesPaging();
+    const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
+    const {loading, error, data, refetch} = useQuery(GET_FAMILIES, {
+        variables: {
+            communityCode: filters.communityCode,
+            familyName: filters.familyName
+        }
     });
-  };
 
-  useEffect(() => {
-    if (!userIsLoggedIn()) {
-      router.push('/login');
-    }
-    setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const refetchWithSameParameters = () => {
+        refetch({
+            communityCode: filters.communityCode,
+            familyName: filters.familyName
+        });
+    };
 
-  useEffect(() => {
-    if (userIsLoggedIn() && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
-      refetchWithSameParameters();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openUpdateContacts, openUpdateFamily, openCreateFamilies]);
+    useEffect(() => {
+        if (!userIsLoggedIn()) {
+            router.push('/login');
+        }
+        setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-  if (loading)
-    return (
-      <TableRow>
-        <TableCell>Cargando...</TableCell>
-      </TableRow>
-    );
+    useEffect(() => {
+        if (userIsLoggedIn() && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
+            refetchWithSameParameters();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openUpdateContacts, openUpdateFamily, openCreateFamilies]);
 
-  if (error) {
-    return (
-      <TableRow>
-        <TableCell>Error :(</TableCell>
-      </TableRow>
-    );
-  }
-
-  const nodes = data.filteredFamilies.nodes;
-  const pageInfo = data.filteredFamilies.pageInfo;
-  const edges = data.filteredFamilies.edges;
-
-  return (
-    <>
-      <TableContainer>
-        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-          <TableHead>
+    if (error) {
+        return (
             <TableRow>
-              {hasWriteBenefs && <TableCell></TableCell>}
-              <TableCell>ID</TableCell>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Dirección</TableCell>
-              <TableCell>Detalles</TableCell>
+                <TableCell>Error :(</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {nodes.map((row: Family, index: number) => (
-              <>
-                <TableRow hover key={index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                  {hasWriteBenefs && (
-                    <TableCell>
-                      <IconButton
-                        aria-label='expand row'
-                        size='small'
-                        onClick={() => {
-                          if (open.length === 0) {
-                            setOpen(
-                              Array.from({ length: nodes.length }, (l, openIndex) => {
-                                if (openIndex === index) return true;
+        );
+    }
 
-                                return false;
-                              })
-                            );
-                          } else {
-                            setOpen(
-                              Array.from({ length: nodes.length }, (l, openIndex) => {
-                                if (openIndex === index) {
-                                  return !open[index];
-                                }
+    const nodes = data === undefined ? [] : data.filteredFamilies.nodes;
+    const pageInfo = data === undefined ? undefined : data.filteredFamilies.pageInfo;
+    const edges = data === undefined ? [] : data.filteredFamilies.edges;
 
-                                return open[openIndex];
-                              })
-                            );
-                          }
-                        }}
-                      >
-                        {open[index] ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                      </IconButton>
-                    </TableCell>
-                  )}
-                  <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.address}</TableCell>
-                  <TableCell>{row.details}</TableCell>
-                </TableRow>
-                {hasWriteBenefs && (
-                  <TableRow key={'expanded' + index} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                      <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
-                          <Button
-                            variant='contained'
-                            sx={{ mx: '.5em' }}
-                            onClick={() => {
-                              setId(row.id as string);
-                              setOpenUpdateFamily(true);
-                            }}
-                          >
-                            Editar Datos
-                          </Button>
-                          <Button
-                            variant='contained'
-                            sx={{ mx: '.5em' }}
-                            onClick={() => {
-                              setId(row.id as string);
-                              setContacts(row.contacts);
-                              setOpenUpdateContacts(true);
-                            }}
-                          >
-                            Editar Contactos
-                          </Button>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <BeneficiaryTablePagination
-        paging={paging}
-        setBeneficiariesPaging={setBeneficiariesPaging}
-        pageInfo={pageInfo}
-        nodes={nodes}
-        edges={edges}
-      />
-      {openUpdateFamily && (
-        <UpdateFamily
-          openDialog={openUpdateFamily}
-          id={id}
-          handleClose={() => {
-            setOpenUpdateFamily(false);
-          }}
-          setAction={setAction}
-        />
-      )}
-      {openUpdateContacts && (
-        <UpdateFamilyContacts
-          openDialog={openUpdateContacts}
-          id={id}
-          contacts={contacts}
-          handleClose={() => {
-            setOpenUpdateContacts(false);
-          }}
-          setAction={setAction}
-        />
-      )}
-    </>
-  );
+    return (
+        <Card>
+            <CardHeader
+                action={props.children}
+                title='Familias'
+                titleTypographyProps={{variant: 'h6'}}
+            />
+            <TableContainer>
+                {loading && <LinearProgress/>}
+                <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
+                    <TableHead>
+                        <TableRow>
+                            {hasWriteBenefs && <TableCell></TableCell>}
+                            <TableCell>ID</TableCell>
+                            <TableCell>Nombre</TableCell>
+                            <TableCell>Dirección</TableCell>
+                            <TableCell>Detalles</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {nodes.map((row: Family, index: number) => (
+                            <>
+                                <TableRow hover key={index} sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}>
+                                    {hasWriteBenefs && (
+                                        <TableCell>
+                                            <IconButton
+                                                aria-label='expand row'
+                                                size='small'
+                                                onClick={() => {
+                                                    if (open.length === 0) {
+                                                        setOpen(
+                                                            Array.from({length: nodes.length}, (l, openIndex) => {
+                                                                if (openIndex === index) return true;
+
+                                                                return false;
+                                                            })
+                                                        );
+                                                    } else {
+                                                        setOpen(
+                                                            Array.from({length: nodes.length}, (l, openIndex) => {
+                                                                if (openIndex === index) {
+                                                                    return !open[index];
+                                                                }
+
+                                                                return open[openIndex];
+                                                            })
+                                                        );
+                                                    }
+                                                }}
+                                            >
+                                                {open[index] ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                                            </IconButton>
+                                        </TableCell>
+                                    )}
+                                    <TableCell
+                                        sx={{py: theme => `${theme.spacing(0.5)} !important`}}>{row.id}</TableCell>
+                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell>{row.address}</TableCell>
+                                    <TableCell>{row.details}</TableCell>
+                                </TableRow>
+                                {hasWriteBenefs && (
+                                    <TableRow key={'expanded' + index}
+                                              sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}>
+                                        <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={12}>
+                                            <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                                                <Box sx={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    justifyContent: 'start'
+                                                }}>
+                                                    <Button
+                                                        variant='contained'
+                                                        sx={{mx: '.5em'}}
+                                                        onClick={() => {
+                                                            setId(row.id as string);
+                                                            setOpenUpdateFamily(true);
+                                                        }}
+                                                    >
+                                                        <Typography color={'white'}> Editar Datos</Typography>
+                                                    </Button>
+                                                    <Button
+                                                        variant='contained'
+                                                        sx={{mx: '.5em'}}
+                                                        onClick={() => {
+                                                            setId(row.id as string);
+                                                            setContacts(row.contacts);
+                                                            setOpenUpdateContacts(true);
+                                                        }}
+                                                    >
+                                                        <Typography color={'white'}>Editar Contactos</Typography>
+                                                    </Button>
+                                                </Box>
+                                            </Collapse>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            {pageInfo !== undefined && (
+                <BeneficiaryTablePagination
+                    paging={paging}
+                    setBeneficiariesPaging={setBeneficiariesPaging}
+                    pageInfo={pageInfo}
+                    nodes={nodes}
+                    edges={edges}
+                />
+            )}
+            
+            {openUpdateFamily && (
+                <UpdateFamily
+                    openDialog={openUpdateFamily}
+                    id={id}
+                    handleClose={() => {
+                        setOpenUpdateFamily(false);
+                    }}
+                    setAction={setAction}
+                />
+            )}
+            {openUpdateContacts && (
+                <UpdateFamilyContacts
+                    openDialog={openUpdateContacts}
+                    id={id}
+                    contacts={contacts}
+                    handleClose={() => {
+                        setOpenUpdateContacts(false);
+                    }}
+                    setAction={setAction}
+                />
+            )}
+        </Card>
+    );
 };
 
 export default FamiliesTable;
