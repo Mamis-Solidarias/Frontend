@@ -18,7 +18,7 @@ import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePaginat
 import {useRouter} from 'next/router';
 import {Action} from 'src/types/Action';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {LinearProgress} from "@mui/material";
+import {LinearProgress, Typography} from "@mui/material";
 import CardHeader from "@mui/material/CardHeader";
 import Card from "@mui/material/Card";
 
@@ -107,7 +107,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
                                                 setOpenUpdateCommunity(true);
                                             }}
                                         >
-                                            Editar Datos
+                                            <Typography color={'white'}>Editar Datos</Typography>
                                         </Button>
                                     </TableCell>
                                 )}

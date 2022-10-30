@@ -29,7 +29,7 @@ import BeneficiaryTablePagination from '../beneficiaries/BeneficiaryTablePaginat
 import {useRouter} from 'next/router';
 import {Action} from 'src/types/Action';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {Card, CardHeader, LinearProgress} from "@mui/material";
+import {Card, CardHeader, LinearProgress, Typography} from "@mui/material";
 
 interface FamiliesTableProps {
     communities: Community[];
@@ -167,7 +167,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                                                             setOpenUpdateFamily(true);
                                                         }}
                                                     >
-                                                        Editar Datos
+                                                        <Typography color={'white'}> Editar Datos</Typography>
                                                     </Button>
                                                     <Button
                                                         variant='contained'
@@ -178,7 +178,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                                                             setOpenUpdateContacts(true);
                                                         }}
                                                     >
-                                                        Editar Contactos
+                                                        <Typography color={'white'}>Editar Contactos</Typography>
                                                     </Button>
                                                 </Box>
                                             </Collapse>

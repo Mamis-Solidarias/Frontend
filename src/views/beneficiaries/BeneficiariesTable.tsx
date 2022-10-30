@@ -25,7 +25,7 @@ import {useRouter} from 'next/router';
 import {Action} from 'src/types/Action';
 import Box from '@mui/material/Box';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {LinearProgress} from "@mui/material";
+import {LinearProgress, Typography} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 
@@ -36,6 +36,7 @@ interface BeneficiariesTableProps {
     openWindow: boolean;
     setAction: (action: Action) => void;
 }
+
 
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
     const {filters, communities, openCreateBeneficiaries, openWindow, setAction} = props;
@@ -178,7 +179,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                                                         }
                                                     }}
                                                 >
-                                                    Desactivar
+                                                    <Typography color={'white'}>Desactivar</Typography>
                                                 </Button>
                                             )}
                                             {!row.isActive && (
@@ -204,7 +205,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                                                         }
                                                     }}
                                                 >
-                                                    Activar
+                                                    <Typography color={'white'}>Activar</Typography>
                                                 </Button>
                                             )}
                                             {row.isActive && (
@@ -216,7 +217,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                                                         setOpenEditBeneficiary(true);
                                                     }}
                                                 >
-                                                    Editar
+                                                    <Typography color={'white'}>Editar</Typography>
                                                 </Button>
                                             )}
                                         </Box>
