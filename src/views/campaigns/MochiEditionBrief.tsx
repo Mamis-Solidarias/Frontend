@@ -26,9 +26,6 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
   const [hasWriteMochi, setHasWriteMochi] = useState<boolean>(false);
   const [openAssignDonor, setOpenAssignDonor] = useState<boolean>(false);
   const [selectedParticipant, setSelectedParticipant] = useState<string>('');
-  const [operationComplete, setOperationComplete] = useState<boolean>(false);
-  const [openPayment, setOpenPayment] = useState<boolean>(false);
-  const [openEditPayment, setOpenEditPayment] = useState<boolean>(false);
 
   useEffect(() => {
     setHasWriteMochi(hasWriteAccess('Campaigns'));
@@ -76,19 +73,28 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
                           onClick={() => {
                             setSelectedParticipant(participant.id.toString());
                             setOpenAssignDonor(true);
-                            setOperationComplete(true);
                           }}
                         >
                           Asignar Padrino
                         </Button>
                       )}
                       {participant.state === 'MISSING_DONATION' && (
-                        <Button variant='contained' onClick={() => setOpenPayment(true)}>
+                        <Button
+                          variant='contained'
+                          onClick={() => {
+                            setSelectedParticipant(participant.id.toString());
+                          }}
+                        >
                           Pago
                         </Button>
                       )}
                       {participant.state === 'DONATION_RECEIVED' && (
-                        <Button variant='contained' onClick={() => setOpenEditPayment(true)}>
+                        <Button
+                          variant='contained'
+                          onClick={() => {
+                            setSelectedParticipant(participant.id.toString());
+                          }}
+                        >
                           Editar Pago
                         </Button>
                       )}
@@ -108,9 +114,9 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
           />
         )}
         {/* {openPayment &&
-
-        }
-        {openEditPayment &&
+          <AssignPayment/>
+        } */}
+        {/* {openEditPayment &&
 
         } */}
       </CardContent>
