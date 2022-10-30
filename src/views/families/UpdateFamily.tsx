@@ -107,15 +107,24 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             fullWidth={true}
             variant='standard'
           />
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+            <Button
+                sx={{display: 'flex', justifyContent: 'center', margin: '1%', width: '100%'}}
+                variant='outlined'
+                onClick={() => {handleClose(); resetFields();}}
+            >
+              Cancelar
+            </Button>
           <Button
             type='submit'
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+            sx={{ display: 'flex', justifyContent: 'center',margin: '1%',  width: '100%' }}
             variant='contained'
             onClick={handleSubmit}
             disabled={!details && !address && !name}
           >
             Editar
           </Button>
+          </div>
         </Box>
       </DialogContent>
     </Dialog>

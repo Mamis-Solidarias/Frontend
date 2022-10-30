@@ -41,7 +41,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   const { filters, openCreateFamilies, setAction } = props;
   const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
-  const [id, setId] = useState<number>(-1);
+  const [id, setId] = useState<string>('');
   const [openUpdateFamily, setOpenUpdateFamily] = useState<boolean>(false);
   const [openUpdateContacts, setOpenUpdateContacts] = useState<boolean>(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -157,7 +157,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                             variant='contained'
                             sx={{ mx: '.5em' }}
                             onClick={() => {
-                              setId(row.id as number);
+                              setId(row.id as string);
                               setOpenUpdateFamily(true);
                             }}
                           >
@@ -167,7 +167,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                             variant='contained'
                             sx={{ mx: '.5em' }}
                             onClick={() => {
-                              setId(row.id as number);
+                              setId(row.id as string);
                               setContacts(row.contacts);
                               setOpenUpdateContacts(true);
                             }}

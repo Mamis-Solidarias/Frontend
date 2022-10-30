@@ -115,14 +115,16 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             onChange={e => {
               setBeneficiaryField('familyId', e.target.value);
               if (!!setFamilyId) {
-                setFamilyId(e.target.value);
+                const family: Family|undefined = families.find((family) => family.id === e.target.value);
+                setFamilyId(family?.id || e.target.value);
+                setBeneficiaryField('lastName',family?.name || '');
               }
             }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
             {families.map((family: Family) => (
               <MenuItem value={family.id} key={family.id}>
-                {family.name}
+                {family.id + ' : ' +family.name}
               </MenuItem>
             ))}
           </TextField>
