@@ -1,11 +1,13 @@
 export interface CampaignDonor {
-  donorId: number;
+  donorId: string;
   donationType: string;
   donationDropOffLocation: string;
+  observations: string;
 }
 
 export const defaultCampaignDonor: CampaignDonor = {
-  donorId: 0,
+  donorId: '',
   donationType: '',
-  donationDropOffLocation: ''
+  donationDropOffLocation: '',
+  observations: ''
 };
