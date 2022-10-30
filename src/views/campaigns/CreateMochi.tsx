@@ -7,14 +7,28 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useEffect, useState } from 'react';
 import { Action } from 'src/types/Action';
-import { defaultEdition } from 'src/types/MochiEdition';
+import { defaultEdition, MochiEdition } from 'src/types/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
 import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/Community';
-import { getCommunities } from 'src/API/Beneficiaries/communities_data';
+import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import MenuItem from '@mui/material/MenuItem';
-import { GET_BENEFICIARIES_LIST } from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
+import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import IconButton from '@mui/material/IconButton';
+import ChevronUp from 'mdi-material-ui/ChevronUp';
+import ChevronDown from 'mdi-material-ui/ChevronDown';
+import CardContent from '@mui/material/CardContent';
+import Collapse from '@mui/material/Collapse';
+import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersView';
+import Typography from '@mui/material/Typography';
+import Family from 'src/types/Family';
+import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
+import Beneficiary from 'src/types/Beneficiary';
 
 interface CreateMochiProps {
   openDialog: boolean;
@@ -24,13 +38,51 @@ interface CreateMochiProps {
 
 export const CreateMochi: FC<CreateMochiProps> = props => {
   const { openDialog, handleClose, setAction } = props;
+  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
+  const { filters, setFilter } = useBeneficiariesFilters();
   const [communities, setCommunities] = useState<Community[]>([]);
+  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+  const [families, setFamilies] = useState<Family[]>([]);
   const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
-  const { data, refetch } = useQuery(GET_BENEFICIARIES_LIST, {
+  const { data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
-      communityId: mochiEdition.communityId
+      ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
+        ? filtersApplied.ageStart
+        : parseInt(filtersApplied.ageStart as string),
+      ageEnd: isNaN(parseInt(filtersApplied.ageEnd as string))
+        ? filtersApplied.ageEnd
+        : parseInt(filtersApplied.ageEnd as string),
+      lastName: filtersApplied.lastName,
+      firstName: filtersApplied.firstName,
+      type: filtersApplied.type,
+      dniStarts: filtersApplied.dniStarts,
+      familyId: filtersApplied.familyId,
+      communityId: mochiEdition.communityId,
+      school: filtersApplied.school,
+      gender: filtersApplied.gender,
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
     }
   });
+
+  const refetchWithSameParameters = () => {
+    refetch({
+      ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
+        ? filtersApplied.ageStart
+        : parseInt(filtersApplied.ageStart as string),
+      ageEnd: isNaN(parseInt(filtersApplied.ageEnd as string))
+        ? filtersApplied.ageEnd
+        : parseInt(filtersApplied.ageEnd as string),
+      lastName: filtersApplied.lastName,
+      firstName: filtersApplied.firstName,
+      type: filtersApplied.type,
+      dniStarts: filtersApplied.dniStarts,
+      familyId: filtersApplied.familyId,
+      communityId: mochiEdition.communityId,
+      school: filtersApplied.school,
+      gender: filtersApplied.gender,
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+    });
+  };
 
   useEffect(() => {
     getCommunities().then(result => {
@@ -39,6 +91,19 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    refetchWithSameParameters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filtersApplied]);
+
+  useEffect(() => {
+    if (!!mochiEdition.communityId) {
+      getFamiliesByCommunity(mochiEdition.communityId, 0, 100).then(result => {
+        setFamilies(result.data.families);
+      });
+    }
+  }, [mochiEdition.communityId]);
 
   const resetFields = () => {
     setMochiEdition(defaultEdition);
@@ -120,32 +185,59 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
               </MenuItem>
             ))}
           </TextField>
-          <TextField
-            select
-            fullWidth={true}
-            variant='standard'
-            label='Beneficiarios'
-            placeholder='Juan Ortega'
-            value={mochiEdition.beneficiaries}
-            onChange={e => setMochiEditionField('beneficiaries', e.target.value)}
-            SelectProps={{ multiple: true }}
-          >
-            {!!data &&
-              data.filteredBeneficiaries.nodes.map(
-                (beneficiary: { id: string; firstName: string; lastName: string }) => (
-                  <MenuItem value={beneficiary.id} key={beneficiary.id}>
-                    {beneficiary.firstName + ' ' + beneficiary.lastName + ' - ' + beneficiary.id}
-                  </MenuItem>
-                )
-              )}
-          </TextField>
         </Box>
+        <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
+          <CardHeader
+            title='Filtros'
+            action={
+              <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
+                {openCollapse ? (
+                  <ChevronUp sx={{ fontSize: '1.875rem' }} />
+                ) : (
+                  <ChevronDown sx={{ fontSize: '1.875rem' }} />
+                )}
+              </IconButton>
+            }
+          />
+          <CardContent>
+            <Collapse in={openCollapse}>
+              <BeneficiariesFiltersView filters={filters} setFilter={setFilter} families={families} />
+              <Typography display='flex' justifyContent='flex-end'>
+                <Button
+                  variant='contained'
+                  onClick={() => {
+                    const filtersToApply = filters;
+                    for (const fk in filtersToApply) {
+                      if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                        filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                      }
+                    }
+                    setFiltersApplied(filtersToApply);
+                    setAction({
+                      complete: true,
+                      success: true,
+                      message: 'Filtros aplicados exitosamente',
+                      status: 200
+                    });
+                  }}
+                >
+                  Importar
+                </Button>
+              </Typography>
+            </Collapse>
+          </CardContent>
+        </Card>
+        <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
           variant='contained'
           onClick={async () => {
             try {
-              await createMochiEdition(mochiEdition);
+              const mochiEditionFinalReview = mochiEdition as MochiEdition;
+              mochiEditionFinalReview.beneficiaries = data.filteredBeneficiaries.nodes.map(
+                (beneficiary: Beneficiary) => beneficiary.id
+              );
+              await createMochiEdition(mochiEditionFinalReview);
               setAction({
                 complete: true,
                 success: true,
@@ -155,6 +247,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
               resetAllFields();
               handleClose();
             } catch (error) {
+              console.log(error);
               setAction({
                 complete: true,
                 success: false,
@@ -163,7 +256,9 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
               });
             }
           }}
-          disabled={!mochiEdition.edition || !mochiEdition.provider}
+          disabled={
+            !mochiEdition.edition || !mochiEdition.provider || !data || data.filteredBeneficiaries.nodes.length === 0
+          }
         >
           Crear
         </Button>

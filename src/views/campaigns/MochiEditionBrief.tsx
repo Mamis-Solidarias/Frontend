@@ -25,6 +25,9 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
         <Typography gutterBottom variant='h5' component='div' align='center'>
           {'Edición ' + dataEdition.edition + ' - ' + dataEdition.description}
         </Typography>
+        <Typography gutterBottom variant='h5' component='div' align='center'>
+          {'Proveedor:  ' + dataEdition.provider}
+        </Typography>
         <TableContainer>
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>

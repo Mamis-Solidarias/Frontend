@@ -71,7 +71,7 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (!openCreateMochi && !!filtersApplied.community && !!filtersApplied.edition && createMochiFinished) {
+    if (!openCreateMochi && createMochiFinished) {
       refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
       setCreateMochiFinished(false);
     }
@@ -237,8 +237,8 @@ const Dashboard = () => {
             <CreateMochi
               openDialog={openCreateMochi}
               handleClose={() => {
-                setOpenCreateMochi(false);
                 setCreateMochiFinished(true);
+                setOpenCreateMochi(false);
               }}
               setAction={setAction}
             />

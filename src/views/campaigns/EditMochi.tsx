@@ -180,7 +180,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
           }}
           disabled={!mochiEdition.edition || !mochiEdition.provider}
         >
-          Crear
+          Editar
         </Button>
       </DialogContent>
     </Dialog>
