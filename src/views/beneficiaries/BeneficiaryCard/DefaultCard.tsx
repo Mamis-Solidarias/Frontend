@@ -13,9 +13,11 @@ interface DefaultCardProps {
 
 export const DefaultCard: FC<DefaultCardProps> = props => {
   const { title, fields, sx } = props;
+  
+  const style = {...{margin:"15px"},...sx};
 
   return (
-    <Card sx={sx}>
+    <Card sx={style}>
       <CardHeader title={title} titleTypographyProps={{ sx: { letterSpacing: '0.15px !important' } }} />
       <CardContent sx={{ pt: theme => `${theme.spacing(2.0)} !important` }}>
         {Object.keys(fields).map(key => (
