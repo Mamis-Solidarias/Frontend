@@ -63,10 +63,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
   const [familyId, setFamilyId] = useState<string>('');
 
   const resetFields = () => {
-    setBeneficiaryFields(oldBeneficiaryFields => ({
-      ...defaultCreateBeneficiaryFields,
-      ...{ familyId: oldBeneficiaryFields.familyId }
-    }));
+    setBeneficiaryFields(defaultCreateBeneficiaryFields);
     setBeneficiaryExtras(defaultCreateBeneficiaryExtras);
     setOpen([]);
   };
@@ -318,8 +315,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                       </TableCell>
                     </TableRow>
                     <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                      <TableCell colSpan={12}>
                         <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                      <TableCell colSpan={12}>
                           <Box
                             sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', flexWrap: 'wrap' }}
                           >
@@ -340,8 +337,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                             )}
                             {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{ mx: '1em', my: '1em' }} />}
                           </Box>
-                        </Collapse>
                       </TableCell>
+                        </Collapse>
                     </TableRow>
                   </>
                 ))}
@@ -361,6 +358,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           variant='contained'
           onClick={async () => {
             try {
+              console.log('estamos aca')
               await createBeneficiaries(familyId, beneficiaries);
               resetAllFields();
               setAction({
@@ -371,6 +369,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
               });
               handleClose();
             } catch (e: any) {
+              console.log(e)
               setAction({
                 complete: true,
                 success: false,

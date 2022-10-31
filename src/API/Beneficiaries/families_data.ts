@@ -14,7 +14,7 @@ export const getFamily = async (id: string) => {
 
 export const createBeneficiaries = async (id: string, beneficiaries: Beneficiary[]) => {
     for (const beneficiary of beneficiaries) {
-        if (beneficiary.education === null)
+        if (!beneficiary.education)
             continue;
 
         beneficiary.education!.year = beneficiary.education?.year?.replaceAll('_', '');

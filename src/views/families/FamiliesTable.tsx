@@ -51,14 +51,18 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
     const {loading, error, data, refetch} = useQuery(GET_FAMILIES, {
         variables: {
             communityCode: filters.communityCode,
-            familyName: filters.familyName
+            familyName: filters.familyName,
+            after: paging.pageCursor,
+            limit: paging.limit,
         }
     });
 
     const refetchWithSameParameters = () => {
         refetch({
             communityCode: filters.communityCode,
-            familyName: filters.familyName
+            familyName: filters.familyName,
+            after: paging.pageCursor,
+            limit: paging.limit,
         });
     };
 
@@ -69,6 +73,11 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
         setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        refetchWithSameParameters();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paging.pageCursor, filters, paging.limit]);
 
     useEffect(() => {
         if (userIsLoggedIn() && !openUpdateFamily && !openUpdateContacts && !openCreateFamilies) {
