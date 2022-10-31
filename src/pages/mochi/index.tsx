@@ -262,6 +262,7 @@ const Dashboard = () => {
                 setOpenCreateMochi(false);
               }}
               setAction={setAction}
+              onNetworkError={onNetworkError}
             />
           )}
           {!!openEditMochi && !!dataEdition.mochiEdition && (
