@@ -58,6 +58,18 @@ const Dashboard = () => {
     variables: { edition: filtersApplied.edition, community: filtersApplied.community }
   });
 
+  const onNetworkError: (err: any) => void = err => {
+    setAction({
+      complete: true,
+      success: false,
+      message: err.message,
+      status: err.status
+    });
+    if (err.status === 401) {
+      router.push('/login');
+    }
+  };
+
   useEffect(() => {
     if (!userIsLoggedIn()) {
       router.push('/login');
@@ -261,6 +273,7 @@ const Dashboard = () => {
                 setOpenEditMochi(false);
               }}
               setAction={setAction}
+              onNetworkError={onNetworkError}
             />
           )}
         </Grid>

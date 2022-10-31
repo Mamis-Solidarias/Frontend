@@ -24,7 +24,7 @@ import ChevronUp from 'mdi-material-ui/ChevronUp';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
-import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersView';
+import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
 import Typography from '@mui/material/Typography';
 import Family from 'src/types/Family';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
