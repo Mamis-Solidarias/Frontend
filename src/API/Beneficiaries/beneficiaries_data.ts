@@ -28,8 +28,17 @@ export const updateBeneficiary = async (
         job?: Job | null;
     }
 ) => {
-    if (data.education !== null)
-        data.education!.year = data.education?.year?.replaceAll('_', '');
+    if (data.education !== null) {
+        if (data.education!.year?.trim() === '') {
+            data.education!.year = null;
+        } else if (data.education!.year !== null) {
+            data.education!.year = data.education!.year!.replaceAll('_', '');
+        }
+        
+        if (data.education!.transportationMethod?.trim() === '') {
+            data.education!.transportationMethod = null;
+        }
+    }
         
     return axiosClient.patch('/beneficiaries/' + id, data);
 };
