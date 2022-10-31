@@ -11,16 +11,14 @@ import { defaultEdition, MochiEdition } from 'src/types/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
 import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/Community';
-import { getCommunities, getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
+import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import MenuItem from '@mui/material/MenuItem';
 import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
-import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
-import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
 import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
-import Family from 'src/types/Family';
-import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 import Beneficiary from 'src/types/Beneficiary';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 
 interface CreateMochiProps {
   openDialog: boolean;
@@ -169,29 +167,29 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           </TextField>
         </Box>
         <BeneficiariesFiltersView
-            communityId={mochiEdition.communityId}
-            onNetworkError={onNetworkError}
-            onSetFiltersAction={(filters: BeneficiariesFilters) => {
-              const filtersToApply = filters;
-              for (const fk in filtersToApply) {
-                if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                  filtersToApply[fk as keyof BeneficiariesFilters] = null;
-                }
+          communityId={mochiEdition.communityId}
+          onNetworkError={onNetworkError}
+          onSetFiltersAction={(filters: BeneficiariesFilters) => {
+            const filtersToApply = filters;
+            for (const fk in filtersToApply) {
+              if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                filtersToApply[fk as keyof BeneficiariesFilters] = null;
               }
-              setFiltersApplied(filtersToApply);
-              setAction({
-                complete: true,
-                success: true,
-                message: 'Filtros aplicados exitosamente',
-                status: 200
-              });
-            }}
-          />
-          {error && <Box>Error cargando los datos de beneficiarios</Box>}
-          {loading && <Box>Cargando beneficiarios...</Box>}
-          {!error && !loading && (
-            <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
-          )}
+            }
+            setFiltersApplied(filtersToApply);
+            setAction({
+              complete: true,
+              success: true,
+              message: 'Filtros aplicados exitosamente',
+              status: 200
+            });
+          }}
+        />
+        {error && <Box>Error cargando los datos de beneficiarios</Box>}
+        {loading && <Box>Cargando beneficiarios...</Box>}
+        {!error && !loading && (
+          <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+        )}
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
           variant='contained'
