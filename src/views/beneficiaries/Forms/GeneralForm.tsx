@@ -28,6 +28,9 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
       getFamiliesByCommunity(selectedCommunity, 0, 100).then(result => {
         setFamilies(result.data.families);
       });
+    } else {
+      setFamilies([]);
+      setBeneficiaryField('familyId', '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCommunity]);
@@ -95,7 +98,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           sx={{ padding: '1em' }}
           id='comments'
           type='text'
-          label='Comentarios'
+          label='Comentarios (opcional)'
           placeholder='Es buena gente'
           value={beneficiaryFields.comments}
           onChange={e => setBeneficiaryField('comments', e.target.value)}
@@ -168,8 +171,8 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           id='likes'
           type='text'
-          label='Cosas que le gustan'
-          placeholder='La familia de José'
+          label='Cosas que le gustan (opcional)'
+          placeholder='El color azul'
           value={beneficiaryFields.likes}
           onChange={e => {
             setBeneficiaryField('likes', e.target.value);

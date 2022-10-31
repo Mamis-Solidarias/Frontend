@@ -101,7 +101,7 @@ const Dashboard = () => {
                   setOpenCreateBeneficiaries(true);
                 }}
               >
-                Agregar Beneficiario
+                Agregar Beneficiarios
               </Button>
             )}
           </BeneficiariesTable>

@@ -82,6 +82,52 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
     setBeneficiaries(newBeneficiaries);
   };
 
+  const addBeneficiary = () => {
+    const education: Education | undefined =
+    !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
+      ? {
+          school: beneficiaryFields.school,
+          year: beneficiaryFields.year,
+          transportationMethod: beneficiaryFields.transportationMethod
+        }
+      : undefined;
+  const clothes: Clothes | undefined =
+    !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
+      ? {
+          shoeSize: beneficiaryFields.shoeSize,
+          pantsSize: beneficiaryFields.pantsSize,
+          shirtSize: beneficiaryFields.shirtSize
+        }
+      : undefined;
+  const job: Job | undefined = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : undefined;
+  const health: Health | undefined =
+    !!beneficiaryFields.hasCovidVaccine ||
+    !!beneficiaryFields.hasMandatoryVaccines ||
+    !!beneficiaryFields.observations
+      ? {
+          hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
+          hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
+          observations: beneficiaryFields.observations
+        }
+      : undefined;
+  beneficiaries.push({
+    firstName: beneficiaryFields.firstName,
+    lastName: beneficiaryFields.lastName,
+    type: beneficiaryFields.type,
+    gender: beneficiaryFields.gender,
+    birthday: beneficiaryFields.birthday,
+    dni: beneficiaryFields.dni,
+    comments: beneficiaryFields.comments,
+    likes: beneficiaryFields.likes,
+    education,
+    job,
+    clothes,
+    health
+  });
+  open.push(false);
+  resetFields();
+  }
+
   return (
     <Dialog
       open={openDialog}
@@ -91,7 +137,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Beneficiarios</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Agregar Beneficiarios</DialogTitle>
       <DialogContent>
         <Box>
           <Grid item xs={12}>
@@ -202,51 +248,10 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           <Button
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
-            onClick={() => {
-              const education: Education | undefined =
-                !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
-                  ? {
-                      school: beneficiaryFields.school,
-                      year: beneficiaryFields.year,
-                      transportationMethod: beneficiaryFields.transportationMethod
-                    }
-                  : undefined;
-              const clothes: Clothes | undefined =
-                !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
-                  ? {
-                      shoeSize: beneficiaryFields.shoeSize,
-                      pantsSize: beneficiaryFields.pantsSize,
-                      shirtSize: beneficiaryFields.shirtSize
-                    }
-                  : undefined;
-              const job: Job | undefined = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : undefined;
-              const health: Health | undefined =
-                !!beneficiaryFields.hasCovidVaccine ||
-                !!beneficiaryFields.hasMandatoryVaccines ||
-                !!beneficiaryFields.observations
-                  ? {
-                      hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
-                      hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
-                      observations: beneficiaryFields.observations
-                    }
-                  : undefined;
-              beneficiaries.push({
-                firstName: beneficiaryFields.firstName,
-                lastName: beneficiaryFields.lastName,
-                type: beneficiaryFields.type,
-                gender: beneficiaryFields.gender,
-                birthday: beneficiaryFields.birthday,
-                dni: beneficiaryFields.dni,
-                comments: beneficiaryFields.comments,
-                likes: beneficiaryFields.likes,
-                education,
-                job,
-                clothes,
-                health
-              });
-              open.push(false);
-              resetFields();
-            }}
+            onClick={() => addBeneficiary()}
+            disabled={!beneficiaryFields.familyId || !beneficiaryFields.firstName || 
+              !beneficiaryFields.lastName || !beneficiaryFields.type || !beneficiaryFields.gender || 
+              !beneficiaryFields.birthday || !beneficiaryFields.dni}
           >
             Añadir
           </Button>
