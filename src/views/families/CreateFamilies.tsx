@@ -84,7 +84,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             }}
             maxWidth='lg'
         >
-            <DialogTitle sx={{display: 'flex', justifyContent: 'center'}}>Crear Familias</DialogTitle>
+            <DialogTitle sx={{display: 'flex', justifyContent: 'center'}}>Añadir Familias</DialogTitle>
             <DialogContent>
                 <Box>
                     <Grid xs={12} sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
@@ -175,7 +175,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                             });
                             resetFields();
                         }}
-                        disabled={address === '' || name === ''}
+                        disabled={!address || !name || !selectedCommunity}
                     >
                         Añadir
                     </Button>
