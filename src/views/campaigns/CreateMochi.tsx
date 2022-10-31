@@ -18,6 +18,8 @@ import { useQuery } from '@apollo/client';
 import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
 import Beneficiary from 'src/types/Beneficiary';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
+import Family from 'src/types/Family';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 
 interface CreateMochiProps {
