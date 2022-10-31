@@ -12,12 +12,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - uses: c-hive/gha-yarn-cache@v2
+          cache: 'yarn'
+
       - name: Install JS dependencies
         run: yarn install
-      - uses: sibiraj-s/action-eslint@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Optional
-          eslint-args: '--ignore-path=.gitignore --quiet'
-          extensions: 'js,jsx,ts,tsx'
-          annotations: true
+        
+      - run: yarn lint
