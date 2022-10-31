@@ -13,34 +13,21 @@ import { modifyMochiEdition } from 'src/API/Campaigns/campaigns_data';
 import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
-import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
-import ChevronUp from 'mdi-material-ui/ChevronUp';
-import ChevronDown from 'mdi-material-ui/ChevronDown';
-import CardContent from '@mui/material/CardContent';
-import Collapse from '@mui/material/Collapse';
-import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersView';
-import Typography from '@mui/material/Typography';
+import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
 import BeneficiariesTable from '../beneficiaries/BeneficiariesTableJustView';
 import Beneficiary from 'src/types/Beneficiary';
-import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
-import Family from 'src/types/Family';
 
 interface EditMochiProps {
   openDialog: boolean;
   handleClose: () => void;
   mochiEdition: MochiEditionLoaded;
   setAction: (action: Action) => void;
+  onNetworkError: (err: any) => void;
 }
 
 export const EditMochi: FC<EditMochiProps> = props => {
-  const { openDialog, handleClose, setAction, mochiEdition } = props;
+  const { openDialog, handleClose, setAction, mochiEdition, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const { filters, setFilter } = useBeneficiariesFilters();
-  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const [families, setFamilies] = useState<Family[]>([]);
   const { mochiEdition: mochiEditionFinal, setMochiEdition, setMochiEditionField } = useModifyMochi(mochiEdition);
   const { data, error, loading, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
@@ -83,14 +70,6 @@ export const EditMochi: FC<EditMochiProps> = props => {
   };
 
   useEffect(() => {
-    if (!!mochiEdition.communityId) {
-      getFamiliesByCommunity(mochiEdition.communityId, 0, 100).then(result => {
-        setFamilies(result.data.families);
-      });
-    }
-  }, []);
-
-  useEffect(() => {
     refetchWithSameParameters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersApplied]);
@@ -102,38 +81,6 @@ export const EditMochi: FC<EditMochiProps> = props => {
   const resetAllFields = () => {
     resetFields();
   };
-
-  if (error) {
-    return (
-      <Dialog
-        open={openDialog}
-        onClose={() => {
-          resetAllFields();
-          handleClose();
-        }}
-        maxWidth='lg'
-      >
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
-          Error cargando los datos de beneficiarios
-        </DialogTitle>
-      </Dialog>
-    );
-  }
-
-  if (loading) {
-    return (
-      <Dialog
-        open={openDialog}
-        onClose={() => {
-          resetAllFields();
-          handleClose();
-        }}
-        maxWidth='lg'
-      >
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Cargando beneficiarios...</DialogTitle>
-      </Dialog>
-    );
-  }
 
   return (
     <Dialog
@@ -175,48 +122,31 @@ export const EditMochi: FC<EditMochiProps> = props => {
             fullWidth={true}
             variant='standard'
           />
-          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardHeader
-              title='Filtros'
-              action={
-                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
-                  {openCollapse ? (
-                    <ChevronUp sx={{ fontSize: '1.875rem' }} />
-                  ) : (
-                    <ChevronDown sx={{ fontSize: '1.875rem' }} />
-                  )}
-                </IconButton>
+          <BeneficiariesFiltersView
+            communityId={mochiEdition.communityId}
+            onNetworkError={onNetworkError}
+            onSetFiltersAction={(filters: BeneficiariesFilters) => {
+              const filtersToApply = filters;
+              for (const fk in filtersToApply) {
+                if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                  filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                }
               }
-            />
-            <CardContent>
-              <Collapse in={openCollapse}>
-                <BeneficiariesFiltersView filters={filters} setFilter={setFilter} families={families} />
-                <Typography display='flex' justifyContent='flex-end'>
-                  <Button
-                    variant='contained'
-                    onClick={() => {
-                      const filtersToApply = filters;
-                      for (const fk in filtersToApply) {
-                        if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                          filtersToApply[fk as keyof BeneficiariesFilters] = null;
-                        }
-                      }
-                      setFiltersApplied(filtersToApply);
-                      setAction({
-                        complete: true,
-                        success: true,
-                        message: 'Filtros aplicados exitosamente',
-                        status: 200
-                      });
-                    }}
-                  >
-                    Importar
-                  </Button>
-                </Typography>
-              </Collapse>
-            </CardContent>
-          </Card>
-          <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+              setFiltersApplied(filtersToApply);
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Filtros aplicados exitosamente',
+                status: 200
+              });
+            }}
+          />
+
+          {error && <Box>Error cargando los datos de beneficiarios</Box>}
+          {loading && <Box>Cargando beneficiarios...</Box>}
+          {!error && !loading && (
+            <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+          )}
         </Box>
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}

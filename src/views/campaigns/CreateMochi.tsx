@@ -17,15 +17,7 @@ import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import IconButton from '@mui/material/IconButton';
-import ChevronUp from 'mdi-material-ui/ChevronUp';
-import ChevronDown from 'mdi-material-ui/ChevronDown';
-import CardContent from '@mui/material/CardContent';
-import Collapse from '@mui/material/Collapse';
-import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersView';
-import Typography from '@mui/material/Typography';
+import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
 import Family from 'src/types/Family';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 import Beneficiary from 'src/types/Beneficiary';
@@ -34,17 +26,15 @@ interface CreateMochiProps {
   openDialog: boolean;
   handleClose: () => void;
   setAction: (action: Action) => void;
+  onNetworkError: (err: any) => void;
 }
 
 export const CreateMochi: FC<CreateMochiProps> = props => {
-  const { openDialog, handleClose, setAction } = props;
+  const { openDialog, handleClose, setAction, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const { filters, setFilter } = useBeneficiariesFilters();
   const [communities, setCommunities] = useState<Community[]>([]);
-  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const [families, setFamilies] = useState<Family[]>([]);
   const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
-  const { data, refetch } = useQuery(GET_BENEFICIARIES, {
+  const { error, loading, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
         ? filtersApplied.ageStart
@@ -96,14 +86,6 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
     refetchWithSameParameters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersApplied]);
-
-  useEffect(() => {
-    if (!!mochiEdition.communityId) {
-      getFamiliesByCommunity(mochiEdition.communityId, 0, 100).then(result => {
-        setFamilies(result.data.families);
-      });
-    }
-  }, [mochiEdition.communityId]);
 
   const resetFields = () => {
     setMochiEdition(defaultEdition);
@@ -186,48 +168,30 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
             ))}
           </TextField>
         </Box>
-        <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <CardHeader
-            title='Filtros'
-            action={
-              <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
-                {openCollapse ? (
-                  <ChevronUp sx={{ fontSize: '1.875rem' }} />
-                ) : (
-                  <ChevronDown sx={{ fontSize: '1.875rem' }} />
-                )}
-              </IconButton>
-            }
+        <BeneficiariesFiltersView
+            communityId={mochiEdition.communityId}
+            onNetworkError={onNetworkError}
+            onSetFiltersAction={(filters: BeneficiariesFilters) => {
+              const filtersToApply = filters;
+              for (const fk in filtersToApply) {
+                if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                  filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                }
+              }
+              setFiltersApplied(filtersToApply);
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Filtros aplicados exitosamente',
+                status: 200
+              });
+            }}
           />
-          <CardContent>
-            <Collapse in={openCollapse}>
-              <BeneficiariesFiltersView filters={filters} setFilter={setFilter} families={families} />
-              <Typography display='flex' justifyContent='flex-end'>
-                <Button
-                  variant='contained'
-                  onClick={() => {
-                    const filtersToApply = filters;
-                    for (const fk in filtersToApply) {
-                      if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                        filtersToApply[fk as keyof BeneficiariesFilters] = null;
-                      }
-                    }
-                    setFiltersApplied(filtersToApply);
-                    setAction({
-                      complete: true,
-                      success: true,
-                      message: 'Filtros aplicados exitosamente',
-                      status: 200
-                    });
-                  }}
-                >
-                  Importar
-                </Button>
-              </Typography>
-            </Collapse>
-          </CardContent>
-        </Card>
-        <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+          {error && <Box>Error cargando los datos de beneficiarios</Box>}
+          {loading && <Box>Cargando beneficiarios...</Box>}
+          {!error && !loading && (
+            <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+          )}
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
           variant='contained'
