@@ -1,20 +1,12 @@
 import TextField from '@mui/material/TextField';
 
 import { FC, useState } from 'react';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
+import Contact from 'src/types/Contact';
 
-interface Contact {
-  content: string;
-  isPreferred: boolean;
-  title: string;
-  type: string;
-}
 interface ContactFormProps {
   contact: Contact;
   setContact: (contact: Contact) => void;
@@ -54,32 +46,30 @@ export const ContactForm: FC<ContactFormProps> = props => {
         fullWidth={true}
         variant='standard'
       />
-
-      <FormControl fullWidth sx={{ padding: '1em' }}>
-        <InputLabel id={'types'}>Forma de Contacto</InputLabel>
-        <Select
-          labelId={'types'}
-          fullWidth={true}
-          variant='standard'
-          defaultValue={'Email'}
-          value={contact.type}
-          label='Nueva Forma de Contacto'
-          onChange={e => {
-            const newContact = contact;
+    <TextField
+        select
+        type='text'
+        label='Forma de Contacto'
+        defaultValue="Email"
+        value={contact.type}
+        onChange={e => {
+          const newContact = contact;
             newContact.type = e.target.value;
             setContact(newContact);
             setChanges(changes + 1);
-          }}
-        >
-          <MenuItem value='' hidden={true}></MenuItem>
-          <MenuItem value='Email'>Email</MenuItem>
-          <MenuItem value='Facebook'>Facebook</MenuItem>
-          <MenuItem value='Instagram'>Instagram</MenuItem>
-          <MenuItem value='Phone'>Teléfono</MenuItem>
-          <MenuItem value='Whatsapp'>Whatsapp</MenuItem>
-          <MenuItem value='Other'>Otra</MenuItem>
-        </Select>
-      </FormControl>
+        }}
+        fullWidth={true}
+        variant='standard'
+      >
+        <MenuItem value='' hidden={true}>Ninguno</MenuItem>
+        <MenuItem value='Email'>Email</MenuItem>
+        <MenuItem value='Facebook'>Facebook</MenuItem>
+        <MenuItem value='Instagram'>Instagram</MenuItem>
+        <MenuItem value='Phone'>Teléfono</MenuItem>
+        <MenuItem value='Whatsapp'>Whatsapp</MenuItem>
+        <MenuItem value='Other'>Otra</MenuItem>
+      </TextField>
+
       <Stack direction='row' spacing={1} alignItems='center'>
         <Typography>No es preferida</Typography>
         <Switch
