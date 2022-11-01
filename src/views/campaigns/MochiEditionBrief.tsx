@@ -36,10 +36,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
     <Card>
       <CardContent>
         <Typography gutterBottom variant='h5' component='div' align='center'>
-          {'Edición ' + dataEdition.edition + ' - ' + dataEdition.description}
-        </Typography>
-        <Typography gutterBottom variant='h5' component='div' align='center'>
-          {'Proveedor:  ' + dataEdition.provider}
+          {'Edición ' + dataEdition.edition}
         </Typography>
         <TableContainer>
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
