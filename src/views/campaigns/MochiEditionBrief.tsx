@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import { MochiEditionLoaded } from 'src/types/MochiEdition';
 import { DONOR_STATUSES } from 'src/types/DonorStatuses';
 import { hasWriteAccess } from 'src/utils/sessionManagement';
+import { SCHOOL_CYCLES } from 'src/types/SchoolYear'
 import Button from '@mui/material/Button';
 import { AssignDonor } from './AssignDonor';
 import { Action } from 'src/types/Action';
@@ -57,7 +58,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
                   <TableCell></TableCell>
                   <TableCell>{participant.beneficiary?.familyId}</TableCell>
                   <TableCell>{participant.beneficiaryName}</TableCell>
-                  <TableCell>{!!participant.schoolCycle ? participant.schoolCycle : '-'}</TableCell>
+                  <TableCell>{!!participant.schoolCycle ? SCHOOL_CYCLES[participant.schoolCycle as keyof  typeof SCHOOL_CYCLE] : '-'}</TableCell>
                   <TableCell>
                     {participant.state !== DONOR_STATUSES.MISSING_DONOR ? participant.donorName : '-'}
                   </TableCell>
