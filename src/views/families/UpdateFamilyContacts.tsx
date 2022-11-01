@@ -14,8 +14,9 @@ import TableBody from '@mui/material/TableBody';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {ContactForm} from './ContactForm';
-import Contact from 'src/types/Contact';
+import Contact, {ContactToSend} from 'src/types/Contact';
 import {Action} from 'src/types/Action';
+import {updateFamily } from 'src/API/Beneficiaries/families_data';
 
 interface UpdateContactsProps {
     id: string;
@@ -26,15 +27,15 @@ interface UpdateContactsProps {
 }
 
 export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
-    const {openDialog, handleClose} = props;
-    const [contactsFinal, setContactsFinal] = useState<Contact[]>([]);
+    const {openDialog, handleClose, id, setAction} = props;
+    const [contactsFinal, setContactsFinal] = useState<ContactToSend[]>([]);
     const [contact, setContact] = useState<Contact>({type: '', title: '', isPreferred: false, content: ''});
 
     const resetFields = () => {
         setContact({type: '', title: '', isPreferred: false, content: ''});
     };
 
-    const deleteContact = (contactToDelete: Contact) => {
+    const deleteContact = (contactToDelete: ContactToSend) => {
         const index = contactsFinal.indexOf(contactToDelete);
         console.log(index);
         const newContacts = contactsFinal;
@@ -78,7 +79,7 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {contactsFinal.map((contact: Contact) => (
+                            {contactsFinal.map((contact: ContactToSend) => (
                                 <TableRow hover key={contact.title}
                                           sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}>
                                     <TableCell>{contact.title}</TableCell>
@@ -97,7 +98,7 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                <Box style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
                     <Button
                         sx={{display: 'flex', justifyContent: 'center', margin: '1%', width: '100%'}}
                         variant='outlined'
@@ -111,14 +112,30 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
                     <Button
                         sx={{display: 'flex', justifyContent: 'center', margin: '1%', width: '100%'}}
                         variant='contained'
-                        onClick={() => {
-                            handleClose();
+                        onClick={async () => {
+                            try {
+                                await updateFamily(id, {contacts: contactsFinal} )
+                                handleClose();
+                                setAction({
+                                    complete: true,
+                                    success: true,
+                                    message: 'Contactos actualizados exitosamente',
+                                    status: 200,
+                            })
+                            } catch ( e ) {
+                                setAction({
+                                    complete: true,
+                                    success: false,
+                                    message: 'Error actualizando contactos',
+                                    status: 400,
+                            })
+                            }
                         }}
                         disabled={contactsFinal.length === 0}
                     >
                         Editar Contactos
                     </Button>
-                </div>
+                </Box>
             </DialogContent>
         </Dialog>
     );
