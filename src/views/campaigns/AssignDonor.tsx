@@ -57,7 +57,7 @@ export const AssignDonor: FC<AssignDonorProps> = props => {
                 options={
                   !!data && data.donors.nodes.length > 0
                     ? data.donors.nodes.map((donor: Donor) => ({ label: donor.name, id: donor.id }))
-                    : 'Cargando'
+                    : []
                 }
                 onChange={(e: any, newValue: { label: string; id: string }) => {
                   setDonor(oldDonor => ({ ...oldDonor, ...{ donorId: newValue?.id } }));

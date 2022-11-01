@@ -100,7 +100,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
             id='description'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Descripción'
+            label='Descripción (opcional)'
             placeholder='Edición de Mochi 2022'
             value={mochiEdition.description}
             onChange={(e: any) => {
@@ -113,7 +113,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
             id='provider'
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Proveedor'
+            label='Proveedor (opcional)'
             placeholder='Catalan'
             value={mochiEdition.provider}
             onChange={(e: any) => {
@@ -189,7 +189,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
               });
             }
           }}
-          disabled={!mochiEdition.edition || !mochiEdition.provider}
+          disabled={!mochiEdition.edition}
         >
           Editar
         </Button>
