@@ -170,7 +170,6 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
                           variant='contained'
                           sx={{ mx: '.5em' }}
                           onClick={() => {
-                            console.log(row);
                             setId(row.id as string);
                             setContacts(row.contacts);
                             setOpenUpdateContacts(true);
