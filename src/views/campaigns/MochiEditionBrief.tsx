@@ -77,7 +77,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
                             setOpenAssignDonor(true);
                           }}
                         >
-                          Asignar Padrino
+                          <Typography color={'white'}>Asignar Padrino</Typography>
                         </Button>
                       )}
                       {participant.state === 'MISSING_DONATION' && (
@@ -87,7 +87,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
                             setSelectedParticipant(participant.id.toString());
                           }}
                         >
-                          Pago
+                          <Typography color={'white'}>Pago</Typography>
                         </Button>
                       )}
                       {participant.state === 'DONATION_RECEIVED' && (
@@ -97,7 +97,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
                             setSelectedParticipant(participant.id.toString());
                           }}
                         >
-                          Editar Pago
+                          <Typography color={'white'}>Editar Pago</Typography>
                         </Button>
                       )}
                     </TableCell>
