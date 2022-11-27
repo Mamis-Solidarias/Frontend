@@ -20,7 +20,7 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
-import {Card, CardHeader, LinearProgress} from "@mui/material";
+import {Card, CardHeader, LinearProgress, Typography} from "@mui/material";
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -79,8 +79,8 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
   return (
     <Card>
       <CardHeader
-          action={props.children} 
-          title='Donantes' 
+          action={props.children}
+          title='Donantes'
           titleTypographyProps={{ variant: 'h6' }}
       />
       <TableContainer>
@@ -119,7 +119,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
                         }
                       }}
                     >
-                      Editar
+                      <Typography color={'white'}> Editar</Typography>
                     </Button>
                   </TableCell>
                 )}
@@ -128,7 +128,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
           </TableBody>
         </Table>
       </TableContainer>
-      
+
       {pageInfo !== undefined && (
           <DonorsTablePagination
               paging={paging}
@@ -138,7 +138,7 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
               edges={edges}
           />
       )}
-     
+
       {openUpdateDonor && (
         <UpdateDonor
           openDialog={openUpdateDonor}
