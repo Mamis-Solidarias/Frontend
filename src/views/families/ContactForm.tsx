@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
 import Contact from 'src/types/Contact';
+import cloneDeep from 'lodash.clonedeep';
 
 interface ContactFormProps {
   contact: Contact;
@@ -24,7 +25,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
         placeholder='Instagram'
         value={contact.title}
         onChange={e => {
-          const newContact = contact;
+          const newContact = cloneDeep(contact);
           newContact.title = e.target.value;
           setContact(newContact);
           setChanges(changes + 1);
@@ -38,7 +39,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
         placeholder='@miguel.sanchez77'
         value={contact.content}
         onChange={e => {
-          const newContact = contact;
+          const newContact = cloneDeep(contact);
           newContact.content = e.target.value;
           setContact(newContact);
           setChanges(changes + 1);
@@ -53,7 +54,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
         defaultValue="Email"
         value={contact.type}
         onChange={e => {
-          const newContact = contact;
+          const newContact = cloneDeep(contact);
             newContact.type = e.target.value;
             setContact(newContact);
             setChanges(changes + 1);
@@ -74,7 +75,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
         <Typography>No es preferida</Typography>
         <Switch
           onChange={e => {
-            const newContact = contact;
+            const newContact = cloneDeep(contact);
             newContact.isPreferred = e.target.checked;
             setContact(newContact);
             setChanges(changes + 1);
