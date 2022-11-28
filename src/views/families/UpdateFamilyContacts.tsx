@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -36,9 +36,13 @@ interface UpdateContactsProps {
 }
 
 export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
-  const { openDialog, handleClose, id, setAction } = props;
+  const { openDialog, handleClose, id, setAction, contacts } = props;
   const [contactsFinal, setContactsFinal] = useState<ContactToSend[]>([]);
   const [contact, setContact] = useState<Contact>({ type: '', title: '', isPreferred: false, content: '' });
+
+  useEffect(() => {
+    setContactsFinal([...contacts])
+  }, [])
 
   const resetFields = () => {
     setContact({ type: '', title: '', isPreferred: false, content: '' });
@@ -97,6 +101,12 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
                   {contact.type === CONTACTING_METHODS.PHONE && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"tel:" + contact.content} sx={{color: "lightBlue"}}><CallIcon/></Link></TableCell>}
                   {contact.type === CONTACTING_METHODS.WHATSAPP && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"https://api.whatsapp.com/send?phone=" + contact.content} sx={{color: "#075e54"}}><WhatsAppIcon/></Link></TableCell>}
                   {contact.type === CONTACTING_METHODS.OTHER && <TableCell><DeviceUnknownIcon sx={{color: "gray"}}/></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.FACEBOOK &&  <TableCell><FacebookIcon sx={{color: "#4267B2"}}/></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.INSTAGRAM && <TableCell><InstagramIcon sx={{color: "#E1306C"}}/></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.EMAIL && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"mailto:" + contact.content} sx={{color: "black"}}><MailIcon/></Link></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.PHONE && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"tel:" + contact.content} sx={{color: "lightBlue"}}><CallIcon/></Link></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.WHATSAPP && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"https://api.whatsapp.com/send?phone=" + contact.content} sx={{color: "#075e54"}}><WhatsAppIcon/></Link></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.OTHER && <TableCell><DeviceUnknownIcon sx={{color: "gray"}}/></TableCell>}
                   <TableCell>{contact.title}</TableCell>
                   <TableCell>{contact.content}</TableCell>
                   <TableCell>{contact.isPreferred ? 'Sí' : 'No'}</TableCell>
