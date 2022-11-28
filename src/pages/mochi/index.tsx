@@ -71,9 +71,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (!userIsLoggedIn()) {
-      router.push('/login');
-    } else {
+    if (userIsLoggedIn()) {
       setHasWriteCampaigns(hasWriteAccess('Campaigns'));
       getCommunities().then(result => {
         setCommunities(result.data.communities);
@@ -84,7 +82,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (createMochiFinished) {
-      console.log('refetcheado');
       refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
       setCreateMochiFinished(false);
     }
@@ -93,7 +90,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (editMochiFinished) {
-      console.log('refetcheado');
       refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
       setEditMochiFinished(false);
     }
