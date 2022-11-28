@@ -46,6 +46,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                     <TextField
                         id='name'
                         type='text'
+                        sx={{py: '.3em'}}
                         inputProps={{pattern: '^.+$'}}
                         label='Nombre'
                         placeholder='Pedro Mendoza'
@@ -59,6 +60,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                     <TextField
                         id='email'
                         type='text'
+                        sx={{py: '.3em'}}
                         inputProps={{pattern: '^.+$'}}
                         label='Email'
                         placeholder='pmendoza@gmail.com'
@@ -72,6 +74,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                     <TextField
                         id='phone'
                         type='text'
+                        sx={{py: '.3em'}}
                         inputProps={{pattern: '^.+$'}}
                         label='Teléfono'
                         placeholder='+5492995077824'
@@ -82,7 +85,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                         fullWidth={true}
                         variant='standard'
                     />
-                    <Stack direction='row' spacing={1} alignItems='center'>
+                    <Stack direction='row' spacing={1} alignItems='center' sx={{py: '.3em'}}>
                         <Typography>No es padrino</Typography>
                         <Switch onChange={(e: any) => setDonorField('isGodFather', e.target.checked)}
                                 checked={donor.isGodFather}/>

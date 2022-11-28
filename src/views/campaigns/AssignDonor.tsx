@@ -93,6 +93,7 @@ export const AssignDonor: FC<AssignDonorProps> = props => {
           <TextField
             id='deliveryAddress'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Punto de Entrega'
             placeholder='Las Lilas 888'
@@ -106,6 +107,7 @@ export const AssignDonor: FC<AssignDonorProps> = props => {
           <TextField
             id='observations'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Observaciones'
             placeholder='Solo puede hasta $400'

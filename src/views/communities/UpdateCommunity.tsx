@@ -64,6 +64,7 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
                     <TextField
                         id='address'
                         type='text'
+                        sx={{py: '.3em'}}
                         inputProps={{pattern: '^.+$'}}
                         label='Nueva Dirección'
                         placeholder='Paso de los Libres 428'
@@ -75,7 +76,7 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
                         variant='standard'
                     />
                     <TextField
-                        sx={{padding: '1em'}}
+                        sx={{py: '.3em'}}
                         id='description'
                         type='text'
                         inputProps={{pattern: ' .+'}}

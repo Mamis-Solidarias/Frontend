@@ -110,6 +110,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           <TextField
             id='edition'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^[1-9][0-9]*$' }}
             label='Edición'
             placeholder='2022'
@@ -123,6 +124,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           <TextField
             id='description'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Descripción (opcional)'
             placeholder='Edición de Mochi 2022'
@@ -136,6 +138,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           <TextField
             id='provider'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Proveedor (opcional)'
             placeholder='Catalan'
@@ -148,6 +151,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           />
           <TextField
             select
+            sx={{py: '.3em'}}
             fullWidth={true}
             variant='standard'
             label='Comunidad'

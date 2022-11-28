@@ -17,9 +17,10 @@ export const JobForm: FC<JobFormProps> = props => {
 
   return (
     <>
-      <Typography>Trabajo</Typography>
+      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em'}}>Trabajo</Typography>
       <TextField
         type='text'
+        sx={{py: '.3em'}}
         label='Título'
         placeholder='Albañil'
         value={beneficiaryFields.title}

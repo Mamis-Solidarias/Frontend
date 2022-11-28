@@ -69,6 +69,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
             id='address'
+            sx={{py: '.3em'}}
             type='text'
             inputProps={{ pattern: '^.+$' }}
             label='Nuevo Nombre de Familia'
@@ -83,6 +84,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
           <TextField
             id='address'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Nueva Dirección'
             placeholder='Paso de los Libres 428'
@@ -94,7 +96,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             variant='standard'
           />
           <TextField
-            sx={{ padding: '1em' }}
+            sx={{ py: '.3em' }}
             id='details'
             type='text'
             inputProps={{ pattern: ' .+' }}

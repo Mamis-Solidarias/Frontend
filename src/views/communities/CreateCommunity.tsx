@@ -64,6 +64,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                     <TextField
                         id='communityName'
                         type='text'
+                        sx={{py: '.3em'}}
                         inputProps={{pattern: '^.+$'}}
                         label='Nombre'
                         placeholder='Misiones'
@@ -75,9 +76,9 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                         variant='standard'
                     />
                     <TextField
-                        sx={{padding: '1em'}}
                         id='address'
                         type='text'
+                        sx={{py: '.3em'}}
                         inputProps={{pattern: '^.+$'}}
                         label='Dirección'
                         placeholder='Cataratas 123'
@@ -92,6 +93,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                     <TextField
                         id='description'
                         type='text'
+                        sx={{py: '.3em'}}
                         label='Descripción (opcional)'
                         placeholder='Es un lindo pueblo'
                         value={description}
@@ -104,6 +106,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                     <TextField
                         id='communityCode'
                         type='text'
+                        sx={{py: '.3em'}}
                         label='Código (opcional)'
                         placeholder='MI'
                         value={communityCode}

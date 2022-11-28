@@ -99,6 +99,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
           <TextField
             id='description'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Descripción (opcional)'
             placeholder='Edición de Mochi 2022'
@@ -112,6 +113,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
           <TextField
             id='provider'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^.+$' }}
             label='Proveedor (opcional)'
             placeholder='Catalan'

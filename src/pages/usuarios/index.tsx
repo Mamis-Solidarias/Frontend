@@ -21,10 +21,8 @@ const Dashboard = () => {
     const {action, setAction, setCompletion} = useAction();
     const [hasWriteAccessConst, setHasWriteAccessConst] = useState<boolean>(false);
 
-    const router = useRouter();
-
     useEffect(() => {
-        if (!userIsLoggedIn()) {
+        if (userIsLoggedIn()) {
             setHasWriteAccessConst(hasWriteAccess('Users'));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

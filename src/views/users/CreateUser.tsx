@@ -132,6 +132,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
             error={invalidEmail}
             id='email'
             type='email'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: '^[^@]+@[^@]+$' }}
             label='Email'
             placeholder='usuario@mail.com'
@@ -150,9 +151,9 @@ export const CreateUser: FC<CreateUserProps> = props => {
           )}
           <TextField
             error={invalidName}
-            sx={{ padding: '1em' }}
             id='name'
             type='text'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: ' .{5,100}' }}
             label='Nombre'
             placeholder='nuevousuario123'
@@ -171,6 +172,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
             error={invalidPhone}
             id='phone'
             type='tel'
+            sx={{py: '.3em'}}
             inputProps={{ pattern: ' ^.+$' }}
             label='Teléfono'
             placeholder='+5492995077824'
@@ -187,6 +189,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
             error={invalidPassword}
             id='password'
             type='password'
+            sx={{py: '.3em'}}
             label='Contraseña'
             placeholder='*********'
             value={password}
@@ -207,6 +210,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
             error={passwordMismatch}
             id='confirmPassword'
             type='password'
+            sx={{py: '.3em'}}
             label='Confirmar Contraseña'
             placeholder='*********'
             value={confirmPassword}
