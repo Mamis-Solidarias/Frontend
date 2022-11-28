@@ -98,8 +98,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
       : undefined;
   const job: Job | undefined = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : undefined;
   const health: Health | undefined =
-    !!beneficiaryFields.hasCovidVaccine ||
-    !!beneficiaryFields.hasMandatoryVaccines ||
+    beneficiaryFields.hasCovidVaccine || beneficiaryFields.hasMandatoryVaccines ||
     !!beneficiaryFields.observations
       ? {
           hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
@@ -246,8 +245,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => addBeneficiary()}
-            disabled={!beneficiaryFields.familyId || !beneficiaryFields.firstName || 
-              !beneficiaryFields.lastName || !beneficiaryFields.type || !beneficiaryFields.gender || 
+            disabled={!beneficiaryFields.familyId || !beneficiaryFields.firstName ||
+              !beneficiaryFields.lastName || !beneficiaryFields.type || !beneficiaryFields.gender ||
               !beneficiaryFields.birthday || !beneficiaryFields.dni}
           >
             Añadir
@@ -281,11 +280,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                           onClick={() => {
                             if (open.length === 0) {
                               setOpen(
-                                Array.from({ length: beneficiaries.length }, (l, openIndex) => {
-                                  if (openIndex === index) return true;
-
-                                  return false;
-                                })
+                                Array.from({ length: beneficiaries.length }, (l, openIndex) => openIndex === index)
                               );
                             } else {
                               setOpen(

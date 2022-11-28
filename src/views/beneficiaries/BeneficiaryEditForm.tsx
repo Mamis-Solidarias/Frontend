@@ -184,8 +184,8 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
               sx={{ display: 'flex', justifyContent: 'center',margin: '1%', width: '100%'}}
               variant='outlined'
               onClick={() => handleClose()}
-          > 
-            Cancelar 
+          >
+            Cancelar
           </Button>
           <Button
             sx={{ display: 'flex', justifyContent: 'center',margin:'1%', width: '100%' }}
@@ -209,8 +209,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
                   : null;
               const job: Job | null = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : null;
               const health: Health | null =
-                !!beneficiaryFields.hasCovidVaccine ||
-                !!beneficiaryFields.hasMandatoryVaccines ||
+                beneficiaryFields.hasCovidVaccine || beneficiaryFields.hasMandatoryVaccines ||
                 !!beneficiaryFields.observations
                   ? {
                       hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
@@ -256,7 +255,7 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
           </Button>
           </div>
         </Box>
-        
+
       </DialogContent>
     </Dialog>
   );
