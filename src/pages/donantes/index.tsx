@@ -31,14 +31,11 @@ const Dashboard = () => {
     // const [filtersApplied, setFiltersApplied] = useState<DonorsFilters>(donorsFiltersNull);
     // const { filters, setFilter } = useDonorsFilters();
     const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-    const router = useRouter();
     const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
     const {action, setAction, setCompletion} = useAction();
 
     useEffect(() => {
-        if (!userIsLoggedIn()) {
-            router.push('/login');
-        } else {
+        if (userIsLoggedIn()) {
             setHasWriteDonors(hasWriteAccess('Donors'));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
