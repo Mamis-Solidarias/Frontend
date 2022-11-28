@@ -93,6 +93,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                                 select
                                 fullWidth={true}
                                 variant='standard'
+                                sx={{py: '.3em'}}
                                 label='Comunidad'
                                 placeholder='Misiones'
                                 value={selectedCommunity}
@@ -108,6 +109,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                             <TextField
                                 id='familyId'
                                 type='text'
+                                sx={{py: '.3em'}}
                                 inputProps={{pattern: '[0-9]*$'}}
                                 label='Código (opcional)'
                                 placeholder='23'
@@ -121,6 +123,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                             <TextField
                                 id='familyName'
                                 type='text'
+                                sx={{py: '.3em'}}
                                 inputProps={{pattern: '^.+$'}}
                                 label='Nombre'
                                 placeholder='García'
@@ -136,6 +139,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                             <TextField
                                 id='address'
                                 type='text'
+                                sx={{py: '.3em'}}
                                 inputProps={{pattern: '^.+$'}}
                                 label='Dirección'
                                 placeholder='Cataratas 123'
@@ -149,6 +153,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                             <TextField
                                 id='details'
                                 type='text'
+                                sx={{py: '.3em'}}
                                 label='Detalle (opcional)'
                                 placeholder='La familia de José'
                                 value={description}
