@@ -19,12 +19,8 @@ const Dashboard = () => {
     const [openWindow, setOpenWindow] = useState<boolean>(false);
     const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
     const {action, setAction, setCompletion} = useAction();
-    const router = useRouter();
 
     useEffect(() => {
-        if (!userIsLoggedIn()) {
-            router.push('/login');
-        }
         setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

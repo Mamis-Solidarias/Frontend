@@ -25,8 +25,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (!userIsLoggedIn()) {
-            router.push('/login');
-        } else {
             setHasWriteAccessConst(hasWriteAccess('Users'));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

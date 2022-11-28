@@ -13,7 +13,6 @@ import Community from 'src/types/Community';
 import {BeneficiariesFilters, beneficiariesFiltersNull} from 'src/types/BeneficiariesFilters';
 import {useBeneficiariesFilters} from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import FamiliesFiltersView from 'src/views/families/FamiliesFiltersView';
-import {useRouter} from 'next/router';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {useAction} from 'src/hooks/actionHook';
@@ -28,12 +27,9 @@ const Dashboard = () => {
     const {filters, setFilter} = useBeneficiariesFilters();
     const {action, setAction, setCompletion} = useAction();
     const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-    const router = useRouter();
 
     useEffect(() => {
-        if (!userIsLoggedIn()) {
-            router.push('/login');
-        } else {
+        if (userIsLoggedIn()) {
             setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
             getCommunities().then(result => {
                 setCommunities(result.data.communities);
@@ -44,7 +40,7 @@ const Dashboard = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
+
     const onSetFiltersAction = (filter: BeneficiariesFilters) => {
         setFiltersApplied(filter);
         setAction({
@@ -66,9 +62,9 @@ const Dashboard = () => {
         <ApexChartWrapper>
             <Grid container spacing={6}>
                 <Grid item xs={12}>
-                    <FamiliesFiltersView 
-                        filters={filters} 
-                        setFilter={setFilter} 
+                    <FamiliesFiltersView
+                        filters={filters}
+                        setFilter={setFilter}
                         communities={communities}
                         onSetFiltersAction={onSetFiltersAction}
                     />

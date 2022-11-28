@@ -41,9 +41,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (!userIsLoggedIn()) {
-      router.push('/login');
-    } else {
+    if (userIsLoggedIn()) {
       setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
       getCommunities()
         .then(result => {
