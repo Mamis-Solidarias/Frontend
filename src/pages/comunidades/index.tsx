@@ -1,13 +1,12 @@
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Portal from '@mui/material/Portal';
-import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import {useAction} from 'src/hooks/actionHook';
-import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
+import {hasWriteAccess} from 'src/utils/sessionManagement';
 import CommunitiesTable from 'src/views/communities/ComunitiesTable';
 
 // ** Demo Components Imports

@@ -8,7 +8,6 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 // ** Demo Components Imports
 import TableUsers from 'src/views/users/TableUsers';
 import {CreateUser} from 'src/views/users/CreateUser';
-import {useRouter} from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import Portal from '@mui/material/Portal';
 import {useAction} from 'src/hooks/actionHook';
