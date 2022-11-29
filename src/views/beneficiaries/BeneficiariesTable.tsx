@@ -28,6 +28,7 @@ import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {LinearProgress, Typography} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
+import {ConfirmActionDialog} from "../pages/misc/ConfirmActionDialog";
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
@@ -47,6 +48,8 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary | undefined>();
   const {paging, setBeneficiariesPaging} = useBeneficiariesPaging();
   const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
+  const [openConfirmAction, setOpenConfirmAction] = useState<boolean>(false);
+
   const {loading, error, data, refetch} = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
@@ -64,7 +67,6 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
       limit: paging.limit
     }
   });
-
   const refetchWithSameParameters = () => {
     refetch({
       ageStart: isNaN(parseInt(filters.ageStart as string)) ? filters.ageStart : parseInt(filters.ageStart as string),
@@ -81,6 +83,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
       after: paging.pageCursor,
       limit: paging.limit
     });
+
   };
 
   useEffect(() => {
@@ -110,15 +113,14 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
     refetchWithSameParameters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paging.pageCursor, filters, paging.limit]);
-
   if (error) {
     return (
       <TableRow>
         <TableCell>Error :(</TableCell>
       </TableRow>
     );
-  }
 
+  }
   const nodes = data === undefined ? [] : data.filteredBeneficiaries.nodes;
   const pageInfo = data === undefined ? undefined : data.filteredBeneficiaries.pageInfo;
   const edges = data === undefined ? [] : data.filteredBeneficiaries.edges;
@@ -162,13 +164,8 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                           sx={{mx: '.25em'}}
                           onClick={async () => {
                             try {
-                              await deleteBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
-                              setAction({
-                                complete: true,
-                                success: true,
-                                message: 'Usuario desactivado exitosamente',
-                                status: 200
-                              });
+                              setSelectedBeneficiary(row)
+                              setOpenConfirmAction(true)
                             } catch (err) {
                               setAction({
                                 complete: true,
@@ -237,6 +234,18 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
           edges={edges}
         />
       )}
+      {openConfirmAction &&
+      <ConfirmActionDialog openDialog={openConfirmAction} action={async () => {
+        await deleteBeneficiary(selectedBeneficiary?.id as string).then(() => refetchWithSameParameters());
+        setAction({
+          complete: true,
+          success: true,
+          message: 'Usuario desactivado exitosamente',
+          status: 200
+        });
+        setOpenConfirmAction(false)
+      }} handleClose={() => setOpenConfirmAction(false)}/>
+      }
       {openEditBeneficiary && !!selectedBeneficiary && (
         <BeneficiaryEditForm
           openDialog={openEditBeneficiary}
