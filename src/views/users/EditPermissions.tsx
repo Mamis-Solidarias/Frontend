@@ -18,18 +18,14 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Action } from 'src/types/Action';
+import Roles from "src/types/Roles";
+import Role from "src/types/Role";
 
 interface EditPermissionsProps {
   openDialog: boolean;
   handleClose: () => void;
   id: number;
   setAction: (action: Action) => void;
-}
-
-interface Role {
-  service: string;
-  canRead: boolean;
-  canWrite: boolean;
 }
 
 export const EditPermissions: FC<EditPermissionsProps> = props => {
@@ -108,20 +104,15 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                 </Button>
               </TableRow>
               {userRoles.length > 0 &&
-                userRoles.map((role: Role) => (
+                userRoles.map((role: Role, index: number) => (
                   <TableRow hover key={role.service} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                     <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
                       <Select
                         value={role.service}
-                        onChange={e => {
-                          changeRoleInUserRoles(role, e.target.value, true, false);
-                        }}
+                        onChange={e => changeRoleInUserRoles(role, e.target.value, true, false)}
                       >
                         <MenuItem value='#' style={{ display: 'none' }}></MenuItem>
-                        <MenuItem value='Users'>Usuarios</MenuItem>
-                        <MenuItem value='Beneficiaries'>Beneficiarios</MenuItem>
-                        <MenuItem value='Donors'>Donantes</MenuItem>
-                        <MenuItem value='Campaigns'>Campañas </MenuItem>
+                        {allRoles.map( role => <MenuItem key={index + role.service} value={role.service}>{Roles[role.service as keyof typeof Roles]}</MenuItem>)}
                       </Select>
                     </TableCell>
                     <TableCell>
