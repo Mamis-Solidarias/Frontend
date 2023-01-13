@@ -1,6 +1,6 @@
 // import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
@@ -14,26 +14,27 @@ import ChevronUp from 'mdi-material-ui/ChevronUp';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
-import { useAction } from 'src/hooks/actionHook';
+import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useCampaignsFilters } from 'src/hooks/campaigns/useCampaignsFilters';
-import { CampaignsFilters, campaignsFiltersNull } from 'src/types/CampaignsFilters';
+import {useCampaignsFilters} from 'src/hooks/campaigns/useCampaignsFilters';
+import {CampaignsFilters, campaignsFiltersNull} from 'src/types/CampaignsFilters';
 import CampaignsFiltersView from 'src/views/campaigns/CampaignsFiltersView';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { useQuery } from '@apollo/client';
-import { GET_MOCHI_EDITIONS, GET_MOCHI } from 'src/API/Campaigns/campaigns_graphql';
-import { CreateMochi } from 'src/views/campaigns/CreateMochi';
+import {useQuery} from '@apollo/client';
+import {GET_MOCHI_EDITIONS, GET_MOCHI} from 'src/API/Campaigns/campaigns_graphql';
+import {CreateMochi} from 'src/views/campaigns/CreateMochi';
 import Community from 'src/types/Community';
-import { getCommunities } from 'src/API/Beneficiaries/communities_data';
-import { MochiEditionBrief } from 'src/views/campaigns/MochiEditionBrief';
-import { EditMochi } from 'src/views/campaigns/EditMochi';
-import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import {getCommunities} from 'src/API/Beneficiaries/communities_data';
+import {MochiEditionBrief} from 'src/views/campaigns/MochiEditionBrief';
+import {EditMochi} from 'src/views/campaigns/EditMochi';
+import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
+import {DefaultCard} from "../../views/beneficiaries/BeneficiaryCard/DefaultCard";
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
@@ -42,9 +43,10 @@ const Dashboard = () => {
   const [createMochiFinished, setCreateMochiFinished] = useState<boolean>(false);
   const [openEditMochi, setOpenEditMochi] = useState<boolean>(false);
   const [editMochiFinished, setEditMochiFinished] = useState<boolean>(false);
-  const { filters, setFilter } = useCampaignsFilters();
+  const {filters, setFilter} = useCampaignsFilters();
+  const [filterToApply, setFilterToApply] = useState<CampaignsFilters>(campaignsFiltersNull);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const { action, setCompletion, setAction } = useAction();
+  const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
   const router = useRouter();
   const {
@@ -52,10 +54,10 @@ const Dashboard = () => {
     error: errorEditions,
     data: dataEditions,
     refetch: refetchEditions
-  } = useQuery(GET_MOCHI_EDITIONS);
+  } = useQuery(GET_MOCHI_EDITIONS,{variables: {communityId: 'valor nulo'}} );
   const [communities, setCommunities] = useState<Community[]>([]);
-  const { data: dataEdition, refetch: refetchEdition } = useQuery(GET_MOCHI, {
-    variables: { edition: filtersApplied.edition, community: filtersApplied.community }
+  const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_MOCHI, {
+    variables: {edition: filtersApplied.edition, community: filtersApplied.community}
   });
 
   const onNetworkError: (err: any) => void = err => {
@@ -82,7 +84,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (createMochiFinished) {
-      refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
+      refetchEditions();
       setCreateMochiFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,7 +92,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (editMochiFinished) {
-      refetchEditions({ edition: filtersApplied.edition, community: filtersApplied.community });
+      refetchEditions();
       setEditMochiFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,14 +100,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (action.complete) {
-      refetchEdition({ edition: filtersApplied.edition, community: filtersApplied.community });
+      refetchEdition({edition: filtersApplied.edition, community: filtersApplied.community});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action.complete]);
 
   useEffect(() => {
     if (!!filtersApplied.community && !!filtersApplied.edition) {
-      refetchEdition({ edition: filtersApplied.edition, community: filtersApplied.community });
+      refetchEdition({edition: filtersApplied.edition, community: filtersApplied.community});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersApplied.community, filtersApplied.edition]);
@@ -121,107 +123,118 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Typography gutterBottom variant='h3' component='div' align='center'>
-            Una Mochi Como la Tuya
-          </Typography>
-          <Box display='flex' flexDirection='row' justifyContent='space-between'>
-            <Box sx={{ mx: '0.25em' }}>
-              <TextField
-                select
-                variant='standard'
-                type='text'
-                label='Edición'
-                value={filtersApplied.edition}
-                onChange={e => {
-                  setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ edition: e.target.value } }));
-                  setAction({
-                    complete: true,
-                    success: true,
-                    message: 'Cambiada la edición a ' + e.target.value,
-                    status: 200
-                  });
-                }}
-              >
-                {editions.map((editionJson: { edition: string }) => {
-                  return (
-                    <MenuItem value={editionJson.edition} key={editionJson.edition}>
-                      {editionJson.edition}
-                    </MenuItem>
-                  );
-                })}
-              </TextField>
+          <Box display='flex' flexDirection='row' justifyContent={"space-between"}>
+            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+              {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
+                <Box alignItems={"center"}>
+                  <DefaultCard sx={{display: 'flex', flexDirection: 'column'}}
+                               title={"Descripción"} fields={{
+                    Proveedor: dataEdition.mochiEdition.provider,
+                    Edición: dataEdition.mochiEdition.edition
+                  }}/>
+                </Box>
+              }
+              <Box alignItems={'center'}>
+                <Card
+                  sx={{display: 'flex', flexDirection: 'column', px: '.25em', py: '.25em'}}>
+                  <CardHeader title={"Filtros"} action={<Button onClick={
+                    () => {
+                      setFiltersApplied(filterToApply);
+                      setAction({
+                        complete: true,
+                        success: true,
+                        message: 'Filtros aplicados',
+                        status: 200
+                      });
+                    }
+                  }
+                  >
+                    Aplicar cambios
+                  </Button>}/>
+                  <CardContent sx={{flexDirection: 'row'}}>
+                    <TextField
+                      select
+                      sx={{mx: '.25em'}}
+                      variant='standard'
+                      type='text'
+                      label='Comunidad'
+                      value={filterToApply.community}
+                      onChange={e => {
+                        setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
+                        refetchEditions({communityId: e.target.value});
+                      }}>
+                      {communities.map(community => {
+                        return (
+                          <MenuItem value={community.id} key={community.id}>
+                            {community.id + ' - ' + community.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </TextField>
+                    <TextField
+                      select
+                      sx={{mx: '.25em'}}
+                      variant='standard'
+                      type='text'
+                      label='Edición'
+                      value={filterToApply.edition}
+                      onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}))}
+                    >
+                      {editions.map((editionJson: { edition: string }) => {
+                        return (
+                          <MenuItem value={editionJson.edition} key={editionJson.edition}>
+                            {editionJson.edition}
+                          </MenuItem>
+                        );
+                      })}
+                    </TextField>
+                  </CardContent>
+                </Card>
+              </Box>
             </Box>
-            <Box sx={{ mx: '0.25em' }}>
-              <TextField
-                select
-                variant='standard'
-                type='text'
-                label='Comunidad'
-                value={filtersApplied.community}
-                onChange={e => {
-                  setFiltersApplied(oldFiltersApplied => ({ ...oldFiltersApplied, ...{ community: e.target.value } }));
-                  setAction({
-                    complete: true,
-                    success: true,
-                    message: 'Cambiada la comunidad a ' + e.target.value,
-                    status: 200
-                  });
-                }}
-              >
-                {communities.map(community => {
-                  return (
-                    <MenuItem value={community.id} key={community.id}>
-                      {community.id + ' - ' + community.name}
-                    </MenuItem>
-                  );
-                })}
-              </TextField>
-            </Box>
-            {hasWriteCampaigns && (
-              <Box sx={{ mx: '0.25em' }}>
-                <Button
-                  variant='contained'
-                  onClick={() => {
-                    setOpenEditMochi(true);
-                    setEditMochiFinished(false);
-                  }}
-                  disabled={!dataEdition || dataEdition.length === 0}
+            <Box display='flex' justifyContent='flex-end' alignItems="center">
+              {hasWriteCampaigns && (
+                <Button sx={{mx: '.25em'}}
+                        variant='contained'
+                        onClick={() => {
+                          setOpenEditMochi(true);
+                          setEditMochiFinished(false);
+                        }}
+                        disabled={!dataEdition || dataEdition.length === 0}
                 >
                   Editar
                 </Button>
-              </Box>
-            )}
-
-            {hasWriteCampaigns && (
-              <Box width='70%' display='flex' justifyContent='flex-end'>
-                <Button
-                  variant='contained'
-                  onClick={() => {
-                    setOpenCreateMochi(true);
-                    setCreateMochiFinished(false);
-                  }}
+              )}
+              {hasWriteCampaigns && (
+                <Button sx={{mx: '.25em'}}
+                        variant='contained'
+                        onClick={() => {
+                          setOpenCreateMochi(true);
+                          setCreateMochiFinished(false);
+                        }}
                 >
                   Crear
                 </Button>
-              </Box>
-            )}
+              )}
+            </Box>
+
           </Box>
-          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card sx={{my: '2em', width: '100%', display: 'flex', flexDirection: 'column'}}>
             <CardHeader
               title='Filtros'
               action={
                 <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
                   {openCollapse ? (
-                    <ChevronUp sx={{ fontSize: '1.875rem' }} />
+                    <ChevronUp sx={{fontSize: '1.875rem'}}/>
                   ) : (
-                    <ChevronDown sx={{ fontSize: '1.875rem' }} />
+                    <ChevronDown sx={{fontSize: '1.875rem'}}/>
                   )}
                 </IconButton>
               }
             />
             <CardContent>
               <Collapse in={openCollapse}>
-                <CampaignsFiltersView filters={filters} setFilter={setFilter} />
+                <CampaignsFiltersView filters={filters} setFilter={setFilter}/>
                 <Typography align='center'>
                   <Button
                     variant='contained'
@@ -247,21 +260,22 @@ const Dashboard = () => {
               </Collapse>
             </CardContent>
           </Card>
-          {!!dataEdition && !!dataEdition.mochiEdition && (
-            <MochiEditionBrief dataEdition={dataEdition.mochiEdition} setAction={setAction} />
+          <Card>
+            <CardHeader title={"Una Mochi Como la Tuya"}/>
+            <CardContent>
+              {!!dataEdition && !!dataEdition.mochiEdition && (
+                <MochiEditionBrief dataEdition={dataEdition.mochiEdition} setAction={setAction}/>
+              )}
+            </CardContent>
+          </Card>
+          {openCreateMochi && (
+            <CreateMochi openDialog={openCreateMochi} handleClose={() => {
+              setCreateMochiFinished(true);
+              setOpenCreateMochi(false);
+            }} setAction={setAction} onNetworkError={onNetworkError}/>
           )}
-          {!!openCreateMochi && (
-            <CreateMochi
-              openDialog={openCreateMochi}
-              handleClose={() => {
-                setCreateMochiFinished(true);
-                setOpenCreateMochi(false);
-              }}
-              setAction={setAction}
-              onNetworkError={onNetworkError}
-            />
-          )}
-          {!!openEditMochi && !!dataEdition.mochiEdition && (
+
+          {openEditMochi && !!dataEdition.mochiEdition && (
             <EditMochi
               openDialog={openEditMochi}
               mochiEdition={dataEdition.mochiEdition}
@@ -276,7 +290,7 @@ const Dashboard = () => {
         </Grid>
       </Grid>
       <Portal>
-        <ActionToast action={action} setActionCompletion={setCompletion} />
+        <ActionToast action={action} setActionCompletion={setCompletion}/>
       </Portal>
     </ApexChartWrapper>
   );

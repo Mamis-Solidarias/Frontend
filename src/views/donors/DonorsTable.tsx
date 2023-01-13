@@ -21,14 +21,16 @@ import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 import {Card, CardHeader, LinearProgress, Typography} from "@mui/material";
+import {DonorsFilters} from "src/types/DonorsFilters";
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
   setAction: (action: Action) => void;
+  filters: DonorsFilters;
 }
 
-const FamiliesTable: FC<DonorsTableProps> = props => {
-  const { openCreateDonor, setAction } = props;
+const DonorsTable: FC<DonorsTableProps> = props => {
+  const { openCreateDonor, setAction, filters } = props;
   const router = useRouter();
   const [donor, setDonor] = useState<Donor | null>(null);
   const [openUpdateDonor, setOpenUpdateDonor] = useState<boolean>(false);
@@ -37,7 +39,10 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
   const { loading, error, data, refetch } = useQuery(GET_DONORS, {
     variables: {
       after: paging.pageCursor,
-      limit: paging.limit
+      limit: paging.limit,
+      isGodFather: filters.isGodFather,
+      name: filters.name,
+      ownerId: filters.ownerId,
     }
   });
 
@@ -153,4 +158,4 @@ const FamiliesTable: FC<DonorsTableProps> = props => {
   );
 };
 
-export default FamiliesTable;
+export default DonorsTable;

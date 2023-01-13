@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_DONORS = gql`
-  query filterQuery($after: String, $limit: Int) {
-    donors(after: $after, first: $limit) {
+  query filterQuery($after: String, $limit: Int, $isGodFather: Boolean, $name: String, $ownerId: Int ) {
+    donors(after: $after, first: $limit, filters: { isGodFather: $isGodFather, name: $name, ownerId: $ownerId }) {
       pageInfo {
         endCursor
         hasNextPage
