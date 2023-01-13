@@ -266,8 +266,14 @@ const Dashboard = () => {
               )}
             </CardContent>
           </Card>
+          {openCreateMochi && (
+            <CreateMochi openDialog={openCreateMochi} handleClose={() => {
+              setCreateMochiFinished(true);
+              setOpenCreateMochi(false);
+            }} setAction={setAction} onNetworkError={onNetworkError}/>
+          )}
 
-          {!!openEditMochi && !!dataEdition.mochiEdition && (
+          {openEditMochi && !!dataEdition.mochiEdition && (
             <EditMochi
               openDialog={openEditMochi}
               mochiEdition={dataEdition.mochiEdition}
