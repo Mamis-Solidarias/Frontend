@@ -3,9 +3,10 @@ import React, {FC} from 'react';
 // ** MUI Imports
 import TextField from '@mui/material/TextField';
 
-import {Card, Grid} from "@mui/material";
+import {Grid, Switch} from "@mui/material";
 import Button from "@mui/material/Button";
 import {DonorsFilters} from "../../types/DonorsFilters";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 interface FamiliesFiltersViewProps {
   filters: DonorsFilters;
@@ -34,24 +35,31 @@ const DonorsFilterView: FC<FamiliesFiltersViewProps> = props => {
           <TextField
             fullWidth={true}
             variant='standard'
-            label='Id del Donante'
+            label='Id del Creador'
             type={"number"}
             value={filters.ownerId}
-            onChange={e => setFilter('ownerId', e.target.value)}
+            onChange={e => setFilter('ownerId', parseInt(e.target.value))}
           />
         </Grid>
-
+        <Grid item display='flex' xs={2} sm={3} md={4}>
+          <FormControlLabel
+            sx={{ margin: 'auto' }}
+            control={
+              <Switch
+                defaultChecked
+                onChange={e => setFilter('isGodFather', e.target.checked)}
+                checked={filters.isGodFather}
+              />
+            }
+            label='Es padrino'
+          />
+        </Grid>
         <Grid item display='flex' justifyContent='center' xs={12} md={3} lg={3}>
           <Button
             variant='contained'
             onClick={() => {
-              const filtersToApply = filters;
-              for (const fk in filtersToApply) {
-                if (!filtersToApply[fk as keyof DonorsFilters]) {
-                  filtersToApply[fk as keyof DonorsFilters] = undefined;
-                }
-              }
-              onSetFiltersAction(filtersToApply);
+              console.log(filters)
+              onSetFiltersAction(filters);
             }}
           >
             Aplicar Filtros

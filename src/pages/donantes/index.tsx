@@ -14,8 +14,8 @@ import Collapse from '@mui/material/Collapse';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 
-import { DonorsFilters, donorsFiltersNull } from 'src/types/DonorsFilters';
-import { useDonorsFilters } from 'src/hooks/donors/useDonorsFilters';
+import {DonorsFilters, donorsFiltersNull} from 'src/types/DonorsFilters';
+import {useDonorsFilters} from 'src/hooks/donors/useDonorsFilters';
 import DonorsTable from 'src/views/donors/DonorsTable';
 import {CreateDonor} from 'src/views/donors/CreateDonor';
 import {useAction} from 'src/hooks/actionHook';
@@ -25,87 +25,91 @@ import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import DonorsFilterView from "../../views/donors/DonorsFilterView";
 
 const Dashboard = () => {
-    const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
-    const [openWindow, setOpenWindow] = useState<boolean>(false);
+  const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
+  const [openWindow, setOpenWindow] = useState<boolean>(false);
 
-    const [filtersApplied, setFiltersApplied] = useState<DonorsFilters>(donorsFiltersNull);
-    const { filters, setFilter } = useDonorsFilters();
-    const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-    const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
-    const {action, setAction, setCompletion} = useAction();
+  const [filtersApplied, setFiltersApplied] = useState<DonorsFilters>(donorsFiltersNull);
+  const {filters, setFilter} = useDonorsFilters();
+  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+  const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
+  const {action, setAction, setCompletion} = useAction();
 
-    useEffect(() => {
-        if (userIsLoggedIn()) {
-            setHasWriteDonors(hasWriteAccess('Donors'));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+  useEffect(() => {
+    if (userIsLoggedIn()) {
+      setHasWriteDonors(hasWriteAccess('Donors'));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    useEffect(() => {
-        if (openWindow && openCreateDonor === false) {
-            setOpenWindow(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [openCreateDonor]);
+  useEffect(() => {
+    if (openWindow && openCreateDonor === false) {
+      setOpenWindow(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openCreateDonor]);
 
-    return (
-        <ApexChartWrapper>
-            <Grid container spacing={6}>
-                <Grid item xs={12}>
-                    <Card sx={{my: '2em', width: '100%', display: 'flex', flexDirection: 'column'}}>
-                        <CardHeader
-                            title='Filtros'
-                            action={
-                                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
-                                    {openCollapse ? (
-                                        <ChevronUp sx={{fontSize: '1.875rem'}}/>
-                                    ) : (
-                                        <ChevronDown sx={{fontSize: '1.875rem'}}/>
-                                    )}
-                                </IconButton>
-                            }
-                        />
-                        <CardContent>
-                            <Collapse in={openCollapse}>
-                              <DonorsFilterView filters={filters} setFilter={setFilter} onSetFiltersAction={(filters) => {
-                                setFiltersApplied(filters);
-                                setAction({
-                                  complete: true,
-                                  success: true,
-                                  message: 'Filtros aplicados exitosamente',
-                                  status: 200
-                                });
-                              }}/>
-                            </Collapse>
-                        </CardContent>
-                    </Card>
-                    <DonorsTable openCreateDonor={openCreateDonor} setAction={setAction}>
-                        {hasWriteDonors && (
-                            <Button
-                                variant='contained'
-                                onClick={() => {
-                                    setOpenWindow(true);
-                                    setOpenCreateDonor(true);
-                                }}
-                            >
-                                Añadir Donante
-                            </Button>
-                        )}
-                    </DonorsTable>
-                    {openCreateDonor && (
-                        <CreateDonor
-                            openDialog={openCreateDonor}
-                            handleClose={() => setOpenCreateDonor(false)}
-                            setAction={setAction}
-                        />
-                    )}
-                </Grid>
-            </Grid>
-            <Portal>
-                <ActionToast action={action} setActionCompletion={setCompletion}/>
-            </Portal>
-        </ApexChartWrapper>
-    );
+  return (
+    <ApexChartWrapper>
+      <Grid container spacing={6}>
+        <Grid item xs={12}>
+          <Card sx={{my: '2em', width: '100%', display: 'flex', flexDirection: 'column'}}>
+            <CardHeader
+              title='Filtros'
+              action={
+                <IconButton size='small' onClick={() => setOpenCollapse(!openCollapse)}>
+                  {openCollapse ? (
+                    <ChevronUp sx={{fontSize: '1.875rem'}}/>
+                  ) : (
+                    <ChevronDown sx={{fontSize: '1.875rem'}}/>
+                  )}
+                </IconButton>
+              }
+            />
+            <CardContent>
+              <Collapse in={openCollapse}>
+                <DonorsFilterView filters={filters}
+                                  setFilter={setFilter}
+                                  onSetFiltersAction={(filters) => {
+                  setFiltersApplied(filters);
+                  setAction({
+                    complete: true,
+                    success: true,
+                    message: 'Filtros aplicados exitosamente',
+                    status: 200
+                  });
+                }}/>
+              </Collapse>
+            </CardContent>
+          </Card>
+          <DonorsTable openCreateDonor={openCreateDonor}
+                       filters={filtersApplied}
+                       setAction={setAction}>
+            {hasWriteDonors && (
+              <Button
+                variant='contained'
+                onClick={() => {
+                  setOpenWindow(true);
+                  setOpenCreateDonor(true);
+                }}
+              >
+                Añadir Donante
+              </Button>
+            )}
+          </DonorsTable>
+          {openCreateDonor && (
+            <CreateDonor
+              openDialog={openCreateDonor}
+              handleClose={() => setOpenCreateDonor(false)}
+              setAction={setAction}
+            />
+          )}
+        </Grid>
+      </Grid>
+      <Portal>
+        <ActionToast action={action} setActionCompletion={setCompletion}/>
+      </Portal>
+    </ApexChartWrapper>
+  );
 };
 
 export default Dashboard;
