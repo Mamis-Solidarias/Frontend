@@ -54,7 +54,7 @@ const Dashboard = () => {
     error: errorEditions,
     data: dataEditions,
     refetch: refetchEditions
-  } = useQuery(GET_MOCHI_EDITIONS);
+  } = useQuery(GET_MOCHI_EDITIONS,{variables: {communityId: 'valor nulo'}} );
   const [communities, setCommunities] = useState<Community[]>([]);
   const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_MOCHI, {
     variables: {edition: filtersApplied.edition, community: filtersApplied.community}
@@ -84,7 +84,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (createMochiFinished) {
-      refetchEditions({edition: filtersApplied.edition, community: filtersApplied.community});
+      refetchEditions();
       setCreateMochiFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,7 +92,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (editMochiFinished) {
-      refetchEditions({edition: filtersApplied.edition, community: filtersApplied.community});
+      refetchEditions();
       setEditMochiFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -157,14 +157,16 @@ const Dashboard = () => {
                       sx={{mx: '.25em'}}
                       variant='standard'
                       type='text'
-                      label='Edición'
-                      value={filterToApply.edition}
-                      onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}))}
-                    >
-                      {editions.map((editionJson: { edition: string }) => {
+                      label='Comunidad'
+                      value={filterToApply.community}
+                      onChange={e => {
+                        setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
+                        refetchEditions({communityId: e.target.value});
+                      }}>
+                      {communities.map(community => {
                         return (
-                          <MenuItem value={editionJson.edition} key={editionJson.edition}>
-                            {editionJson.edition}
+                          <MenuItem value={community.id} key={community.id}>
+                            {community.id + ' - ' + community.name}
                           </MenuItem>
                         );
                       })}
@@ -174,14 +176,14 @@ const Dashboard = () => {
                       sx={{mx: '.25em'}}
                       variant='standard'
                       type='text'
-                      label='Comunidad'
-                      value={filterToApply.community}
-                      onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}))}
+                      label='Edición'
+                      value={filterToApply.edition}
+                      onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}))}
                     >
-                      {communities.map(community => {
+                      {editions.map((editionJson: { edition: string }) => {
                         return (
-                          <MenuItem value={community.id} key={community.id}>
-                            {community.id + ' - ' + community.name}
+                          <MenuItem value={editionJson.edition} key={editionJson.edition}>
+                            {editionJson.edition}
                           </MenuItem>
                         );
                       })}

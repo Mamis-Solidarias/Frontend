@@ -52,8 +52,8 @@ export const GET_MOCHIS = gql`
 `;
 
 export const GET_MOCHI_EDITIONS = gql`
-  query filterQuery {
-    mochiEditions {
+  query filterQuery($communityId: String) {
+    mochiEditions (where: { communityId: {startsWith: $communityId } }) {
       edition
     }
   }
