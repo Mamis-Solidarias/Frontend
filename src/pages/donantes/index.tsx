@@ -14,21 +14,22 @@ import Collapse from '@mui/material/Collapse';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 
-// import { DonorsFilters, donorsFiltersNull } from 'src/types/DonorsFilters';
-// import { useDonorsFilters } from 'src/hooks/donors/useDonorsFilters';
+import { DonorsFilters, donorsFiltersNull } from 'src/types/DonorsFilters';
+import { useDonorsFilters } from 'src/hooks/donors/useDonorsFilters';
 import DonorsTable from 'src/views/donors/DonorsTable';
 import {CreateDonor} from 'src/views/donors/CreateDonor';
 import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
+import DonorsFilterView from "../../views/donors/DonorsFilterView";
 
 const Dashboard = () => {
     const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
     const [openWindow, setOpenWindow] = useState<boolean>(false);
 
-    // const [filtersApplied, setFiltersApplied] = useState<DonorsFilters>(donorsFiltersNull);
-    // const { filters, setFilter } = useDonorsFilters();
+    const [filtersApplied, setFiltersApplied] = useState<DonorsFilters>(donorsFiltersNull);
+    const { filters, setFilter } = useDonorsFilters();
     const [openCollapse, setOpenCollapse] = useState<boolean>(false);
     const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
     const {action, setAction, setCompletion} = useAction();
@@ -65,7 +66,17 @@ const Dashboard = () => {
                             }
                         />
                         <CardContent>
-                            <Collapse in={openCollapse}></Collapse>
+                            <Collapse in={openCollapse}>
+                              <DonorsFilterView filters={filters} setFilter={setFilter} onSetFiltersAction={(filters) => {
+                                setFiltersApplied(filters);
+                                setAction({
+                                  complete: true,
+                                  success: true,
+                                  message: 'Filtros aplicados exitosamente',
+                                  status: 200
+                                });
+                              }}/>
+                            </Collapse>
                         </CardContent>
                     </Card>
                     <DonorsTable openCreateDonor={openCreateDonor} setAction={setAction}>

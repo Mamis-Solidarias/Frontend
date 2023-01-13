@@ -1,7 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,6 +14,7 @@ import { SCHOOL_CYCLES } from 'src/types/SchoolYear';
 import Button from '@mui/material/Button';
 import { AssignDonor } from './AssignDonor';
 import { Action } from 'src/types/Action';
+import Box from "@mui/material/Box";
 
 interface MochiEditionBriefProps {
   dataEdition: MochiEditionLoaded;
@@ -34,11 +33,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
   }, []);
 
   return (
-    <Card>
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='div' align='center'>
-          {'Edición ' + dataEdition.edition}
-        </Typography>
+    <Box>
         <TableContainer>
           <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
             <TableHead>
@@ -121,7 +116,6 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
         {/* {openEditPayment &&
 
         } */}
-      </CardContent>
-    </Card>
+      </Box>
   );
 };
