@@ -27,33 +27,41 @@ export const GET_MOCHI = gql`
   }
 `;
 
-export const GET_MOCHIS = gql`
-  query filterQuery($edition: String) {
-    mochiEditions {
+export const GET_MOCHI_EDITIONS = gql`
+  query filterQuery($communityId: String) {
+    mochiEditions (where: { communityId: {startsWith: $communityId } }) {
+      edition
+    }
+  }
+`;
+
+export const GET_JUNTOS = gql`
+  query getJuntos($edition: String!, $community: String!) {
+    juntosCampaign(edition: $edition, community: $community) {
       communityId
       description
       edition
       id
+      fundraiserGoal
       participants {
-        beneficiaryGender
         beneficiaryId
-        beneficiaryName
-        donationDropOffLocation
-        donationType
-        donorId
-        donorName
+      }
+      donations {
         id
-        schoolCycle
-        state
+      }
+      shoeDetails {
+        count
+        gender
+        size
       }
       provider
     }
   }
 `;
 
-export const GET_MOCHI_EDITIONS = gql`
-  query filterQuery($communityId: String) {
-    mochiEditions (where: { communityId: {startsWith: $communityId } }) {
+export const GET_JUNTOS_EDITIONS = gql`
+  query filterQuery {
+    juntosCampaigns {
       edition
     }
   }

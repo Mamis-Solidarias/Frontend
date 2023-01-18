@@ -121,7 +121,6 @@ export const UserProfileDisplay: FC<{ setAction: (action: Action) => void }> = p
         )}
         <TextField
           error={invalidName}
-          sx={{ padding: '1em' }}
           id='name'
           type='text'
           inputProps={{ pattern: ' .{5,100}' }}
