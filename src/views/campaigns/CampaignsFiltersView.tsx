@@ -14,7 +14,7 @@ interface CampaignsFiltersViewProps {
 }
 
 const CampaignsFiltersView: FC<CampaignsFiltersViewProps> = props => {
-  const { filters, setFilter } = props;
+  const { filters, setFilter, children } = props;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -70,6 +70,7 @@ const CampaignsFiltersView: FC<CampaignsFiltersViewProps> = props => {
           onChange={e => setFilter('donorName', e.target.value)}
         />
       </Box>
+      {children}
     </Box>
   );
 };

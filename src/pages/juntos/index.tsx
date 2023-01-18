@@ -27,7 +27,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import {useQuery} from '@apollo/client';
-import {GET_MOCHI_EDITIONS, GET_MOCHI} from 'src/API/Campaigns/campaigns_graphql';
+import {GET_JUNTOS_EDITIONS, GET_JUNTOS} from 'src/API/Campaigns/campaigns_graphql';
 import {CreateMochi} from 'src/views/campaigns/CreateMochi';
 import Community from 'src/types/Community';
 import {getCommunities} from 'src/API/Beneficiaries/communities_data';
@@ -39,10 +39,10 @@ import {DefaultCard} from "../../views/beneficiaries/BeneficiaryCard/DefaultCard
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
-  const [openCreateMochi, setOpenCreateMochi] = useState<boolean>(false);
-  const [createMochiFinished, setCreateMochiFinished] = useState<boolean>(false);
-  const [openEditMochi, setOpenEditMochi] = useState<boolean>(false);
-  const [editMochiFinished, setEditMochiFinished] = useState<boolean>(false);
+  const [openCreateJuntos, setOpenCreateJuntos] = useState<boolean>(false);
+  const [createJuntosFinished, setCreateJuntosFinished] = useState<boolean>(false);
+  const [openEditJuntos, setOpenEditJuntos] = useState<boolean>(false);
+  const [editJuntosFinished, setEditJuntosFinished] = useState<boolean>(false);
   const {filters, setFilter} = useCampaignsFilters();
   const [filterToApply, setFilterToApply] = useState<CampaignsFilters>(campaignsFiltersNull);
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
@@ -54,9 +54,9 @@ const Dashboard = () => {
     error: errorEditions,
     data: dataEditions,
     refetch: refetchEditions
-  } = useQuery(GET_MOCHI_EDITIONS,{variables: {communityId: 'valor nulo'}} );
+  } = useQuery(GET_JUNTOS_EDITIONS,{variables: {communityId: 'valor nulo'}} );
   const [communities, setCommunities] = useState<Community[]>([]);
-  const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_MOCHI, {
+  const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_JUNTOS, {
     variables: {edition: filtersApplied.edition, community: filtersApplied.community}
   });
 
@@ -83,20 +83,20 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (createMochiFinished) {
+    if (createJuntosFinished) {
       refetchEditions();
-      setCreateMochiFinished(false);
+      setCreateJuntosFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openCreateMochi]);
+  }, [openCreateJuntos]);
 
   useEffect(() => {
-    if (editMochiFinished) {
+    if (editJuntosFinished) {
       refetchEditions();
-      setEditMochiFinished(false);
+      setEditJuntosFinished(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openEditMochi]);
+  }, [openEditJuntos]);
 
   useEffect(() => {
     if (action.complete) {
@@ -112,12 +112,12 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersApplied.community, filtersApplied.edition]);
 
-  if (loadingEditions) return <Box>Cargando ediciones de Mochi...</Box>;
+  if (loadingEditions) return <Box>Cargando ediciones de Juntos...</Box>;
 
   if (errorEditions) {
     return <Box>Error :(</Box>;
   }
-  const editions = dataEditions.mochiEditions;
+  const editions = dataEditions.juntosCampaigns;
 
   return (
     <ApexChartWrapper>
@@ -125,16 +125,25 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Box display='flex' flexDirection='row' justifyContent={"space-between"}>
             <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-              <Box>
+              {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
+                <Box alignItems={"center"}>
+                  <DefaultCard sx={{display: 'flex', flexDirection: 'column'}}
+                               title={"Descripción"} fields={{
+                    Proveedor: dataEdition.mochiEdition.provider,
+                    Edición: dataEdition.mochiEdition.edition
+                  }}/>
+                </Box>
+              }
+              <Box alignItems={'center'}>
                 <Card
                   sx={{display: 'flex', flexDirection: 'column', px: '.25em', py: '.25em'}}>
-                  <CardHeader title={"Seleccionar Campaña"} action={<Button onClick={
+                  <CardHeader title={"Filtros"} action={<Button onClick={
                     () => {
                       setFiltersApplied(filterToApply);
                       setAction({
                         complete: true,
                         success: true,
-                        message: 'Campaña especificada',
+                        message: 'Filtros aplicados',
                         status: 200
                       });
                     }
@@ -171,7 +180,7 @@ const Dashboard = () => {
                       value={filterToApply.edition}
                       onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}))}
                     >
-                      {editions.map((editionJson: { edition: string }) => {
+                      {!!editions && editions.map((editionJson: { edition: string }) => {
                         return (
                           <MenuItem value={editionJson.edition} key={editionJson.edition}>
                             {editionJson.edition}
@@ -182,23 +191,14 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
               </Box>
-              {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
-                <Box alignItems={"center"}>
-                  <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em'}}
-                               title={"Descripción"} fields={{
-                    Proveedor: dataEdition.mochiEdition.provider,
-                    Edición: dataEdition.mochiEdition.edition
-                  }}/>
-                </Box>
-              }
             </Box>
             <Box display='flex' justifyContent='flex-end' alignItems="center">
               {hasWriteCampaigns && (
                 <Button sx={{mx: '.25em'}}
                         variant='contained'
                         onClick={() => {
-                          setOpenEditMochi(true);
-                          setEditMochiFinished(false);
+                          setOpenEditJuntos(true);
+                          setEditJuntosFinished(false);
                         }}
                         disabled={!dataEdition || dataEdition.length === 0}
                 >
@@ -209,8 +209,8 @@ const Dashboard = () => {
                 <Button sx={{mx: '.25em'}}
                         variant='contained'
                         onClick={() => {
-                          setOpenCreateMochi(true);
-                          setCreateMochiFinished(false);
+                          setOpenCreateJuntos(true);
+                          setCreateJuntosFinished(false);
                         }}
                 >
                   Crear
@@ -234,7 +234,8 @@ const Dashboard = () => {
             />
             <CardContent>
               <Collapse in={openCollapse}>
-                <CampaignsFiltersView filters={filters} setFilter={setFilter}>
+                <CampaignsFiltersView filters={filters} setFilter={setFilter}/>
+                <Typography align='center'>
                   <Button
                     variant='contained'
                     onClick={() => {
@@ -255,7 +256,7 @@ const Dashboard = () => {
                   >
                     Aplicar Filtros
                   </Button>
-                </CampaignsFiltersView>
+                </Typography>
               </Collapse>
             </CardContent>
           </Card>
@@ -267,20 +268,20 @@ const Dashboard = () => {
               )}
             </CardContent>
           </Card>
-          {openCreateMochi && (
-            <CreateMochi openDialog={openCreateMochi} handleClose={() => {
-              setCreateMochiFinished(true);
-              setOpenCreateMochi(false);
+          {openCreateJuntos && (
+            <CreateMochi openDialog={openCreateJuntos} handleClose={() => {
+              setCreateJuntosFinished(true);
+              setOpenCreateJuntos(false);
             }} setAction={setAction} onNetworkError={onNetworkError}/>
           )}
 
-          {openEditMochi && !!dataEdition.mochiEdition && (
+          {openEditJuntos && !!dataEdition.mochiEdition && (
             <EditMochi
-              openDialog={openEditMochi}
+              openDialog={openEditJuntos}
               mochiEdition={dataEdition.mochiEdition}
               handleClose={() => {
-                setEditMochiFinished(true);
-                setOpenEditMochi(false);
+                setEditJuntosFinished(true);
+                setOpenEditJuntos(false);
               }}
               setAction={setAction}
               onNetworkError={onNetworkError}
