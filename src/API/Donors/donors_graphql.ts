@@ -15,6 +15,8 @@ export const GET_DONORS = gql`
         createdBy
         name
         isGodFather
+        mercadoPagoEmail
+        dni
         email
         phone
         owner {

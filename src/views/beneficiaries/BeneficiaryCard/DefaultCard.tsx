@@ -1,9 +1,7 @@
-import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import React, {FC} from 'react';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 
 interface DefaultCardProps {
   sx: any;
