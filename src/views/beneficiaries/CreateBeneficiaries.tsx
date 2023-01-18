@@ -353,7 +353,6 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           variant='contained'
           onClick={async () => {
             try {
-              console.log('estamos aca')
               await createBeneficiaries(familyId, beneficiaries);
               resetAllFields();
               setAction({
@@ -364,12 +363,12 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
               });
               handleClose();
             } catch (e: any) {
-              console.log(e)
+              const messageJson = e?.response?.data?.errors;
+              const errorMessage = !!messageJson ? (Object.entries(messageJson).map( entry => entry[1])[0] as any) as string: "Ha ocurrido un error cargando los beneficiarios. Intente nuevamente más tarde";
               setAction({
                 complete: true,
                 success: false,
-                message:
-                  'No se han podido cargar los beneficiarios. Revisar que no haya datos repetidos y reintentar nuevamente',
+                message: errorMessage,
                 status: e.statusCode
               });
             }
