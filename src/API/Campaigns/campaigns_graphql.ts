@@ -14,7 +14,7 @@ export const GET_MOCHI = gql`
         beneficiaryGender
         beneficiaryId
         beneficiaryName
-        donationDropOffLocation
+        donationDropOffPoint
         donationType
         donorId
         donorName
