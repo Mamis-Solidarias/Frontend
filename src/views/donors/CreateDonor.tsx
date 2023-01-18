@@ -58,6 +58,20 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                         variant='standard'
                     />
                     <TextField
+                      id='dni'
+                      type='text'
+                      sx={{py: '.3em'}}
+                      inputProps={{pattern: '^.+$'}}
+                      label='DNI'
+                      placeholder='23456789'
+                      value={donor.dni}
+                      onChange={(e: any) => {
+                        setDonorField('dni', e.target.value);
+                      }}
+                      fullWidth={true}
+                      variant='standard'
+                    />
+                    <TextField
                         id='email'
                         type='text'
                         sx={{py: '.3em'}}
@@ -70,6 +84,20 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                         }}
                         fullWidth={true}
                         variant='standard'
+                    />
+                    <TextField
+                      id='mercadoPagoEmail'
+                      type='text'
+                      sx={{py: '.3em'}}
+                      inputProps={{pattern: '^.+$'}}
+                      label='Email de Mercado Pago'
+                      placeholder='pmendoza@gmail.com'
+                      value={donor.mercadoPagoEmail}
+                      onChange={(e: any) => {
+                        setDonorField('mercadoPagoEmail', e.target.value);
+                      }}
+                      fullWidth={true}
+                      variant='standard'
                     />
                     <TextField
                         id='phone'
@@ -112,7 +140,9 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                                     name: donor.name,
                                     email: donor.email,
                                     phone: donor.phone,
-                                    isGodFather: donor.isGodFather
+                                    isGodFather: donor.isGodFather,
+                                    mercadoPagoEmail: donor.mercadoPagoEmail,
+                                    dni: donor.dni
                                 });
                                 setAction({
                                     complete: true,

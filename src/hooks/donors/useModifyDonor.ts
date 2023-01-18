@@ -5,6 +5,8 @@ export const defaultDonor = {
   name: '',
   email: '',
   phone: '',
+  mercadoPagoEmail: '',
+  dni: '',
   isGodFather: false
 };
 

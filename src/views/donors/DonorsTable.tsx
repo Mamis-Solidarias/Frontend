@@ -95,7 +95,9 @@ const DonorsTable: FC<DonorsTableProps> = props => {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Nombre</TableCell>
+              <TableCell>DNI</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell>Email de MP</TableCell>
               <TableCell>Teléfono</TableCell>
               <TableCell>Padrinazgo</TableCell>
               <TableCell>Creador</TableCell>
@@ -107,8 +109,9 @@ const DonorsTable: FC<DonorsTableProps> = props => {
               <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }} key={row.id}>
                 <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
-
+                <TableCell>{row.dni}</TableCell>
                 <TableCell>{row.email ? row.email : '-'}</TableCell>
+                <TableCell>{row.mercadoPagoEmail ? row.mercadoPagoEmail : '-'}</TableCell>
                 <TableCell>{row.phone ? row.phone : '-'}</TableCell>
                 <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
                 <TableCell>{row.owner?.name}</TableCell>
