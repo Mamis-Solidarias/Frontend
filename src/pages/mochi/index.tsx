@@ -134,7 +134,7 @@ const Dashboard = () => {
                       setAction({
                         complete: true,
                         success: true,
-                        message: 'Campa',
+                        message: 'Campaña especificada',
                         status: 200
                       });
                     }
@@ -234,8 +234,7 @@ const Dashboard = () => {
             />
             <CardContent>
               <Collapse in={openCollapse}>
-                <CampaignsFiltersView filters={filters} setFilter={setFilter}/>
-                <Typography align='center'>
+                <CampaignsFiltersView filters={filters} setFilter={setFilter}>
                   <Button
                     variant='contained'
                     onClick={() => {
@@ -256,7 +255,7 @@ const Dashboard = () => {
                   >
                     Aplicar Filtros
                   </Button>
-                </Typography>
+                </CampaignsFiltersView>
               </Collapse>
             </CardContent>
           </Card>
