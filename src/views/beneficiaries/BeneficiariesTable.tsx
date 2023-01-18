@@ -29,6 +29,12 @@ import {LinearProgress, Typography} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import {ConfirmActionDialog} from "../pages/misc/ConfirmActionDialog";
+import * as Excel from 'exceljs';
+import * as FileSaver from 'file-saver';
+import {Cell, Column, Worksheet} from "exceljs";
+import BENEFICIARY_TYPES from "../../types/BeneficiaryTypes";
+import GENDERS from "../../types/Genders";
+import {SCHOOL_YEARS} from "../../types/SchoolYear";
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
@@ -125,9 +131,107 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   const pageInfo = data === undefined ? undefined : data.filteredBeneficiaries.pageInfo;
   const edges = data === undefined ? [] : data.filteredBeneficiaries.edges;
 
+  const _autosizeColumnCells = ({columns}: Worksheet) => {
+    let dataMax: number[];
+    let max: number;
+
+    // @ts-ignore
+    columns.forEach((column: Column) => {
+      dataMax = [];
+      column.eachCell({includeEmpty: false}, (cell: Cell) => {
+        dataMax.push(cell.value?.toString().length || 0);
+      });
+      max = Math.max(...dataMax);
+      column.width = max < 10 ? 10 : max;
+    });
+  }
+
+  const nombresFiltros = {
+    ageStart: 'Edad de Comienzo',
+    ageEnd: 'Edad de Fin',
+    lastName: 'Apellido',
+    firstName: 'Nombre',
+    type: 'Tipo',
+    dniStarts: 'DNI comienza con',
+    familyId: 'Identificador de Familia',
+    communityCode: 'Código de la Comunidad',
+    school: 'Escuela',
+    gender: 'Género',
+    isActive: 'Está activo',
+    familyName: 'Nombre de Familia'
+  }
+
+  const exportToExcel = async () => {
+    try {
+      const workbook = new Excel.Workbook();
+      const worksheet = workbook.addWorksheet('Beneficiarios Filtrados');
+      worksheet.addRow(['Filtros']);
+      worksheet.addRow(Object.entries(filters).map(entry => nombresFiltros[entry[0] as keyof typeof nombresFiltros] + ': ' + (!!entry[1] ? entry[1]: '-')));
+      const TRANSPORT_METHODS = {
+        BIKE: 'Bicicleta',
+        CAR: 'Auto',
+        HORSE: 'Caballo',
+        PUBLIC_TRANSPORT: 'Transporte Público',
+        WALKING: 'Caminando',
+        OTHER: 'Otros'
+      };
+
+      worksheet.addTable({
+        name: 'BeneficiariosFiltrados',
+        ref: 'A4',
+        headerRow: true,
+        style: {
+          theme: 'TableStyleLight7',
+          showRowStripes: true,
+        },
+        columns: [
+          {name: 'ID Familia', filterButton: true},
+          {name: 'DNI', filterButton: true},
+          {name: 'Nombre Completo', filterButton: true},
+          {name: 'Género', filterButton: true},
+          {name: 'Fecha de Nacimiento', filterButton: true},
+          {name: 'Tipo', filterButton: true},
+          {name: 'Escuela', filterButton: true},
+          {name: 'Año Académico', filterButton: true},
+          {name: 'Método de Transporte', filterButton: true},
+          {name: 'Talle Calzado', filterButton: true},
+          {name: 'Talle Remera', filterButton: true},
+          {name: 'Talle Pantalones', filterButton: true},
+          {name: 'Trabajo', filterButton: true},
+          {name: 'Vacuna COVID', filterButton: true},
+          {name: 'Vacunas Mandatorias', filterButton: true},
+          {name: 'Observaciones de Salud', filterButton: true},
+        ],
+        rows: nodes.map((row: Beneficiary) => [row.familyId, row.dni, row.firstName + ' ' + row.lastName, GENDERS[row.gender as keyof typeof GENDERS],
+          row.birthday, BENEFICIARY_TYPES[row.type as keyof typeof BENEFICIARY_TYPES],
+          row.education?.school ? row.education?.school : '-', row.education?.year ? SCHOOL_YEARS[row.education?.year as keyof typeof SCHOOL_YEARS] : '-',
+          row.education?.transportationMethod ? TRANSPORT_METHODS[row.education?.transportationMethod as keyof typeof TRANSPORT_METHODS] : '-',
+          row.clothes?.shoeSize ? row.clothes?.shoeSize : '-', row.clothes?.shirtSize ? row.clothes?.shirtSize : '-',
+          row.clothes?.pantsSize ? row.clothes?.pantsSize : '-',
+          row.job?.title, row.health?.hasCovidVaccine ? 'Sí' : 'No', row.health?.hasMandatoryVaccines ? 'Sí' : 'No',
+          row.health?.observations ? row.health?.observations : '-']),
+      });
+      _autosizeColumnCells(worksheet);
+      workbook.xlsx.writeBuffer().then(data => {
+        const blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
+        FileSaver.saveAs(blob, 'Beneficiarios Filtrados.xlsx');
+      });
+    } catch (err) {
+      setAction({
+        complete: false,
+        status: 400,
+        message: "Ocurrió un error descargando el archivo",
+        success: false,
+      })
+    }
+  }
+
   return (
     <Card>
-      <CardHeader action={props.children} title='Beneficiarios' titleTypographyProps={{variant: 'h6'}}/>
+      <CardHeader action={<>
+        {props.children}
+        <Button variant='contained' onClick={async () => await exportToExcel()}>Exportar</Button>
+      </>} title='Beneficiarios' titleTypographyProps={{variant: 'h6'}}/>
       <TableContainer>
         {loading && <LinearProgress/>}
         <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
@@ -235,16 +339,16 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
         />
       )}
       {openConfirmAction &&
-      <ConfirmActionDialog openDialog={openConfirmAction} action={async () => {
-        await deleteBeneficiary(selectedBeneficiary?.id as string).then(() => refetchWithSameParameters());
-        setAction({
-          complete: true,
-          success: true,
-          message: 'Usuario desactivado exitosamente',
-          status: 200
-        });
-        setOpenConfirmAction(false)
-      }} handleClose={() => setOpenConfirmAction(false)}/>
+        <ConfirmActionDialog openDialog={openConfirmAction} action={async () => {
+          await deleteBeneficiary(selectedBeneficiary?.id as string).then(() => refetchWithSameParameters());
+          setAction({
+            complete: true,
+            success: true,
+            message: 'Usuario desactivado exitosamente',
+            status: 200
+          });
+          setOpenConfirmAction(false)
+        }} handleClose={() => setOpenConfirmAction(false)}/>
       }
       {openEditBeneficiary && !!selectedBeneficiary && (
         <BeneficiaryEditForm
