@@ -9,9 +9,9 @@ import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
 import {updateFiltersApplied, updateFiltersToApply} from "src/features/juntosSlice";
 import {Action} from "src/types/Action";
 import {useEffect, useState} from "react";
-import Community from "src/types/beneficiaries/Community";
 import {userIsLoggedIn} from "src/utils/sessionManagement";
 import {getCommunities} from "src/API/Beneficiaries/communities_data";
+import Community from "../../../types/beneficiaries/Community";
 
 interface SelectEditionProps {
   setAction: (action: Action) => void;

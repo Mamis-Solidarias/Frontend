@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
-import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
+import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
 
 interface JuntosBriefInformation {
   juntosEdition: JuntosEdition
