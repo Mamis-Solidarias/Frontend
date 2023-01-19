@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CampaignsFilters, campaignsFiltersDefault } from 'src/types/CampaignsFilters';
+import { CampaignsFilters, campaignsFiltersDefault } from 'src/types/campaigns/CampaignsFilters';
 
 export const useCampaignsFilters = () => {
   const [filters, setFilters] = useState<CampaignsFilters>(campaignsFiltersDefault);

@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import React, {FC, useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import {UpdateCommunity} from './UpdateCommunity';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import {GET_COMMUNITIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
 import {useBeneficiariesPaging} from 'src/hooks/beneficiaries/useBeneficiariesPaging';
 import {useQuery} from '@apollo/client';

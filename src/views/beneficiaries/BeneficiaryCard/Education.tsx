@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { SCHOOL_YEARS } from 'src/types/SchoolYear';
+import { SCHOOL_YEARS } from 'src/types/beneficiaries/SchoolYear';
 import { DefaultCard } from './DefaultCard';
 
 export const EducationCard: FC<{ education: any; sx?: any }> = props => {

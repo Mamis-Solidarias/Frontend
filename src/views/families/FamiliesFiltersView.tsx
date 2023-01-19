@@ -2,10 +2,10 @@ import React, {FC} from 'react';
 
 // ** MUI Imports
 import MenuItem from '@mui/material/MenuItem';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import TextField from '@mui/material/TextField';
 
-import {BeneficiariesFilters} from 'src/types/BeneficiariesFilters';
+import {BeneficiariesFilters} from 'src/types/beneficiaries/BeneficiariesFilters';
 import {Card, Grid} from "@mui/material";
 import Button from "@mui/material/Button";
 
@@ -18,7 +18,7 @@ interface FamiliesFiltersViewProps {
 
 const FamiliesFiltersView: FC<FamiliesFiltersViewProps> = props => {
     const {communities, filters, setFilter, onSetFiltersAction} = props;
-    
+
     // const [openCollapse, setOpenCollapse] = useState<boolean>(false);
 
 

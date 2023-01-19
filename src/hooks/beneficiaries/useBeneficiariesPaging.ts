@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BeneficiariesPaging, defaultPagingSettings } from 'src/types/BeneficiariesPaging';
+import { BeneficiariesPaging, defaultPagingSettings } from 'src/types/beneficiaries/BeneficiariesPaging';
 
 export const useBeneficiariesPaging = () => {
   const [paging, setPaging] = useState<BeneficiariesPaging>(defaultPagingSettings);

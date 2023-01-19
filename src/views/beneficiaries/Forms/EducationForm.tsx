@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
 import { CreateBeneficiaryExtras } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
-import { SCHOOL_YEARS } from 'src/types/SchoolYear';
+import { SCHOOL_YEARS } from 'src/types/beneficiaries/SchoolYear';
 
 interface EducationFormProps {
   beneficiaryFields: CreateBeneficiaryFields;

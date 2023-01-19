@@ -1,4 +1,4 @@
-import { Donor } from 'src/types/Donor';
+import { Donor } from 'src/types/donors/Donor';
 import { axiosClient } from './initialization';
 
 export const createDonor = async (data: Donor) => {

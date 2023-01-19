@@ -16,7 +16,7 @@ import {EditPermissions} from './EditPermissions';
 import TablePagination from '@mui/material/TablePagination';
 import {EditPassword} from './EditPassword';
 import {UpdateUser} from './UpdateUser';
-import User from 'src/types/User';
+import User from 'src/types/users/User';
 import {useRouter} from 'next/router';
 import {
     hasNoPermission,

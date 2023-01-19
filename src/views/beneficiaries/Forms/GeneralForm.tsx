@@ -5,9 +5,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
-import Family from 'src/types/Family';
+import Family from 'src/types/beneficiaries/Family';
 
 interface GeneralFormProps {
   beneficiaryFields: CreateBeneficiaryFields;

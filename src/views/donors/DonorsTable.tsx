@@ -15,13 +15,13 @@ import { useQuery } from '@apollo/client';
 import { useDonorsPaging } from 'src/hooks/donors/useDonorsPaging';
 import { GET_DONORS } from 'src/API/Donors/donors_graphql';
 import DonorsTablePagination from './DonorsTablePagination';
-import { Donor } from 'src/types/Donor';
+import { Donor } from 'src/types/donors/Donor';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { Action } from 'src/types/Action';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 import {Card, CardHeader, LinearProgress, Typography} from "@mui/material";
-import {DonorsFilters} from "src/types/DonorsFilters";
+import {DonorsFilters} from "src/types/donors/DonorsFilters";
 
 interface DonorsTableProps {
   openCreateDonor: boolean;

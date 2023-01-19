@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DonorsPaging, defaultPagingSettings } from 'src/types/DonorsPaging';
+import { DonorsPaging, defaultPagingSettings } from 'src/types/donors/DonorsPaging';
 
 export const useDonorsPaging = () => {
   const [paging, setPaging] = useState<DonorsPaging>(defaultPagingSettings);

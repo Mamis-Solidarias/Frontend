@@ -9,10 +9,10 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import {BeneficiariesFilters} from 'src/types/BeneficiariesFilters';
+import {BeneficiariesFilters} from 'src/types/beneficiaries/BeneficiariesFilters';
 import {useBeneficiariesPaging} from 'src/hooks/beneficiaries/useBeneficiariesPaging';
 import {useQuery} from '@apollo/client';
-import Beneficiary from 'src/types/Beneficiary';
+import Beneficiary from 'src/types/beneficiaries/Beneficiary';
 import {GET_BENEFICIARIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
 import DisplayBeneficiary from './DisplayBeneficiary';
 import Button from '@mui/material/Button';
@@ -20,7 +20,7 @@ import BeneficiaryTablePagination from './BeneficiaryTablePagination';
 import {deleteBeneficiary} from 'src/API/Beneficiaries/beneficiaries_data';
 import {activateBeneficiary} from './../../API/Beneficiaries/beneficiaries_data';
 import {BeneficiaryEditForm} from './BeneficiaryEditForm';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import {useRouter} from 'next/router';
 import {Action} from 'src/types/Action';
 import Box from '@mui/material/Box';
@@ -32,9 +32,9 @@ import {ConfirmActionDialog} from "../pages/misc/ConfirmActionDialog";
 import * as Excel from 'exceljs';
 import * as FileSaver from 'file-saver';
 import {Cell, Column, Worksheet} from "exceljs";
-import BENEFICIARY_TYPES from "../../types/BeneficiaryTypes";
-import GENDERS from "../../types/Genders";
-import {SCHOOL_YEARS} from "../../types/SchoolYear";
+import BENEFICIARY_TYPES from "../../types/beneficiaries/BeneficiaryTypes";
+import GENDERS from "../../types/beneficiaries/Genders";
+import {SCHOOL_YEARS} from "../../types/beneficiaries/SchoolYear";
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;

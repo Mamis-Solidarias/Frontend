@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 
 import {Grid, Switch} from "@mui/material";
 import Button from "@mui/material/Button";
-import {DonorsFilters} from "../../types/DonorsFilters";
+import {DonorsFilters} from "../../types/donors/DonorsFilters";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 interface FamiliesFiltersViewProps {

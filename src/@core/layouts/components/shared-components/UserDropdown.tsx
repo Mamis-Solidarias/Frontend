@@ -16,7 +16,7 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant';
 import AccountOutline from 'mdi-material-ui/AccountOutline';
 
 import Button from '@mui/material/Button';
-import User from 'src/types/User';
+import User from 'src/types/users/User';
 import { logoutUser } from 'src/API/Users/auth';
 import { userIsLoggedIn } from 'src/utils/sessionManagement';
 

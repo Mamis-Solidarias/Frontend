@@ -18,8 +18,8 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Action } from 'src/types/Action';
-import Roles from "src/types/Roles";
-import Role from "src/types/Role";
+import Roles from "src/types/users/Roles";
+import Role from "src/types/users/Role";
 
 interface EditPermissionsProps {
   openDialog: boolean;

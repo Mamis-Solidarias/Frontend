@@ -5,8 +5,8 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import { SCHOOL_CYCLES } from 'src/types/SchoolYear';
-import { CampaignsFilters } from 'src/types/CampaignsFilters';
+import { SCHOOL_CYCLES } from 'src/types/beneficiaries/SchoolYear';
+import { CampaignsFilters } from 'src/types/campaigns/CampaignsFilters';
 
 interface CampaignsFiltersViewProps {
   filters: CampaignsFilters;

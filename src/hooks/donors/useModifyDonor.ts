@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Donor } from 'src/types/Donor';
+import { Donor } from 'src/types/donors/Donor';
 
 export const defaultDonor = {
   name: '',

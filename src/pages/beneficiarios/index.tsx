@@ -9,13 +9,13 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTable';
 import { CreateBeneficiaries } from 'src/views/beneficiaries/CreateBeneficiaries';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import { useRouter } from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
-import { BeneficiariesFilters, beneficiariesFiltersNull } from '../../types/BeneficiariesFilters';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from '../../types/beneficiaries/BeneficiariesFilters';
 import BeneficiariesFiltersViewPlus from 'src/views/beneficiaries/BeneficiariesFiltersViewPlus';
 
 const Dashboard = () => {

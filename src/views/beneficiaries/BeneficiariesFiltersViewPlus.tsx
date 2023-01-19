@@ -2,19 +2,19 @@ import React, { FC, useEffect, useState } from 'react';
 
 // ** MUI Imports
 import MenuItem from '@mui/material/MenuItem';
-import Family from 'src/types/Family';
-import Community from 'src/types/Community';
+import Family from 'src/types/beneficiaries/Family';
+import Community from 'src/types/beneficiaries/Community';
 import TextField from '@mui/material/TextField';
 
-import GENDERS from 'src/types/Genders';
-import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
+import GENDERS from 'src/types/beneficiaries/Genders';
+import BENEFICIARY_TYPES from 'src/types/beneficiaries/BeneficiaryTypes';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button, Card, CardContent, Collapse, Grid, IconButton, Switch } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
 import { useBeneficiariesFilters } from '../../hooks/beneficiaries/useBeneficiariesFilters';
 import { getFamiliesByCommunity } from '../../API/Beneficiaries/communities_data';
-import { BeneficiariesFilters } from '../../types/BeneficiariesFilters';
+import { BeneficiariesFilters } from '../../types/beneficiaries/BeneficiariesFilters';
 
 interface BeneficiariesFiltersViewPlusProps {
   communities: Community[];

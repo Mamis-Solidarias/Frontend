@@ -1,4 +1,4 @@
-import Beneficiary from './Beneficiary';
+import Beneficiary from '../beneficiaries/Beneficiary';
 
 export interface MochiEdition {
   edition: string;
