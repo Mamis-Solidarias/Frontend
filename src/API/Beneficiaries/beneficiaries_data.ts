@@ -1,6 +1,6 @@
-import Education from 'src/types/Education';
-import Health from 'src/types/Health';
-import Job from 'src/types/Job';
+import Education from 'src/types/beneficiaries/Education';
+import Health from 'src/types/beneficiaries/Health';
+import Job from 'src/types/beneficiaries/Job';
 import {axiosClient} from './initialization';
 
 export const activateBeneficiary = async (id: string) => {
@@ -34,11 +34,11 @@ export const updateBeneficiary = async (
         } else if (data.education!.year !== null) {
             data.education!.year = data.education!.year!.replaceAll('_', '');
         }
-        
+
         if (data.education!.transportationMethod?.trim() === '') {
             data.education!.transportationMethod = null;
         }
     }
-        
+
     return axiosClient.patch('/beneficiaries/' + id, data);
 };

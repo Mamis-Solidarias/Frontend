@@ -20,44 +20,35 @@ import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import {useCampaignsFilters} from 'src/hooks/campaigns/useCampaignsFilters';
-import {CampaignsFilters, campaignsFiltersNull} from 'src/types/CampaignsFilters';
+import {CampaignsFilters} from 'src/types/campaigns/CampaignsFilters';
 import CampaignsFiltersView from 'src/views/campaigns/CampaignsFiltersView';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
 import {useQuery} from '@apollo/client';
 import {GET_JUNTOS_EDITIONS, GET_JUNTOS} from 'src/API/Campaigns/campaigns_graphql';
-import {CreateMochi} from 'src/views/campaigns/CreateMochi';
-import Community from 'src/types/Community';
-import {getCommunities} from 'src/API/Beneficiaries/communities_data';
+import {CreateMochi} from 'src/views/campaigns/mochi/CreateMochi';
 import {MochiEditionBrief} from 'src/views/campaigns/MochiEditionBrief';
-import {EditMochi} from 'src/views/campaigns/EditMochi';
+import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {DefaultCard} from "../../views/beneficiaries/BeneficiaryCard/DefaultCard";
+import SelectEdition from 'src/views/campaigns/juntos/SelectEdition';
+import {useAppDispatch, useAppSelector} from 'src/hooks/reduxHooks';
+import JuntosBriefInformation from 'src/views/campaigns/juntos/JuntosBriefInformation';
+import {updateOpenCreateJuntos, updateOpenEditJuntos} from "../../features/juntosSlice";
 
-const Dashboard = () => {
-  // const [openWindow, setOpenWindow] = useState<boolean>(false);
-  const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
-  const [openCreateJuntos, setOpenCreateJuntos] = useState<boolean>(false);
-  const [createJuntosFinished, setCreateJuntosFinished] = useState<boolean>(false);
-  const [openEditJuntos, setOpenEditJuntos] = useState<boolean>(false);
-  const [editJuntosFinished, setEditJuntosFinished] = useState<boolean>(false);
-  const {filters, setFilter} = useCampaignsFilters();
-  const [filterToApply, setFilterToApply] = useState<CampaignsFilters>(campaignsFiltersNull);
-  const [openCollapse, setOpenCollapse] = useState<boolean>(false);
+export default () => {
   const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const juntosSelector = useAppSelector(state => state.juntos);
+
   const {
     loading: loadingEditions,
     error: errorEditions,
     data: dataEditions,
     refetch: refetchEditions
-  } = useQuery(GET_JUNTOS_EDITIONS,{variables: {communityId: 'valor nulo'}} );
-  const [communities, setCommunities] = useState<Community[]>([]);
+  } = useQuery(GET_JUNTOS_EDITIONS, {variables: {communityId: 'valor nulo'}});
   const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_JUNTOS, {
-    variables: {edition: filtersApplied.edition, community: filtersApplied.community}
+    variables: {edition: juntosSelector.filtersApplied.edition, community: juntosSelector.filtersApplied.community}
   });
 
   const onNetworkError: (err: any) => void = err => {
@@ -75,42 +66,9 @@ const Dashboard = () => {
   useEffect(() => {
     if (userIsLoggedIn()) {
       setHasWriteCampaigns(hasWriteAccess('Campaigns'));
-      getCommunities().then(result => {
-        setCommunities(result.data.communities);
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (createJuntosFinished) {
-      refetchEditions();
-      setCreateJuntosFinished(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openCreateJuntos]);
-
-  useEffect(() => {
-    if (editJuntosFinished) {
-      refetchEditions();
-      setEditJuntosFinished(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openEditJuntos]);
-
-  useEffect(() => {
-    if (action.complete) {
-      refetchEdition({edition: filtersApplied.edition, community: filtersApplied.community});
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [action.complete]);
-
-  useEffect(() => {
-    if (!!filtersApplied.community && !!filtersApplied.edition) {
-      refetchEdition({edition: filtersApplied.edition, community: filtersApplied.community});
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersApplied.community, filtersApplied.edition]);
 
   if (loadingEditions) return <Box>Cargando ediciones de Juntos...</Box>;
 
@@ -125,100 +83,30 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <Box display='flex' flexDirection='row' justifyContent={"space-between"}>
             <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-              {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
-                <Box alignItems={"center"}>
-                  <DefaultCard sx={{display: 'flex', flexDirection: 'column'}}
-                               title={"Descripción"} fields={{
-                    Proveedor: dataEdition.mochiEdition.provider,
-                    Edición: dataEdition.mochiEdition.edition
-                  }}/>
-                </Box>
+              <SelectEdition setAction={setAction} refetchEditions={refetchEditions} editions={editions}/>
+              {!!dataEdition && !!dataEdition.juntosEdition && (!!dataEdition.juntosEdition.provider || !!dataEdition.juntosEdition.edition) &&
+                <JuntosBriefInformation juntosEdition={dataEdition.juntosEdition}/>
               }
-              <Box alignItems={'center'}>
-                <Card
-                  sx={{display: 'flex', flexDirection: 'column', px: '.25em', py: '.25em'}}>
-                  <CardHeader title={"Filtros"} action={<Button onClick={
-                    () => {
-                      setFiltersApplied(filterToApply);
-                      setAction({
-                        complete: true,
-                        success: true,
-                        message: 'Filtros aplicados',
-                        status: 200
-                      });
-                    }
-                  }
-                  >
-                    Aplicar cambios
-                  </Button>}/>
-                  <CardContent sx={{flexDirection: 'row'}}>
-                    <TextField
-                      select
-                      sx={{mx: '.25em'}}
-                      variant='standard'
-                      type='text'
-                      label='Comunidad'
-                      value={filterToApply.community}
-                      onChange={e => {
-                        setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
-                        refetchEditions({communityId: e.target.value});
-                      }}>
-                      {communities.map(community => {
-                        return (
-                          <MenuItem value={community.id} key={community.id}>
-                            {community.id + ' - ' + community.name}
-                          </MenuItem>
-                        );
-                      })}
-                    </TextField>
-                    <TextField
-                      select
-                      sx={{mx: '.25em'}}
-                      variant='standard'
-                      type='text'
-                      label='Edición'
-                      value={filterToApply.edition}
-                      onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}))}
-                    >
-                      {!!editions && editions.map((editionJson: { edition: string }) => {
-                        return (
-                          <MenuItem value={editionJson.edition} key={editionJson.edition}>
-                            {editionJson.edition}
-                          </MenuItem>
-                        );
-                      })}
-                    </TextField>
-                  </CardContent>
-                </Card>
-              </Box>
             </Box>
             <Box display='flex' justifyContent='flex-end' alignItems="center">
-              {hasWriteCampaigns && (
+              {hasWriteCampaigns && (<>
                 <Button sx={{mx: '.25em'}}
                         variant='contained'
-                        onClick={() => {
-                          setOpenEditJuntos(true);
-                          setEditJuntosFinished(false);
-                        }}
+                        onClick={() => dispatch(updateOpenEditJuntos(true))}
                         disabled={!dataEdition || dataEdition.length === 0}
                 >
                   Editar
                 </Button>
-              )}
-              {hasWriteCampaigns && (
                 <Button sx={{mx: '.25em'}}
                         variant='contained'
-                        onClick={() => {
-                          setOpenCreateJuntos(true);
-                          setCreateJuntosFinished(false);
-                        }}
+                        onClick={() => dispatch(updateOpenCreateJuntos(true))}
                 >
                   Crear
                 </Button>
-              )}
+              </>)}
             </Box>
-
           </Box>
+
           <Card sx={{my: '2em', width: '100%', display: 'flex', flexDirection: 'column'}}>
             <CardHeader
               title='Filtros'
@@ -295,5 +183,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;

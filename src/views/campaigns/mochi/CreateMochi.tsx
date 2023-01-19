@@ -7,17 +7,17 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useEffect, useState } from 'react';
 import { Action } from 'src/types/Action';
-import { defaultEdition, MochiEdition } from 'src/types/MochiEdition';
+import { defaultEdition, MochiEdition } from 'src/types/campaigns/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
 import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import MenuItem from '@mui/material/MenuItem';
 import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
-import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
-import Beneficiary from 'src/types/Beneficiary';
-import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
+import BeneficiariesFiltersView from '../../beneficiaries/BeneficiariesFiltersViewSimple';
+import Beneficiary from 'src/types/beneficiaries/Beneficiary';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/beneficiaries/BeneficiariesFilters';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 
 interface CreateMochiProps {

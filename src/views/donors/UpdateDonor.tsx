@@ -11,7 +11,7 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import {useModifyDonor} from 'src/hooks/donors/useModifyDonor';
-import {Donor} from 'src/types/Donor';
+import {Donor} from 'src/types/donors/Donor';
 import {Action} from 'src/types/Action';
 
 interface UpdateDonorProps {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BeneficiariesFilters, beneficiariesFiltersDefaults } from 'src/types/BeneficiariesFilters';
+import { BeneficiariesFilters, beneficiariesFiltersDefaults } from 'src/types/beneficiaries/BeneficiariesFilters';
 
 export const useBeneficiariesFilters = () => {
   const [filters, setFilters] = useState<BeneficiariesFilters>(beneficiariesFiltersDefaults);

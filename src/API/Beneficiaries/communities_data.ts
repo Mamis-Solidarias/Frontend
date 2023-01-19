@@ -1,6 +1,6 @@
 import { axiosClient } from './initialization';
-import Community from 'src/types/Community';
-import { FamiliesHttp } from 'src/types/Family';
+import Community from 'src/types/beneficiaries/Community';
+import { FamiliesHttp } from 'src/types/beneficiaries/Family';
 
 export const createCommunities = async (data: Community[]) => {
   return axiosClient.post('communities', { communities: data });

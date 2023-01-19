@@ -1,5 +1,5 @@
-import Role from 'src/types/Role';
-import User, { UserNoId, UsersHttp } from 'src/types/User';
+import Role from 'src/types/users/Role';
+import User, { UserNoId, UsersHttp } from 'src/types/users/User';
 import { axiosClient } from './initialization';
 
 export const getUsers = async (page: number, pageSize: number): Promise<{ data: UsersHttp }> => {

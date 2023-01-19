@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Switch from '@mui/material/Switch';
-import Contact from 'src/types/Contact';
+import Contact from 'src/types/beneficiaries/Contact';
 import cloneDeep from 'lodash.clonedeep';
 
 interface ContactFormProps {

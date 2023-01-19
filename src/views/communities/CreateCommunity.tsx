@@ -14,7 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import {createCommunities} from 'src/API/Beneficiaries/communities_data';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import IconButton from '@mui/material/IconButton';
 import {Action} from 'src/types/Action';
 

@@ -1,6 +1,6 @@
-import { CampaignDonor } from 'src/types/CampaignDonor';
-import { JuntosEdition, JuntosEditionModify } from 'src/types/JuntosEdition';
-import { MochiEdition, MochiEditionModify, MochiImport } from 'src/types/MochiEdition';
+import { CampaignDonor } from 'src/types/campaigns/CampaignDonor';
+import { JuntosEdition, JuntosEditionModify } from 'src/types/campaigns/JuntosEdition';
+import { MochiEdition, MochiEditionModify, MochiImport } from 'src/types/campaigns/MochiEdition';
 import { axiosClient } from './initialization';
 
 export const createMochiEdition = async (campaign: MochiEdition) => {

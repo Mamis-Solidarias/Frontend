@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import Beneficiary from 'src/types/Beneficiary';
+import Beneficiary from 'src/types/beneficiaries/Beneficiary';
 import DisplayBeneficiary from './DisplayBeneficiary';
 
 interface BeneficiariesTableProps {

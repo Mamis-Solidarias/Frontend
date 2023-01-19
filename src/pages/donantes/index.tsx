@@ -14,7 +14,7 @@ import Collapse from '@mui/material/Collapse';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 
-import {DonorsFilters, donorsFiltersNull} from 'src/types/DonorsFilters';
+import {DonorsFilters, donorsFiltersNull} from 'src/types/donors/DonorsFilters';
 import {useDonorsFilters} from 'src/hooks/donors/useDonorsFilters';
 import DonorsTable from 'src/views/donors/DonorsTable';
 import {CreateDonor} from 'src/views/donors/CreateDonor';

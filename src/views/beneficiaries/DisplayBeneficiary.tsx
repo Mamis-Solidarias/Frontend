@@ -16,9 +16,9 @@ import { ClothesCard } from './BeneficiaryCard/Clothes';
 import { LikesCard } from './BeneficiaryCard/Likes';
 import { CommentsCard } from './BeneficiaryCard/Comments';
 import { JobCard } from './BeneficiaryCard/Job';
-import Beneficiary from 'src/types/Beneficiary';
-import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
-import GENDERS from 'src/types/Genders';
+import Beneficiary from 'src/types/beneficiaries/Beneficiary';
+import BENEFICIARY_TYPES from 'src/types/beneficiaries/BeneficiaryTypes';
+import GENDERS from 'src/types/beneficiaries/Genders';
 
 interface DisplayBeneficiaryProps {
   benef: Beneficiary;

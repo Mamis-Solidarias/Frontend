@@ -1,14 +1,14 @@
 import CardContent from '@mui/material/CardContent';
 import React, { FC } from 'react';
 import Card from '@mui/material/Card';
-import Contact from 'src/types/Contact';
+import Contact from 'src/types/beneficiaries/Contact';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import { CONTACTING_METHODS } from 'src/types/ContactingMethods';
+import { CONTACTING_METHODS } from 'src/types/beneficiaries/ContactingMethods';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import DeviceUnknownIcon from '@mui/icons-material/DeviceUnknown';

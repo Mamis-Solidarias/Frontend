@@ -7,29 +7,32 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useEffect, useState } from 'react';
 import { Action } from 'src/types/Action';
-import { defaultEdition, MochiEditionLoaded, MochiEditionModify, Participant } from 'src/types/MochiEdition';
+import { defaultEdition, MochiEdition } from 'src/types/campaigns/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
-import { modifyMochiEdition } from 'src/API/Campaigns/campaigns_data';
+import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
+import Community from 'src/types/beneficiaries/Community';
+import { getCommunities } from 'src/API/Beneficiaries/communities_data';
+import MenuItem from '@mui/material/MenuItem';
 import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
-import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/BeneficiariesFilters';
-import BeneficiariesFiltersView from '../beneficiaries/BeneficiariesFiltersViewSimple';
-import BeneficiariesTable from '../beneficiaries/BeneficiariesTableJustView';
-import Beneficiary from 'src/types/Beneficiary';
+import BeneficiariesFiltersView from '../../beneficiaries/BeneficiariesFiltersViewSimple';
+import Beneficiary from 'src/types/beneficiaries/Beneficiary';
+import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/beneficiaries/BeneficiariesFilters';
+import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 
-interface EditMochiProps {
+interface CreateMochiProps {
   openDialog: boolean;
   handleClose: () => void;
-  mochiEdition: MochiEditionLoaded;
   setAction: (action: Action) => void;
   onNetworkError: (err: any) => void;
 }
 
-export const EditMochi: FC<EditMochiProps> = props => {
-  const { openDialog, handleClose, setAction, mochiEdition, onNetworkError } = props;
+export const CreateJuntos: FC<CreateMochiProps> = props => {
+  const { openDialog, handleClose, setAction, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const { mochiEdition: mochiEditionFinal, setMochiEdition, setMochiEditionField } = useModifyMochi(mochiEdition);
-  const { data, error, loading, refetch } = useQuery(GET_BENEFICIARIES, {
+  const [communities, setCommunities] = useState<Community[]>([]);
+  const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
+  const { error, loading, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
         ? filtersApplied.ageStart
@@ -70,6 +73,14 @@ export const EditMochi: FC<EditMochiProps> = props => {
   };
 
   useEffect(() => {
+    getCommunities().then(result => {
+      if (!!result.data.communities && result.data.communities.length > 0) {
+        setCommunities(result.data.communities);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     refetchWithSameParameters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersApplied]);
@@ -92,10 +103,24 @@ export const EditMochi: FC<EditMochiProps> = props => {
       maxWidth='lg'
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
-        Editar Edición de "Una Mochi como la tuya"
+        Crear Edición de "Una Mochi como la tuya"
       </DialogTitle>
       <DialogContent>
         <Box>
+          <TextField
+            id='edition'
+            type='text'
+            sx={{py: '.3em'}}
+            inputProps={{ pattern: '^[1-9][0-9]*$' }}
+            label='Edición'
+            placeholder='2022'
+            value={mochiEdition.edition}
+            onChange={(e: any) => {
+              setMochiEditionField('edition', e.target.value);
+            }}
+            fullWidth={true}
+            variant='standard'
+          />
           <TextField
             id='description'
             type='text'
@@ -124,76 +149,96 @@ export const EditMochi: FC<EditMochiProps> = props => {
             fullWidth={true}
             variant='standard'
           />
-          <BeneficiariesFiltersView
-            communityId={mochiEdition.communityId}
-            onNetworkError={onNetworkError}
-            onSetFiltersAction={(filters: BeneficiariesFilters) => {
-              const filtersToApply = filters;
-              for (const fk in filtersToApply) {
-                if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                  filtersToApply[fk as keyof BeneficiariesFilters] = null;
-                }
-              }
-              setFiltersApplied(filtersToApply);
-              setAction({
-                complete: true,
-                success: true,
-                message: 'Filtros aplicados exitosamente',
-                status: 200
-              });
+          <TextField
+            id='fundraiserGoal'
+            type='number'
+            sx={{py: '.3em'}}
+            inputProps={{ pattern: '^.+$' }}
+            label='Proveedor (opcional)'
+            placeholder='12000.27'
+            value={mochiEdition.fundraiserGoal}
+            onChange={(e: any) => {
+              setMochiEditionField('provider', e.target.value);
             }}
+            fullWidth={true}
+            variant='standard'
           />
-
-          {error && <Box>Error cargando los datos de beneficiarios</Box>}
-          {loading && <Box>Cargando beneficiarios...</Box>}
-          {!error && !loading && (
-            <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
-          )}
+          <TextField
+            select
+            sx={{py: '.3em'}}
+            fullWidth={true}
+            variant='standard'
+            label='Comunidad'
+            placeholder='Misiones'
+            value={mochiEdition.communityId}
+            onChange={e => {
+              setMochiEditionField('communityId', e.target.value);
+              refetch({ communityId: e.target.value });
+            }}
+          >
+            <MenuItem value=''>Ninguna</MenuItem>
+            {communities.map((community: Community) => (
+              <MenuItem value={community.id} key={community.id}>
+                {community.name}
+              </MenuItem>
+            ))}
+          </TextField>
         </Box>
+        <BeneficiariesFiltersView
+          communityId={mochiEdition.communityId}
+          onNetworkError={onNetworkError}
+          onSetFiltersAction={(filters: BeneficiariesFilters) => {
+            const filtersToApply = filters;
+            for (const fk in filtersToApply) {
+              if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
+                filtersToApply[fk as keyof BeneficiariesFilters] = null;
+              }
+            }
+            setFiltersApplied(filtersToApply);
+            setAction({
+              complete: true,
+              success: true,
+              message: 'Filtros aplicados exitosamente',
+              status: 200
+            });
+          }}
+        />
+        {error && <Box>Error cargando los datos de beneficiarios</Box>}
+        {loading && <Box>Cargando beneficiarios...</Box>}
+        {!error && !loading && (
+          <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+        )}
         <Button
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
           variant='contained'
           onClick={async () => {
             try {
-              const incomeBeneficiaries = mochiEdition.participants.map(
-                (participant: Participant) => participant.beneficiaryId
+              const mochiEditionFinalReview = mochiEdition as MochiEdition;
+              mochiEditionFinalReview.beneficiaries = data.filteredBeneficiaries.nodes.map(
+                (beneficiary: Beneficiary) => beneficiary.id
               );
-              const importedBeneficiaries = data.filteredBeneficiaries.nodes.map((node: Beneficiary) => node.id);
-              const addedBeneficiaries = importedBeneficiaries.filter(
-                (beneficiaryId: number) => !incomeBeneficiaries.includes(beneficiaryId)
-              );
-              const removedBeneficiaries = incomeBeneficiaries.filter(
-                (beneficiaryId: number) => !importedBeneficiaries.includes(beneficiaryId)
-              );
-
-              const mochiEditionFinalRevision: MochiEditionModify = {
-                addedBeneficiaries: addedBeneficiaries,
-                removedBeneficiaries: removedBeneficiaries,
-                description: mochiEditionFinal.description,
-                provider: mochiEditionFinal.provider
-              };
-
-              await modifyMochiEdition(mochiEditionFinalRevision, mochiEdition.id);
+              await createMochiEdition(mochiEditionFinalReview);
               setAction({
                 complete: true,
                 success: true,
-                message: 'Edición de "Una Mochi como la tuya" modificada exitosamente',
+                message: 'Edición de "Una Mochi como la tuya" creado exitosamente',
                 status: 201
               });
               resetAllFields();
               handleClose();
             } catch (error) {
+              console.log(error);
               setAction({
                 complete: true,
                 success: false,
-                message: 'Ocurrió un error modificando la nueva edición. Intente nuevamente más tarde',
+                message: 'Ocurrió un error creando la nueva edición. Intente nuevamente más tarde',
                 status: 201
               });
             }
           }}
-          disabled={!mochiEdition.edition}
+          disabled={!mochiEdition.edition || !data || data.filteredBeneficiaries.nodes.length === 0}
         >
-          Editar
+          Crear
         </Button>
       </DialogContent>
     </Dialog>

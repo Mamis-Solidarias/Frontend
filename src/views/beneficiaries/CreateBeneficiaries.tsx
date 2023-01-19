@@ -19,8 +19,8 @@ import { GeneralForm } from './Forms/GeneralForm';
 import { ClothesForm } from './Forms/ClothesForm';
 import { HealthForm } from './Forms/HealthForm';
 import { JobForm } from './Forms/JobForm';
-import Beneficiary from 'src/types/Beneficiary';
-import Education from 'src/types/Education';
+import Beneficiary from 'src/types/beneficiaries/Beneficiary';
+import Education from 'src/types/beneficiaries/Education';
 import Grid from '@mui/material/Grid';
 import Collapse from '@mui/material/Collapse';
 import { EducationCard } from './BeneficiaryCard/Education';
@@ -39,12 +39,12 @@ import {
   defaultCreateBeneficiaryExtras,
   useCreateBeneficiaryExtras
 } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
-import Clothes from 'src/types/Clothes';
-import Job from 'src/types/Job';
-import Health from 'src/types/Health';
-import Community from 'src/types/Community';
-import GENDERS from 'src/types/Genders';
-import BENEFICIARY_TYPES from 'src/types/BeneficiaryTypes';
+import Clothes from 'src/types/beneficiaries/Clothes';
+import Job from 'src/types/beneficiaries/Job';
+import Health from 'src/types/beneficiaries/Health';
+import Community from 'src/types/beneficiaries/Community';
+import GENDERS from 'src/types/beneficiaries/Genders';
+import BENEFICIARY_TYPES from 'src/types/beneficiaries/BeneficiaryTypes';
 import { Action } from 'src/types/Action';
 
 interface CreateBeneficiariesProps {

@@ -6,15 +6,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
 import {FC, useState} from 'react';
-import {Donor} from 'src/types/Donor';
+import {Donor} from 'src/types/donors/Donor';
 import {Action} from 'src/types/Action';
 import Autocomplete from '@mui/material/Autocomplete';
 import {useQuery} from '@apollo/client';
 import {GET_DONORS} from 'src/API/Donors/donors_graphql';
 import Grid from '@mui/material/Grid';
 import {assignDonor} from 'src/API/Campaigns/campaigns_data';
-import {CampaignDonor, defaultCampaignDonor} from 'src/types/CampaignDonor';
-import {DONATION_TYPES} from 'src/types/DonationTypes';
+import {CampaignDonor, defaultCampaignDonor} from 'src/types/campaigns/CampaignDonor';
+import {DONATION_TYPES} from 'src/types/donors/DonationTypes';
 
 interface AssignDonorProps {
   participant: string;

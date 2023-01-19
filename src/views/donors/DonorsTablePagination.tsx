@@ -4,8 +4,8 @@ import React, { FC } from 'react';
 
 // ** Types Imports
 import TablePagination from '@mui/material/TablePagination';
-import { PAGE_LIMITS } from 'src/types/BeneficiariesPaging';
-import { DonorsPaging } from 'src/types/DonorsPaging';
+import { PAGE_LIMITS } from 'src/types/beneficiaries/BeneficiariesPaging';
+import { DonorsPaging } from 'src/types/donors/DonorsPaging';
 
 interface DonorsTablePaginationProps {
   paging: DonorsPaging;

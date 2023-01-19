@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { FC, useEffect, useState } from 'react';
 import { updateUser } from 'src/API/Users/user_data';
 import { Action } from 'src/types/Action';
-import User from 'src/types/User';
+import User from 'src/types/users/User';
 import { EditPassword } from './EditPassword';
 
 const emailPattern = /^[^@]+@[^@]+$/;

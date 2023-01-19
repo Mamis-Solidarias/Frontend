@@ -1,6 +1,6 @@
 import { NextRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import Role from 'src/types/Role';
+import Role from 'src/types/users/Role';
 
 export const userIsLoggedIn = () => {
   return !!Cookies.get('MamisSolidarias.Auth');

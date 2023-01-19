@@ -16,7 +16,7 @@ import {createFamilies, getCommunities} from 'src/API/Beneficiaries/communities_
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MenuItem from '@mui/material/MenuItem';
-import Community from 'src/types/Community';
+import Community from 'src/types/beneficiaries/Community';
 import Grid from '@mui/material/Grid';
 import {Action} from 'src/types/Action';
 
