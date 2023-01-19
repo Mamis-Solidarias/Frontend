@@ -18,7 +18,6 @@ import {useRouter} from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {useCampaignsFilters} from 'src/hooks/campaigns/useCampaignsFilters';
 import {CampaignsFilters, campaignsFiltersNull} from 'src/types/campaigns/CampaignsFilters';
