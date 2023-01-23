@@ -18,6 +18,7 @@ import {useAppSelector} from 'src/hooks/reduxHooks';
 import JuntosBriefInformation from 'src/views/campaigns/juntos/JuntosBriefInformation';
 import CampaignActions from "src/views/campaigns/juntos/CampaignActions";
 import CreateJuntos from 'src/views/campaigns/juntos/CreateJuntos';
+import JuntosFilters from "src/views/campaigns/juntos/JuntosFilters";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
@@ -64,6 +65,7 @@ export default () => {
               {hasWriteCampaigns && <CampaignActions dataEdition={dataEdition}/>}
             </Box>
           </Box>
+          <JuntosFilters setAction={setAction}/>
         </Grid>
       </Grid>
       <Portal>
