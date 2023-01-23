@@ -5,21 +5,22 @@ import Card from '@mui/material/Card';
 
 interface DefaultCardProps {
   sx: any;
-  title: string;
+  title: any;
   fields: any;
 }
 
 export const DefaultCard: FC<DefaultCardProps> = props => {
   const {title, fields, sx} = props;
 
-  const style = {...{marginInline: "0.5em"}, ...sx};
+  const style = {...{margin: "0.25em"}, ...sx};
 
   return (
     <Card sx={style}>
-      <CardContent sx={{pt: theme => `${theme.spacing(2.0)} !important`}}>
+      <CardContent sx={{pt: theme => `${theme.spacing(2.0)}`}}>
         <Typography
           className={"MuiTypography--heading"}
           variant={"h6"}
+          align={'center'}
         >
           {title}
         </Typography>
