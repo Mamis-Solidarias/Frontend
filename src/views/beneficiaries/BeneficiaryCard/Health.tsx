@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import { DefaultCard } from './DefaultCard';
 
 export const HealthCard: FC<{ health: any; sx?: any }> = props => {
@@ -6,7 +7,7 @@ export const HealthCard: FC<{ health: any; sx?: any }> = props => {
 
   return (
     <DefaultCard
-      title='Salud'
+      title={<LocalHospitalIcon sx={{color: "#ed1b24"}}/>}
       fields={{
         '¿Tiene Vacuna COVID?': health.hasCovidVaccine
           ? 'Sí'

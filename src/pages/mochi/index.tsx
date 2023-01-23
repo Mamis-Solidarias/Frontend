@@ -33,7 +33,8 @@ import {getCommunities} from 'src/API/Beneficiaries/communities_data';
 import {MochiEditionBrief} from 'src/views/campaigns/mochi/MochiEditionBrief';
 import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {DefaultCard} from "../../views/beneficiaries/BeneficiaryCard/DefaultCard";
+import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
+import InfoIcon from '@mui/icons-material/Info';
 
 const Dashboard = () => {
   // const [openWindow, setOpenWindow] = useState<boolean>(false);
@@ -182,9 +183,9 @@ const Dashboard = () => {
                 </Card>
               </Box>
               {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
-                <Box alignItems={"center"}>
+                <Box alignItems={"center"} sx={{mx: '0.25em'}}>
                   <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em'}}
-                               title={"Descripción"} fields={{
+                               title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
                     Proveedor: dataEdition.mochiEdition.provider,
                     Edición: dataEdition.mochiEdition.edition
                   }}/>
