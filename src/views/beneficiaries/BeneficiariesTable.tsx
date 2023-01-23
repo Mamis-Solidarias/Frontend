@@ -230,7 +230,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
     <Card>
       <CardHeader action={<>
         {props.children}
-        <Button variant='contained' onClick={async () => await exportToExcel()}>Exportar</Button>
+        <Button variant='contained' sx={{mx: '.5em'}} onClick={async () => await exportToExcel()}>Exportar</Button>
       </>} title='Beneficiarios' titleTypographyProps={{variant: 'h6'}}/>
       <TableContainer>
         {loading && <LinearProgress/>}

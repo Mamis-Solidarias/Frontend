@@ -30,7 +30,7 @@ import {GET_MOCHI_EDITIONS, GET_MOCHI} from 'src/API/Campaigns/campaigns_graphql
 import {CreateMochi} from 'src/views/campaigns/mochi/CreateMochi';
 import Community from 'src/types/beneficiaries/Community';
 import {getCommunities} from 'src/API/Beneficiaries/communities_data';
-import {MochiEditionBrief} from 'src/views/campaigns/MochiEditionBrief';
+import {MochiEditionBrief} from 'src/views/campaigns/mochi/MochiEditionBrief';
 import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {DefaultCard} from "../../views/beneficiaries/BeneficiaryCard/DefaultCard";
