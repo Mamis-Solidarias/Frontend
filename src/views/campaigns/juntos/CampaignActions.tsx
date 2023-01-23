@@ -14,7 +14,7 @@ export default (props: CampaignActionsProps) => {
     <Button sx={{mx: '.25em'}}
             variant='contained'
             onClick={() => dispatch(updateOpenEditJuntos(true))}
-            disabled={!dataEdition || dataEdition.length === 0}
+            disabled={!dataEdition?.juntosCampaign}
     >
       Editar
     </Button>
