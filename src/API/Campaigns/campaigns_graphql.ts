@@ -45,6 +45,9 @@ export const GET_JUNTOS = gql`
       fundraiserGoal
       participants {
         beneficiaryId
+        beneficiaryGender
+        beneficiaryName
+        shoeSize
       }
       donations {
         id
