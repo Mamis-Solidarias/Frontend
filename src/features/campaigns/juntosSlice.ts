@@ -49,9 +49,12 @@ const juntosSlice = createSlice({
     },
     updateRefreshEditions( state, action: PayloadAction<(community: string) => void>) {
       state.refetchEditions = action.payload;
+    },
+    updateOpenCollapse( state, action: PayloadAction<boolean>) {
+      state.openFiltersCollapse = action.payload;
     }
   }
 });
 
-export const { updateOpenCreateJuntos, updateOpenEditJuntos, updateFiltersToApply, updateFiltersApplied, updateJuntos, updateCreateJuntos } = juntosSlice.actions;
+export const { updateOpenCreateJuntos, updateOpenEditJuntos, updateFiltersToApply, updateFiltersApplied, updateJuntos, updateCreateJuntos, updateOpenCollapse } = juntosSlice.actions;
 export default juntosSlice.reducer;
