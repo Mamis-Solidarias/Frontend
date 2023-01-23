@@ -7,13 +7,15 @@ import TextField from '@mui/material/TextField';
 
 import { FC, useEffect, useState } from 'react';
 import { Action } from 'src/types/Action';
+import { defaultEdition, MochiEdition } from 'src/types/campaigns/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
+import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/beneficiaries/Community';
 import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import MenuItem from '@mui/material/MenuItem';
 import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
-import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersViewSimple';
+import BeneficiariesFiltersView from '../../beneficiaries/BeneficiariesFiltersViewSimple';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/beneficiaries/BeneficiariesFilters';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
@@ -29,7 +31,7 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
   const { openDialog, handleClose, setAction, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const [communities, setCommunities] = useState<Community[]>([]);
-  const { mochiEdition, setMochiEditionField } = useModifyMochi();
+  const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
   const { error, loading, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
       ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
@@ -46,7 +48,7 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
     }
   });
 
@@ -66,7 +68,7 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
     });
   };
 
@@ -83,11 +85,19 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filtersApplied]);
 
+  const resetFields = () => {
+    setMochiEdition(defaultEdition);
+  };
+
+  const resetAllFields = () => {
+    resetFields();
+  };
 
   return (
     <Dialog
       open={openDialog}
       onClose={() => {
+        resetAllFields();
         handleClose();
       }}
       maxWidth='lg'
@@ -146,7 +156,7 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
             inputProps={{ pattern: '^.+$' }}
             label='Proveedor (opcional)'
             placeholder='12000.27'
-            value={mochiEdition.edition}
+            value={mochiEdition.fundraiserGoal}
             onChange={(e: any) => {
               setMochiEditionField('provider', e.target.value);
             }}
@@ -202,7 +212,29 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
           sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
           variant='contained'
           onClick={async () => {
-            console.log('apretado')
+            try {
+              const mochiEditionFinalReview = mochiEdition as MochiEdition;
+              mochiEditionFinalReview.beneficiaries = data.filteredBeneficiaries.nodes.map(
+                (beneficiary: Beneficiary) => beneficiary.id
+              );
+              await createMochiEdition(mochiEditionFinalReview);
+              setAction({
+                complete: true,
+                success: true,
+                message: 'Edición de "Una Mochi como la tuya" creado exitosamente',
+                status: 201
+              });
+              resetAllFields();
+              handleClose();
+            } catch (error) {
+              console.log(error);
+              setAction({
+                complete: true,
+                success: false,
+                message: 'Ocurrió un error creando la nueva edición. Intente nuevamente más tarde',
+                status: 201
+              });
+            }
           }}
           disabled={!mochiEdition.edition || !data || data.filteredBeneficiaries.nodes.length === 0}
         >

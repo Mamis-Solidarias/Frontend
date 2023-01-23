@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {CampaignsFilters, campaignsFiltersNull} from "src/types/campaigns/CampaignsFilters";
+import {CampaignsFilters, campaignsFiltersNull} from "../types/campaigns/CampaignsFilters";
 
 interface JuntosPageData {
   openCreateJuntos: boolean;
