@@ -131,54 +131,29 @@ export default (props: CreateJuntosProps) => {
             fullWidth={true}
             variant='standard'
           />
-          <TextField
-            id='description'
-            type='text'
-            sx={{py: '.3em'}}
-            inputProps={{pattern: '^.+$'}}
-            label='Descripción (opcional)'
-            placeholder='Edición de Juntos 2022'
-            value={juntosSelector.createJuntos.description}
-            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{description: e.target.value}}))}
-            fullWidth={true}
-            variant='standard'
+          <TextField id='description' type='text'
+                     sx={{py: '.3em'}} inputProps={{pattern: '^.+$'}}
+                     label='Descripción (opcional)' placeholder='Edición de Juntos 2022'
+                     value={juntosSelector.createJuntos.description} onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{description: e.target.value}}))}
+                     fullWidth={true} variant='standard'
           />
-          <TextField
-            id='provider'
-            type='text'
-            sx={{py: '.3em'}}
-            inputProps={{pattern: '^.+$'}}
-            label='Proveedor (opcional)'
-            placeholder='Catalan'
-            value={juntosSelector.createJuntos.provider}
-            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{provider: e.target.value}}))}
-            fullWidth={true}
-            variant='standard'
+          <TextField id='provider' type='text' sx={{py: '.3em'}}
+                     inputProps={{pattern: '^.+$'}} label='Proveedor (opcional)'
+                     placeholder='Catalan' value={juntosSelector.createJuntos.provider}
+                     onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{provider: e.target.value}}))}
+                     fullWidth={true} variant='standard'
           />
-          <TextField
-            id='fundraiserGoal'
-            type='number'
-            sx={{py: '.3em'}}
-            inputProps={{pattern: '^.+$'}}
-            label='Objetivo de Donaciones'
-            placeholder='12000.27'
-            value={juntosSelector.createJuntos.fundraiserGoal}
-            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{fundraiserGoal: e.target.value}}))}
-            fullWidth={true}
-            variant='standard'
+          <TextField id='fundraiserGoal' type='number' sx={{py: '.3em'}}
+                     inputProps={{pattern: '^.+$'}} label='Objetivo de Donaciones'
+                     placeholder='12000.27' value={juntosSelector.createJuntos.fundraiserGoal}
+                     onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{fundraiserGoal: e.target.value}}))}
+                     fullWidth={true} variant='standard'
           />
-          <TextField
-            select
-            defaultValue=""
-            sx={{py: '.3em'}}
-            fullWidth={true}
-            variant='standard'
-            label='Comunidad'
-            placeholder='Misiones'
-            value={juntosSelector.createJuntos.communityId}
-            onChange={e => {
-              dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{communityId: e.target.value}}));
-            }}
+          <TextField select defaultValue="" sx={{py: '.3em'}}
+                     fullWidth={true} variant='standard' label='Comunidad' placeholder='Misiones'
+                     value={juntosSelector.createJuntos.communityId} onChange={e => {
+                       dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{communityId: e.target.value}}));
+                     }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
             {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
