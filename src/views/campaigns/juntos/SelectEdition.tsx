@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
-import {updateFiltersApplied, updateFiltersToApply} from "src/features/juntosSlice";
+import {updateFiltersApplied, updateFiltersToApply} from "src/features/campaigns/juntosSlice";
 import {Action} from "src/types/Action";
 import {useEffect, useState} from "react";
 import Community from "src/types/beneficiaries/Community";

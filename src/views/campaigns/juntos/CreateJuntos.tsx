@@ -5,35 +5,33 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-import { FC, useEffect, useState } from 'react';
-import { Action } from 'src/types/Action';
-import { defaultEdition, MochiEdition } from 'src/types/campaigns/MochiEdition';
-import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
-import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
+import {Action} from 'src/types/Action';
+import {createJuntosEdition} from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/beneficiaries/Community';
-import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import MenuItem from '@mui/material/MenuItem';
-import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
-import { useQuery } from '@apollo/client';
-import BeneficiariesFiltersView from '../../beneficiaries/BeneficiariesFiltersViewSimple';
+import {GET_BENEFICIARIES, GET_COMMUNITIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
+import {useQuery} from '@apollo/client';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
-import { BeneficiariesFilters, beneficiariesFiltersNull } from 'src/types/beneficiaries/BeneficiariesFilters';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
+import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
+import {defaultEdition, JuntosEdition} from "src/types/campaigns/JuntosEdition";
+import {updateCreateJuntos, updateOpenCreateJuntos} from "src/features/campaigns/juntosSlice";
+import BeneficiariesFiltersView from "src/views/beneficiaries/BeneficiariesFiltersViewSimple";
+import {BeneficiariesFilters} from "src/types/beneficiaries/BeneficiariesFilters";
+import {updateFiltersApplied} from "src/features/beneficiaries/beneficiariesSlice";
 
-interface CreateMochiProps {
-  openDialog: boolean;
-  handleClose: () => void;
+interface CreateJuntosProps {
   setAction: (action: Action) => void;
-  onNetworkError: (err: any) => void;
+  refetchJuntos: () => void;
 }
 
-export const CreateJuntos: FC<CreateMochiProps> = props => {
-  const { openDialog, handleClose, setAction, onNetworkError } = props;
-  const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const [communities, setCommunities] = useState<Community[]>([]);
-  const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
-  const { error, loading, data, refetch } = useQuery(GET_BENEFICIARIES, {
-    variables: {
+export default (props: CreateJuntosProps) => {
+  const {setAction, refetchJuntos} = props;
+  const dispatch = useAppDispatch();
+  const beneficiariesSelector = useAppSelector(state => state.beneficiaries);
+  const juntosSelector = useAppSelector(state => state.juntos);
+  const getBeneficiariesFilters = (filtersApplied: BeneficiariesFilters) => {
+    return {
       ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
         ? filtersApplied.ageStart
         : parseInt(filtersApplied.ageStart as string),
@@ -45,65 +43,80 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
       type: filtersApplied.type,
       dniStarts: filtersApplied.dniStarts,
       familyId: filtersApplied.familyId,
-      communityId: mochiEdition.communityId,
+      communityId: juntosSelector.createJuntos.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
     }
+  }
+  const {error: errorCommunities, loading: loadingCommunities, data: dataCommunities} = useQuery(GET_COMMUNITIES);
+  const {
+    error: errorBeneficiaries,
+    loading: loadingBeneficiaries,
+    data: dataBeneficiaries,
+    refetch: refetchBeneficiaries
+  } = useQuery(GET_BENEFICIARIES, {
+    variables: getBeneficiariesFilters(beneficiariesSelector.filtersApplied),
   });
 
-  const refetchWithSameParameters = () => {
-    refetch({
-      ageStart: isNaN(parseInt(filtersApplied.ageStart as string))
-        ? filtersApplied.ageStart
-        : parseInt(filtersApplied.ageStart as string),
-      ageEnd: isNaN(parseInt(filtersApplied.ageEnd as string))
-        ? filtersApplied.ageEnd
-        : parseInt(filtersApplied.ageEnd as string),
-      lastName: filtersApplied.lastName,
-      firstName: filtersApplied.firstName,
-      type: filtersApplied.type,
-      dniStarts: filtersApplied.dniStarts,
-      familyId: filtersApplied.familyId,
-      communityId: mochiEdition.communityId,
-      school: filtersApplied.school,
-      gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
-    });
-  };
-
-  useEffect(() => {
-    getCommunities().then(result => {
-      if (!!result.data.communities && result.data.communities.length > 0) {
-        setCommunities(result.data.communities);
+  const onSetFiltersAction = (filters: BeneficiariesFilters) => {
+    const filtersToApply = {...filters};
+    for( const key of Object.keys(filtersToApply)) {
+      if( !filtersToApply[key as keyof BeneficiariesFilters]) {
+        filtersToApply[key as keyof BeneficiariesFilters] = null;
       }
+    }
+    dispatch(updateFiltersApplied(filtersToApply));
+    refetchBeneficiaries(getBeneficiariesFilters(filtersToApply));
+    setAction({
+      complete: true,
+      success: true,
+      message: 'Filtros aplicados exitosamente',
+      status: 200
     });
-  }, []);
+  }
 
-  useEffect(() => {
-    refetchWithSameParameters();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtersApplied]);
-
-  const resetFields = () => {
-    setMochiEdition(defaultEdition);
-  };
-
-  const resetAllFields = () => {
-    resetFields();
-  };
+  const createJuntos = async () => {
+    try {
+      const juntosEditionFinalReview:JuntosEdition = {...juntosSelector.createJuntos, ...{beneficiaries: dataBeneficiaries.
+                              filteredBeneficiaries.nodes.map((beneficiary: Beneficiary) => beneficiary.id)}};
+      console.log(juntosEditionFinalReview);
+      await createJuntosEdition(juntosEditionFinalReview);
+      console.log('mando el create')
+      setAction({
+        complete: true,
+        success: true,
+        message: 'Edición de "Juntos a la Par" creada exitosamente',
+        status: 201
+      });
+      if (!!juntosSelector.refetchEditions) {
+        juntosSelector.refetchEditions(juntosSelector.campaign);
+      }
+    } catch (error) {
+      console.log(error)
+      setAction({
+        complete: true,
+        success: false,
+        message: 'Ocurrió un error creando la nueva edición. Intente nuevamente más tarde',
+        status: 201
+      });
+    }
+    dispatch(updateCreateJuntos(defaultEdition));
+    dispatch(updateOpenCreateJuntos(false));
+  }
 
   return (
     <Dialog
-      open={openDialog}
+      open={juntosSelector.openCreateJuntos}
       onClose={() => {
-        resetAllFields();
-        handleClose();
+        refetchJuntos();
+        dispatch(updateCreateJuntos(defaultEdition));
+        dispatch(updateOpenCreateJuntos(false));
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
-        Crear Edición de "Una Mochi como la tuya"
+      <DialogTitle sx={{display: 'flex', justifyContent: 'center'}}>
+        Crear Edición de "Juntos a la Par"
       </DialogTitle>
       <DialogContent>
         <Box>
@@ -111,13 +124,10 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
             id='edition'
             type='text'
             sx={{py: '.3em'}}
-            inputProps={{ pattern: '^[1-9][0-9]*$' }}
             label='Edición'
             placeholder='2022'
-            value={mochiEdition.edition}
-            onChange={(e: any) => {
-              setMochiEditionField('edition', e.target.value);
-            }}
+            value={juntosSelector.createJuntos.edition}
+            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{edition: e.target.value}}))}
             fullWidth={true}
             variant='standard'
           />
@@ -125,13 +135,11 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
             id='description'
             type='text'
             sx={{py: '.3em'}}
-            inputProps={{ pattern: '^.+$' }}
+            inputProps={{pattern: '^.+$'}}
             label='Descripción (opcional)'
-            placeholder='Edición de Mochi 2022'
-            value={mochiEdition.description}
-            onChange={(e: any) => {
-              setMochiEditionField('description', e.target.value);
-            }}
+            placeholder='Edición de Juntos 2022'
+            value={juntosSelector.createJuntos.description}
+            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{description: e.target.value}}))}
             fullWidth={true}
             variant='standard'
           />
@@ -139,13 +147,11 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
             id='provider'
             type='text'
             sx={{py: '.3em'}}
-            inputProps={{ pattern: '^.+$' }}
+            inputProps={{pattern: '^.+$'}}
             label='Proveedor (opcional)'
             placeholder='Catalan'
-            value={mochiEdition.provider}
-            onChange={(e: any) => {
-              setMochiEditionField('provider', e.target.value);
-            }}
+            value={juntosSelector.createJuntos.provider}
+            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{provider: e.target.value}}))}
             fullWidth={true}
             variant='standard'
           />
@@ -153,31 +159,29 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
             id='fundraiserGoal'
             type='number'
             sx={{py: '.3em'}}
-            inputProps={{ pattern: '^.+$' }}
-            label='Proveedor (opcional)'
+            inputProps={{pattern: '^.+$'}}
+            label='Objetivo de Donaciones'
             placeholder='12000.27'
-            value={mochiEdition.fundraiserGoal}
-            onChange={(e: any) => {
-              setMochiEditionField('provider', e.target.value);
-            }}
+            value={juntosSelector.createJuntos.fundraiserGoal}
+            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{fundraiserGoal: e.target.value}}))}
             fullWidth={true}
             variant='standard'
           />
           <TextField
             select
+            defaultValue=""
             sx={{py: '.3em'}}
             fullWidth={true}
             variant='standard'
             label='Comunidad'
             placeholder='Misiones'
-            value={mochiEdition.communityId}
+            value={juntosSelector.createJuntos.communityId}
             onChange={e => {
-              setMochiEditionField('communityId', e.target.value);
-              refetch({ communityId: e.target.value });
+              dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{communityId: e.target.value}}));
             }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
-            {communities.map((community: Community) => (
+            {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
               <MenuItem value={community.id} key={community.id}>
                 {community.name}
               </MenuItem>
@@ -185,61 +189,29 @@ export const CreateJuntos: FC<CreateMochiProps> = props => {
           </TextField>
         </Box>
         <BeneficiariesFiltersView
-          communityId={mochiEdition.communityId}
-          onNetworkError={onNetworkError}
-          onSetFiltersAction={(filters: BeneficiariesFilters) => {
-            const filtersToApply = filters;
-            for (const fk in filtersToApply) {
-              if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                filtersToApply[fk as keyof BeneficiariesFilters] = null;
-              }
-            }
-            setFiltersApplied(filtersToApply);
-            setAction({
-              complete: true,
-              success: true,
-              message: 'Filtros aplicados exitosamente',
-              status: 200
-            });
+          communityId={juntosSelector.createJuntos.communityId}
+          onNetworkError={() => {
+            console.log('error')
           }}
+          onSetFiltersAction={onSetFiltersAction}
         />
-        {error && <Box>Error cargando los datos de beneficiarios</Box>}
-        {loading && <Box>Cargando beneficiarios...</Box>}
-        {!error && !loading && (
-          <BeneficiariesTable beneficiaries={data?.filteredBeneficiaries.nodes as Beneficiary[]} />
+        {(loadingBeneficiaries || loadingCommunities) && <Box>Cargando beneficiarios...</Box>}
+        {!(errorBeneficiaries || errorCommunities) && !(loadingBeneficiaries || loadingCommunities) && (
+          <BeneficiariesTable beneficiaries={dataBeneficiaries?.filteredBeneficiaries.nodes as Beneficiary[]}/>
         )}
-        <Button
-          sx={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '1em' }}
-          variant='contained'
-          onClick={async () => {
-            try {
-              const mochiEditionFinalReview = mochiEdition as MochiEdition;
-              mochiEditionFinalReview.beneficiaries = data.filteredBeneficiaries.nodes.map(
-                (beneficiary: Beneficiary) => beneficiary.id
-              );
-              await createMochiEdition(mochiEditionFinalReview);
-              setAction({
-                complete: true,
-                success: true,
-                message: 'Edición de "Una Mochi como la tuya" creado exitosamente',
-                status: 201
-              });
-              resetAllFields();
-              handleClose();
-            } catch (error) {
-              console.log(error);
-              setAction({
-                complete: true,
-                success: false,
-                message: 'Ocurrió un error creando la nueva edición. Intente nuevamente más tarde',
-                status: 201
-              });
-            }
-          }}
-          disabled={!mochiEdition.edition || !data || data.filteredBeneficiaries.nodes.length === 0}
-        >
-          Crear
-        </Button>
+        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '1em'}}>
+          <Button sx={{mx: '.25em'}} onClick={() => dispatch(updateOpenCreateJuntos(false))}>Cancelar</Button>
+          <Button
+            sx={{width: '60%', mx: '.25em'}}
+            variant='contained'
+            onClick={async () => await createJuntos()}
+            disabled={!juntosSelector.createJuntos.edition || juntosSelector.createJuntos.fundraiserGoal < 0
+                      || !dataBeneficiaries || dataBeneficiaries.filteredBeneficiaries.nodes.length === 0}
+          >
+            Crear
+          </Button>
+        </Box>
+
       </DialogContent>
     </Dialog>
   );
