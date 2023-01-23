@@ -1,5 +1,5 @@
 export interface JuntosEdition {
-  edition: number;
+  edition: string;
   communityId: string;
   beneficiaries: number[];
   description: string;
@@ -8,7 +8,7 @@ export interface JuntosEdition {
 }
 
 export const defaultEdition: JuntosEdition = {
-  edition: -1,
+  edition: '',
   communityId: '',
   beneficiaries: [],
   description: '',

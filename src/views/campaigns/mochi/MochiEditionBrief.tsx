@@ -12,7 +12,7 @@ import { DONOR_STATUSES } from 'src/types/donors/DonorStatuses';
 import { hasWriteAccess } from 'src/utils/sessionManagement';
 import { SCHOOL_CYCLES } from 'src/types/beneficiaries/SchoolYear';
 import Button from '@mui/material/Button';
-import { AssignDonor } from './AssignDonor';
+import { AssignDonor } from '../AssignDonor';
 import { Action } from 'src/types/Action';
 import Box from "@mui/material/Box";
 

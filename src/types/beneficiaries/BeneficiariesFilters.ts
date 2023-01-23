@@ -6,6 +6,7 @@ export interface BeneficiariesFilters {
   type?: string | null;
   dniStarts?: string | null;
   familyId?: string | null;
+  communityId?: string | null;
   communityCode?: string | null;
   school?: string | null;
   gender?: string | null;
@@ -21,6 +22,7 @@ export const beneficiariesFiltersDefaults: BeneficiariesFilters = {
   type: '',
   dniStarts: '',
   familyId: '',
+  communityId: '',
   communityCode: '',
   school: '',
   gender: '',
@@ -36,6 +38,7 @@ export const beneficiariesFiltersNull: BeneficiariesFilters = {
   type: null,
   dniStarts: null,
   familyId: null,
+  communityId: null,
   communityCode: null,
   school: null,
   gender: null,

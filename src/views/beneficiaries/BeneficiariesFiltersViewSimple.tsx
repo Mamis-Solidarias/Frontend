@@ -37,6 +37,19 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
     }
   }, []);
 
+  useEffect(() => {
+    if (!!communityId) {
+      console.log(communityId)
+      setFilter('communityCode', communityId);
+      setFilter('communityId', communityId);
+      getFamiliesByCommunity(communityId, 0, 100)
+        .then(result => {
+          setFamilies(result.data.families);
+        })
+        .catch(onNetworkError);
+    }
+  }, [communityId]);
+
   return (
     <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardHeader
@@ -49,7 +62,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
       />
       <CardContent>
         <Collapse in={openCollapse}>
-          <Grid container alignItems={'center'} justifyContent={'space-around'} columns={{ xs: 5, sm: 10, md: 17 }}>
+          <Grid item alignItems={'center'} justifyContent={'space-around'} columns={{ xs: 5, sm: 10, md: 17 }}>
             <Grid item xs={2} sm={3} md={4}>
               <TextField
                 select
@@ -160,7 +173,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                       {genderSpanish}
                     </MenuItem>
                   );
-                })}
+                })}`
               </TextField>
             </Grid>
             <Grid item xs={2} sm={3} md={4}>

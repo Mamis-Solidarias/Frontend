@@ -9,20 +9,20 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {useQuery} from '@apollo/client';
 import {GET_JUNTOS_EDITIONS, GET_JUNTOS} from 'src/API/Campaigns/campaigns_graphql';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import SelectEdition from 'src/views/campaigns/juntos/SelectEdition';
-import {useAppDispatch, useAppSelector} from 'src/hooks/reduxHooks';
+import {useAppSelector} from 'src/hooks/reduxHooks';
 import JuntosBriefInformation from 'src/views/campaigns/juntos/JuntosBriefInformation';
-import {updateOpenCreateJuntos, updateOpenEditJuntos} from "../../features/juntosSlice";
+import CampaignActions from "src/views/campaigns/juntos/CampaignActions";
+import CreateJuntos from 'src/views/campaigns/juntos/CreateJuntos';
+import JuntosFilters from "src/views/campaigns/juntos/JuntosFilters";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
   const juntosSelector = useAppSelector(state => state.juntos);
 
   const {
@@ -62,28 +62,14 @@ export default () => {
               }
             </Box>
             <Box display='flex' justifyContent='flex-end' alignItems="center">
-              {hasWriteCampaigns && (<>
-                <Button sx={{mx: '.25em'}}
-                        variant='contained'
-                        onClick={() => dispatch(updateOpenEditJuntos(true))}
-                        disabled={!dataEdition || dataEdition.length === 0}
-                >
-                  Editar
-                </Button>
-                <Button sx={{mx: '.25em'}}
-                        variant='contained'
-                        onClick={() => dispatch(updateOpenCreateJuntos(true))}
-                >
-                  Crear
-                </Button>
-              </>)}
+              {hasWriteCampaigns && <CampaignActions dataEdition={dataEdition}/>}
             </Box>
           </Box>
-
-
+          <JuntosFilters setAction={setAction}/>
         </Grid>
       </Grid>
       <Portal>
+        <CreateJuntos setAction={setAction} refetchJuntos={refetchEditions}/>
         <ActionToast action={action} setActionCompletion={setCompletion}/>
       </Portal>
     </ApexChartWrapper>
