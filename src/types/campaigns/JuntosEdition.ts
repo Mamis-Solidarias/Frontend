@@ -33,3 +33,11 @@ export interface JuntosEditionModify {
   addedBeneficiaries: number[];
   removedBeneficiaries: number[];
 }
+
+export const defaultEditionModify: JuntosEditionModify = {
+  description: '',
+  provider: '',
+  fundraiserGoal: 0,
+  addedBeneficiaries: [],
+  removedBeneficiaries: [],
+}
