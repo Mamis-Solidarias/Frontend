@@ -80,9 +80,8 @@ export default (props: CreateJuntosProps) => {
     try {
       const juntosEditionFinalReview:JuntosEdition = {...juntosSelector.createJuntos, ...{beneficiaries: dataBeneficiaries.
                               filteredBeneficiaries.nodes.map((beneficiary: Beneficiary) => beneficiary.id)}};
-      console.log(juntosEditionFinalReview);
       await createJuntosEdition(juntosEditionFinalReview);
-      console.log('mando el create')
+      updateCreateJuntos(defaultEdition);
       setAction({
         complete: true,
         success: true,
@@ -92,8 +91,9 @@ export default (props: CreateJuntosProps) => {
       if (!!juntosSelector.refetchEditions) {
         juntosSelector.refetchEditions(juntosSelector.campaign);
       }
+
     } catch (error) {
-      console.log(error)
+
       setAction({
         complete: true,
         success: false,
@@ -165,9 +165,7 @@ export default (props: CreateJuntosProps) => {
         </Box>
         <BeneficiariesFiltersView
           communityId={juntosSelector.createJuntos.communityId}
-          onNetworkError={() => {
-            console.log('error')
-          }}
+          onNetworkError={() => console.log('hubóerror')}
           onSetFiltersAction={onSetFiltersAction}
         />
         {(loadingBeneficiaries || loadingCommunities) && <Box>Cargando beneficiarios...</Box>}
