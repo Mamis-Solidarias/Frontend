@@ -29,12 +29,6 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import {ConfirmActionDialog} from "../pages/misc/ConfirmActionDialog";
 import ExportButton from './ExportButton';
-import * as Excel from 'exceljs';
-import * as FileSaver from 'file-saver';
-import {Cell, Column, Worksheet} from "exceljs";
-import BENEFICIARY_TYPES from "../../types/beneficiaries/BeneficiaryTypes";
-import GENDERS from "../../types/beneficiaries/Genders";
-import {SCHOOL_YEARS} from "../../types/beneficiaries/SchoolYear";
 
 interface BeneficiariesTableProps {
   filters: BeneficiariesFilters;
