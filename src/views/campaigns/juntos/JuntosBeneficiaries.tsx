@@ -7,7 +7,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from "@mui/material/Box";
-import {LinearProgress} from "@mui/material";
 import {JuntosEdition, Participant} from "src/types/campaigns/JuntosEdition";
 
 interface JuntosEditionProps {
@@ -41,9 +40,6 @@ export default (props: JuntosEditionProps) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box>
-        <LinearProgress value={dataEdition.fundraiserGoal}/>
-      </Box>
     </Box>
   );
 };
