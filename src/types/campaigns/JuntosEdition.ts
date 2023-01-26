@@ -1,10 +1,20 @@
+import GENDERS from "../beneficiaries/Genders";
+
 export interface JuntosEdition {
   edition: string;
   communityId: string;
   beneficiaries: number[];
+  participants?: Participant[];
   description: string;
   provider: string;
   fundraiserGoal: number;
+}
+
+export interface Participant {
+  beneficiaryId: number;
+  beneficiaryGender: keyof typeof GENDERS;
+  beneficiaryName: string;
+  shoeSize: number;
 }
 
 export const defaultEdition: JuntosEdition = {
