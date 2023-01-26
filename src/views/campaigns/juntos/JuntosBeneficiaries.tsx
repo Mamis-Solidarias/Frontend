@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Box from "@mui/material/Box";
 import {LinearProgress} from "@mui/material";
-import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
+import {JuntosEdition, Participant} from "src/types/campaigns/JuntosEdition";
 
 interface JuntosEditionProps {
   dataEdition: JuntosEdition;
@@ -23,25 +23,21 @@ export default (props: JuntosEditionProps) => {
         <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Familia</TableCell>
+              <TableCell>ID</TableCell>
               <TableCell>Nombre</TableCell>
-              <TableCell>Ciclo</TableCell>
+              <TableCell>Género</TableCell>
+              <TableCell>Talle Calzado</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {/*{dataEdition.beneficiaries.map((participant) => (*/}
-            {/*  <TableRow key={participant.id}>*/}
-            {/*    <TableCell></TableCell>*/}
-            {/*    <TableCell>{participant.beneficiary?.familyId}</TableCell>*/}
-            {/*    <TableCell>{participant.beneficiaryName}</TableCell>*/}
-            {/*    <TableCell>*/}
-            {/*      {!!participant.schoolCycle*/}
-            {/*        ? SCHOOL_CYCLES[participant.schoolCycle as keyof typeof SCHOOL_CYCLES]*/}
-            {/*        : '-'}*/}
-            {/*    </TableCell>*/}
-            {/*  </TableRow>*/}
-            {/*))}*/}
+            {dataEdition?.participants?.map((participant: Participant) => (
+              <TableRow key={participant.beneficiaryId}>
+                <TableCell>{participant.beneficiaryId}</TableCell>
+                <TableCell>{participant.beneficiaryName}</TableCell>
+                <TableCell>{participant.beneficiaryGender}</TableCell>
+                <TableCell>{participant.shoeSize}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
