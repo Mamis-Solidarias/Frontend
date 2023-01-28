@@ -19,7 +19,9 @@ import JuntosBriefInformation from 'src/views/campaigns/juntos/JuntosBriefInform
 import CampaignActions from "src/views/campaigns/juntos/CampaignActions";
 import CreateJuntos from 'src/views/campaigns/juntos/CreateJuntos';
 import JuntosFilters from "src/views/campaigns/juntos/JuntosFilters";
-import JuntosBeneficiaries from "../../views/campaigns/juntos/JuntosBeneficiaries";
+import JuntosBeneficiaries from "src/views/campaigns/juntos/JuntosBeneficiaries";
+import EditJuntos from "src/views/campaigns/juntos/EditJuntos";
+import FundraisersGoal from "../../views/campaigns/juntos/FundraisersGoal";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
@@ -67,13 +69,16 @@ export default () => {
             </Box>
           </Box>
           <JuntosFilters setAction={setAction}/>
-          {!!dataEdition?.juntosCampaign?.participants &&
+          {!!dataEdition?.juntosCampaign?.participants && <>
+            <FundraisersGoal dataEdition={dataEdition?.juntosCampaign}/>
             <JuntosBeneficiaries dataEdition={dataEdition?.juntosCampaign}/>
+          </>
           }
         </Grid>
       </Grid>
       <Portal>
         <CreateJuntos setAction={setAction} refetchJuntos={refetchEditions}/>
+        {!!dataEdition?.juntosCampaign && <EditJuntos setAction={setAction} refetchJuntos={refetchEditions} dataEdition={dataEdition.juntosCampaign}/>}
         <ActionToast action={action} setActionCompletion={setCompletion}/>
       </Portal>
     </ApexChartWrapper>

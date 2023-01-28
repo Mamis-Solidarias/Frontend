@@ -1,6 +1,7 @@
 import GENDERS from "../beneficiaries/Genders";
 
 export interface JuntosEdition {
+  id?: string;
   edition: string;
   communityId: string;
   beneficiaries: number[];
@@ -32,6 +33,7 @@ export interface JuntosEditionModify {
   fundraiserGoal: number;
   addedBeneficiaries: number[];
   removedBeneficiaries: number[];
+  newBeneficiaries: number[];
 }
 
 export const defaultEditionModify: JuntosEditionModify = {
@@ -40,4 +42,5 @@ export const defaultEditionModify: JuntosEditionModify = {
   fundraiserGoal: 0,
   addedBeneficiaries: [],
   removedBeneficiaries: [],
+  newBeneficiaries: [],
 }
