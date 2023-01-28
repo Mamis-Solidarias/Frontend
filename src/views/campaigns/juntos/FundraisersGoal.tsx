@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Box from "@mui/material/Box";
-import {LinearProgress} from "@mui/material";
 import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
