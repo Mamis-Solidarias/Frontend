@@ -6,27 +6,27 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
 import {Action} from 'src/types/Action';
-import {createJuntosEdition} from 'src/API/Campaigns/campaigns_data';
-import Community from 'src/types/beneficiaries/Community';
-import MenuItem from '@mui/material/MenuItem';
-import {GET_BENEFICIARIES, GET_COMMUNITIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
+import {modifyJuntosEdition} from 'src/API/Campaigns/campaigns_data';
+import {GET_BENEFICIARIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
 import {useQuery} from '@apollo/client';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
 import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
-import {defaultEdition, JuntosEdition} from "src/types/campaigns/JuntosEdition";
-import {updateCreateJuntos, updateOpenCreateJuntos} from "src/features/campaigns/juntosSlice";
+import {defaultEditionModify,JuntosEdition,JuntosEditionModify, Participant} from "src/types/campaigns/JuntosEdition";
+import {updateEditJuntos, updateOpenEditJuntos} from "src/features/campaigns/juntosSlice";
 import BeneficiariesFiltersView from "src/views/beneficiaries/BeneficiariesFiltersViewSimple";
 import {BeneficiariesFilters} from "src/types/beneficiaries/BeneficiariesFilters";
 import {updateFiltersApplied} from "src/features/beneficiaries/beneficiariesSlice";
+import {useEffect} from "react";
 
-interface CreateJuntosProps {
+interface EditJuntosProps {
   setAction: (action: Action) => void;
   refetchJuntos: () => void;
+  dataEdition: JuntosEdition;
 }
 
-export default (props: CreateJuntosProps) => {
-  const {setAction, refetchJuntos} = props;
+export default (props: EditJuntosProps) => {
+  const {setAction, refetchJuntos, dataEdition} = props;
   const dispatch = useAppDispatch();
   const beneficiariesSelector = useAppSelector(state => state.beneficiaries);
   const juntosSelector = useAppSelector(state => state.juntos);
@@ -49,7 +49,6 @@ export default (props: CreateJuntosProps) => {
       isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
     }
   }
-  const {error: errorCommunities, loading: loadingCommunities, data: dataCommunities} = useQuery(GET_COMMUNITIES);
   const {
     error: errorBeneficiaries,
     loading: loadingBeneficiaries,
@@ -76,24 +75,32 @@ export default (props: CreateJuntosProps) => {
     });
   }
 
-  const createJuntos = async () => {
+  useEffect(() => {
+    dispatch(updateEditJuntos({...juntosSelector.editJuntos, ...{description: dataEdition.description, provider: dataEdition.provider, fundraiserGoal: dataEdition.fundraiserGoal}}));
+  }, [juntosSelector.openEditJuntos]);
+
+  const editJuntos = async () => {
     try {
-      const juntosEditionFinalReview:JuntosEdition = {...juntosSelector.createJuntos, ...{beneficiaries: dataBeneficiaries.
-                              filteredBeneficiaries.nodes.map((beneficiary: Beneficiary) => beneficiary.id)}};
-      await createJuntosEdition(juntosEditionFinalReview);
-      updateCreateJuntos(defaultEdition);
+      const previousBeneficiaries = dataEdition?.participants?.map((participant: Participant) => participant.beneficiaryId);
+      const newBeneficiaries = juntosSelector.editJuntos.newBeneficiaries;
+      let removedBeneficiaries: number[] = [];
+      if(!!previousBeneficiaries) {
+        removedBeneficiaries = previousBeneficiaries.filter((participant: number ) => !newBeneficiaries.includes(participant));
+      }
+      const addedBeneficiaries = newBeneficiaries.filter((participant: number) => !previousBeneficiaries?.includes(participant));
+      const juntosEditionFinalReview:JuntosEditionModify = {...juntosSelector.editJuntos, ...{addedBeneficiaries, removedBeneficiaries}};
+      await modifyJuntosEdition(juntosEditionFinalReview, dataEdition.id as string);
+      updateEditJuntos(defaultEditionModify);
       setAction({
         complete: true,
         success: true,
-        message: 'Edición de "Juntos a la Par" creada exitosamente',
+        message: 'Edición de "Juntos a la Par" modificada exitosamente',
         status: 201
       });
       if (!!juntosSelector.refetchEditions) {
         juntosSelector.refetchEditions(juntosSelector.campaign);
       }
-
     } catch (error) {
-
       setAction({
         complete: true,
         success: false,
@@ -101,90 +108,66 @@ export default (props: CreateJuntosProps) => {
         status: 201
       });
     }
-    dispatch(updateCreateJuntos(defaultEdition));
-    dispatch(updateOpenCreateJuntos(false));
+    dispatch(updateEditJuntos(defaultEditionModify));
+    dispatch(updateOpenEditJuntos(false));
   }
 
   return (
     <Dialog
-      open={juntosSelector.openCreateJuntos}
+      open={juntosSelector.openEditJuntos}
       onClose={() => {
         refetchJuntos();
-        dispatch(updateCreateJuntos(defaultEdition));
-        dispatch(updateOpenCreateJuntos(false));
+        dispatch(updateEditJuntos(defaultEditionModify));
+        dispatch(updateOpenEditJuntos(false));
       }}
       maxWidth='lg'
     >
       <DialogTitle sx={{display: 'flex', justifyContent: 'center'}}>
-        Crear Edición de "Juntos a la Par"
+        Editar Edición de "Juntos a la Par"
       </DialogTitle>
       <DialogContent>
         <Box>
-          <TextField
-            id='edition'
-            type='text'
-            sx={{py: '.3em'}}
-            label='Edición'
-            placeholder='2022'
-            value={juntosSelector.createJuntos.edition}
-            onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{edition: e.target.value}}))}
-            fullWidth={true}
-            variant='standard'
-          />
           <TextField id='description' type='text'
                      sx={{py: '.3em'}} inputProps={{pattern: '^.+$'}}
                      label='Descripción (opcional)' placeholder='Edición de Juntos 2022'
-                     value={juntosSelector.createJuntos.description} onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{description: e.target.value}}))}
+                     value={juntosSelector.editJuntos.description} onChange={(e: any) => dispatch(updateEditJuntos({...juntosSelector.editJuntos, ...{description: e.target.value}}))}
                      fullWidth={true} variant='standard'
           />
           <TextField id='provider' type='text' sx={{py: '.3em'}}
                      inputProps={{pattern: '^.+$'}} label='Proveedor (opcional)'
-                     placeholder='Catalan' value={juntosSelector.createJuntos.provider}
-                     onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{provider: e.target.value}}))}
+                     placeholder='Catalan' value={juntosSelector.editJuntos.provider}
+                     onChange={(e: any) => dispatch(updateEditJuntos({...juntosSelector.editJuntos, ...{provider: e.target.value}}))}
                      fullWidth={true} variant='standard'
           />
           <TextField id='fundraiserGoal' type='number' sx={{py: '.3em'}}
                      inputProps={{pattern: '^.+$'}} label='Objetivo de Donaciones'
-                     placeholder='12000.27' value={juntosSelector.createJuntos.fundraiserGoal}
-                     onChange={(e: any) => dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{fundraiserGoal: e.target.value}}))}
+                     placeholder='12000.27' value={juntosSelector.editJuntos.fundraiserGoal}
+                     onChange={(e: any) => dispatch(updateEditJuntos({...juntosSelector.editJuntos, ...{fundraiserGoal: e.target.value}}))}
                      fullWidth={true} variant='standard'
           />
-          <TextField select defaultValue="" sx={{py: '.3em'}}
-                     fullWidth={true} variant='standard' label='Comunidad' placeholder='Misiones'
-                     value={juntosSelector.createJuntos.communityId} onChange={e => {
-                       dispatch(updateCreateJuntos({...juntosSelector.createJuntos, ...{communityId: e.target.value}}));
-                     }}
-          >
-            <MenuItem value=''>Ninguna</MenuItem>
-            {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
-              <MenuItem value={community.id} key={community.id}>
-                {community.name}
-              </MenuItem>
-            ))}
-          </TextField>
         </Box>
         <BeneficiariesFiltersView
-          communityId={juntosSelector.createJuntos.communityId}
-          onNetworkError={() => console.log('hubo error')}
+          communityId={dataEdition.communityId}
+          onNetworkError={() => {
+            console.log('error')
+          }}
           onSetFiltersAction={onSetFiltersAction}
         />
-        {(loadingBeneficiaries || loadingCommunities) && <Box>Cargando beneficiarios...</Box>}
-        {!(errorBeneficiaries || errorCommunities) && !(loadingBeneficiaries || loadingCommunities) && (
+        {(loadingBeneficiaries) && <Box>Cargando beneficiarios...</Box>}
+        {!(errorBeneficiaries) && !(loadingBeneficiaries) && (
           <BeneficiariesTable beneficiaries={dataBeneficiaries?.filteredBeneficiaries.nodes as Beneficiary[]}/>
         )}
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '1em'}}>
-          <Button sx={{mx: '.25em'}} onClick={() => dispatch(updateOpenCreateJuntos(false))}>Cancelar</Button>
+          <Button sx={{mx: '.25em'}} onClick={() => dispatch(updateOpenEditJuntos(false))}>Cancelar</Button>
           <Button
             sx={{width: '60%', mx: '.25em'}}
             variant='contained'
-            onClick={async () => await createJuntos()}
-            disabled={!juntosSelector.createJuntos.edition || juntosSelector.createJuntos.fundraiserGoal < 0
-                      || !dataBeneficiaries || dataBeneficiaries.filteredBeneficiaries.nodes.length === 0}
+            onClick={async () => await editJuntos()}
+            disabled={juntosSelector.editJuntos.fundraiserGoal <= 0 || dataBeneficiaries?.filteredBeneficiaries.nodes.length === 0}
           >
-            Crear
+            Editar
           </Button>
         </Box>
-
       </DialogContent>
     </Dialog>
   );

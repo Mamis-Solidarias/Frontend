@@ -5,6 +5,7 @@ import HomeAccount from 'mdi-material-ui/HomeAccount';
 import AccountGroup from 'mdi-material-ui/AccountGroup';
 import BackpackIcon from '@mui/icons-material/Backpack';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import HandshakeIcon from '@mui/icons-material/Handshake';
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
@@ -47,6 +48,12 @@ const navigation = (): VerticalNavItemsType => {
       icon: BackpackIcon,
       title: 'Una Mochi',
       path: '/mochi',
+      service: 'Campaigns'
+    },
+    {
+      icon: HandshakeIcon,
+      title: 'Juntos a la Par',
+      path: '/juntos',
       service: 'Campaigns'
     },
     {

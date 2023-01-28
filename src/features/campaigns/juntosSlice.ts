@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {CampaignsFilters, campaignsFiltersDefault, campaignsFiltersNull} from "../../types/campaigns/CampaignsFilters";
-import {defaultEdition, JuntosEdition} from "../../types/campaigns/JuntosEdition";
+import {
+  defaultEdition,
+  defaultEditionModify,
+  JuntosEdition,
+  JuntosEditionModify
+} from "../../types/campaigns/JuntosEdition";
 
 interface JuntosPageData {
   openCreateJuntos: boolean;
@@ -10,6 +15,7 @@ interface JuntosPageData {
   filtersToApply: CampaignsFilters;
   juntos: JuntosEdition;
   createJuntos: JuntosEdition
+  editJuntos: JuntosEditionModify;
   refetchEditions?: (community: string) => void;
   campaign: string;
 }
@@ -22,6 +28,7 @@ export const initialState: JuntosPageData = {
   filtersToApply: campaignsFiltersNull,
   juntos: defaultEdition,
   createJuntos: defaultEdition,
+  editJuntos: defaultEditionModify,
   campaign: '',
 };
 
@@ -47,6 +54,9 @@ const juntosSlice = createSlice({
     updateCreateJuntos(state, action: PayloadAction<JuntosEdition>) {
       state.createJuntos = action.payload;
     },
+    updateEditJuntos(state, action: PayloadAction<JuntosEditionModify>) {
+      state.editJuntos = action.payload;
+    },
     updateRefreshEditions( state, action: PayloadAction<(community: string) => void>) {
       state.refetchEditions = action.payload;
     },
@@ -56,5 +66,5 @@ const juntosSlice = createSlice({
   }
 });
 
-export const { updateOpenCreateJuntos, updateOpenEditJuntos, updateFiltersToApply, updateFiltersApplied, updateJuntos, updateCreateJuntos, updateOpenCollapse } = juntosSlice.actions;
+export const { updateOpenCreateJuntos, updateOpenEditJuntos, updateFiltersToApply, updateFiltersApplied, updateEditJuntos, updateJuntos, updateCreateJuntos, updateOpenCollapse } = juntosSlice.actions;
 export default juntosSlice.reducer;

@@ -1,10 +1,21 @@
+import GENDERS from "../beneficiaries/Genders";
+
 export interface JuntosEdition {
+  id?: string;
   edition: string;
   communityId: string;
   beneficiaries: number[];
+  participants?: Participant[];
   description: string;
   provider: string;
   fundraiserGoal: number;
+}
+
+export interface Participant {
+  beneficiaryId: number;
+  beneficiaryGender: keyof typeof GENDERS;
+  beneficiaryName: string;
+  shoeSize: number;
 }
 
 export const defaultEdition: JuntosEdition = {
@@ -22,4 +33,14 @@ export interface JuntosEditionModify {
   fundraiserGoal: number;
   addedBeneficiaries: number[];
   removedBeneficiaries: number[];
+  newBeneficiaries: number[];
+}
+
+export const defaultEditionModify: JuntosEditionModify = {
+  description: '',
+  provider: '',
+  fundraiserGoal: 0,
+  addedBeneficiaries: [],
+  removedBeneficiaries: [],
+  newBeneficiaries: [],
 }
