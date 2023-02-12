@@ -119,6 +119,16 @@ const Dashboard = () => {
   }
   const editions = dataEditions.mochiEditions;
 
+  const selectCampaign = (filtersToApply: CampaignsFilters ) => {
+    setFiltersApplied(filtersToApply);
+    setAction({
+      complete: true,
+      success: true,
+      message: 'Campaña especificada',
+      status: 200
+    });
+  }
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -128,20 +138,7 @@ const Dashboard = () => {
               <Box>
                 <Card
                   sx={{display: 'flex', flexDirection: 'column', px: '.25em', py: '.25em'}}>
-                  <CardHeader title={"Seleccionar Campaña"} action={<Button onClick={
-                    () => {
-                      setFiltersApplied(filterToApply);
-                      setAction({
-                        complete: true,
-                        success: true,
-                        message: 'Campaña especificada',
-                        status: 200
-                      });
-                    }
-                  }
-                  >
-                    Aplicar cambios
-                  </Button>}/>
+                  <CardHeader title={"Seleccionar Campaña"}/>
                   <CardContent sx={{flexDirection: 'row'}}>
                     <TextField
                       select
@@ -169,7 +166,10 @@ const Dashboard = () => {
                       type='text'
                       label='Edición'
                       value={filterToApply.edition}
-                      onChange={e => setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}))}
+                      onChange={e => {
+                        setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}));
+                        selectCampaign({...filterToApply, ...{edition: e.target.value}})
+                      }}
                     >
                       {editions.map((editionJson: { edition: string }) => {
                         return (
@@ -238,7 +238,7 @@ const Dashboard = () => {
                   <Button
                     variant='contained'
                     onClick={() => {
-                      const filtersToApply = filters;
+                      const filtersToApply = {...filters};
                       for (const fk in filtersToApply) {
                         if (!filtersToApply[fk as keyof CampaignsFilters]) {
                           filtersToApply[fk as keyof CampaignsFilters] = null;

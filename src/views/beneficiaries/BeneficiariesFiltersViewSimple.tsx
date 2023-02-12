@@ -7,12 +7,13 @@ import TextField from '@mui/material/TextField';
 
 import GENDERS from 'src/types/beneficiaries/Genders';
 import BENEFICIARY_TYPES from 'src/types/beneficiaries/BeneficiaryTypes';
-import { Button, Card, CardContent, Collapse, Grid, IconButton } from '@mui/material';
+import { Button, Card, CardContent, Collapse, IconButton } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
+import Box from "@mui/material/Box";
 
 interface BeneficiariesFiltersViewSimpleProps {
   onSetFiltersAction: (filters: BeneficiariesFilters) => void;
@@ -62,11 +63,10 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
       />
       <CardContent>
         <Collapse in={openCollapse}>
-          <Grid item alignItems={'center'} justifyContent={'space-around'} columns={{ xs: 5, sm: 10, md: 17 }}>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
+          <Box display={'flex'} flexDirection={'row'} margin={'.25em'}>
+              <p><TextField
                 select
-                fullWidth={true}
+                sx={{margin: '.25em'}}
                 variant='standard'
                 label='Familia'
                 value={filters.familyId}
@@ -79,109 +79,95 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                   </MenuItem>
                 ))}
               </TextField>
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                fullWidth={true}
-                variant='standard'
-                label='Edad Mínima'
-                value={filters.ageStart}
-                onChange={e => setFilter('ageStart', e.target.value)}
-              />
-            </Grid>
-            <Grid xs={2} sm={3} md={4}>
-              <TextField
-                fullWidth={true}
-                variant='standard'
-                label='Edad Máxima'
-                value={filters.ageEnd}
-                onChange={e => setFilter('ageEnd', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                fullWidth={true}
-                variant='standard'
-                label='DNI'
-                value={filters.dniStarts}
-                onChange={e => setFilter('dniStarts', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                fullWidth={true}
-                variant='standard'
-                label='Nombre'
-                value={filters.firstName}
-                onChange={e => setFilter('firstName', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                select
-                fullWidth={true}
-                variant='standard'
-                label='Tipo'
-                value={filters.type}
-                onChange={e => setFilter('type', e.target.value)}
-              >
-                <MenuItem value=''>Todas</MenuItem>
-                {Object.entries(BENEFICIARY_TYPES).map(entry => {
-                  const [typeEnglish, typeSpanish] = entry;
+                <TextField
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Edad Mínima'
+                  value={filters.ageStart}
+                  onChange={e => setFilter('ageStart', e.target.value)}
+                />
+                <TextField
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Edad Máxima'
+                  value={filters.ageEnd}
+                  onChange={e => setFilter('ageEnd', e.target.value)}
+                />
+              </p>
+              <p>
+                <TextField
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='DNI'
+                  value={filters.dniStarts}
+                  onChange={e => setFilter('dniStarts', e.target.value)}
+                />
+                <TextField
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Nombre'
+                  value={filters.firstName}
+                  onChange={e => setFilter('firstName', e.target.value)}
+                />
+                <TextField
+                  select
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Tipo'
+                  value={filters.type}
+                  onChange={e => setFilter('type', e.target.value)}
+                >
+                  <MenuItem value=''>Todas</MenuItem>
+                  {Object.entries(BENEFICIARY_TYPES).map(entry => {
+                    const [typeEnglish, typeSpanish] = entry;
 
-                  return (
-                    <MenuItem value={typeEnglish} key={typeEnglish}>
-                      {typeSpanish}
-                    </MenuItem>
-                  );
-                })}
-              </TextField>
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                fullWidth={true}
-                variant='standard'
-                label='Apellido'
-                value={filters.lastName}
-                onChange={e => setFilter('lastName', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                fullWidth={true}
-                variant='standard'
-                label='Escuela'
-                value={filters.school}
-                onChange={e => setFilter('school', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <TextField
-                select
-                fullWidth={true}
-                variant='standard'
-                label='Género'
-                value={filters.gender}
-                onChange={e => setFilter('gender', e.target.value)}
-              >
-                <MenuItem value=''>Sin Preferencia</MenuItem>
-                {Object.entries(GENDERS).map(entry => {
-                  const [genderEnglish, genderSpanish] = entry;
+                    return (
+                      <MenuItem value={typeEnglish} key={typeEnglish}>
+                        {typeSpanish}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
+              </p>
+              <p>
+                <TextField
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Apellido'
+                  value={filters.lastName}
+                  onChange={e => setFilter('lastName', e.target.value)}
+                />
+                <TextField
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Escuela'
+                  value={filters.school}
+                  onChange={e => setFilter('school', e.target.value)}
+                />
+                <TextField
+                  select
+                  sx={{margin: '.25em'}}
+                  variant='standard'
+                  label='Género'
+                  value={filters.gender}
+                  onChange={e => setFilter('gender', e.target.value)}
+                >
+                  <MenuItem value=''>Sin Preferencia</MenuItem>
+                  {Object.entries(GENDERS).filter(entry => (/^[A-Z]+$/.test(entry[0]))).map(entry => {
+                    const [genderEnglish, genderSpanish] = entry;
 
-                  return (
-                    <MenuItem value={genderEnglish} key={genderEnglish}>
-                      {genderSpanish}
-                    </MenuItem>
-                  );
-                })}`
-              </TextField>
-            </Grid>
-            <Grid item xs={2} sm={3} md={4}>
-              <Button sx={{ width: '100%' }} variant='contained' onClick={() => onSetFiltersAction(filters)}>
-                Importar
-              </Button>
-            </Grid>
-          </Grid>
+                    return (
+                      <MenuItem value={genderEnglish} key={genderEnglish}>
+                        {genderSpanish}
+                      </MenuItem>
+                    );
+                  })}`
+                </TextField>
+              </p>
+          </Box>
+          <Button sx={{ width: '100%' }} variant='contained' onClick={() => onSetFiltersAction(filters)}>
+            Importar
+          </Button>
         </Collapse>
       </CardContent>
     </Card>
