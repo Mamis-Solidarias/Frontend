@@ -11,9 +11,11 @@ export const GET_MOCHI = gql`
         beneficiary {
           familyId
         }
+        campaignId
         beneficiaryGender
         beneficiaryId
         beneficiaryName
+        donationId
         donationDropOffPoint
         donationType
         donorId

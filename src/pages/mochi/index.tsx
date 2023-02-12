@@ -37,7 +37,6 @@ import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from '@mui/icons-material/Info';
 
 const Dashboard = () => {
-  // const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
   const [openCreateMochi, setOpenCreateMochi] = useState<boolean>(false);
   const [createMochiFinished, setCreateMochiFinished] = useState<boolean>(false);
@@ -54,7 +53,7 @@ const Dashboard = () => {
     error: errorEditions,
     data: dataEditions,
     refetch: refetchEditions
-  } = useQuery(GET_MOCHI_EDITIONS,{variables: {communityId: 'valor nulo'}} );
+  } = useQuery(GET_MOCHI_EDITIONS, {variables: {communityId: 'valor nulo'}});
   const [communities, setCommunities] = useState<Community[]>([]);
   const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_MOCHI, {
     variables: {edition: filtersApplied.edition, community: filtersApplied.community}
@@ -119,7 +118,7 @@ const Dashboard = () => {
   }
   const editions = dataEditions.mochiEditions;
 
-  const selectCampaign = (filtersToApply: CampaignsFilters ) => {
+  const selectCampaign = (filtersToApply: CampaignsFilters) => {
     setFiltersApplied(filtersToApply);
     setAction({
       complete: true,
@@ -134,60 +133,56 @@ const Dashboard = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Box display='flex' flexDirection='row' justifyContent={"space-between"}>
-            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-              <Box>
-                <Card
-                  sx={{display: 'flex', flexDirection: 'column', px: '.25em', py: '.25em'}}>
-                  <CardHeader title={"Seleccionar Campaña"}/>
-                  <CardContent sx={{flexDirection: 'row'}}>
-                    <TextField
-                      select
-                      sx={{mx: '.25em'}}
-                      variant='standard'
-                      type='text'
-                      label='Comunidad'
-                      value={filterToApply.community}
-                      onChange={e => {
-                        setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
-                        refetchEditions({communityId: e.target.value});
-                      }}>
-                      {communities.map(community => {
-                        return (
-                          <MenuItem value={community.id} key={community.id}>
-                            {community.id + ' - ' + community.name}
-                          </MenuItem>
-                        );
-                      })}
-                    </TextField>
-                    <TextField
-                      select
-                      sx={{mx: '.25em'}}
-                      variant='standard'
-                      type='text'
-                      label='Edición'
-                      value={filterToApply.edition}
-                      onChange={e => {
-                        setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}));
-                        selectCampaign({...filterToApply, ...{edition: e.target.value}})
-                      }}
-                    >
-                      {editions.map((editionJson: { edition: string }) => {
-                        return (
-                          <MenuItem value={editionJson.edition} key={editionJson.edition}>
-                            {editionJson.edition}
-                          </MenuItem>
-                        );
-                      })}
-                    </TextField>
-                  </CardContent>
-                </Card>
-              </Box>
+            <Box display={"flex"} flexDirection={"row"}>
+              <Card sx={{height: '100%'}}>
+                <CardHeader title={"Seleccionar Campaña"}/>
+                <CardContent sx={{flexDirection: 'row'}}>
+                  <TextField
+                    select
+                    sx={{mx: '.25em'}}
+                    variant='standard'
+                    type='text'
+                    label='Comunidad'
+                    value={filterToApply.community}
+                    onChange={async e => {
+                      setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
+                      await refetchEditions({communityId: e.target.value});
+                    }}>
+                    {communities.map(community => {
+                      return (
+                        <MenuItem value={community.id} key={community.id}>
+                          {community.id + ' - ' + community.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                  <TextField
+                    select
+                    sx={{mx: '.25em'}}
+                    variant='standard'
+                    type='text'
+                    label='Edición'
+                    value={filterToApply.edition}
+                    onChange={e => {
+                      setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{edition: e.target.value}}));
+                      selectCampaign({...filterToApply, ...{edition: e.target.value}})
+                    }}
+                  >
+                    {editions.map((editionJson: { edition: string }) => {
+                      return (
+                        <MenuItem value={editionJson.edition} key={editionJson.edition}>
+                          {editionJson.edition}
+                        </MenuItem>
+                      );
+                    })}
+                  </TextField>
+                </CardContent>
+              </Card>
               {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
-                <Box alignItems={"center"} sx={{mx: '0.25em'}}>
-                  <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em'}}
+                <Box sx={{px: '0.25em', height: '100%'}}>
+                  <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em', height: '100%'}}
                                title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-                    Proveedor: !!dataEdition.mochiEdition.provider ? dataEdition.mochiEdition.provider: '-',
-                    Edición: !!dataEdition.mochiEdition.edition ? dataEdition.mochiEdition.edition: '-',
+                    Proveedor: !!dataEdition.mochiEdition.provider ? dataEdition.mochiEdition.provider : '-',
                   }}/>
                 </Box>
               }

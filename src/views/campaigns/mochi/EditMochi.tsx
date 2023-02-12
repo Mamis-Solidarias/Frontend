@@ -25,6 +25,7 @@ interface EditMochiProps {
   onNetworkError: (err: any) => void;
 }
 
+
 export const EditMochi: FC<EditMochiProps> = props => {
   const { openDialog, handleClose, setAction, mochiEdition, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);

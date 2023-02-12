@@ -12,7 +12,7 @@ interface DefaultCardProps {
 export const DefaultCard: FC<DefaultCardProps> = props => {
   const {title, fields, sx} = props;
 
-  const style = {...{margin: "0.25em"}, ...sx};
+  const style = { ...{height: '100%'},...sx};
 
   return (
     <Card sx={style}>

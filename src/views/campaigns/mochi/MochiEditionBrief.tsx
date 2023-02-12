@@ -15,6 +15,15 @@ import Button from '@mui/material/Button';
 import { AssignDonor } from '../AssignDonor';
 import { Action } from 'src/types/Action';
 import Box from "@mui/material/Box";
+import {useAppDispatch, useAppSelector} from "../../../hooks/reduxHooks";
+import {
+  updateAssignPayment,
+  updateCampaign,
+  updateCampaignId,
+  updateDonorId,
+  updateParticipantId
+} from "../../../features/campaigns/paymentSlice";
+import AssignPayment from "./AssignPayment";
 
 interface MochiEditionBriefProps {
   dataEdition: MochiEditionLoaded;
@@ -22,6 +31,8 @@ interface MochiEditionBriefProps {
 }
 
 export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
+  const dispatch = useAppDispatch();
+  const campaignPaymentSelector = useAppSelector(state => state.campaignPayment);
   const { dataEdition, setAction } = props;
   const [hasWriteMochi, setHasWriteMochi] = useState<boolean>(false);
   const [openAssignDonor, setOpenAssignDonor] = useState<boolean>(false);
@@ -79,22 +90,17 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
                         <Button
                           variant='contained'
                           onClick={() => {
-                            setSelectedParticipant(participant.id.toString());
+                            dispatch(updateParticipantId(participant.id));
+                            dispatch(updateDonorId(participant.donorId));
+                            dispatch(updateCampaignId(participant.campaignId))
+                            dispatch(updateCampaign("UnaMochiComoLaTuya"))
+                            dispatch(updateAssignPayment(true));
                           }}
                         >
-                          <Typography color={'white'}>Pago</Typography>
+                          <Typography color={'white'}>Asignar Pago</Typography>
                         </Button>
                       )}
-                      {participant.state === 'DONATION_RECEIVED' && (
-                        <Button
-                          variant='contained'
-                          onClick={() => {
-                            setSelectedParticipant(participant.id.toString());
-                          }}
-                        >
-                          <Typography color={'white'}>Editar Pago</Typography>
-                        </Button>
-                      )}
+                      {participant.state === 'DONATION_RECEIVED' && <>-</>}
                     </TableCell>
                   )}
                 </TableRow>
@@ -110,9 +116,9 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
             participant={selectedParticipant}
           />
         )}
-        {/* {openPayment &&
-          <AssignPayment/>
-        } */}
+        {campaignPaymentSelector.assignPayment &&
+          <AssignPayment setAction={setAction}/>
+        }
         {/* {openEditPayment &&
 
         } */}

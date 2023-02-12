@@ -50,7 +50,10 @@ export interface Participant {
   beneficiaryName: string;
   donationDropOffLocation: string | null;
   donationType: string | null;
+  donationId: string;
   donorName: string;
+  donorId: number;
+  campaignId: number;
   id: number;
   schoolCycle: string | null;
   state: string;
