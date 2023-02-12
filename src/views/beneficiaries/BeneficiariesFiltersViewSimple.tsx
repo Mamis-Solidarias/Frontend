@@ -40,7 +40,6 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
 
   useEffect(() => {
     if (!!communityId) {
-      console.log(communityId)
       setFilter('communityCode', communityId);
       setFilter('communityId', communityId);
       getFamiliesByCommunity(communityId, 0, 100)

@@ -186,8 +186,8 @@ const Dashboard = () => {
                 <Box alignItems={"center"} sx={{mx: '0.25em'}}>
                   <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em'}}
                                title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-                    Proveedor: dataEdition.mochiEdition.provider,
-                    Edición: dataEdition.mochiEdition.edition
+                    Proveedor: !!dataEdition.mochiEdition.provider ? dataEdition.mochiEdition.provider: '-',
+                    Edición: !!dataEdition.mochiEdition.edition ? dataEdition.mochiEdition.edition: '-',
                   }}/>
                 </Box>
               }
