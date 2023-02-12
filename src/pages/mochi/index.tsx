@@ -35,6 +35,7 @@ import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from '@mui/icons-material/Info';
+import {Participant} from "../../types/campaigns/MochiEdition";
 
 const Dashboard = () => {
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
@@ -128,6 +129,14 @@ const Dashboard = () => {
     });
   }
 
+  const getParticipantsWithDonation = () => {
+    return (dataEdition.mochiEdition.participants as Participant[]).reduce((accum, participant) => accum + (!!participant.donationId ? 1 : 0), 0)
+  }
+
+  const getAllParticipants = () => {
+    return (dataEdition.mochiEdition.participants as Participant[]).reduce((accum) => accum + 1, 0)
+  }
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
@@ -178,13 +187,22 @@ const Dashboard = () => {
                   </TextField>
                 </CardContent>
               </Card>
-              {!!dataEdition && !!dataEdition.mochiEdition && (!!dataEdition.mochiEdition.provider || !!dataEdition.mochiEdition.edition) &&
-                <Box sx={{px: '0.25em', height: '100%'}}>
-                  <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em', height: '100%'}}
-                               title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-                    Proveedor: !!dataEdition.mochiEdition.provider ? dataEdition.mochiEdition.provider : '-',
-                  }}/>
-                </Box>
+              {(!!dataEdition?.mochiEdition) &&
+                <>
+                  <Box sx={{px: '0.25em', height: '100%'}}>
+                    <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em', height: '100%'}}
+                                 title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
+                      Proveedor: !!dataEdition.mochiEdition.provider ? dataEdition.mochiEdition.provider : '-',
+                      Objetivo: getAllParticipants() + ' mochis',
+                    }}/>
+                  </Box>
+                  <Box sx={{px: '0.25em', height: '100%'}}>
+                    <DefaultCard sx={{display: 'flex', flexDirection: 'column', minWidth: '5em', height: '100%'}}
+                                 title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
+                      Completitud: getParticipantsWithDonation()*100/getAllParticipants() + '%',
+                    }}/>
+                  </Box>
+                </>
               }
             </Box>
             <Box display='flex' justifyContent='flex-end' alignItems="center">
