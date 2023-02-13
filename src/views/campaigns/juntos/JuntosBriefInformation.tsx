@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from "@mui/icons-material/Info";
@@ -10,11 +9,15 @@ interface JuntosBriefInformation {
 export default (props: JuntosBriefInformation) => {
   const {juntosEdition} = props;
 
-  return <Box alignItems={"center"}>
-    <DefaultCard sx={{display: 'flex', flexDirection: 'column'}}
+  return <>
+    <DefaultCard sx={{display: 'flex', flexDirection: 'column', mx:" .125em"}}
                  title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-      Proveedor: juntosEdition.provider,
-      Edición: juntosEdition.edition
+      Proveedor: !!juntosEdition.provider ? juntosEdition.provider: '-',
+      Objetivo: '$' + juntosEdition.fundraiserGoal
     }}/>
-  </Box>
+    <DefaultCard sx={{display: 'flex', flexDirection: 'column', mx:" .125em"}} title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
+      Recaudado: '5$',
+      Completitud: '25%',
+    }}/>
+  </>
 }

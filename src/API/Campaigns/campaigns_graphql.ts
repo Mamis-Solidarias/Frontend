@@ -64,6 +64,20 @@ export const GET_JUNTOS = gql`
   }
 `;
 
+export const GET_JUNTOS_DONATION = gql`
+  query donationsQuery ($id: UUID!) {
+    monetaryDonation(id: $id) {
+      amount
+      currency
+      donatedAt
+      donorId
+      id
+      motive
+      type
+    }
+  }
+`;
+
 export const GET_JUNTOS_EDITIONS = gql`
   query filterQuery {
     juntosCampaigns {

@@ -2,7 +2,7 @@ export interface DonationsRequest {
   "donorId": number;
   "amount": number;
   "currency": string;
-  "participantId": number;
+  "participantId": number | null;
   "campaignId": number;
   "campaign": string;
 }

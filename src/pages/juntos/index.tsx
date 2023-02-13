@@ -21,7 +21,8 @@ import CreateJuntos from 'src/views/campaigns/juntos/CreateJuntos';
 import JuntosFilters from "src/views/campaigns/juntos/JuntosFilters";
 import JuntosBeneficiaries from "src/views/campaigns/juntos/JuntosBeneficiaries";
 import EditJuntos from "src/views/campaigns/juntos/EditJuntos";
-import FundraisersGoal from "../../views/campaigns/juntos/FundraisersGoal";
+import JuntosDonations from "src/views/campaigns/juntos/JuntosDonations";
+import AssignPayment from "src/views/campaigns/juntos/AssignPayment";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
@@ -47,10 +48,8 @@ export default () => {
   }, []);
 
   if (loadingEditions) return <Box>Cargando ediciones de Juntos...</Box>;
+  if (errorEditions) return <Box>Error :(</Box>;
 
-  if (errorEditions) {
-    return <Box>Error :(</Box>;
-  }
   const editions = dataEditions.juntosCampaigns;
 
   return (
@@ -58,7 +57,7 @@ export default () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Box display='flex' flexDirection='row' justifyContent={"space-between"}>
-            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+            <Box display={"flex"} flexDirection={"row"}>
               <SelectEdition setAction={setAction} refetchEditions={refetchEditions} editions={editions}/>
               {(!!dataEdition?.juntosCampaign?.provider || !!dataEdition?.juntosCampaign?.edition) &&
                 <JuntosBriefInformation juntosEdition={dataEdition?.juntosCampaign}/>
@@ -70,13 +69,14 @@ export default () => {
           </Box>
           <JuntosFilters setAction={setAction}/>
           {!!dataEdition?.juntosCampaign?.participants && <>
-            <FundraisersGoal dataEdition={dataEdition?.juntosCampaign}/>
             <JuntosBeneficiaries dataEdition={dataEdition?.juntosCampaign}/>
+            <JuntosDonations juntosEdition={dataEdition?.juntosCampaign}/>
           </>
           }
         </Grid>
       </Grid>
       <Portal>
+        <AssignPayment setAction={setAction} refetchEditions={refetchEditions}/>
         <CreateJuntos setAction={setAction} refetchJuntos={refetchEditions}/>
         {!!dataEdition?.juntosCampaign && <EditJuntos setAction={setAction} refetchJuntos={refetchEditions} dataEdition={dataEdition.juntosCampaign}/>}
         <ActionToast action={action} setActionCompletion={setCompletion}/>

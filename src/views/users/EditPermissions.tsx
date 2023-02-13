@@ -40,7 +40,6 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
       setStarterCall(true);
       if (allRoles.length == 0) getRoles().then(result => setAllRoles(result.data.roles));
       if (userRoles.length == 0) {
-        console.log(id);
         getUserRoles(id).then(result => {
           setUserRoles(result.data.roles);
           setPermissions(result.data.roles.length);
