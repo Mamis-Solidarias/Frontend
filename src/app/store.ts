@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 // Slices
 import juntosReducer from 'src/features/campaigns/juntosSlice';
+import abrigaditosReducer from 'src/features/campaigns/abrigaditosSlice';
 import beneficiariesReducer from 'src/features/beneficiaries/beneficiariesSlice';
 import campaignPaymentReducer from 'src/features/campaigns/paymentSlice';
 
@@ -9,6 +10,7 @@ export const store = configureStore({
   reducer: {
     juntos: juntosReducer,
     beneficiaries: beneficiariesReducer,
+    abrigaditos: abrigaditosReducer,
     campaignPayment: campaignPaymentReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false })
