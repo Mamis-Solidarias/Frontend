@@ -99,7 +99,7 @@ export default (props: EditAbrigaditosProps) => {
       setAction({
         complete: true,
         success: true,
-        message: 'Edición de "Juntos a la Par" modificada exitosamente',
+        message: 'Edición de "Abrigaditos" modificada exitosamente',
         status: 201
       });
       if (!!abrigaditosSelector.refetchEditions) {
