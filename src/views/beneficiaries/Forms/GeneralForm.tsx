@@ -6,8 +6,9 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
 import Community from 'src/types/beneficiaries/Community';
-import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import Family from 'src/types/beneficiaries/Family';
+import {useQuery} from "@apollo/client";
+import {GET_FAMILIES} from "../../../API/Beneficiaries/beneficiaries_grapql";
 
 interface GeneralFormProps {
   beneficiaryFields: CreateBeneficiaryFields;
@@ -19,19 +20,11 @@ interface GeneralFormProps {
 
 export const GeneralForm: FC<GeneralFormProps> = props => {
   const { beneficiaryFields, setBeneficiaryField, communities, setFamilyId, startingCommunityInput } = props;
-  const [families, setFamilies] = useState<Family[]>([]);
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
-
+  const { data, refetch } = useQuery(GET_FAMILIES);
   useEffect(() => {
-    if (!!selectedCommunity) {
       setBeneficiaryField('familyId', '');
-      getFamiliesByCommunity(selectedCommunity, 0, 100).then(result => {
-        setFamilies(result.data.families);
-      });
-    } else {
-      setFamilies([]);
-      setBeneficiaryField('familyId', '');
-    }
+      refetch({ communityCode: selectedCommunity })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCommunity]);
 
@@ -50,7 +43,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             onChange={e => setSelectedCommunity(e.target.value)}
           >
             <MenuItem value=''>Ninguna</MenuItem>
-            {communities.map((community: Community) => (
+            {communities?.map((community: Community) => (
               <MenuItem value={community.id} key={community.id}>
                 {community.name}
               </MenuItem>
@@ -121,14 +114,14 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             onChange={e => {
               setBeneficiaryField('familyId', e.target.value);
               if (!!setFamilyId) {
-                const family: Family|undefined = families.find((family) => family.id === e.target.value);
+                const family: Family|undefined = data?.filteredFamilies?.nodes?.find((family: Family) => family.id === e.target.value);
                 setFamilyId(family?.id || e.target.value);
                 setBeneficiaryField('lastName',family?.name || '');
               }
             }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
-            {families.map((family: Family) => (
+            {data?.filteredFamilies?.nodes.map((family: Family) => (
               <MenuItem value={family.id} key={family.id}>
                 {family.id + ' : ' +family.name}
               </MenuItem>

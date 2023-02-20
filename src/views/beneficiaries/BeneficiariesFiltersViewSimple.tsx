@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 
 // ** MUI Imports
 import MenuItem from '@mui/material/MenuItem';
-import Family from 'src/types/beneficiaries/Family';
 import TextField from '@mui/material/TextField';
 
 import GENDERS from 'src/types/beneficiaries/Genders';
@@ -11,42 +10,33 @@ import { Button, Card, CardContent, Collapse, IconButton } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
-import { getFamiliesByCommunity } from 'src/API/Beneficiaries/communities_data';
 import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
 import Box from "@mui/material/Box";
+import {useQuery} from "@apollo/client";
+import {GET_FAMILIES} from "../../API/Beneficiaries/beneficiaries_grapql";
+import Family from "../../types/beneficiaries/Family";
 
 interface BeneficiariesFiltersViewSimpleProps {
   onSetFiltersAction: (filters: BeneficiariesFilters) => void;
   communityId: string;
-  onNetworkError: (error: any) => void;
 }
 
 const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props => {
-  const { onSetFiltersAction, onNetworkError, communityId } = props;
+  const { onSetFiltersAction, communityId } = props;
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const [families, setFamilies] = useState<Family[]>([]);
-
   const { filters, setFilter } = useBeneficiariesFilters();
-
-  useEffect(() => {
-    if (!!communityId) {
-      getFamiliesByCommunity(communityId, 0, 100)
-        .then(result => {
-          setFamilies(result.data.families);
-        })
-        .catch(onNetworkError);
+  const { data: dataFamilies, refetch: refetchFamilies } = useQuery(GET_FAMILIES, {
+    variables: {
+      communityCode: filters.communityCode,
+      familyName: filters.familyName
     }
-  }, []);
+  });
 
   useEffect(() => {
     if (!!communityId) {
       setFilter('communityCode', communityId);
       setFilter('communityId', communityId);
-      getFamiliesByCommunity(communityId, 0, 100)
-        .then(result => {
-          setFamilies(result.data.families);
-        })
-        .catch(onNetworkError);
+      refetchFamilies({communityCode: filters.communityId, familyName: filters.familyName})
     }
   }, [communityId]);
 
@@ -72,7 +62,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                 onChange={e => setFilter('familyId', e.target.value)}
               >
                 <MenuItem value=''>Todas</MenuItem>
-                {families.map(family => (
+                {dataFamilies?.filteredFamilies?.nodes?.map((family: Family) => (
                   <MenuItem value={family.id} key={family.id}>
                     {family.id + ' - ' + family.name}
                   </MenuItem>

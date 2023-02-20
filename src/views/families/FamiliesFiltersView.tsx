@@ -41,7 +41,7 @@ const FamiliesFiltersView: FC<FamiliesFiltersViewProps> = props => {
                             onChange={e => setFilter('communityCode', e.target.value)}
                         >
                             <MenuItem value=''>Todas</MenuItem>
-                            {communities.map(community => (
+                            {communities?.map(community => (
                                 <MenuItem value={community.id} key={community.id}>
                                     {community.id + ' - ' + community.name}
                                 </MenuItem>

@@ -147,8 +147,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {!!communities &&
-                                communities.map((community: Community) => (
+                            {communities?.map((community: Community) => (
                                     <TableRow hover key={community.name}
                                               sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}>
                                         <TableCell>{community.communityCode}</TableCell>
