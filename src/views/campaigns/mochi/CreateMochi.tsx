@@ -11,9 +11,8 @@ import { defaultEdition, MochiEdition } from 'src/types/campaigns/MochiEdition';
 import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
 import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/beneficiaries/Community';
-import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import MenuItem from '@mui/material/MenuItem';
-import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
+import {GET_BENEFICIARIES, GET_COMMUNITIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
 import BeneficiariesFiltersView from '../../beneficiaries/BeneficiariesFiltersViewSimple';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
@@ -30,7 +29,7 @@ interface CreateMochiProps {
 export const CreateMochi: FC<CreateMochiProps> = props => {
   const { openDialog, handleClose, setAction, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const [communities, setCommunities] = useState<Community[]>([]);
+  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
   const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
   const { error, loading, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
@@ -48,7 +47,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
     }
   });
 
@@ -68,17 +67,9 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
     });
   };
-
-  useEffect(() => {
-    getCommunities().then(result => {
-      if (!!result.data.communities && result.data.communities.length > 0) {
-        setCommunities(result.data.communities);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     refetchWithSameParameters();
@@ -163,9 +154,9 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
             }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
-            {communities.map((community: Community) => (
+            {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
               <MenuItem value={community.id} key={community.id}>
-                {community.name}
+                {community.id + ' - ' + community.name}
               </MenuItem>
             ))}
           </TextField>

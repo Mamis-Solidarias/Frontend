@@ -48,7 +48,7 @@ export default (props: EditAbrigaditosProps) => {
       type: filtersApplied.type,
       dniStarts: filtersApplied.dniStarts,
       familyId: filtersApplied.familyId,
-      communityId: abrigaditosSelector.editAbrigaditos.communityId,
+      communityId: filtersApplied.communityCode,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
       isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
@@ -153,9 +153,6 @@ export default (props: EditAbrigaditosProps) => {
         </Box>
         <BeneficiariesFiltersView
           communityId={dataEdition.communityId}
-          onNetworkError={() => {
-            console.log('error')
-          }}
           onSetFiltersAction={onSetFiltersAction}
         />
         {(loadingBeneficiaries) && <Box>Cargando beneficiarios...</Box>}

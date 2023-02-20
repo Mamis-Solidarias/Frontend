@@ -13,7 +13,7 @@ import Portal from '@mui/material/Portal';
 import {useAction} from 'src/hooks/actionHook';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 
-const Dashboard = () => {
+export default () => {
     const [openCreateUser, setOpenCreateUser] = useState<boolean>(false);
     const [openWindow, setOpenWindow] = useState<boolean>(false);
     const [userAdded, setUserAdded] = useState<boolean>(false);
@@ -72,5 +72,3 @@ const Dashboard = () => {
         </ApexChartWrapper>
     );
 };
-
-export default Dashboard;

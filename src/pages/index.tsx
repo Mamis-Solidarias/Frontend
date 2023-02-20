@@ -5,7 +5,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
 
-const Dashboard = () => {
+export default () => {
 
   return (
     <ApexChartWrapper>
@@ -33,5 +33,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;

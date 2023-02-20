@@ -8,10 +8,6 @@ export const updateFamily = async (
     return axiosClient.patch('families/' + id, data);
 };
 
-export const getFamily = async (id: string) => {
-    return axiosClient.get('families/' + id);
-};
-
 export const createBeneficiaries = async (id: string, beneficiaries: Beneficiary[]) => {
     for (const beneficiary of beneficiaries) {
         if (!beneficiary.education)

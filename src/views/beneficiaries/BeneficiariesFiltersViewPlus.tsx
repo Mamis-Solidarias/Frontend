@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 // ** MUI Imports
 import MenuItem from '@mui/material/MenuItem';
@@ -12,32 +12,30 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button, Card, CardContent, Collapse, Grid, IconButton, Switch } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
-import { useBeneficiariesFilters } from '../../hooks/beneficiaries/useBeneficiariesFilters';
-import { getFamiliesByCommunity } from '../../API/Beneficiaries/communities_data';
-import { BeneficiariesFilters } from '../../types/beneficiaries/BeneficiariesFilters';
+import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
+import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
+import {useQuery} from "@apollo/client";
+import {GET_FAMILIES} from "src/API/Beneficiaries/beneficiaries_grapql";
 
 interface BeneficiariesFiltersViewPlusProps {
   communities: Community[];
   onSetFiltersAction: (filters: BeneficiariesFilters) => void;
-  onNetworkError: (error: any) => void;
 }
 
 const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = (props) => {
-  const { communities, onSetFiltersAction, onNetworkError } = props;
+  const { communities, onSetFiltersAction } = props;
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
-  const [families, setFamilies] = useState<Family[]>([]);
-
   const { filters, setFilter } = useBeneficiariesFilters();
+  const { data: dataFamilies, refetch: refetchFamilies } = useQuery(GET_FAMILIES, {
+    variables: {
+      communityCode: filters.communityCode,
+      familyName: filters.familyName,
+    }
+  });
 
   useEffect(() => {
-    if (!!filters.communityCode && filters.communityCode !== '#') {
-      getFamiliesByCommunity(filters.communityCode, 0, 100)
-        .then(result => {
-          setFamilies(result.data.families);
-        })
-        .catch(onNetworkError);
-    }
-  }, [filters.communityCode, onNetworkError]);
+    refetchFamilies({communityCode: filters.communityCode})
+  }, [filters.communityCode]);
 
   return (
     <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -62,7 +60,7 @@ const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = (pro
                 onChange={e => setFilter('communityCode', e.target.value)}
               >
                 <MenuItem value=''>Todas</MenuItem>
-                {communities.map(community => (
+                {communities?.map(community => (
                   <MenuItem value={community.id} key={community.id}>
                     {community.id + ' - ' + community.name}
                   </MenuItem>
@@ -79,7 +77,7 @@ const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = (pro
                 onChange={e => setFilter('familyId', e.target.value)}
               >
                 <MenuItem value=''>Todas</MenuItem>
-                {families.map(family => (
+                {dataFamilies?.filteredFamilies?.nodes?.map((family: Family) => (
                   <MenuItem value={family.id} key={family.id}>
                     {family.id + ' - ' + family.name}
                   </MenuItem>
