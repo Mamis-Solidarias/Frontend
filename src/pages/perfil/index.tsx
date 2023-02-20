@@ -10,7 +10,7 @@ import { UserProfileDisplay } from 'src/views/users/UserProfileDisplay';
 
 // ** Demo Components Imports
 
-const Dashboard = () => {
+export default () => {
   const { action, setAction, setCompletion } = useAction();
 
   return (
@@ -36,5 +36,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;

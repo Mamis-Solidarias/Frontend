@@ -37,7 +37,7 @@ import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from '@mui/icons-material/Info';
 import {Participant} from "../../types/campaigns/MochiEdition";
 
-const Dashboard = () => {
+export default () => {
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
   const [openCreateMochi, setOpenCreateMochi] = useState<boolean>(false);
   const [createMochiFinished, setCreateMochiFinished] = useState<boolean>(false);
@@ -307,5 +307,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;
