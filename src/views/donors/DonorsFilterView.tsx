@@ -57,11 +57,7 @@ const DonorsFilterView: FC<FamiliesFiltersViewProps> = props => {
         <Grid item display='flex' justifyContent='center' xs={12} md={3} lg={3}>
           <Button
             variant='contained'
-            onClick={() => {
-              console.log(filters)
-              onSetFiltersAction(filters);
-            }}
-          >
+            onClick={() => onSetFiltersAction(filters)}>
             Aplicar Filtros
           </Button>
         </Grid>

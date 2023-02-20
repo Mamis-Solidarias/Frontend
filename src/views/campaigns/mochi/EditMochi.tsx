@@ -25,6 +25,7 @@ interface EditMochiProps {
   onNetworkError: (err: any) => void;
 }
 
+
 export const EditMochi: FC<EditMochiProps> = props => {
   const { openDialog, handleClose, setAction, mochiEdition, onNetworkError } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
@@ -45,7 +46,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
     }
   });
 
@@ -65,7 +66,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true' ? true : false) : null
+      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
     });
   };
 
@@ -128,10 +129,10 @@ export const EditMochi: FC<EditMochiProps> = props => {
             communityId={mochiEdition.communityId}
             onNetworkError={onNetworkError}
             onSetFiltersAction={(filters: BeneficiariesFilters) => {
-              const filtersToApply = filters;
+              const filtersToApply = {...filters};
               for (const fk in filtersToApply) {
                 if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
-                  filtersToApply[fk as keyof BeneficiariesFilters] = null;
+                  filtersToApply[fk as keyof BeneficiariesFilters] = undefined;
                 }
               }
               setFiltersApplied(filtersToApply);

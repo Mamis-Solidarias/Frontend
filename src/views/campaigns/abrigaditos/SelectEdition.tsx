@@ -5,12 +5,12 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
-import {updateFiltersApplied, updateFiltersToApply} from "src/features/campaigns/juntosSlice";
 import {Action} from "src/types/Action";
 import {useEffect, useState} from "react";
 import Community from "src/types/beneficiaries/Community";
 import {userIsLoggedIn} from "src/utils/sessionManagement";
 import {getCommunities} from "src/API/Beneficiaries/communities_data";
+import {updateFiltersApplied, updateFiltersToApply} from "src/features/campaigns/abrigaditosSlice";
 
 interface SelectEditionProps {
   setAction: (action: Action) => void;
@@ -21,7 +21,7 @@ interface SelectEditionProps {
 export default (props: SelectEditionProps) => {
   const {setAction, refetchEditions, editions} = props;
   const dispatch = useAppDispatch();
-  const juntosSelector = useAppSelector(state => state.juntos);
+  const abrigaditosSelector = useAppSelector(state => state.abrigaditos);
   const [communities, setCommunities] = useState<Community[]>([]);
 
   useEffect(() => {
@@ -34,13 +34,13 @@ export default (props: SelectEditionProps) => {
   }, []);
 
   const selectCommunity = (e: any) => {
-      dispatch(updateFiltersToApply( {...juntosSelector.filtersToApply, ...{community: e.target.value}}));
-      refetchEditions({communityId: e.target.value});
+    dispatch(updateFiltersToApply( {...abrigaditosSelector.filtersToApply, ...{community: e.target.value}}));
+    refetchEditions({communityId: e.target.value});
   }
 
   const selectEdition = (e: any) => {
-    dispatch(updateFiltersToApply({...juntosSelector.filtersToApply, ...{edition: e.target.value}}));
-    dispatch(updateFiltersApplied({...juntosSelector.filtersToApply, ...{edition: e.target.value}}));
+    dispatch(updateFiltersToApply({...abrigaditosSelector.filtersToApply, ...{edition: e.target.value}}));
+    dispatch(updateFiltersApplied({...abrigaditosSelector.filtersToApply, ...{edition: e.target.value}}));
     setAction({
       complete: true,
       success: true,
@@ -48,7 +48,6 @@ export default (props: SelectEditionProps) => {
       status: 200
     });
   }
-
 
   return <Box alignItems={'center'}>
     <Card
@@ -61,7 +60,7 @@ export default (props: SelectEditionProps) => {
           variant='standard'
           type='text'
           label='Comunidad'
-          value={!!juntosSelector.filtersToApply.community ? juntosSelector.filtersToApply.community : ''}
+          value={!!abrigaditosSelector.filtersToApply.community ? abrigaditosSelector.filtersToApply.community: ''}
           onChange={selectCommunity}>
           { communities.map(community => {
             return (
@@ -77,9 +76,8 @@ export default (props: SelectEditionProps) => {
           variant='standard'
           type='text'
           label='Edición'
-          value={!!juntosSelector.filtersToApply.edition ? juntosSelector.filtersToApply.edition: ''}
-          onChange={selectEdition}
-        >
+          value={abrigaditosSelector.filtersToApply.edition}
+          onChange={selectEdition}>
           {editions.map((editionJson) => {
             return (
               <MenuItem value={editionJson.edition} key={editionJson.edition}>

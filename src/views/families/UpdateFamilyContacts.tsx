@@ -50,7 +50,6 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
 
   const deleteContact = (contactToDelete: ContactToSend) => {
     const index = contactsFinal.indexOf(contactToDelete);
-    console.log(index);
     const newContacts = contactsFinal;
     newContacts.splice(index, 1);
     setContactsFinal(newContacts);

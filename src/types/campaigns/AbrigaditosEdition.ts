@@ -1,12 +1,11 @@
 import GENDERS from "../beneficiaries/Genders";
 
-export interface JuntosEdition {
+export interface AbrigaditosEdition {
   id?: string;
   edition: string;
   communityId: string;
   beneficiaries: number[];
   participants?: Participant[];
-  donations: { id: string }[];
   description: string;
   provider: string;
   fundraiserGoal: number;
@@ -16,20 +15,19 @@ export interface Participant {
   beneficiaryId: number;
   beneficiaryGender: keyof typeof GENDERS;
   beneficiaryName: string;
-  shoeSize: number;
+  shirtSize: number;
 }
 
-export const defaultEdition: JuntosEdition = {
+export const defaultEdition: AbrigaditosEdition = {
   edition: '',
   communityId: '',
   beneficiaries: [],
-  donations: [],
   description: '',
   provider: '',
   fundraiserGoal: 0
 };
 
-export interface JuntosEditionModify {
+export interface AbrigaditosEditionModify {
   description: string;
   provider: string;
   fundraiserGoal: number;
@@ -38,7 +36,7 @@ export interface JuntosEditionModify {
   newBeneficiaries: number[];
 }
 
-export const defaultEditionModify: JuntosEditionModify = {
+export const defaultEditionModify: AbrigaditosEditionModify = {
   description: '',
   provider: '',
   fundraiserGoal: 0,

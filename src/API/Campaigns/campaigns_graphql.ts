@@ -11,9 +11,11 @@ export const GET_MOCHI = gql`
         beneficiary {
           familyId
         }
+        campaignId
         beneficiaryGender
         beneficiaryId
         beneficiaryName
+        donationId
         donationDropOffPoint
         donationType
         donorId
@@ -62,9 +64,53 @@ export const GET_JUNTOS = gql`
   }
 `;
 
+export const GET_JUNTOS_DONATION = gql`
+  query donationsQuery ($id: UUID!) {
+    monetaryDonation(id: $id) {
+      amount
+      currency
+      donatedAt
+      donorId
+      id
+      motive
+      type
+    }
+  }
+`;
+
 export const GET_JUNTOS_EDITIONS = gql`
   query filterQuery {
     juntosCampaigns {
+      edition
+    }
+  }
+`;
+
+export const GET_ABRIGADITOS = gql`
+    query getAbrigaditos($edition: String!, $community: String!) {
+    abrigaditosCampaign(edition: $edition, community: $community) {
+      communityId
+      description
+      edition
+      id
+      fundraiserGoal
+      participants {
+        beneficiaryId
+        beneficiaryGender
+        beneficiaryName
+        shirtSize
+      }
+      donations {
+        id
+      }
+      provider
+    }
+  }
+`;
+
+export const GET_ABRIGADITOS_EDITIONS = gql`
+  query filterQuery {
+    abrigaditosCampaigns {
       edition
     }
   }
