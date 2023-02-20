@@ -21,8 +21,8 @@ import {
   AbrigaditosEditionModify,
   defaultEditionModify,
   Participant
-} from "../../../types/campaigns/AbrigaditosEdition";
-import {updateEditAbrigaditos, updateOpenEditAbrigaditos} from "../../../features/campaigns/abrigaditosSlice";
+} from "src/types/campaigns/AbrigaditosEdition";
+import {updateEditAbrigaditos, updateOpenEditAbrigaditos} from "src/features/campaigns/abrigaditosSlice";
 
 interface EditAbrigaditosProps {
   setAction: (action: Action) => void;
@@ -48,7 +48,7 @@ export default (props: EditAbrigaditosProps) => {
       type: filtersApplied.type,
       dniStarts: filtersApplied.dniStarts,
       familyId: filtersApplied.familyId,
-      communityId: abrigaditosSelector.createAbrigaditos.communityId,
+      communityId: abrigaditosSelector.editAbrigaditos.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
       isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
@@ -99,7 +99,7 @@ export default (props: EditAbrigaditosProps) => {
       setAction({
         complete: true,
         success: true,
-        message: 'Edición de "Juntos a la Par" modificada exitosamente',
+        message: 'Edición de "Abrigaditos" modificada exitosamente',
         status: 201
       });
       if (!!abrigaditosSelector.refetchEditions) {
