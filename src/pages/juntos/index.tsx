@@ -21,8 +21,8 @@ import CreateJuntos from 'src/views/campaigns/juntos/CreateJuntos';
 import JuntosFilters from "src/views/campaigns/juntos/JuntosFilters";
 import JuntosBeneficiaries from "src/views/campaigns/juntos/JuntosBeneficiaries";
 import EditJuntos from "src/views/campaigns/juntos/EditJuntos";
-import JuntosDonations from "src/views/campaigns/juntos/JuntosDonations";
 import AssignPayment from "src/views/campaigns/juntos/AssignPayment";
+import JuntosDonations from "src/views/campaigns/juntos/JuntosDonations";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
