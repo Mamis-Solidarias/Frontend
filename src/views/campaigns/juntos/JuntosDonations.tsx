@@ -1,4 +1,4 @@
-import {JuntosEdition, Participant} from "src/types/campaigns/JuntosEdition";
+import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
 import Card from "@mui/material/Card";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
