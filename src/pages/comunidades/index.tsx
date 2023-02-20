@@ -13,7 +13,7 @@ import CommunitiesTable from 'src/views/communities/ComunitiesTable';
 import {CreateCommunity} from 'src/views/communities/CreateCommunity';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 
-const Dashboard = () => {
+export default () => {
     const [openCreateCommunities, setOpenCreateCommunities] = useState<boolean>(false);
     const [openWindow, setOpenWindow] = useState<boolean>(false);
     const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
@@ -68,5 +68,3 @@ const Dashboard = () => {
         </ApexChartWrapper>
     );
 };
-
-export default Dashboard;

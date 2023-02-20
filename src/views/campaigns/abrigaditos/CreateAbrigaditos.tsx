@@ -170,7 +170,6 @@ export default (props: CreateAbrigaditosProps) => {
         </Box>
         <BeneficiariesFiltersView
           communityId={abrigaditosSelector.createAbrigaditos.communityId}
-          onNetworkError={() => console.log('hubo error')}
           onSetFiltersAction={onSetFiltersAction}
         />
         {(loadingBeneficiaries || loadingCommunities) && <Box>Cargando beneficiarios...</Box>}

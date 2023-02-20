@@ -14,7 +14,6 @@ import ChevronUp from 'mdi-material-ui/ChevronUp';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import {useRouter} from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
@@ -28,16 +27,16 @@ import MenuItem from '@mui/material/MenuItem';
 import {useQuery} from '@apollo/client';
 import {GET_MOCHI_EDITIONS, GET_MOCHI} from 'src/API/Campaigns/campaigns_graphql';
 import {CreateMochi} from 'src/views/campaigns/mochi/CreateMochi';
-import Community from 'src/types/beneficiaries/Community';
-import {getCommunities} from 'src/API/Beneficiaries/communities_data';
 import {MochiEditionBrief} from 'src/views/campaigns/mochi/MochiEditionBrief';
 import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from '@mui/icons-material/Info';
-import {Participant} from "../../types/campaigns/MochiEdition";
+import {Participant} from "src/types/campaigns/MochiEdition";
+import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
+import Community from "src/types/beneficiaries/Community";
 
-const Dashboard = () => {
+export default () => {
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
   const [openCreateMochi, setOpenCreateMochi] = useState<boolean>(false);
   const [createMochiFinished, setCreateMochiFinished] = useState<boolean>(false);
@@ -48,36 +47,20 @@ const Dashboard = () => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
-  const router = useRouter();
   const {
     loading: loadingEditions,
     error: errorEditions,
     data: dataEditions,
     refetch: refetchEditions
   } = useQuery(GET_MOCHI_EDITIONS, {variables: {communityId: 'valor nulo'}});
-  const [communities, setCommunities] = useState<Community[]>([]);
   const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_MOCHI, {
     variables: {edition: filtersApplied.edition, community: filtersApplied.community}
   });
-
-  const onNetworkError: (err: any) => void = err => {
-    setAction({
-      complete: true,
-      success: false,
-      message: err.message,
-      status: err.status
-    });
-    if (err.status === 401) {
-      router.push('/login');
-    }
-  };
+  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
 
   useEffect(() => {
     if (userIsLoggedIn()) {
       setHasWriteCampaigns(hasWriteAccess('Campaigns'));
-      getCommunities().then(result => {
-        setCommunities(result.data.communities);
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -157,7 +140,7 @@ const Dashboard = () => {
                       setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
                       await refetchEditions({communityId: e.target.value});
                     }}>
-                    {communities.map(community => {
+                    {dataCommunities?.communities?.nodes.map((community: Community) => {
                       return (
                         <MenuItem value={community.id} key={community.id}>
                           {community.id + ' - ' + community.name}
@@ -284,7 +267,7 @@ const Dashboard = () => {
             <CreateMochi openDialog={openCreateMochi} handleClose={() => {
               setCreateMochiFinished(true);
               setOpenCreateMochi(false);
-            }} setAction={setAction} onNetworkError={onNetworkError}/>
+            }} setAction={setAction}/>
           )}
 
           {openEditMochi && !!dataEdition.mochiEdition && (
@@ -296,7 +279,6 @@ const Dashboard = () => {
                 setOpenEditMochi(false);
               }}
               setAction={setAction}
-              onNetworkError={onNetworkError}
             />
           )}
         </Grid>
@@ -307,5 +289,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;

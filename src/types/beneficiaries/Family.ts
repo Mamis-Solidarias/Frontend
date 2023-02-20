@@ -7,9 +7,3 @@ export default interface Family {
   details: string | null;
   contacts: Contact[];
 }
-
-export interface FamiliesHttp {
-  families: Family[];
-  page: number;
-  totalPages: number;
-}

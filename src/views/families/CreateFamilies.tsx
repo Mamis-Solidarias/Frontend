@@ -5,20 +5,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-import {FC, useEffect, useState} from 'react';
+import {FC, useState} from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import {createFamilies, getCommunities} from 'src/API/Beneficiaries/communities_data';
+import {createFamilies} from 'src/API/Beneficiaries/communities_data';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MenuItem from '@mui/material/MenuItem';
 import Community from 'src/types/beneficiaries/Community';
 import Grid from '@mui/material/Grid';
 import {Action} from 'src/types/Action';
+import {useQuery} from "@apollo/client";
+import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
 
 interface CreateFamiliesProps {
     openDialog: boolean;
@@ -48,10 +50,11 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
     const [address, setAddress] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [families, setFamilies] = useState<Family[]>([]);
-    const [communities, setCommunities] = useState<Community[]>([]);
     const [selectedCommunity, setSelectedCommunity] = useState<string>('');
+    const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
 
-    const resetFields = () => {
+
+  const resetFields = () => {
         setNumber('');
         setName('');
         setAddress('');
@@ -68,12 +71,6 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
         const newFamilies = families.filter(newFamily => newFamily !== family);
         setFamilies(newFamilies);
     };
-
-    useEffect(() => {
-        getCommunities().then(result => {
-            setCommunities(result.data.communities);
-        });
-    }, []);
 
     return (
         <Dialog
@@ -100,10 +97,10 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
                                 onChange={e => setSelectedCommunity(e.target.value)}
                             >
                                 <MenuItem value=''>Ninguna</MenuItem>
-                                {communities.map((community: Community) => (
-                                    <MenuItem value={community.id} key={community.id}>
-                                        {community.name}
-                                    </MenuItem>
+                                {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
+                                  <MenuItem value={community.id} key={community.id}>
+                                    {community.id + ' - ' + community.name}
+                                  </MenuItem>
                                 ))}
                             </TextField>
                             <TextField

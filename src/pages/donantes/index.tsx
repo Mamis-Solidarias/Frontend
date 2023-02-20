@@ -24,7 +24,7 @@ import ActionToast from 'src/views/pages/misc/ActionToast';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import DonorsFilterView from "../../views/donors/DonorsFilterView";
 
-const Dashboard = () => {
+export default () => {
   const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
 
@@ -111,5 +111,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;

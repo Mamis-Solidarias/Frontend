@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Card from "@mui/material/Card";
 import {JuntosEdition, Participant} from "src/types/campaigns/JuntosEdition";
+import GENDERS from "src/types/beneficiaries/Genders";
 
 interface JuntosEditionProps {
   dataEdition: JuntosEdition;
@@ -33,7 +34,7 @@ export default (props: JuntosEditionProps) => {
               <TableRow key={participant.beneficiaryId}>
                 <TableCell>{participant.beneficiaryId}</TableCell>
                 <TableCell>{participant.beneficiaryName}</TableCell>
-                <TableCell>{participant.beneficiaryGender}</TableCell>
+                <TableCell>{GENDERS[participant.beneficiaryGender as keyof typeof GENDERS]}</TableCell>
                 <TableCell>{participant.shoeSize}</TableCell>
               </TableRow>
             ))}

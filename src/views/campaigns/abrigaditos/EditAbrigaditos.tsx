@@ -48,7 +48,7 @@ export default (props: EditAbrigaditosProps) => {
       type: filtersApplied.type,
       dniStarts: filtersApplied.dniStarts,
       familyId: filtersApplied.familyId,
-      communityId: abrigaditosSelector.editAbrigaditos.communityId,
+      communityId: filtersApplied.communityCode,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
       isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
@@ -95,7 +95,7 @@ export default (props: EditAbrigaditosProps) => {
       const addedBeneficiaries = newBeneficiaries.filter((participant: number) => !previousBeneficiaries?.includes(participant));
       const abrigaditosEditionFinalReview:AbrigaditosEditionModify = {...abrigaditosSelector.editAbrigaditos, ...{addedBeneficiaries, removedBeneficiaries}};
       await modifyAbrigaditosEdition(abrigaditosEditionFinalReview, dataEdition.id as string);
-      updateEditAbrigaditos(defaultEditionModify);
+      dispatch(updateEditAbrigaditos(defaultEditionModify));
       setAction({
         complete: true,
         success: true,
@@ -153,9 +153,6 @@ export default (props: EditAbrigaditosProps) => {
         </Box>
         <BeneficiariesFiltersView
           communityId={dataEdition.communityId}
-          onNetworkError={() => {
-            console.log('error')
-          }}
           onSetFiltersAction={onSetFiltersAction}
         />
         {(loadingBeneficiaries) && <Box>Cargando beneficiarios...</Box>}
