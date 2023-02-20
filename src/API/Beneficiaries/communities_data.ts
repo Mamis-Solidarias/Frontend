@@ -6,14 +6,6 @@ export const createCommunities = async (data: Community[]) => {
   return axiosClient.post('communities', { communities: data });
 };
 
-export const getCommunities = async (): Promise<{ data: { communities: Community[] } }> => {
-  return axiosClient.get('communities');
-};
-
-export const getCommunity = async (id: string): Promise<{ data: Community }> => {
-  return axiosClient.get('communities/' + id);
-};
-
 export const updateCommunity = async (id: string, data: { address?: string | null; description?: string | null }) => {
   return axiosClient.patch('communities/' + id, data);
 };
