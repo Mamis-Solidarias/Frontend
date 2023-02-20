@@ -14,7 +14,6 @@ import ChevronUp from 'mdi-material-ui/ChevronUp';
 import ChevronDown from 'mdi-material-ui/ChevronDown';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import {useRouter} from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
@@ -33,9 +32,9 @@ import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from '@mui/icons-material/Info';
-import {Participant} from "../../types/campaigns/MochiEdition";
-import {GET_COMMUNITIES} from "../../API/Beneficiaries/beneficiaries_grapql";
-import Community from "../../types/beneficiaries/Community";
+import {Participant} from "src/types/campaigns/MochiEdition";
+import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
+import Community from "src/types/beneficiaries/Community";
 
 export default () => {
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
@@ -48,7 +47,6 @@ export default () => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
-  const router = useRouter();
   const {
     loading: loadingEditions,
     error: errorEditions,
