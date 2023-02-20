@@ -24,7 +24,6 @@ import EditAbrigaditos from "src/views/campaigns/abrigaditos/EditAbrigaditos";
 import CreateAbrigaditos from "src/views/campaigns/abrigaditos/CreateAbrigaditos";
 import CampaignActions from "src/views/campaigns/abrigaditos/CampaignActions";
 import SelectEdition from "src/views/campaigns/abrigaditos/SelectEdition";
-import FundraisersGoal from "src/views/campaigns/abrigaditos/FundraisersGoal";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
@@ -54,14 +53,14 @@ export default () => {
   if (errorEditions) {
     return <Box>Error :(</Box>;
   }
-  const editions = dataEditions.juntosCampaigns;
+  const editions = dataEditions.abrigaditosCampaigns;
 
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Box display='flex' flexDirection='row' justifyContent={"space-between"}>
-            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+            <Box display={"flex"} flexDirection={"row"}>
               <SelectEdition setAction={setAction} refetchEditions={refetchEditions} editions={editions}/>
               {(!!dataEdition?.abrigaditosCampaign?.provider || !!dataEdition?.abrigaditosCampaign?.edition) &&
                 <AbrigaditosBriefInformation abrigaditosEdition={dataEdition?.abrigaditosCampaign}/>
@@ -73,7 +72,6 @@ export default () => {
           </Box>
           <AbrigaditosFilters setAction={setAction}/>
           {!!dataEdition?.abrigaditosCampaign?.participants && <>
-            <FundraisersGoal dataEdition={dataEdition?.abrigaditosCampaign}/>
             <AbrigaditosBeneficiaries dataEdition={dataEdition?.abrigaditosCampaign}/>
           </>
           }
