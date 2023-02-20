@@ -165,7 +165,6 @@ export default (props: CreateJuntosProps) => {
         </Box>
         <BeneficiariesFiltersView
           communityId={juntosSelector.createJuntos.communityId}
-          onNetworkError={() => console.log('hubo error')}
           onSetFiltersAction={onSetFiltersAction}
         />
         {(loadingBeneficiaries || loadingCommunities) && <Box>Cargando beneficiarios...</Box>}
