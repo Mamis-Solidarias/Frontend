@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import InfoIcon from "@mui/icons-material/Info";
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import {AbrigaditosEdition} from "src/types/campaigns/AbrigaditosEdition";
@@ -10,11 +9,16 @@ interface AbrigaditosBriefInformation {
 export default (props: AbrigaditosBriefInformation) => {
   const {abrigaditosEdition} = props;
 
-  return <Box alignItems={"center"}>
-    <DefaultCard sx={{display: 'flex', flexDirection: 'column'}}
+  return <>
+    <DefaultCard sx={{display: 'flex', flexDirection: 'column', mx: " .125em"}}
                  title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-      Proveedor: abrigaditosEdition.provider,
-      Edición: abrigaditosEdition.edition
+      Proveedor: !!abrigaditosEdition.provider ? abrigaditosEdition.provider : '-',
+      Objetivo: '$' + abrigaditosEdition.fundraiserGoal
     }}/>
-  </Box>
+    <DefaultCard sx={{display: 'flex', flexDirection: 'column', mx: " .125em"}}
+                 title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
+      Recaudado: '5$',
+      Completitud: '25%',
+    }}/>
+  </>
 }
