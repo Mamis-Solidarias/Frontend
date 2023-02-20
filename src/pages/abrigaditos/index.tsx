@@ -79,7 +79,7 @@ export default () => {
       </Grid>
       <Portal>
         <CreateAbrigaditos setAction={setAction} refetchAbrigaditos={refetchEditions}/>
-        {!!dataEdition?.juntosCampaign && <EditAbrigaditos setAction={setAction} refetchAbrigaditos={refetchEditions} dataEdition={dataEdition.abrigaditosCampaign}/>}
+        {!!dataEdition?.abrigaditosCampaign && <EditAbrigaditos setAction={setAction} refetchAbrigaditos={refetchEditions} dataEdition={dataEdition.abrigaditosCampaign}/>}
         <ActionToast action={action} setActionCompletion={setCompletion}/>
       </Portal>
     </ApexChartWrapper>
