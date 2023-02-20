@@ -25,19 +25,6 @@ export default () => {
   const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
   const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
-  const router = useRouter();
-
-  const onNetworkError: (err: any) => void = err => {
-    setAction({
-      complete: true,
-      success: false,
-      message: err.message,
-      status: err.status
-    });
-    if (err.status === 401) {
-      router.push('/login');
-    }
-  };
 
   useEffect(() => {
     if (userIsLoggedIn()) {
@@ -58,7 +45,6 @@ export default () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <BeneficiariesFiltersViewPlus
-            onNetworkError={onNetworkError}
             communities={dataCommunities?.communities?.nodes}
             onSetFiltersAction={filters => {
               for (const fk in filters) {

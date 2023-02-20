@@ -22,12 +22,11 @@ interface EditMochiProps {
   handleClose: () => void;
   mochiEdition: MochiEditionLoaded;
   setAction: (action: Action) => void;
-  onNetworkError: (err: any) => void;
 }
 
 
 export const EditMochi: FC<EditMochiProps> = props => {
-  const { openDialog, handleClose, setAction, mochiEdition, onNetworkError } = props;
+  const { openDialog, handleClose, setAction, mochiEdition } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const { mochiEdition: mochiEditionFinal, setMochiEdition, setMochiEditionField } = useModifyMochi(mochiEdition);
   const { data, error, loading, refetch } = useQuery(GET_BENEFICIARIES, {
@@ -127,7 +126,6 @@ export const EditMochi: FC<EditMochiProps> = props => {
           />
           <BeneficiariesFiltersView
             communityId={mochiEdition.communityId}
-            onNetworkError={onNetworkError}
             onSetFiltersAction={(filters: BeneficiariesFilters) => {
               const filtersToApply = {...filters};
               for (const fk in filtersToApply) {

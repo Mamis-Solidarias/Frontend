@@ -148,9 +148,6 @@ export default (props: EditJuntosProps) => {
         </Box>
         <BeneficiariesFiltersView
           communityId={dataEdition.communityId}
-          onNetworkError={() => {
-            console.log('error')
-          }}
           onSetFiltersAction={onSetFiltersAction}
         />
         {(loadingBeneficiaries) && <Box>Cargando beneficiarios...</Box>}

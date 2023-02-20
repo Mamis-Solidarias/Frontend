@@ -60,19 +60,6 @@ export default () => {
   });
   const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
 
-
-  const onNetworkError: (err: any) => void = err => {
-    setAction({
-      complete: true,
-      success: false,
-      message: err.message,
-      status: err.status
-    });
-    if (err.status === 401) {
-      router.push('/login');
-    }
-  };
-
   useEffect(() => {
     if (userIsLoggedIn()) {
       setHasWriteCampaigns(hasWriteAccess('Campaigns'));
@@ -282,7 +269,7 @@ export default () => {
             <CreateMochi openDialog={openCreateMochi} handleClose={() => {
               setCreateMochiFinished(true);
               setOpenCreateMochi(false);
-            }} setAction={setAction} onNetworkError={onNetworkError}/>
+            }} setAction={setAction}/>
           )}
 
           {openEditMochi && !!dataEdition.mochiEdition && (
@@ -294,7 +281,6 @@ export default () => {
                 setOpenEditMochi(false);
               }}
               setAction={setAction}
-              onNetworkError={onNetworkError}
             />
           )}
         </Grid>

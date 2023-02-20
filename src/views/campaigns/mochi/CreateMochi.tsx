@@ -23,11 +23,10 @@ interface CreateMochiProps {
   openDialog: boolean;
   handleClose: () => void;
   setAction: (action: Action) => void;
-  onNetworkError: (err: any) => void;
 }
 
 export const CreateMochi: FC<CreateMochiProps> = props => {
-  const { openDialog, handleClose, setAction, onNetworkError } = props;
+  const { openDialog, handleClose, setAction } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
   const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
@@ -163,7 +162,6 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
         </Box>
         <BeneficiariesFiltersView
           communityId={mochiEdition.communityId}
-          onNetworkError={onNetworkError}
           onSetFiltersAction={(filters: BeneficiariesFilters) => {
             const filtersToApply = filters;
             for (const fk in filtersToApply) {
