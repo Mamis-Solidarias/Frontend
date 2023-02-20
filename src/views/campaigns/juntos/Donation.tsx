@@ -2,7 +2,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import React from "react";
 import {useQuery} from "@apollo/client";
-import {GET_JUNTOS_DONATION, GET_JUNTOS_EDITIONS} from "src/API/Campaigns/campaigns_graphql";
+import {GET_JUNTOS_DONATION} from "src/API/Campaigns/campaigns_graphql";
 import Box from "@mui/material/Box";
 import Donation from "src/types/donations/Donation";
 
@@ -17,13 +17,12 @@ export default (props: DonationProps) => {
 
   if (loading) return <Box>Cargando donación...</Box>;
   if (error) return <Box>Error :(</Box>;
-
   const donationData: Donation = data.monetaryDonation;
 
   return <TableRow key={donationData.id}>
     <TableCell>{donationData.donorId}</TableCell>
     <TableCell>{donationData.currency}</TableCell>
     <TableCell>{donationData.amount}</TableCell>
-    <TableCell>{donationData.donatedAt}</TableCell>
+    <TableCell>{new Date(donationData.donatedAt).toLocaleDateString('es-AR')}</TableCell>
   </TableRow>
 }
