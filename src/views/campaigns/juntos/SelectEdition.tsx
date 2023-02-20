@@ -7,10 +7,9 @@ import Box from "@mui/material/Box";
 import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
 import {updateFiltersApplied, updateFiltersToApply} from "src/features/campaigns/juntosSlice";
 import {Action} from "src/types/Action";
-import {useEffect, useState} from "react";
 import Community from "src/types/beneficiaries/Community";
-import {userIsLoggedIn} from "src/utils/sessionManagement";
-import {getCommunities} from "src/API/Beneficiaries/communities_data";
+import {useQuery} from "@apollo/client";
+import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
 
 interface SelectEditionProps {
   setAction: (action: Action) => void;
@@ -22,16 +21,7 @@ export default (props: SelectEditionProps) => {
   const {setAction, refetchEditions, editions} = props;
   const dispatch = useAppDispatch();
   const juntosSelector = useAppSelector(state => state.juntos);
-  const [communities, setCommunities] = useState<Community[]>([]);
-
-  useEffect(() => {
-    if (userIsLoggedIn()) {
-      getCommunities().then(result => {
-        setCommunities(result.data.communities);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
 
   const selectCommunity = (e: any) => {
       dispatch(updateFiltersToApply( {...juntosSelector.filtersToApply, ...{community: e.target.value}}));
@@ -63,13 +53,11 @@ export default (props: SelectEditionProps) => {
           label='Comunidad'
           value={!!juntosSelector.filtersToApply.community ? juntosSelector.filtersToApply.community : ''}
           onChange={selectCommunity}>
-          { communities.map(community => {
-            return (
-              <MenuItem value={community.id} key={community.id}>
-                {community.id + ' - ' + community.name}
-              </MenuItem>
-            );
-          })}
+          {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
+            <MenuItem value={community.id} key={community.id}>
+              {community.id + ' - ' + community.name}
+            </MenuItem>
+          ))}
         </TextField>
         <TextField
           select

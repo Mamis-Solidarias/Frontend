@@ -28,14 +28,14 @@ import MenuItem from '@mui/material/MenuItem';
 import {useQuery} from '@apollo/client';
 import {GET_MOCHI_EDITIONS, GET_MOCHI} from 'src/API/Campaigns/campaigns_graphql';
 import {CreateMochi} from 'src/views/campaigns/mochi/CreateMochi';
-import Community from 'src/types/beneficiaries/Community';
-import {getCommunities} from 'src/API/Beneficiaries/communities_data';
 import {MochiEditionBrief} from 'src/views/campaigns/mochi/MochiEditionBrief';
 import {EditMochi} from 'src/views/campaigns/mochi/EditMochi';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {DefaultCard} from "src/views/beneficiaries/BeneficiaryCard/DefaultCard";
 import InfoIcon from '@mui/icons-material/Info';
 import {Participant} from "../../types/campaigns/MochiEdition";
+import {GET_COMMUNITIES} from "../../API/Beneficiaries/beneficiaries_grapql";
+import Community from "../../types/beneficiaries/Community";
 
 export default () => {
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
@@ -55,10 +55,11 @@ export default () => {
     data: dataEditions,
     refetch: refetchEditions
   } = useQuery(GET_MOCHI_EDITIONS, {variables: {communityId: 'valor nulo'}});
-  const [communities, setCommunities] = useState<Community[]>([]);
   const {data: dataEdition, refetch: refetchEdition} = useQuery(GET_MOCHI, {
     variables: {edition: filtersApplied.edition, community: filtersApplied.community}
   });
+  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
+
 
   const onNetworkError: (err: any) => void = err => {
     setAction({
@@ -75,9 +76,6 @@ export default () => {
   useEffect(() => {
     if (userIsLoggedIn()) {
       setHasWriteCampaigns(hasWriteAccess('Campaigns'));
-      getCommunities().then(result => {
-        setCommunities(result.data.communities);
-      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -157,7 +155,7 @@ export default () => {
                       setFilterToApply(oldFiltersToApply => ({...oldFiltersToApply, ...{community: e.target.value}}));
                       await refetchEditions({communityId: e.target.value});
                     }}>
-                    {communities.map(community => {
+                    {dataCommunities?.communities?.nodes.map((community: Community) => {
                       return (
                         <MenuItem value={community.id} key={community.id}>
                           {community.id + ' - ' + community.name}

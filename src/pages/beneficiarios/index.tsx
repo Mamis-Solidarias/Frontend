@@ -6,10 +6,8 @@ import { useEffect, useState } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import { getCommunities } from 'src/API/Beneficiaries/communities_data';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTable';
 import { CreateBeneficiaries } from 'src/views/beneficiaries/CreateBeneficiaries';
-import Community from 'src/types/beneficiaries/Community';
 import { useRouter } from 'next/router';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { useAction } from 'src/hooks/actionHook';
@@ -17,15 +15,16 @@ import Portal from '@mui/material/Portal';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from '../../types/beneficiaries/BeneficiariesFilters';
 import BeneficiariesFiltersViewPlus from 'src/views/beneficiaries/BeneficiariesFiltersViewPlus';
+import {useQuery} from "@apollo/client";
+import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
 
-const Dashboard = () => {
+export default () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
-  const [communities, setCommunities] = useState<Community[]>([]);
-
+  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
   const router = useRouter();
 
   const onNetworkError: (err: any) => void = err => {
@@ -43,13 +42,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (userIsLoggedIn()) {
       setHasWriteBenefs(hasWriteAccess('Beneficiaries'));
-      getCommunities()
-        .then(result => {
-          if (!!result.data.communities && result.data.communities.length > 0) {
-            setCommunities(result.data.communities);
-          }
-        })
-        .catch(onNetworkError);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -67,7 +59,7 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <BeneficiariesFiltersViewPlus
             onNetworkError={onNetworkError}
-            communities={communities}
+            communities={dataCommunities?.communities?.nodes}
             onSetFiltersAction={filters => {
               for (const fk in filters) {
                 if (!filters[fk as keyof BeneficiariesFilters]) {
@@ -86,7 +78,7 @@ const Dashboard = () => {
 
           <BeneficiariesTable
             filters={filtersApplied}
-            communities={communities}
+            communities={dataCommunities?.communities?.nodes}
             openCreateBeneficiaries={openCreateBeneficiaries}
             openWindow={openWindow}
             setAction={setAction}
@@ -108,7 +100,7 @@ const Dashboard = () => {
             openDialog={openCreateBeneficiaries}
             setAction={setAction}
             handleClose={() => setOpenCreateBeneficiaries(false)}
-            communities={communities}
+            communities={dataCommunities?.communities?.nodes}
           />
         </Grid>
       </Grid>
@@ -118,5 +110,3 @@ const Dashboard = () => {
     </ApexChartWrapper>
   );
 };
-
-export default Dashboard;
