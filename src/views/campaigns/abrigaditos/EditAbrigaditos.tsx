@@ -95,7 +95,7 @@ export default (props: EditAbrigaditosProps) => {
       const addedBeneficiaries = newBeneficiaries.filter((participant: number) => !previousBeneficiaries?.includes(participant));
       const abrigaditosEditionFinalReview:AbrigaditosEditionModify = {...abrigaditosSelector.editAbrigaditos, ...{addedBeneficiaries, removedBeneficiaries}};
       await modifyAbrigaditosEdition(abrigaditosEditionFinalReview, dataEdition.id as string);
-      updateEditAbrigaditos(defaultEditionModify);
+      dispatch(updateEditAbrigaditos(defaultEditionModify));
       setAction({
         complete: true,
         success: true,

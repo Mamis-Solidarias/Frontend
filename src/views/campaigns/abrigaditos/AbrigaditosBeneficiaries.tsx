@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Card from "@mui/material/Card";
 import {AbrigaditosEdition, Participant} from "src/types/campaigns/AbrigaditosEdition";
+import GENDERS from "../../../types/beneficiaries/Genders";
 
 interface AbrigaditosEditionProps {
   dataEdition: AbrigaditosEdition;
@@ -33,7 +34,7 @@ export default (props: AbrigaditosEditionProps) => {
               <TableRow key={participant.beneficiaryId}>
                 <TableCell>{participant.beneficiaryId}</TableCell>
                 <TableCell>{participant.beneficiaryName}</TableCell>
-                <TableCell>{participant.beneficiaryGender}</TableCell>
+                <TableCell>{GENDERS[participant.beneficiaryGender as keyof typeof GENDERS]}</TableCell>
                 <TableCell>{participant.shirtSize}</TableCell>
               </TableRow>
             ))}
