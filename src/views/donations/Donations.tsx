@@ -10,7 +10,6 @@ import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
 import {useQuery} from '@apollo/client';
-import Button from '@mui/material/Button';
 import {useRouter} from 'next/router';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
 import {LinearProgress} from "@mui/material";
@@ -21,7 +20,7 @@ import {
   updateCursor,
   updateDonations,
   updateHasNextPage,
-  updateHasWriteDonations, updateOpenAddDonation
+  updateHasWriteDonations
 } from "src/features/donations/donationsSlice";
 import Donation from "src/types/donations/Donation";
 import DonationRow from "./DonationRow";
