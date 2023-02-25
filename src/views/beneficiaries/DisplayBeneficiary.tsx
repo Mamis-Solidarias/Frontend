@@ -58,7 +58,7 @@ const DisplayBeneficiary: FC<DisplayBeneficiaryProps> = props => {
         <TableCell>{benef.familyId}</TableCell>
         <TableCell>{benef.firstName + ' ' + benef.lastName}</TableCell>
         <TableCell>{GENDERS[benef.gender as keyof typeof GENDERS]}</TableCell>
-        <TableCell>{benef.birthday}</TableCell>
+        <TableCell>{new Date(benef.birthday).toLocaleDateString('es-AR')}</TableCell>
         <TableCell>{BENEFICIARY_TYPES[benef.type as keyof typeof BENEFICIARY_TYPES]}</TableCell>
         {props.children}
       </TableRow>

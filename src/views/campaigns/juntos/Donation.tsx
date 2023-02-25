@@ -21,8 +21,7 @@ export default (props: DonationProps) => {
 
   return <TableRow key={donationData.id}>
     <TableCell>{donationData.donorId}</TableCell>
-    <TableCell>{donationData.currency}</TableCell>
-    <TableCell>{donationData.amount}</TableCell>
+    <TableCell>{donationData.amount + ' ' + donationData.currency}</TableCell>
     <TableCell>{new Date(donationData.donatedAt).toLocaleDateString('es-AR')}</TableCell>
   </TableRow>
 }

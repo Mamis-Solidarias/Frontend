@@ -7,6 +7,7 @@ import BackpackIcon from '@mui/icons-material/Backpack';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
@@ -14,7 +15,17 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types';
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      sectionTitle: 'Grupos',
+      sectionTitle: 'Usuarios',
+      service: 'Users'
+    },
+    {
+      title: 'Administrar Usuarios',
+      icon: AccountCogOutline,
+      path: '/usuarios',
+      service: 'Users'
+    },
+    {
+      sectionTitle: 'Personas',
       service: ''
     },
     {
@@ -64,15 +75,11 @@ const navigation = (): VerticalNavItemsType => {
       service: 'Campaigns'
     },
     {
-      sectionTitle: 'Usuarios',
-      service: 'Users'
+      icon: AttachMoneyIcon,
+      title: 'Donaciones',
+      path: '/donaciones',
+      service: 'Donations'
     },
-    {
-      title: 'Administrar Usuarios',
-      icon: AccountCogOutline,
-      path: '/usuarios',
-      service: 'Users'
-    }
   ];
 };
 
