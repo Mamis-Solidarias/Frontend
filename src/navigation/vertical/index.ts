@@ -14,7 +14,17 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types';
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      sectionTitle: 'Grupos',
+      sectionTitle: 'Usuarios',
+      service: 'Users'
+    },
+    {
+      title: 'Administrar Usuarios',
+      icon: AccountCogOutline,
+      path: '/usuarios',
+      service: 'Users'
+    },
+    {
+      sectionTitle: 'Personas',
       service: ''
     },
     {
@@ -63,16 +73,6 @@ const navigation = (): VerticalNavItemsType => {
       path: '/abrigaditos',
       service: 'Campaigns'
     },
-    {
-      sectionTitle: 'Usuarios',
-      service: 'Users'
-    },
-    {
-      title: 'Administrar Usuarios',
-      icon: AccountCogOutline,
-      path: '/usuarios',
-      service: 'Users'
-    }
   ];
 };
 
