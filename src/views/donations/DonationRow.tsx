@@ -24,8 +24,7 @@ export default (props: DisplayDonationRowProps) => {
       <TableRow hover sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
         <TableCell>{donation.donorId}</TableCell>
         <TableCell>{campaing}</TableCell>
-        <TableCell>{donation.amount}</TableCell>
-        <TableCell>{donation.currency}</TableCell>
+        <TableCell>{donation.amount + ' ' + donation.currency}</TableCell>
         <TableCell>{new Date(donation.donatedAt).toLocaleDateString('es-AR')}</TableCell>
       </TableRow>
     </Fragment>

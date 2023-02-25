@@ -45,7 +45,6 @@ export default (props: JuntosBriefInformation) => {
           <TableHead>
             <TableRow>
               <TableCell>ID Donante</TableCell>
-              <TableCell>Moneda</TableCell>
               <TableCell>Cantidad</TableCell>
               <TableCell>Tiempo Donación</TableCell>
             </TableRow>

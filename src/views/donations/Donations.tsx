@@ -90,15 +90,7 @@ export default () => {
 
   return (
     <Card>
-      <CardHeader action={<>
-        <Button
-          variant='contained'
-          onClick={() => dispatch(updateOpenAddDonation(true))}
-        >
-          Agregar Donación
-        </Button>
-        {/*<ExportButton setAction={setAction} filters={donationsSelector.filtersApplied}/>*/}
-      </>} title='Beneficiarios' titleTypographyProps={{variant: 'h6'}}/>
+      <CardHeader title='Donaciones' titleTypographyProps={{variant: 'h6'}}/>
       <TableContainer>
         {loading && <LinearProgress/>}
         <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
@@ -107,7 +99,6 @@ export default () => {
               <TableCell>ID donante</TableCell>
               <TableCell>Motivo</TableCell>
               <TableCell>Cantidad</TableCell>
-              <TableCell>Tipo de Pago</TableCell>
               <TableCell>Fecha</TableCell>
             </TableRow>
           </TableHead>
