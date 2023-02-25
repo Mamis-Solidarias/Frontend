@@ -5,6 +5,7 @@ import juntosReducer from 'src/features/campaigns/juntosSlice';
 import abrigaditosReducer from 'src/features/campaigns/abrigaditosSlice';
 import beneficiariesReducer from 'src/features/beneficiaries/beneficiariesSlice';
 import campaignPaymentReducer from 'src/features/campaigns/paymentSlice';
+import donationsReducer from 'src/features/donations/donationsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     beneficiaries: beneficiariesReducer,
     abrigaditos: abrigaditosReducer,
     campaignPayment: campaignPaymentReducer,
+    donations: donationsReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false })
 });
