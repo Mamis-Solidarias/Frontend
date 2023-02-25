@@ -7,6 +7,7 @@ import BackpackIcon from '@mui/icons-material/Backpack';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
@@ -72,6 +73,12 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Abrigaditos',
       path: '/abrigaditos',
       service: 'Campaigns'
+    },
+    {
+      icon: AttachMoneyIcon,
+      title: 'Donaciones',
+      path: '/donaciones',
+      service: 'Donations'
     },
   ];
 };
