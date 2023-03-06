@@ -58,6 +58,8 @@ export default () => {
   }, [donationsSelector.paging.pageCursor, donationsSelector.filtersApplied, donationsSelector.paging.limit]);
 
   if (error) {
+    router.push('/login');
+
     return (
       <TableRow>
         <TableCell>Error :(</TableCell>
@@ -95,10 +97,11 @@ export default () => {
         <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>ID donante</TableCell>
+              <TableCell>Nombre Donante</TableCell>
               <TableCell>Motivo</TableCell>
               <TableCell>Cantidad</TableCell>
               <TableCell>Fecha</TableCell>
+              <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
