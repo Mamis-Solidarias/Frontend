@@ -64,13 +64,15 @@ export const GET_JUNTOS = gql`
   }
 `;
 
-export const GET_JUNTOS_DONATION = gql`
+export const GET_DONATION = gql`
   query donationsQuery ($id: UUID!) {
     monetaryDonation(id: $id) {
       amount
       currency
       donatedAt
-      donorId
+      donor {
+        name
+      }
       id
       motive
       type

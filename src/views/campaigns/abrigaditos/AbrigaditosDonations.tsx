@@ -1,4 +1,3 @@
-import {JuntosEdition} from "src/types/campaigns/JuntosEdition";
 import Card from "@mui/material/Card";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -18,13 +17,14 @@ import {
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {useAppDispatch} from "src/hooks/reduxHooks";
+import {AbrigaditosEdition} from "src/types/campaigns/AbrigaditosEdition";
 
 interface JuntosBriefInformation {
-  juntosEdition: JuntosEdition
+  abrigaditosEdition: AbrigaditosEdition
 }
 
 export default (props: JuntosBriefInformation) => {
-  const {juntosEdition} = props;
+  const {abrigaditosEdition} = props;
   const dispatch = useAppDispatch();
 
 
@@ -32,8 +32,8 @@ export default (props: JuntosBriefInformation) => {
     <CardHeader title={'Donaciones'} action={<Button
       variant='contained'
       onClick={() => {
-        !!juntosEdition.id && dispatch(updateCampaignId(parseInt(juntosEdition.id)));
-        dispatch(updateCampaign("JuntosALaPar"))
+        !!abrigaditosEdition.id && dispatch(updateCampaignId(parseInt(abrigaditosEdition.id)));
+        dispatch(updateCampaign("Abrigaditos"))
         dispatch(updateAssignPayment(true));
       }}
     >
@@ -51,7 +51,7 @@ export default (props: JuntosBriefInformation) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {juntosEdition.donations.map(donation => (<Donation key={donation.id} donationId={donation.id}/>))}
+            {abrigaditosEdition.donations.map(donation => (<Donation key={donation.id} donationId={donation.id}/>))}
           </TableBody>
         </Table>
       </TableContainer>

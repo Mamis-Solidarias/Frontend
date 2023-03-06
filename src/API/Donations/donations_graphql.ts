@@ -15,6 +15,9 @@ export const GET_DONATIONS = gql`
         currency
         donatedAt
         donorId
+        donor {
+          name
+        }
         id
         motive
         type

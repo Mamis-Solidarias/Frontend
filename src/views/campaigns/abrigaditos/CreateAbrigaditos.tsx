@@ -17,7 +17,11 @@ import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
 import BeneficiariesFiltersView from "src/views/beneficiaries/BeneficiariesFiltersViewSimple";
 import {BeneficiariesFilters} from "src/types/beneficiaries/BeneficiariesFilters";
 import {updateFiltersApplied} from "src/features/beneficiaries/beneficiariesSlice";
-import {updateCreateAbrigaditos, updateOpenCreateAbrigaditos} from "src/features/campaigns/abrigaditosSlice";
+import {
+  updateCreateAbrigaditos,
+  updateFiltersToApply,
+  updateOpenCreateAbrigaditos
+} from "src/features/campaigns/abrigaditosSlice";
 import {AbrigaditosEdition, defaultEdition} from "src/types/campaigns/AbrigaditosEdition";
 
 interface CreateAbrigaditosProps {
@@ -81,7 +85,7 @@ export default (props: CreateAbrigaditosProps) => {
       const abrigaditosEditionFinalReview:AbrigaditosEdition = {...abrigaditosSelector.createAbrigaditos, ...{beneficiaries: dataBeneficiaries.
                               filteredBeneficiaries.nodes.map((beneficiary: Beneficiary) => beneficiary.id)}};
       await createAbrigaditosEdition(abrigaditosEditionFinalReview);
-      updateCreateAbrigaditos(defaultEdition);
+      dispatch(updateCreateAbrigaditos(defaultEdition));
       setAction({
         complete: true,
         success: true,
@@ -90,6 +94,10 @@ export default (props: CreateAbrigaditosProps) => {
       });
       if (!!abrigaditosSelector.refetchEditions) {
         abrigaditosSelector.refetchEditions(abrigaditosSelector.campaign);
+        dispatch(updateFiltersToApply({...abrigaditosSelector.filtersToApply, ...{edition: abrigaditosSelector.createAbrigaditos.edition}}));
+        dispatch(updateFiltersApplied({...abrigaditosSelector.filtersToApply, ...{edition: abrigaditosSelector.createAbrigaditos.edition}}));
+        dispatch(updateFiltersToApply( {...abrigaditosSelector.filtersToApply, ...{community: abrigaditosSelector.createAbrigaditos.communityId}}));
+        dispatch(updateFiltersApplied({...abrigaditosSelector.filtersToApply, ...{edition: abrigaditosSelector.createAbrigaditos.edition}}));
       }
 
     } catch (error) {

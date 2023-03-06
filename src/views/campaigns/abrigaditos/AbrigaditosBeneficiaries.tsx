@@ -23,7 +23,6 @@ export default (props: AbrigaditosEditionProps) => {
         <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
-              <TableCell>ID</TableCell>
               <TableCell>Nombre</TableCell>
               <TableCell>Género</TableCell>
               <TableCell>Talle Superior</TableCell>
@@ -32,7 +31,6 @@ export default (props: AbrigaditosEditionProps) => {
           <TableBody>
             {dataEdition?.participants?.map((participant: Participant) => (
               <TableRow key={participant.beneficiaryId}>
-                <TableCell>{participant.beneficiaryId}</TableCell>
                 <TableCell>{participant.beneficiaryName}</TableCell>
                 <TableCell>{GENDERS[participant.beneficiaryGender as keyof typeof GENDERS]}</TableCell>
                 <TableCell>{participant.shirtSize}</TableCell>
