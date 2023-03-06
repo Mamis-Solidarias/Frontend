@@ -6,6 +6,7 @@ export interface AbrigaditosEdition {
   communityId: string;
   beneficiaries: number[];
   participants?: Participant[];
+  donations: { id: string }[];
   description: string;
   provider: string;
   fundraiserGoal: number;
@@ -22,6 +23,7 @@ export const defaultEdition: AbrigaditosEdition = {
   edition: '',
   communityId: '',
   beneficiaries: [],
+  donations: [],
   description: '',
   provider: '',
   fundraiserGoal: 0
