@@ -103,7 +103,8 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paging.pageCursor, filters, paging.limit]);
   if (error) {
-    router.push('/login')
+    router.push('/login');
+
     return (
       <TableRow>
         <TableCell>Error :(</TableCell>
