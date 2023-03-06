@@ -115,6 +115,9 @@ const TableUsers: FC<TableUsersProps> = props => {
                 setRows(users.data.entries);
             })
             .catch(err => {
+              if( err.code === "ERR_BAD_REQUEST") {
+                redirectToLogin(router);
+              }
                 if (hasNoPermission(err)) {
                     redirectToLogin(router);
                 } else if (isNotLoggedIn(err)) {
