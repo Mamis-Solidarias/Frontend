@@ -26,8 +26,6 @@ export default () => {
   const donationsSelector = useAppSelector(state => state.donations);
   const dispatch = useAppDispatch();
 
-
-
   useEffect(() => {
     if (userIsLoggedIn()) {
       dispatch(updateHasWriteDonations(hasWriteAccess('Donors')));

@@ -80,7 +80,6 @@ export default () => {
               </Button>
             )}
           </BeneficiariesTable>
-
           <CreateBeneficiaries
             openDialog={openCreateBeneficiaries}
             setAction={setAction}
