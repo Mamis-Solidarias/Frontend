@@ -23,11 +23,13 @@ import JuntosBeneficiaries from "src/views/campaigns/juntos/JuntosBeneficiaries"
 import EditJuntos from "src/views/campaigns/juntos/EditJuntos";
 import AssignPayment from "src/views/campaigns/juntos/AssignPayment";
 import JuntosDonations from "src/views/campaigns/juntos/JuntosDonations";
+import {useRouter} from "next/router";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
   const juntosSelector = useAppSelector(state => state.juntos);
+  const router = useRouter();
 
   const {
     loading: loadingEditions,
@@ -48,7 +50,11 @@ export default () => {
   }, []);
 
   if (loadingEditions) return <Box>Cargando ediciones de Juntos...</Box>;
-  if (errorEditions) return <Box>Error :(</Box>;
+  if (errorEditions) {
+    router.push('/login');
+
+    return <Box>Error :(</Box>;
+  }
 
   const editions = dataEditions.juntosCampaigns;
 

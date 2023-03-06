@@ -35,6 +35,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import {Participant} from "src/types/campaigns/MochiEdition";
 import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
 import Community from "src/types/beneficiaries/Community";
+import {useRouter} from "next/router";
 
 export default () => {
   const [filtersApplied, setFiltersApplied] = useState<CampaignsFilters>(campaignsFiltersNull);
@@ -57,6 +58,7 @@ export default () => {
     variables: {edition: filtersApplied.edition, community: filtersApplied.community}
   });
   const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
+  const router = useRouter();
 
   useEffect(() => {
     if (userIsLoggedIn()) {
@@ -98,6 +100,8 @@ export default () => {
   if (loadingEditions) return <Box>Cargando ediciones de Mochi...</Box>;
 
   if (errorEditions) {
+    router.push('/login');
+
     return <Box>Error :(</Box>;
   }
   const editions = dataEditions.mochiEditions;

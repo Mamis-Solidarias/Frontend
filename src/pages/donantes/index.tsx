@@ -22,12 +22,13 @@ import {useAction} from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import DonorsFilterView from "../../views/donors/DonorsFilterView";
+import DonorsFilterView from "src/views/donors/DonorsFilterView";
+import {useRouter} from "next/router";
 
 export default () => {
   const [openCreateDonor, setOpenCreateDonor] = useState<boolean>(false);
   const [openWindow, setOpenWindow] = useState<boolean>(false);
-
+  const router = useRouter();
   const [filtersApplied, setFiltersApplied] = useState<DonorsFilters>(donorsFiltersNull);
   const {filters, setFilter} = useDonorsFilters();
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
@@ -37,12 +38,17 @@ export default () => {
   useEffect(() => {
     if (userIsLoggedIn()) {
       setHasWriteDonors(hasWriteAccess('Donors'));
+      if( !!router.query.nombre_donante ) {
+        setFiltersApplied({...filtersApplied, ...{name: router.query.nombre_donante as string}});
+        setFilter('name', router.query.nombre_donante as string);
+        setOpenCollapse(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (openWindow && openCreateDonor === false) {
+    if (openWindow && !openCreateDonor) {
       setOpenWindow(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

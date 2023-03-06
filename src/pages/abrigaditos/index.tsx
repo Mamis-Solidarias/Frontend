@@ -24,18 +24,26 @@ import EditAbrigaditos from "src/views/campaigns/abrigaditos/EditAbrigaditos";
 import CreateAbrigaditos from "src/views/campaigns/abrigaditos/CreateAbrigaditos";
 import CampaignActions from "src/views/campaigns/abrigaditos/CampaignActions";
 import SelectEdition from "src/views/campaigns/abrigaditos/SelectEdition";
+import {useRouter} from "next/router";
+import AbrigaditosDonations from "src/views/campaigns/abrigaditos/AbrigaditosDonations";
 
 export default () => {
   const {action, setCompletion, setAction} = useAction();
   const [hasWriteCampaigns, setHasWriteCampaigns] = useState<boolean>(false);
   const abrigaditosSelector = useAppSelector(state => state.abrigaditos);
+  const router = useRouter();
 
   const {
     loading: loadingEditions,
     error: errorEditions,
     data: dataEditions,
-    refetch: refetchEditions
+    refetch: refetchEditions,
   } = useQuery(GET_ABRIGADITOS_EDITIONS, {variables: {communityId: 'valor nulo'}});
+
+  if(errorEditions) {
+    router.push('/login')
+  }
+
   const {data: dataEdition} = useQuery(GET_ABRIGADITOS, {
     variables: {edition: abrigaditosSelector.filtersApplied.edition, community: abrigaditosSelector.filtersApplied.community}
   });
@@ -73,6 +81,7 @@ export default () => {
           <AbrigaditosFilters setAction={setAction}/>
           {!!dataEdition?.abrigaditosCampaign?.participants && <>
             <AbrigaditosBeneficiaries dataEdition={dataEdition?.abrigaditosCampaign}/>
+            <AbrigaditosDonations abrigaditosEdition={dataEdition?.abrigaditosCampaign}/>
           </>
           }
         </Grid>
