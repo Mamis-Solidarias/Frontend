@@ -10,6 +10,7 @@ export interface AbrigaditosEdition {
   description: string;
   provider: string;
   fundraiserGoal: number;
+  totalDonations: number;
 }
 
 export interface Participant {
@@ -26,7 +27,8 @@ export const defaultEdition: AbrigaditosEdition = {
   donations: [],
   description: '',
   provider: '',
-  fundraiserGoal: 0
+  fundraiserGoal: 0,
+  totalDonations: 0,
 };
 
 export interface AbrigaditosEditionModify {
