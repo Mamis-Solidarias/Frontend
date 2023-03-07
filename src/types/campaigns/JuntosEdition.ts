@@ -10,6 +10,7 @@ export interface JuntosEdition {
   description: string;
   provider: string;
   fundraiserGoal: number;
+  totalDonations: number;
 }
 
 export interface Participant {
@@ -26,6 +27,7 @@ export const defaultEdition: JuntosEdition = {
   donations: [],
   description: '',
   provider: '',
+  totalDonations: 0,
   fundraiserGoal: 0
 };
 

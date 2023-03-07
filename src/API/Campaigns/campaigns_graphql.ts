@@ -54,6 +54,7 @@ export const GET_JUNTOS = gql`
       donations {
         id
       }
+      totalDonations
       shoeDetails {
         count
         gender
@@ -105,6 +106,7 @@ export const GET_ABRIGADITOS = gql`
       donations {
         id
       }
+      totalDonations
       provider
     }
   }

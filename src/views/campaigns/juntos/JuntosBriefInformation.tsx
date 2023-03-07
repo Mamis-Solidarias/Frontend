@@ -16,8 +16,8 @@ export default (props: JuntosBriefInformation) => {
       Objetivo: '$' + juntosEdition.fundraiserGoal
     }}/>
     <DefaultCard sx={{display: 'flex', flexDirection: 'column', mx:" .125em"}} title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-      Recaudado: '5$',
-      Completitud: '25%',
+      Recaudado: juntosEdition.totalDonations + '$',
+      Completitud: (juntosEdition.totalDonations*100/juntosEdition.fundraiserGoal).toFixed(2) + '%',
     }}/>
   </>
 }

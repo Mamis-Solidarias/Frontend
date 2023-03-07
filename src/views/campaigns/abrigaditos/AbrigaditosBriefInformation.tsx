@@ -17,8 +17,8 @@ export default (props: AbrigaditosBriefInformation) => {
     }}/>
     <DefaultCard sx={{display: 'flex', flexDirection: 'column', mx: " .125em"}}
                  title={<InfoIcon sx={{color: '#00a5ff'}}/>} fields={{
-      Recaudado: '5$',
-      Completitud: '25%',
+      Recaudado: abrigaditosEdition.totalDonations + '$',
+      Completitud: (abrigaditosEdition.totalDonations*100/abrigaditosEdition.fundraiserGoal).toFixed(2) + '%',
     }}/>
   </>
 }
