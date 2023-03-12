@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 
 // ** MUI Imports
 import Table from '@mui/material/Table';
@@ -9,19 +9,19 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import {useEffect, useState} from 'react';
-import {UpdateDonor} from './UpdateDonor';
-import {useQuery} from '@apollo/client';
-import {useDonorsPaging} from 'src/hooks/donors/useDonorsPaging';
-import {GET_DONORS} from 'src/API/Donors/donors_graphql';
+import { useEffect, useState } from 'react';
+import { UpdateDonor } from './UpdateDonor';
+import { useQuery } from '@apollo/client';
+import { useDonorsPaging } from 'src/hooks/donors/useDonorsPaging';
+import { GET_DONORS } from 'src/API/Donors/donors_graphql';
 import DonorsTablePagination from './DonorsTablePagination';
-import {Donor} from 'src/types/donors/Donor';
+import { Donor } from 'src/types/donors/Donor';
 import Button from '@mui/material/Button';
-import {useRouter} from 'next/router';
-import {Action} from 'src/types/Action';
-import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {Card, CardHeader, LinearProgress, Typography} from "@mui/material";
-import {DonorsFilters} from "src/types/donors/DonorsFilters";
+import { useRouter } from 'next/router';
+import { Action } from 'src/types/Action';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import { Card, CardHeader, LinearProgress, Typography } from '@mui/material';
+import { DonorsFilters } from 'src/types/donors/DonorsFilters';
 
 interface DonorsTableProps {
   openCreateDonor: boolean;
@@ -30,19 +30,19 @@ interface DonorsTableProps {
 }
 
 const DonorsTable: FC<DonorsTableProps> = props => {
-  const {openCreateDonor, setAction, filters} = props;
+  const { openCreateDonor, setAction, filters } = props;
   const router = useRouter();
   const [donor, setDonor] = useState<Donor | null>(null);
   const [openUpdateDonor, setOpenUpdateDonor] = useState<boolean>(false);
   const [hasWriteDonors, setHasWriteDonors] = useState<boolean>(false);
-  const {paging, setDonorsPaging} = useDonorsPaging();
-  const {loading, error, data, refetch} = useQuery(GET_DONORS, {
+  const { paging, setDonorsPaging } = useDonorsPaging();
+  const { loading, error, data, refetch } = useQuery(GET_DONORS, {
     variables: {
       after: paging.pageCursor,
       limit: paging.limit,
       isGodFather: filters.isGodFather,
       name: filters.name,
-      ownerId: filters.ownerId,
+      ownerId: filters.ownerId
     }
   });
 
@@ -85,14 +85,10 @@ const DonorsTable: FC<DonorsTableProps> = props => {
 
   return (
     <Card>
-      <CardHeader
-        action={props.children}
-        title='Donantes'
-        titleTypographyProps={{variant: 'h6'}}
-      />
+      <CardHeader action={props.children} title='Donantes' titleTypographyProps={{ variant: 'h6' }} />
       <TableContainer>
-        {loading && <LinearProgress/>}
-        <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
+        {loading && <LinearProgress />}
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
@@ -108,8 +104,8 @@ const DonorsTable: FC<DonorsTableProps> = props => {
           </TableHead>
           <TableBody>
             {nodes.map((row: Donor) => (
-              <TableRow sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}} key={row.id}>
-                <TableCell sx={{py: theme => `${theme.spacing(0.5)} !important`}}>{row.id}</TableCell>
+              <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }} key={row.id}>
+                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.dni}</TableCell>
                 <TableCell>{row.email ? row.email : '-'}</TableCell>
@@ -118,10 +114,10 @@ const DonorsTable: FC<DonorsTableProps> = props => {
                 <TableCell>{row.isGodFather ? 'Es padrino' : 'No es padrino'}</TableCell>
                 <TableCell>{row.owner?.name}</TableCell>
                 {hasWriteDonors && (
-                  <TableCell sx={{display: 'flex', flexDirection: 'column'}}>
+                  <TableCell sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Button
                       variant='contained'
-                      sx={{my: '.5em'}}
+                      sx={{ my: '.5em' }}
                       onClick={() => {
                         if (!!row.id) {
                           setDonor(row);

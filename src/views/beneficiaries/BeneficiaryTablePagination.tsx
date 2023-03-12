@@ -21,7 +21,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
   return (
     <TablePagination
       component='div'
-      count={pageInfo.hasNextPage ? -1 : nodes.length + paging.pageNumber*paging.limit}
+      count={pageInfo.hasNextPage ? -1 : nodes.length + paging.pageNumber * paging.limit}
       page={paging.pageNumber}
       rowsPerPageOptions={[PAGE_LIMITS.SMALL, PAGE_LIMITS.MEDIUM, PAGE_LIMITS.LARGE]}
       labelRowsPerPage='Filas por página'

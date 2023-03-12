@@ -31,7 +31,7 @@ export const GET_MOCHI = gql`
 
 export const GET_MOCHI_EDITIONS = gql`
   query filterQuery($communityId: String) {
-    mochiEditions (where: { communityId: {startsWith: $communityId } }) {
+    mochiEditions(where: { communityId: { startsWith: $communityId } }) {
       edition
     }
   }
@@ -66,7 +66,7 @@ export const GET_JUNTOS = gql`
 `;
 
 export const GET_DONATION = gql`
-  query donationsQuery ($id: UUID!) {
+  query donationsQuery($id: UUID!) {
     monetaryDonation(id: $id) {
       amount
       currency
@@ -90,7 +90,7 @@ export const GET_JUNTOS_EDITIONS = gql`
 `;
 
 export const GET_ABRIGADITOS = gql`
-    query getAbrigaditos($edition: String!, $community: String!) {
+  query getAbrigaditos($edition: String!, $community: String!) {
     abrigaditosCampaign(edition: $edition, community: $community) {
       communityId
       description

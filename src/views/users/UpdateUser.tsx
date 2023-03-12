@@ -102,7 +102,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
             error={invalidEmail}
             id='email'
             type='email'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^[^@]+@[^@]+$' }}
             label='Email'
             placeholder='usuario@mail.com'
@@ -121,7 +121,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
           )}
           <TextField
             error={invalidName}
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             id='name'
             type='text'
             inputProps={{ pattern: ' .{5,100}' }}
@@ -142,7 +142,7 @@ export const UpdateUser: FC<UpdateUserProps> = props => {
             error={invalidPhone}
             id='phone'
             type='tel'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: ' ^+?(?:(?:00)?549?)?0?(?:11|[2368]d)(?:(?=d{0,2}15)d{2})??d{8}$' }}
             label='Teléfono'
             placeholder='+5492995077824'

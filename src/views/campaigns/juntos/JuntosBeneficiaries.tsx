@@ -6,21 +6,21 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Card from "@mui/material/Card";
-import {JuntosEdition, Participant} from "src/types/campaigns/JuntosEdition";
-import GENDERS from "src/types/beneficiaries/Genders";
+import Card from '@mui/material/Card';
+import { JuntosEdition, Participant } from 'src/types/campaigns/JuntosEdition';
+import GENDERS from 'src/types/beneficiaries/Genders';
 
 interface JuntosEditionProps {
   dataEdition: JuntosEdition;
 }
 
 export default (props: JuntosEditionProps) => {
-  const {dataEdition} = props;
+  const { dataEdition } = props;
 
   return (
     <Card>
       <TableContainer>
-        <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
               <TableCell>Nombre</TableCell>

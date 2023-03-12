@@ -1,4 +1,4 @@
-import GENDERS from "../beneficiaries/Genders";
+import GENDERS from '../beneficiaries/Genders';
 
 export interface JuntosEdition {
   id?: string;
@@ -46,5 +46,5 @@ export const defaultEditionModify: JuntosEditionModify = {
   fundraiserGoal: 0,
   addedBeneficiaries: [],
   removedBeneficiaries: [],
-  newBeneficiaries: [],
-}
+  newBeneficiaries: []
+};

@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  BeneficiariesFilters,
-  beneficiariesFiltersDefaults
-} from "src/types/beneficiaries/BeneficiariesFilters";
+import { BeneficiariesFilters, beneficiariesFiltersDefaults } from 'src/types/beneficiaries/BeneficiariesFilters';
 
 interface BeneficiariesPageData {
   filtersToApply: BeneficiariesFilters;
@@ -11,7 +8,7 @@ interface BeneficiariesPageData {
 
 export const initialState: BeneficiariesPageData = {
   filtersToApply: beneficiariesFiltersDefaults,
-  filtersApplied: beneficiariesFiltersDefaults,
+  filtersApplied: beneficiariesFiltersDefaults
 };
 
 const beneficiariesSlice = createSlice({
@@ -23,7 +20,7 @@ const beneficiariesSlice = createSlice({
     },
     updateFiltersApplied(state, action: PayloadAction<BeneficiariesFilters>) {
       state.filtersApplied = action.payload;
-    },
+    }
   }
 });
 

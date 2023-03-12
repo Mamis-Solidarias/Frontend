@@ -1,7 +1,7 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import Donation from "src/types/donations/Donation";
-import DonationFilters, {defaultFilters} from "../../types/donations/DonationFilters";
-import {defaultPagingSettings, DonationsPaging} from "../../types/donations/DonationsPaging";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Donation from 'src/types/donations/Donation';
+import DonationFilters, { defaultFilters } from '../../types/donations/DonationFilters';
+import { defaultPagingSettings, DonationsPaging } from '../../types/donations/DonationsPaging';
 
 interface DonationsPageData {
   hasNextPage: boolean;
@@ -16,7 +16,7 @@ interface DonationsPageData {
   paging: DonationsPaging;
   cursor: string | null;
   endCursor?: string;
-  openCollapsible: boolean[],
+  openCollapsible: boolean[];
 }
 
 export const initialState: DonationsPageData = {
@@ -29,7 +29,7 @@ export const initialState: DonationsPageData = {
   donations: [],
   paging: defaultPagingSettings,
   cursor: null,
-  openCollapsible: [],
+  openCollapsible: []
 };
 
 const donationsSlice = createSlice({

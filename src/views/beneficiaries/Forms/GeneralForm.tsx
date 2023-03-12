@@ -7,8 +7,8 @@ import Box from '@mui/material/Box';
 import { CreateBeneficiaryFields } from 'src/hooks/beneficiaries/useCreateBeneficiaryFields';
 import Community from 'src/types/beneficiaries/Community';
 import Family from 'src/types/beneficiaries/Family';
-import {useQuery} from "@apollo/client";
-import {GET_FAMILIES} from "../../../API/Beneficiaries/beneficiaries_grapql";
+import { useQuery } from '@apollo/client';
+import { GET_FAMILIES } from '../../../API/Beneficiaries/beneficiaries_grapql';
 
 interface GeneralFormProps {
   beneficiaryFields: CreateBeneficiaryFields;
@@ -23,8 +23,8 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
   const { data, refetch } = useQuery(GET_FAMILIES);
   useEffect(() => {
-      setBeneficiaryField('familyId', '');
-      refetch({ communityCode: selectedCommunity })
+    setBeneficiaryField('familyId', '');
+    refetch({ communityCode: selectedCommunity });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCommunity]);
 
@@ -34,7 +34,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         {!startingCommunityInput && (
           <TextField
             select
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             fullWidth={true}
             variant='standard'
             label='Comunidad'
@@ -53,7 +53,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           id='firstName'
           type='text'
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           inputProps={{ pattern: '[0-9]*$' }}
           label='Nombre'
           placeholder='Juan García'
@@ -65,7 +65,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           select
           fullWidth={true}
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           variant='standard'
           placeholder='Niño'
           id='typeSelector'
@@ -78,7 +78,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         </TextField>
         <TextField
           id='birthday'
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           type='date'
           label='Fecha de Nacimiento'
           InputLabelProps={{ shrink: true }}
@@ -92,7 +92,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           id='comments'
           type='text'
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           label='Comentarios (opcional)'
           placeholder='Es buena gente'
           value={beneficiaryFields.comments}
@@ -104,7 +104,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
       <Grid xs={5}>
         {!startingCommunityInput && (
           <TextField
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             select
             fullWidth={true}
             variant='standard'
@@ -114,16 +114,18 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             onChange={e => {
               setBeneficiaryField('familyId', e.target.value);
               if (!!setFamilyId) {
-                const family: Family|undefined = data?.filteredFamilies?.nodes?.find((family: Family) => family.id === e.target.value);
+                const family: Family | undefined = data?.filteredFamilies?.nodes?.find(
+                  (family: Family) => family.id === e.target.value
+                );
                 setFamilyId(family?.id || e.target.value);
-                setBeneficiaryField('lastName',family?.name || '');
+                setBeneficiaryField('lastName', family?.name || '');
               }
             }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
             {data?.filteredFamilies?.nodes.map((family: Family) => (
               <MenuItem value={family.id} key={family.id}>
-                {family.id + ' : ' +family.name}
+                {family.id + ' : ' + family.name}
               </MenuItem>
             ))}
           </TextField>
@@ -131,7 +133,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           id='lastName'
           type='text'
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           inputProps={{ pattern: '[0-9]*$' }}
           label='Apellido'
           placeholder='Montoya'
@@ -142,7 +144,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         />
         <TextField
           select
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           fullWidth={true}
           variant='standard'
           label='Género'
@@ -157,7 +159,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           id='dni'
           type='text'
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           label='DNI'
           placeholder='23456654'
           value={beneficiaryFields.dni}
@@ -170,7 +172,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
         <TextField
           id='likes'
           type='text'
-          sx={{py: '.3em'}}
+          sx={{ py: '.3em' }}
           label='Cosas que le gustan (opcional)'
           placeholder='El color azul'
           value={beneficiaryFields.likes}

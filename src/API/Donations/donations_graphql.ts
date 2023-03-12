@@ -23,4 +23,5 @@ export const GET_DONATIONS = gql`
         type
       }
     }
-  }`;
+  }
+`;

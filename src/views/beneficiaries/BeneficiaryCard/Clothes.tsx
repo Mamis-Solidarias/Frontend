@@ -7,7 +7,7 @@ export const ClothesCard: FC<{ clothes: any; sx?: any }> = props => {
 
   return (
     <DefaultCard
-      title={<CheckroomIcon sx={{color: '#62b4a5'}}/>}
+      title={<CheckroomIcon sx={{ color: '#62b4a5' }} />}
       fields={{
         'Talle de Calzado': !!clothes.shoeSize ? clothes.shoeSize : 'Falta Información',
         'Talle de Pantalones': !!clothes.pantsSize ? clothes.pantsSize : 'Falta Información',

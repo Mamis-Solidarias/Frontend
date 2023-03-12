@@ -13,7 +13,7 @@ export const store = configureStore({
     beneficiaries: beneficiariesReducer,
     abrigaditos: abrigaditosReducer,
     campaignPayment: campaignPaymentReducer,
-    donations: donationsReducer,
+    donations: donationsReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false })
 });

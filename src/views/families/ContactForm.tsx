@@ -21,7 +21,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
     <>
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Título'
         placeholder='Instagram'
         value={contact.title}
@@ -36,7 +36,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
       />
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Contenido'
         placeholder='@miguel.sanchez77'
         value={contact.content}
@@ -49,23 +49,25 @@ export const ContactForm: FC<ContactFormProps> = props => {
         fullWidth={true}
         variant='standard'
       />
-    <TextField
+      <TextField
         select
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Forma de Contacto'
-        defaultValue="Email"
+        defaultValue='Email'
         value={contact.type}
         onChange={e => {
           const newContact = cloneDeep(contact);
-            newContact.type = e.target.value;
-            setContact(newContact);
-            setChanges(changes + 1);
+          newContact.type = e.target.value;
+          setContact(newContact);
+          setChanges(changes + 1);
         }}
         fullWidth={true}
         variant='standard'
       >
-        <MenuItem value='' hidden={true}>Ninguno</MenuItem>
+        <MenuItem value='' hidden={true}>
+          Ninguno
+        </MenuItem>
         <MenuItem value='Email'>Email</MenuItem>
         <MenuItem value='Facebook'>Facebook</MenuItem>
         <MenuItem value='Instagram'>Instagram</MenuItem>
@@ -74,7 +76,7 @@ export const ContactForm: FC<ContactFormProps> = props => {
         <MenuItem value='Other'>Otra</MenuItem>
       </TextField>
 
-      <Stack direction='row' spacing={1} sx={{py: '.3em'}} alignItems='center'>
+      <Stack direction='row' spacing={1} sx={{ py: '.3em' }} alignItems='center'>
         <Typography>No es preferida</Typography>
         <Switch
           onChange={e => {

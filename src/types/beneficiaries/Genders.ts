@@ -4,7 +4,7 @@ const GENDERS = {
   OTHER: 'Otro',
   Male: 'Masculino',
   Female: 'Femenino',
-  Otro: 'Other',
+  Otro: 'Other'
 };
 
 export default GENDERS;

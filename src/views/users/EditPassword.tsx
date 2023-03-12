@@ -93,7 +93,7 @@ export const EditPassword: FC<EditPasswordProps> = props => {
           <TextField
             id='oldPassword'
             type='password'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             label='Contraseña Anterior'
             placeholder='*********'
             value={oldPassword}
@@ -107,7 +107,7 @@ export const EditPassword: FC<EditPasswordProps> = props => {
             error={invalidPassword}
             id='password'
             type='password'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             label='Nueva Contraseña'
             placeholder='*********'
             value={password}

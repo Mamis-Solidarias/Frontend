@@ -14,8 +14,8 @@ import Portal from '@mui/material/Portal';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
 import { BeneficiariesFilters, beneficiariesFiltersNull } from '../../types/beneficiaries/BeneficiariesFilters';
 import BeneficiariesFiltersViewPlus from 'src/views/beneficiaries/BeneficiariesFiltersViewPlus';
-import {useQuery} from "@apollo/client";
-import {GET_COMMUNITIES} from "src/API/Beneficiaries/beneficiaries_grapql";
+import { useQuery } from '@apollo/client';
+import { GET_COMMUNITIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 
 export default () => {
   const [openCreateBeneficiaries, setOpenCreateBeneficiaries] = useState<boolean>(false);
@@ -23,7 +23,7 @@ export default () => {
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
   const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const { action, setAction, setCompletion } = useAction();
-  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
+  const { data: dataCommunities } = useQuery(GET_COMMUNITIES);
 
   useEffect(() => {
     if (userIsLoggedIn()) {

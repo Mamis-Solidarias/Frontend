@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import SchoolIcon from '@mui/icons-material/School';
-import {SCHOOL_YEARS} from 'src/types/beneficiaries/SchoolYear';
-import {DefaultCard} from './DefaultCard';
+import { SCHOOL_YEARS } from 'src/types/beneficiaries/SchoolYear';
+import { DefaultCard } from './DefaultCard';
 
 export const EducationCard: FC<{ education: any; sx?: any }> = props => {
-  const {education, sx} = props;
+  const { education, sx } = props;
   const TRANSPORT_METHODS = {
     BIKE: 'Bicicleta',
     CAR: 'Auto',
@@ -16,7 +16,7 @@ export const EducationCard: FC<{ education: any; sx?: any }> = props => {
 
   return (
     <DefaultCard
-      title={<SchoolIcon sx={{color: '#7291F9'}}/>}
+      title={<SchoolIcon sx={{ color: '#7291F9' }} />}
       fields={{
         Institución: !!education.school ? education.school : 'Falta Información',
         'Año académico': !!education.year

@@ -17,10 +17,10 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
 
   return (
     <>
-      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em'}}>Ropa</Typography>
+      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em' }}>Ropa</Typography>
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Talle de Calzado'
         placeholder='42'
         value={beneficiaryFields.shoeSize}
@@ -30,7 +30,7 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
       />
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Talle de Remera'
         placeholder='L'
         value={beneficiaryFields.shirtSize}
@@ -42,7 +42,7 @@ export const ClothesForm: FC<ClothesFormProps> = props => {
       />
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Talle de Pantalones'
         placeholder='42'
         value={beneficiaryFields.pantsSize}

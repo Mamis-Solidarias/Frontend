@@ -1,4 +1,4 @@
-import React, {useState, FC, useEffect} from 'react';
+import React, { useState, FC, useEffect } from 'react';
 
 // ** MUI Imports
 import Table from '@mui/material/Table';
@@ -9,25 +9,25 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import {BeneficiariesFilters} from 'src/types/beneficiaries/BeneficiariesFilters';
-import {useBeneficiariesPaging} from 'src/hooks/beneficiaries/useBeneficiariesPaging';
-import {useQuery} from '@apollo/client';
+import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
+import { useBeneficiariesPaging } from 'src/hooks/beneficiaries/useBeneficiariesPaging';
+import { useQuery } from '@apollo/client';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
-import {GET_BENEFICIARIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { GET_BENEFICIARIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import DisplayBeneficiary from './DisplayBeneficiary';
 import Button from '@mui/material/Button';
 import BeneficiaryTablePagination from './BeneficiaryTablePagination';
-import {deleteBeneficiary, activateBeneficiary} from 'src/API/Beneficiaries/beneficiaries_data';
-import {BeneficiaryEditForm} from './BeneficiaryEditForm';
+import { deleteBeneficiary, activateBeneficiary } from 'src/API/Beneficiaries/beneficiaries_data';
+import { BeneficiaryEditForm } from './BeneficiaryEditForm';
 import Community from 'src/types/beneficiaries/Community';
-import {useRouter} from 'next/router';
-import {Action} from 'src/types/Action';
+import { useRouter } from 'next/router';
+import { Action } from 'src/types/Action';
 import Box from '@mui/material/Box';
-import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {LinearProgress, Typography} from "@mui/material";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import {ConfirmActionDialog} from "../pages/misc/ConfirmActionDialog";
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import { LinearProgress, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import { ConfirmActionDialog } from '../pages/misc/ConfirmActionDialog';
 import ExportButton from './ExportButton';
 
 interface BeneficiariesTableProps {
@@ -38,15 +38,14 @@ interface BeneficiariesTableProps {
   setAction: (action: Action) => void;
 }
 
-
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
-  const {filters, communities, openCreateBeneficiaries, openWindow, setAction} = props;
+  const { filters, communities, openCreateBeneficiaries, openWindow, setAction } = props;
   const router = useRouter();
   const [open, setOpen] = useState<boolean[]>([]);
   const [openEditBeneficiary, setOpenEditBeneficiary] = useState<boolean>(false);
   const [beneficiaryEdited, setBeneficiaryEdited] = useState<boolean>(false);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState<Beneficiary | undefined>();
-  const {paging, setBeneficiariesPaging} = useBeneficiariesPaging();
+  const { paging, setBeneficiariesPaging } = useBeneficiariesPaging();
   const [hasWriteBenefs, setHasWriteBenefs] = useState<boolean>(false);
   const [openConfirmAction, setOpenConfirmAction] = useState<boolean>(false);
   const getBeneficiaries = () => {
@@ -61,18 +60,17 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
       communityId: filters.communityCode,
       school: filters.school,
       gender: filters.gender,
-      isActive: !!filters.isActive ? (filters.isActive === 'true') : null,
+      isActive: !!filters.isActive ? filters.isActive === 'true' : null,
       after: paging.pageCursor,
       limit: paging.limit
-    }
-  }
+    };
+  };
 
-  const {loading, error, data, refetch} = useQuery(GET_BENEFICIARIES, {
-    variables: getBeneficiaries(),
+  const { loading, error, data, refetch } = useQuery(GET_BENEFICIARIES, {
+    variables: getBeneficiaries()
   });
   const refetchWithSameParameters = () => {
     refetch(getBeneficiaries());
-
   };
 
   useEffect(() => {
@@ -110,7 +108,6 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
         <TableCell>Error :(</TableCell>
       </TableRow>
     );
-
   }
   const nodes = data === undefined ? [] : data.filteredBeneficiaries.nodes;
   const pageInfo = data === undefined ? undefined : data.filteredBeneficiaries.pageInfo;
@@ -118,13 +115,19 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
 
   return (
     <Card>
-      <CardHeader action={<>
-        {props.children}
-        <ExportButton setAction={setAction} filters={filters}/>
-      </>} title='Beneficiarios' titleTypographyProps={{variant: 'h6'}}/>
+      <CardHeader
+        action={
+          <>
+            {props.children}
+            <ExportButton setAction={setAction} filters={filters} />
+          </>
+        }
+        title='Beneficiarios'
+        titleTypographyProps={{ variant: 'h6' }}
+      />
       <TableContainer>
-        {loading && <LinearProgress/>}
-        <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
+        {loading && <LinearProgress />}
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
@@ -139,7 +142,6 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
           </TableHead>
 
           <TableBody>
-
             {nodes.map((row: Beneficiary, index: number) => (
               <DisplayBeneficiary
                 key={index}
@@ -155,11 +157,11 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                       {row.isActive && (
                         <Button
                           variant='contained'
-                          sx={{mx: '.25em'}}
+                          sx={{ mx: '.25em' }}
                           onClick={async () => {
                             try {
-                              setSelectedBeneficiary(row)
-                              setOpenConfirmAction(true)
+                              setSelectedBeneficiary(row);
+                              setOpenConfirmAction(true);
                             } catch (err) {
                               setAction({
                                 complete: true,
@@ -176,7 +178,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                       {!row.isActive && (
                         <Button
                           variant='contained'
-                          sx={{mx: '.25em'}}
+                          sx={{ mx: '.25em' }}
                           onClick={async () => {
                             try {
                               await activateBeneficiary(row.id ? row.id : '-1').then(() => refetchWithSameParameters());
@@ -202,7 +204,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
                       {row.isActive && (
                         <Button
                           variant='contained'
-                          sx={{mx: '.25em'}}
+                          sx={{ mx: '.25em' }}
                           onClick={() => {
                             setSelectedBeneficiary(row);
                             setOpenEditBeneficiary(true);
@@ -228,18 +230,22 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
           edges={edges}
         />
       )}
-      {openConfirmAction &&
-        <ConfirmActionDialog openDialog={openConfirmAction} action={async () => {
-          await deleteBeneficiary(selectedBeneficiary?.id as string).then(() => refetchWithSameParameters());
-          setAction({
-            complete: true,
-            success: true,
-            message: 'Usuario desactivado exitosamente',
-            status: 200
-          });
-          setOpenConfirmAction(false)
-        }} handleClose={() => setOpenConfirmAction(false)}/>
-      }
+      {openConfirmAction && (
+        <ConfirmActionDialog
+          openDialog={openConfirmAction}
+          action={async () => {
+            await deleteBeneficiary(selectedBeneficiary?.id as string).then(() => refetchWithSameParameters());
+            setAction({
+              complete: true,
+              success: true,
+              message: 'Usuario desactivado exitosamente',
+              status: 200
+            });
+            setOpenConfirmAction(false);
+          }}
+          handleClose={() => setOpenConfirmAction(false)}
+        />
+      )}
       {openEditBeneficiary && !!selectedBeneficiary && (
         <BeneficiaryEditForm
           openDialog={openEditBeneficiary}
@@ -254,7 +260,6 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
           setAction={setAction}
         />
       )}
-
     </Card>
   );
 };

@@ -18,8 +18,8 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Action } from 'src/types/Action';
-import Roles from "src/types/users/Roles";
-import Role from "src/types/users/Role";
+import Roles from 'src/types/users/Roles';
+import Role from 'src/types/users/Role';
 
 interface EditPermissionsProps {
   openDialog: boolean;
@@ -111,7 +111,11 @@ export const EditPermissions: FC<EditPermissionsProps> = props => {
                         onChange={e => changeRoleInUserRoles(role, e.target.value, true, false)}
                       >
                         <MenuItem value='#' style={{ display: 'none' }}></MenuItem>
-                        {allRoles.map( role => <MenuItem key={index + role.service} value={role.service}>{Roles[role.service as keyof typeof Roles]}</MenuItem>)}
+                        {allRoles.map(role => (
+                          <MenuItem key={index + role.service} value={role.service}>
+                            {Roles[role.service as keyof typeof Roles]}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </TableCell>
                     <TableCell>

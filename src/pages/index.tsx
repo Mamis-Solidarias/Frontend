@@ -6,7 +6,6 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 // ** Demo Components Imports
 
 export default () => {
-
   return (
     <ApexChartWrapper>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mx: '5em' }}>
