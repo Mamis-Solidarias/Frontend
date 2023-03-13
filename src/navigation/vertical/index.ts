@@ -79,7 +79,7 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Donaciones',
       path: '/donaciones',
       service: 'Donations'
-    },
+    }
   ];
 };
 

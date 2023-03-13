@@ -20,9 +20,9 @@ export const HealthForm: FC<HealthFormProps> = props => {
 
   return (
     <>
-      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em'}}>Salud</Typography>
+      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em' }}>Salud</Typography>
       <InputLabel>¿Tiene Vacuna COVID?</InputLabel>
-      <Stack direction='row' spacing={1} alignItems='center' sx={{py: '.3em'}}>
+      <Stack direction='row' spacing={1} alignItems='center' sx={{ py: '.3em' }}>
         <Typography>No</Typography>
         <Switch
           onChange={e => setBeneficiaryField('hasCovidVaccine', e.target.checked)}
@@ -31,7 +31,7 @@ export const HealthForm: FC<HealthFormProps> = props => {
         <Typography>Sí</Typography>
       </Stack>
       <InputLabel>¿Tiene Vacunas Mandatorias?</InputLabel>
-      <Stack direction='row' spacing={1} alignItems='center' sx={{py: '.3em'}}>
+      <Stack direction='row' spacing={1} alignItems='center' sx={{ py: '.3em' }}>
         <Typography>No</Typography>
         <Switch
           onChange={e => setBeneficiaryField('hasMandatoryVaccines', e.target.checked)}
@@ -41,7 +41,7 @@ export const HealthForm: FC<HealthFormProps> = props => {
       </Stack>
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Observaciones'
         placeholder='Tiene diabetes tipo 2'
         value={beneficiaryFields.observations}

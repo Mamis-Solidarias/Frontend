@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {CampaignsFilters, campaignsFiltersDefault, campaignsFiltersNull} from "../../types/campaigns/CampaignsFilters";
+import {
+  CampaignsFilters,
+  campaignsFiltersDefault,
+  campaignsFiltersNull
+} from '../../types/campaigns/CampaignsFilters';
 import {
   defaultEdition,
   defaultEditionModify,
   JuntosEdition,
   JuntosEditionModify
-} from "../../types/campaigns/JuntosEdition";
+} from '../../types/campaigns/JuntosEdition';
 
 interface JuntosPageData {
   openCreateJuntos: boolean;
@@ -14,7 +18,7 @@ interface JuntosPageData {
   filtersApplied: CampaignsFilters;
   filtersToApply: CampaignsFilters;
   juntos: JuntosEdition;
-  createJuntos: JuntosEdition
+  createJuntos: JuntosEdition;
   editJuntos: JuntosEditionModify;
   refetchEditions?: (community: string) => void;
   campaign: string;
@@ -29,7 +33,7 @@ export const initialState: JuntosPageData = {
   juntos: defaultEdition,
   createJuntos: defaultEdition,
   editJuntos: defaultEditionModify,
-  campaign: '',
+  campaign: ''
 };
 
 const juntosSlice = createSlice({
@@ -57,14 +61,23 @@ const juntosSlice = createSlice({
     updateEditJuntos(state, action: PayloadAction<JuntosEditionModify>) {
       state.editJuntos = action.payload;
     },
-    updateRefreshEditions( state, action: PayloadAction<(community: string) => void>) {
+    updateRefreshEditions(state, action: PayloadAction<(community: string) => void>) {
       state.refetchEditions = action.payload;
     },
-    updateOpenCollapse( state, action: PayloadAction<boolean>) {
+    updateOpenCollapse(state, action: PayloadAction<boolean>) {
       state.openFiltersCollapse = action.payload;
     }
   }
 });
 
-export const { updateOpenCreateJuntos, updateOpenEditJuntos, updateFiltersToApply, updateFiltersApplied, updateEditJuntos, updateJuntos, updateCreateJuntos, updateOpenCollapse } = juntosSlice.actions;
+export const {
+  updateOpenCreateJuntos,
+  updateOpenEditJuntos,
+  updateFiltersToApply,
+  updateFiltersApplied,
+  updateEditJuntos,
+  updateJuntos,
+  updateCreateJuntos,
+  updateOpenCollapse
+} = juntosSlice.actions;
 export default juntosSlice.reducer;

@@ -24,7 +24,6 @@ interface EditMochiProps {
   setAction: (action: Action) => void;
 }
 
-
 export const EditMochi: FC<EditMochiProps> = props => {
   const { openDialog, handleClose, setAction, mochiEdition } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
@@ -45,7 +44,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
     }
   });
 
@@ -65,7 +64,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
     });
   };
 
@@ -99,7 +98,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
           <TextField
             id='description'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
             label='Descripción (opcional)'
             placeholder='Edición de Mochi 2022'
@@ -113,7 +112,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
           <TextField
             id='provider'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
             label='Proveedor (opcional)'
             placeholder='Catalan'
@@ -127,7 +126,7 @@ export const EditMochi: FC<EditMochiProps> = props => {
           <BeneficiariesFiltersView
             communityId={mochiEdition.communityId}
             onSetFiltersAction={(filters: BeneficiariesFilters) => {
-              const filtersToApply = {...filters};
+              const filtersToApply = { ...filters };
               for (const fk in filtersToApply) {
                 if (!filtersToApply[fk as keyof BeneficiariesFilters]) {
                   filtersToApply[fk as keyof BeneficiariesFilters] = undefined;

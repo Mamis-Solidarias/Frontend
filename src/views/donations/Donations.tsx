@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
 // ** MUI Imports
 import Table from '@mui/material/Table';
@@ -9,23 +9,23 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 
 // ** Types Imports
-import {useQuery} from '@apollo/client';
-import {useRouter} from 'next/router';
-import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {LinearProgress} from "@mui/material";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
+import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import { LinearProgress } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import { useAppDispatch, useAppSelector } from 'src/hooks/reduxHooks';
 import {
   updateCursor,
   updateDonations,
   updateHasNextPage,
   updateHasWriteDonations
-} from "src/features/donations/donationsSlice";
-import Donation from "src/types/donations/Donation";
-import DonationRow from "./DonationRow";
-import DonationsTablePagination from "./DonationsTablePagination";
-import {GET_DONATIONS} from "src/API/Donations/donations_graphql";
+} from 'src/features/donations/donationsSlice';
+import Donation from 'src/types/donations/Donation';
+import DonationRow from './DonationRow';
+import DonationsTablePagination from './DonationsTablePagination';
+import { GET_DONATIONS } from 'src/API/Donations/donations_graphql';
 
 export default () => {
   const router = useRouter();
@@ -36,12 +36,11 @@ export default () => {
     variables: {
       filter: donationsSelector.filtersApplied,
       first: donationsSelector.paging.limit
-    },
+    }
   });
 
   const refetchWithSameParameters = async () => {
-    await refetch({filter: donationsSelector.filtersApplied, first: donationsSelector.paging.limit});
-
+    await refetch({ filter: donationsSelector.filtersApplied, first: donationsSelector.paging.limit });
   };
 
   useEffect(() => {
@@ -65,36 +64,35 @@ export default () => {
         <TableCell>Error :(</TableCell>
       </TableRow>
     );
-
   }
   const nodes = data === undefined ? [] : data.donations.nodes;
   const pageInfo = data === undefined ? undefined : data.donations.pageInfo;
   const edges = data === undefined ? [] : data.donations.edges;
 
   useEffect(() => {
-    if( !error ) {
+    if (!error) {
       dispatch(updateDonations(nodes));
     }
   }, [nodes]);
 
   useEffect(() => {
-    if(!error && !!pageInfo) {
+    if (!error && !!pageInfo) {
       dispatch(updateHasNextPage(pageInfo.hasNextPage));
     }
   }, [pageInfo]);
 
   useEffect(() => {
-    if( !error ) {
+    if (!error) {
       dispatch(updateCursor(edges.cursor));
     }
   }, [edges]);
 
   return (
     <Card>
-      <CardHeader title='Donaciones' titleTypographyProps={{variant: 'h6'}}/>
+      <CardHeader title='Donaciones' titleTypographyProps={{ variant: 'h6' }} />
       <TableContainer>
-        {loading && <LinearProgress/>}
-        <Table sx={{minWidth: 800}} aria-label='table in dashboard'>
+        {loading && <LinearProgress />}
+        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
           <TableHead>
             <TableRow>
               <TableCell>Nombre Donante</TableCell>
@@ -106,14 +104,12 @@ export default () => {
           </TableHead>
           <TableBody>
             {nodes.map((row: Donation, index: number) => (
-              <DonationRow key={index} index={index} donation={row}/>
+              <DonationRow key={index} index={index} donation={row} />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {pageInfo !== undefined && (
-        <DonationsTablePagination/>
-      )}
+      {pageInfo !== undefined && <DonationsTablePagination />}
     </Card>
   );
 };

@@ -1,15 +1,15 @@
 // ** Next Imports
 import Head from 'next/head';
-import {Router, useRouter} from 'next/router';
-import type {NextPage} from 'next';
-import type {AppProps} from 'next/app';
+import { Router, useRouter } from 'next/router';
+import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
 
 // ** Loader Import
 import NProgress from 'nprogress';
 
 // ** Emotion Imports
-import {CacheProvider} from '@emotion/react';
-import type {EmotionCache} from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import type { EmotionCache } from '@emotion/cache';
 
 // ** Config Imports
 import themeConfig from 'src/configs/themeConfig';
@@ -19,10 +19,10 @@ import UserLayout from 'src/layouts/UserLayout';
 import ThemeComponent from 'src/@core/theme/ThemeComponent';
 
 // ** Contexts
-import {SettingsConsumer, SettingsProvider} from 'src/@core/context/settingsContext';
+import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext';
 
 // ** Utils Imports
-import {createEmotionCache} from 'src/@core/utils/create-emotion-cache';
+import { createEmotionCache } from 'src/@core/utils/create-emotion-cache';
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -31,14 +31,14 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import '../../styles/globals.css';
 
 // ** Apollo Client - for GraphQL
-import {ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from '@apollo/client';
-import {setContext} from '@apollo/client/link/context';
-import {useEffect} from 'react';
-import {userIsLoggedIn} from '../utils/sessionManagement';
-import {store} from "../app/store";
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { useEffect } from 'react';
+import { userIsLoggedIn } from '../utils/sessionManagement';
+import { store } from '../app/store';
 
 // ** Redux Provider - for React Redux
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -51,7 +51,7 @@ const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_BASE_URL + 'query'
 });
 
-const authLink = setContext((_, {headers}) => {
+const authLink = setContext((_, { headers }) => {
   // return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -91,7 +91,7 @@ const App = (props: ExtendedAppProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const {Component, emotionCache = clientSideEmotionCache, pageProps} = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>);
@@ -100,15 +100,15 @@ const App = (props: ExtendedAppProps) => {
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`${themeConfig.templateName} - Consola de Administrador`}</title>
-        <meta name='description' content={`${themeConfig.templateName} – Consola de Administrador`}/>
-        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template, Mamis Solidarias'/>
-        <meta name='viewport' content='initial-scale=1, width=device-width'/>
+        <meta name='description' content={`${themeConfig.templateName} – Consola de Administrador`} />
+        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template, Mamis Solidarias' />
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
       <ApolloProvider client={client}>
         <Provider store={store}>
           <SettingsProvider>
             <SettingsConsumer>
-              {({settings}) => {
+              {({ settings }) => {
                 return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>;
               }}
             </SettingsConsumer>

@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
@@ -13,16 +13,16 @@ import Collapse from '@mui/material/Collapse';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 
-import {useAction} from 'src/hooks/actionHook';
+import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
-import {hasWriteAccess, userIsLoggedIn} from 'src/utils/sessionManagement';
-import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
-import {updateHasWriteDonations, updateOpenFiltersCollapse} from "src/features/donations/donationsSlice";
-import Donations from "src/views/donations/Donations";
+import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
+import { useAppDispatch, useAppSelector } from 'src/hooks/reduxHooks';
+import { updateHasWriteDonations, updateOpenFiltersCollapse } from 'src/features/donations/donationsSlice';
+import Donations from 'src/views/donations/Donations';
 
 export default () => {
-  const {action, setCompletion} = useAction();
+  const { action, setCompletion } = useAction();
   const donationsSelector = useAppSelector(state => state.donations);
   const dispatch = useAppDispatch();
 
@@ -37,15 +37,18 @@ export default () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Card sx={{my: '2em', width: '100%', display: 'flex', flexDirection: 'column'}}>
+          <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
               action={
-                <IconButton size='small' onClick={() => dispatch(updateOpenFiltersCollapse(!donationsSelector.openFiltersCollapse))}>
+                <IconButton
+                  size='small'
+                  onClick={() => dispatch(updateOpenFiltersCollapse(!donationsSelector.openFiltersCollapse))}
+                >
                   {donationsSelector.openFiltersCollapse ? (
-                    <ChevronUp sx={{fontSize: '1.875rem'}}/>
+                    <ChevronUp sx={{ fontSize: '1.875rem' }} />
                   ) : (
-                    <ChevronDown sx={{fontSize: '1.875rem'}}/>
+                    <ChevronDown sx={{ fontSize: '1.875rem' }} />
                   )}
                 </IconButton>
               }
@@ -70,7 +73,7 @@ export default () => {
         </Grid>
       </Grid>
       <Portal>
-        <ActionToast action={action} setActionCompletion={setCompletion}/>
+        <ActionToast action={action} setActionCompletion={setCompletion} />
       </Portal>
     </ApexChartWrapper>
   );

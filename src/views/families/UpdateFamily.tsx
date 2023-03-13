@@ -69,7 +69,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
             id='address'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             type='text'
             inputProps={{ pattern: '^.+$' }}
             label='Nuevo Nombre de Familia'
@@ -84,7 +84,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
           <TextField
             id='address'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
             label='Nueva Dirección'
             placeholder='Paso de los Libres 428'
@@ -109,23 +109,26 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             fullWidth={true}
             variant='standard'
           />
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
             <Button
-                sx={{display: 'flex', justifyContent: 'center', margin: '1%', width: '100%'}}
-                variant='outlined'
-                onClick={() => {handleClose(); resetFields();}}
+              sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%' }}
+              variant='outlined'
+              onClick={() => {
+                handleClose();
+                resetFields();
+              }}
             >
               Cancelar
             </Button>
-          <Button
-            type='submit'
-            sx={{ display: 'flex', justifyContent: 'center',margin: '1%',  width: '100%' }}
-            variant='contained'
-            onClick={handleSubmit}
-            disabled={!details && !address && !name}
-          >
-            Editar
-          </Button>
+            <Button
+              type='submit'
+              sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%' }}
+              variant='contained'
+              onClick={handleSubmit}
+              disabled={!details && !address && !name}
+            >
+              Editar
+            </Button>
           </div>
         </Box>
       </DialogContent>

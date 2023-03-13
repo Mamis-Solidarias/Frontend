@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {CampaignsFilters, campaignsFiltersDefault, campaignsFiltersNull} from "src/types/campaigns/CampaignsFilters";
+import { CampaignsFilters, campaignsFiltersDefault, campaignsFiltersNull } from 'src/types/campaigns/CampaignsFilters';
 import {
   AbrigaditosEdition,
   AbrigaditosEditionModify,
   defaultEdition,
   defaultEditionModify
-} from "src/types/campaigns/AbrigaditosEdition";
+} from 'src/types/campaigns/AbrigaditosEdition';
 
 interface AbrigaditosPageData {
   openCreateAbrigaditos: boolean;
@@ -14,7 +14,7 @@ interface AbrigaditosPageData {
   filtersApplied: CampaignsFilters;
   filtersToApply: CampaignsFilters;
   abrigaditos: AbrigaditosEdition;
-  createAbrigaditos: AbrigaditosEdition
+  createAbrigaditos: AbrigaditosEdition;
   editAbrigaditos: AbrigaditosEditionModify;
   refetchEditions?: (community: string) => void;
   campaign: string;
@@ -29,7 +29,7 @@ export const initialState: AbrigaditosPageData = {
   abrigaditos: defaultEdition,
   createAbrigaditos: defaultEdition,
   editAbrigaditos: defaultEditionModify,
-  campaign: '',
+  campaign: ''
 };
 
 const abrigaditosSlice = createSlice({
@@ -57,15 +57,23 @@ const abrigaditosSlice = createSlice({
     updateEditAbrigaditos(state, action: PayloadAction<AbrigaditosEditionModify>) {
       state.editAbrigaditos = action.payload;
     },
-    updateRefreshEditions( state, action: PayloadAction<(community: string) => void>) {
+    updateRefreshEditions(state, action: PayloadAction<(community: string) => void>) {
       state.refetchEditions = action.payload;
     },
-    updateOpenCollapse( state, action: PayloadAction<boolean>) {
+    updateOpenCollapse(state, action: PayloadAction<boolean>) {
       state.openFiltersCollapse = action.payload;
     }
   }
 });
 
-export const { updateOpenCreateAbrigaditos, updateOpenEditAbrigaditos, updateFiltersToApply, updateFiltersApplied,
-  updateEditAbrigaditos, updateAbrigaditos, updateCreateAbrigaditos, updateOpenCollapse } = abrigaditosSlice.actions;
+export const {
+  updateOpenCreateAbrigaditos,
+  updateOpenEditAbrigaditos,
+  updateFiltersToApply,
+  updateFiltersApplied,
+  updateEditAbrigaditos,
+  updateAbrigaditos,
+  updateCreateAbrigaditos,
+  updateOpenCollapse
+} = abrigaditosSlice.actions;
 export default abrigaditosSlice.reducer;

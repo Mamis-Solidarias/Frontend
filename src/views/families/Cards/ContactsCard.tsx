@@ -42,12 +42,60 @@ export const ContactsCard: FC<ContactsCardProps> = props => {
             <TableBody>
               {contacts.map((contact: Contact) => (
                 <TableRow key={contact.title}>
-                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.FACEBOOK &&  <TableCell><FacebookIcon sx={{color: "#4267B2"}}/></TableCell>}
-                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.INSTAGRAM && <TableCell><InstagramIcon sx={{color: "#E1306C"}}/></TableCell>}
-                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.EMAIL && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"mailto:" + contact.content} sx={{color: "black"}}><MailIcon/></Link></TableCell>}
-                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.PHONE && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"tel:" + contact.content} sx={{color: "lightBlue"}}><CallIcon/></Link></TableCell>}
-                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.WHATSAPP && <TableCell><Link target={"_blank"} rel={"noopener noreferrer"} href={"https://api.whatsapp.com/send?phone=" + contact.content} sx={{color: "#075e54"}}><WhatsAppIcon/></Link></TableCell>}
-                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.OTHER && <TableCell><DeviceUnknownIcon sx={{color: "gray"}}/></TableCell>}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] ===
+                    CONTACTING_METHODS.FACEBOOK && (
+                    <TableCell>
+                      <FacebookIcon sx={{ color: '#4267B2' }} />
+                    </TableCell>
+                  )}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] ===
+                    CONTACTING_METHODS.INSTAGRAM && (
+                    <TableCell>
+                      <InstagramIcon sx={{ color: '#E1306C' }} />
+                    </TableCell>
+                  )}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.EMAIL && (
+                    <TableCell>
+                      <Link
+                        target={'_blank'}
+                        rel={'noopener noreferrer'}
+                        href={'mailto:' + contact.content}
+                        sx={{ color: 'black' }}
+                      >
+                        <MailIcon />
+                      </Link>
+                    </TableCell>
+                  )}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.PHONE && (
+                    <TableCell>
+                      <Link
+                        target={'_blank'}
+                        rel={'noopener noreferrer'}
+                        href={'tel:' + contact.content}
+                        sx={{ color: 'lightBlue' }}
+                      >
+                        <CallIcon />
+                      </Link>
+                    </TableCell>
+                  )}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] ===
+                    CONTACTING_METHODS.WHATSAPP && (
+                    <TableCell>
+                      <Link
+                        target={'_blank'}
+                        rel={'noopener noreferrer'}
+                        href={'https://api.whatsapp.com/send?phone=' + contact.content}
+                        sx={{ color: '#075e54' }}
+                      >
+                        <WhatsAppIcon />
+                      </Link>
+                    </TableCell>
+                  )}
+                  {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.OTHER && (
+                    <TableCell>
+                      <DeviceUnknownIcon sx={{ color: 'gray' }} />
+                    </TableCell>
+                  )}
                   <TableCell>{contact.title}</TableCell>
                   <TableCell>{contact.content}</TableCell>
                   <TableCell>{contact.isPreferred ? 'Sí' : 'No'}</TableCell>

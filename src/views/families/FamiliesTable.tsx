@@ -89,7 +89,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   }, [openUpdateContacts, openUpdateFamily, openCreateFamilies]);
 
   if (error) {
-    router.push('/login')
+    router.push('/login');
 
     return (
       <TableRow>

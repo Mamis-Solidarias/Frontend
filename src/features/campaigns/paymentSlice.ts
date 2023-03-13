@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {DonationsRequest} from "../../types/donations/DonationsRequest";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DonationsRequest } from '../../types/donations/DonationsRequest';
 
 interface CampaignPaymentData {
   assignPayment: boolean;
@@ -14,7 +14,7 @@ export const initialState: CampaignPaymentData = {
     participantId: -1,
     currency: 'ARS',
     campaign: '',
-    campaignId: -1,
+    campaignId: -1
   }
 };
 
@@ -35,7 +35,7 @@ const campaignPaymentSlice = createSlice({
       state.paymentData.campaign = action.payload;
     },
     updateCampaignId(state, action: PayloadAction<number>) {
-      state.paymentData.campaignId = action.payload
+      state.paymentData.campaignId = action.payload;
     },
     updateParticipantId(state, action: PayloadAction<number>) {
       state.paymentData.participantId = action.payload;

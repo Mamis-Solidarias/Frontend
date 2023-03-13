@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 // ** MUI Imports
 import MenuItem from '@mui/material/MenuItem';
@@ -14,27 +14,27 @@ import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
-import {useQuery} from "@apollo/client";
-import {GET_FAMILIES} from "src/API/Beneficiaries/beneficiaries_grapql";
+import { useQuery } from '@apollo/client';
+import { GET_FAMILIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 
 interface BeneficiariesFiltersViewPlusProps {
   communities: Community[];
   onSetFiltersAction: (filters: BeneficiariesFilters) => void;
 }
 
-const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = (props) => {
+const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = props => {
   const { communities, onSetFiltersAction } = props;
   const [openCollapse, setOpenCollapse] = useState<boolean>(false);
   const { filters, setFilter } = useBeneficiariesFilters();
   const { data: dataFamilies, refetch: refetchFamilies } = useQuery(GET_FAMILIES, {
     variables: {
       communityCode: filters.communityCode,
-      familyName: filters.familyName,
+      familyName: filters.familyName
     }
   });
 
   useEffect(() => {
-    refetchFamilies({communityCode: filters.communityCode})
+    refetchFamilies({ communityCode: filters.communityCode });
   }, [filters.communityCode]);
 
   return (

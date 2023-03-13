@@ -1,15 +1,15 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 
 // ** MUI Imports
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 
 // ** Types Imports
-import Donation from "src/types/donations/Donation";
-import Campaigns from "src/types/campaigns/Campaigns";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import {useRouter} from "next/router";
+import Donation from 'src/types/donations/Donation';
+import Campaigns from 'src/types/campaigns/Campaigns';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import { useRouter } from 'next/router';
 
 interface DisplayDonationRowProps {
   donation: Donation;
@@ -31,11 +31,13 @@ export default (props: DisplayDonationRowProps) => {
         <TableCell>{donation.amount + ' ' + donation.currency}</TableCell>
         <TableCell>{new Date(donation.donatedAt).toLocaleDateString('es-AR')}</TableCell>
         <TableCell>
-          <Button variant='contained'
-                  onClick={() => {
-                    router.push('/donantes?nombre_donante=' + donation.donor.name);
-                  }}>
-            <Typography color={"white"}>Información Donante</Typography>
+          <Button
+            variant='contained'
+            onClick={() => {
+              router.push('/donantes?nombre_donante=' + donation.donor.name);
+            }}
+          >
+            <Typography color={'white'}>Información Donante</Typography>
           </Button>
         </TableCell>
       </TableRow>

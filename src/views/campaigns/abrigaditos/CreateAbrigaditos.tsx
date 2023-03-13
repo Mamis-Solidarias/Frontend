@@ -5,24 +5,24 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-import {Action} from 'src/types/Action';
-import {createAbrigaditosEdition} from 'src/API/Campaigns/campaigns_data';
+import { Action } from 'src/types/Action';
+import { createAbrigaditosEdition } from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/beneficiaries/Community';
 import MenuItem from '@mui/material/MenuItem';
-import {GET_BENEFICIARIES, GET_COMMUNITIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
-import {useQuery} from '@apollo/client';
+import { GET_BENEFICIARIES, GET_COMMUNITIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { useQuery } from '@apollo/client';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
 import BeneficiariesTable from 'src/views/beneficiaries/BeneficiariesTableJustView';
-import {useAppDispatch, useAppSelector} from "src/hooks/reduxHooks";
-import BeneficiariesFiltersView from "src/views/beneficiaries/BeneficiariesFiltersViewSimple";
-import {BeneficiariesFilters} from "src/types/beneficiaries/BeneficiariesFilters";
-import {updateFiltersApplied} from "src/features/beneficiaries/beneficiariesSlice";
+import { useAppDispatch, useAppSelector } from 'src/hooks/reduxHooks';
+import BeneficiariesFiltersView from 'src/views/beneficiaries/BeneficiariesFiltersViewSimple';
+import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
+import { updateFiltersApplied } from 'src/features/beneficiaries/beneficiariesSlice';
 import {
   updateCreateAbrigaditos,
   updateFiltersToApply,
   updateOpenCreateAbrigaditos
-} from "src/features/campaigns/abrigaditosSlice";
-import {AbrigaditosEdition, defaultEdition} from "src/types/campaigns/AbrigaditosEdition";
+} from 'src/features/campaigns/abrigaditosSlice';
+import { AbrigaditosEdition, defaultEdition } from 'src/types/campaigns/AbrigaditosEdition';
 
 interface CreateAbrigaditosProps {
   setAction: (action: Action) => void;
@@ -30,7 +30,7 @@ interface CreateAbrigaditosProps {
 }
 
 export default (props: CreateAbrigaditosProps) => {
-  const {setAction, refetchAbrigaditos} = props;
+  const { setAction, refetchAbrigaditos } = props;
   const dispatch = useAppDispatch();
   const beneficiariesSelector = useAppSelector(state => state.beneficiaries);
   const abrigaditosSelector = useAppSelector(state => state.abrigaditos);
@@ -50,23 +50,23 @@ export default (props: CreateAbrigaditosProps) => {
       communityId: abrigaditosSelector.createAbrigaditos.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
-    }
-  }
-  const {error: errorCommunities, loading: loadingCommunities, data: dataCommunities} = useQuery(GET_COMMUNITIES);
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
+    };
+  };
+  const { error: errorCommunities, loading: loadingCommunities, data: dataCommunities } = useQuery(GET_COMMUNITIES);
   const {
     error: errorBeneficiaries,
     loading: loadingBeneficiaries,
     data: dataBeneficiaries,
     refetch: refetchBeneficiaries
   } = useQuery(GET_BENEFICIARIES, {
-    variables: getBeneficiariesFilters(beneficiariesSelector.filtersApplied),
+    variables: getBeneficiariesFilters(beneficiariesSelector.filtersApplied)
   });
 
   const onSetFiltersAction = (filters: BeneficiariesFilters) => {
-    const filtersToApply = {...filters};
-    for( const key of Object.keys(filtersToApply)) {
-      if( !filtersToApply[key as keyof BeneficiariesFilters]) {
+    const filtersToApply = { ...filters };
+    for (const key of Object.keys(filtersToApply)) {
+      if (!filtersToApply[key as keyof BeneficiariesFilters]) {
         filtersToApply[key as keyof BeneficiariesFilters] = null;
       }
     }
@@ -78,12 +78,16 @@ export default (props: CreateAbrigaditosProps) => {
       message: 'Filtros aplicados exitosamente',
       status: 200
     });
-  }
+  };
 
   const createAbrigaditos = async () => {
     try {
-      const abrigaditosEditionFinalReview:AbrigaditosEdition = {...abrigaditosSelector.createAbrigaditos, ...{beneficiaries: dataBeneficiaries.
-                              filteredBeneficiaries.nodes.map((beneficiary: Beneficiary) => beneficiary.id)}};
+      const abrigaditosEditionFinalReview: AbrigaditosEdition = {
+        ...abrigaditosSelector.createAbrigaditos,
+        ...{
+          beneficiaries: dataBeneficiaries.filteredBeneficiaries.nodes.map((beneficiary: Beneficiary) => beneficiary.id)
+        }
+      };
       await createAbrigaditosEdition(abrigaditosEditionFinalReview);
       dispatch(updateCreateAbrigaditos(defaultEdition));
       setAction({
@@ -94,14 +98,32 @@ export default (props: CreateAbrigaditosProps) => {
       });
       if (!!abrigaditosSelector.refetchEditions) {
         abrigaditosSelector.refetchEditions(abrigaditosSelector.campaign);
-        dispatch(updateFiltersToApply({...abrigaditosSelector.filtersToApply, ...{edition: abrigaditosSelector.createAbrigaditos.edition}}));
-        dispatch(updateFiltersApplied({...abrigaditosSelector.filtersToApply, ...{edition: abrigaditosSelector.createAbrigaditos.edition}}));
-        dispatch(updateFiltersToApply( {...abrigaditosSelector.filtersToApply, ...{community: abrigaditosSelector.createAbrigaditos.communityId}}));
-        dispatch(updateFiltersApplied({...abrigaditosSelector.filtersToApply, ...{edition: abrigaditosSelector.createAbrigaditos.edition}}));
+        dispatch(
+          updateFiltersToApply({
+            ...abrigaditosSelector.filtersToApply,
+            ...{ edition: abrigaditosSelector.createAbrigaditos.edition }
+          })
+        );
+        dispatch(
+          updateFiltersApplied({
+            ...abrigaditosSelector.filtersToApply,
+            ...{ edition: abrigaditosSelector.createAbrigaditos.edition }
+          })
+        );
+        dispatch(
+          updateFiltersToApply({
+            ...abrigaditosSelector.filtersToApply,
+            ...{ community: abrigaditosSelector.createAbrigaditos.communityId }
+          })
+        );
+        dispatch(
+          updateFiltersApplied({
+            ...abrigaditosSelector.filtersToApply,
+            ...{ edition: abrigaditosSelector.createAbrigaditos.edition }
+          })
+        );
       }
-
     } catch (error) {
-
       setAction({
         complete: true,
         success: false,
@@ -111,7 +133,7 @@ export default (props: CreateAbrigaditosProps) => {
     }
     dispatch(updateCreateAbrigaditos(defaultEdition));
     dispatch(updateOpenCreateAbrigaditos(false));
-  }
+  };
 
   return (
     <Dialog
@@ -123,57 +145,103 @@ export default (props: CreateAbrigaditosProps) => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{display: 'flex', justifyContent: 'center'}}>
-        Crear Edición de "Abrigaditos"
-      </DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Edición de "Abrigaditos"</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
             id='edition'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             label='Edición'
             placeholder='2022'
             value={abrigaditosSelector.createAbrigaditos.edition}
-            onChange={(e: any) => dispatch(updateCreateAbrigaditos({...abrigaditosSelector.createAbrigaditos, ...{edition: e.target.value}}))}
+            onChange={(e: any) =>
+              dispatch(
+                updateCreateAbrigaditos({ ...abrigaditosSelector.createAbrigaditos, ...{ edition: e.target.value } })
+              )
+            }
             fullWidth={true}
             variant='standard'
           />
-          <TextField id='description' type='text'
-                     sx={{py: '.3em'}} inputProps={{pattern: '^.+$'}}
-                     label='Descripción (opcional)' placeholder='Edición de Abrigaditos 2022'
-                     value={abrigaditosSelector.createAbrigaditos.description} onChange={(e: any) => dispatch(updateCreateAbrigaditos({...abrigaditosSelector.createAbrigaditos, ...{description: e.target.value}}))}
-                     fullWidth={true} variant='standard'
+          <TextField
+            id='description'
+            type='text'
+            sx={{ py: '.3em' }}
+            inputProps={{ pattern: '^.+$' }}
+            label='Descripción (opcional)'
+            placeholder='Edición de Abrigaditos 2022'
+            value={abrigaditosSelector.createAbrigaditos.description}
+            onChange={(e: any) =>
+              dispatch(
+                updateCreateAbrigaditos({
+                  ...abrigaditosSelector.createAbrigaditos,
+                  ...{ description: e.target.value }
+                })
+              )
+            }
+            fullWidth={true}
+            variant='standard'
           />
-          <TextField id='provider' type='text' sx={{py: '.3em'}}
-                     inputProps={{pattern: '^.+$'}} label='Proveedor (opcional)'
-                     placeholder='Catalan' value={abrigaditosSelector.createAbrigaditos.provider}
-                     onChange={(e: any) =>
-                       dispatch(updateCreateAbrigaditos({...abrigaditosSelector.createAbrigaditos,
-                                ...{provider: e.target.value}}))}
-                     fullWidth={true} variant='standard'
+          <TextField
+            id='provider'
+            type='text'
+            sx={{ py: '.3em' }}
+            inputProps={{ pattern: '^.+$' }}
+            label='Proveedor (opcional)'
+            placeholder='Catalan'
+            value={abrigaditosSelector.createAbrigaditos.provider}
+            onChange={(e: any) =>
+              dispatch(
+                updateCreateAbrigaditos({ ...abrigaditosSelector.createAbrigaditos, ...{ provider: e.target.value } })
+              )
+            }
+            fullWidth={true}
+            variant='standard'
           />
-          <TextField id='fundraiserGoal' type='number' sx={{py: '.3em'}}
-                     inputProps={{pattern: '^.+$'}} label='Objetivo de Donaciones'
-                     placeholder='12000.27' value={abrigaditosSelector.createAbrigaditos.fundraiserGoal}
-                     onChange={(e: any) =>
-                       dispatch(updateCreateAbrigaditos({...abrigaditosSelector.createAbrigaditos,
-                                ...{fundraiserGoal: e.target.value}}))}
-                     fullWidth={true} variant='standard'
+          <TextField
+            id='fundraiserGoal'
+            type='number'
+            sx={{ py: '.3em' }}
+            inputProps={{ pattern: '^.+$' }}
+            label='Objetivo de Donaciones'
+            placeholder='12000.27'
+            value={abrigaditosSelector.createAbrigaditos.fundraiserGoal}
+            onChange={(e: any) =>
+              dispatch(
+                updateCreateAbrigaditos({
+                  ...abrigaditosSelector.createAbrigaditos,
+                  ...{ fundraiserGoal: e.target.value }
+                })
+              )
+            }
+            fullWidth={true}
+            variant='standard'
           />
-          <TextField select defaultValue="" sx={{py: '.3em'}}
-                     fullWidth={true} variant='standard' label='Comunidad' placeholder='Misiones'
-                     value={abrigaditosSelector.createAbrigaditos.communityId} onChange={e =>
-                       dispatch(updateCreateAbrigaditos({...abrigaditosSelector.createAbrigaditos,
-                                ...{communityId: e.target.value}}))
-                     }
+          <TextField
+            select
+            defaultValue=''
+            sx={{ py: '.3em' }}
+            fullWidth={true}
+            variant='standard'
+            label='Comunidad'
+            placeholder='Misiones'
+            value={abrigaditosSelector.createAbrigaditos.communityId}
+            onChange={e =>
+              dispatch(
+                updateCreateAbrigaditos({
+                  ...abrigaditosSelector.createAbrigaditos,
+                  ...{ communityId: e.target.value }
+                })
+              )
+            }
           >
             <MenuItem value=''>Ninguna</MenuItem>
-            {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
-              <MenuItem value={community.id} key={community.id}>
-                {community.name}
-              </MenuItem>
-            ))}
+            {!!dataCommunities?.communities?.nodes &&
+              dataCommunities.communities.nodes.map((community: Community) => (
+                <MenuItem value={community.id} key={community.id}>
+                  {community.name}
+                </MenuItem>
+              ))}
           </TextField>
         </Box>
         <BeneficiariesFiltersView
@@ -182,21 +250,26 @@ export default (props: CreateAbrigaditosProps) => {
         />
         {(loadingBeneficiaries || loadingCommunities) && <Box>Cargando beneficiarios...</Box>}
         {!(errorBeneficiaries || errorCommunities) && !(loadingBeneficiaries || loadingCommunities) && (
-          <BeneficiariesTable beneficiaries={dataBeneficiaries?.filteredBeneficiaries.nodes as Beneficiary[]}/>
+          <BeneficiariesTable beneficiaries={dataBeneficiaries?.filteredBeneficiaries.nodes as Beneficiary[]} />
         )}
-        <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '1em'}}>
-          <Button sx={{mx: '.25em'}} onClick={() => dispatch(updateOpenCreateAbrigaditos(false))}>Cancelar</Button>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '1em' }}>
+          <Button sx={{ mx: '.25em' }} onClick={() => dispatch(updateOpenCreateAbrigaditos(false))}>
+            Cancelar
+          </Button>
           <Button
-            sx={{width: '60%', mx: '.25em'}}
+            sx={{ width: '60%', mx: '.25em' }}
             variant='contained'
             onClick={async () => await createAbrigaditos()}
-            disabled={!abrigaditosSelector.createAbrigaditos.edition || abrigaditosSelector.createAbrigaditos.fundraiserGoal < 0
-                      || !dataBeneficiaries || dataBeneficiaries.filteredBeneficiaries.nodes.length === 0}
+            disabled={
+              !abrigaditosSelector.createAbrigaditos.edition ||
+              abrigaditosSelector.createAbrigaditos.fundraiserGoal < 0 ||
+              !dataBeneficiaries ||
+              dataBeneficiaries.filteredBeneficiaries.nodes.length === 0
+            }
           >
             Crear
           </Button>
         </Box>
-
       </DialogContent>
     </Dialog>
   );

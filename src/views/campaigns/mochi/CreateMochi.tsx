@@ -12,7 +12,7 @@ import { useModifyMochi } from 'src/hooks/campaigns/useModifyMochi';
 import { createMochiEdition } from 'src/API/Campaigns/campaigns_data';
 import Community from 'src/types/beneficiaries/Community';
 import MenuItem from '@mui/material/MenuItem';
-import {GET_BENEFICIARIES, GET_COMMUNITIES} from 'src/API/Beneficiaries/beneficiaries_grapql';
+import { GET_BENEFICIARIES, GET_COMMUNITIES } from 'src/API/Beneficiaries/beneficiaries_grapql';
 import { useQuery } from '@apollo/client';
 import BeneficiariesFiltersView from '../../beneficiaries/BeneficiariesFiltersViewSimple';
 import Beneficiary from 'src/types/beneficiaries/Beneficiary';
@@ -28,7 +28,7 @@ interface CreateMochiProps {
 export const CreateMochi: FC<CreateMochiProps> = props => {
   const { openDialog, handleClose, setAction } = props;
   const [filtersApplied, setFiltersApplied] = useState<BeneficiariesFilters>(beneficiariesFiltersNull);
-  const {data: dataCommunities} = useQuery(GET_COMMUNITIES);
+  const { data: dataCommunities } = useQuery(GET_COMMUNITIES);
   const { mochiEdition, setMochiEdition, setMochiEditionField } = useModifyMochi();
   const { error, loading, data, refetch } = useQuery(GET_BENEFICIARIES, {
     variables: {
@@ -46,7 +46,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
     }
   });
 
@@ -66,7 +66,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? (filtersApplied.isActive === 'true') : null
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
     });
   };
 
@@ -100,7 +100,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           <TextField
             id='edition'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^[1-9][0-9]*$' }}
             label='Edición'
             placeholder='2022'
@@ -114,7 +114,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           <TextField
             id='description'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
             label='Descripción (opcional)'
             placeholder='Edición de Mochi 2022'
@@ -128,7 +128,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           <TextField
             id='provider'
             type='text'
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
             label='Proveedor (opcional)'
             placeholder='Catalan'
@@ -141,7 +141,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           />
           <TextField
             select
-            sx={{py: '.3em'}}
+            sx={{ py: '.3em' }}
             fullWidth={true}
             variant='standard'
             label='Comunidad'
@@ -153,11 +153,12 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
             }}
           >
             <MenuItem value=''>Ninguna</MenuItem>
-            {!!dataCommunities?.communities?.nodes && dataCommunities.communities.nodes.map((community: Community) => (
-              <MenuItem value={community.id} key={community.id}>
-                {community.id + ' - ' + community.name}
-              </MenuItem>
-            ))}
+            {!!dataCommunities?.communities?.nodes &&
+              dataCommunities.communities.nodes.map((community: Community) => (
+                <MenuItem value={community.id} key={community.id}>
+                  {community.id + ' - ' + community.name}
+                </MenuItem>
+              ))}
           </TextField>
         </Box>
         <BeneficiariesFiltersView

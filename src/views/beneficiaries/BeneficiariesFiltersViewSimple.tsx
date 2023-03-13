@@ -11,10 +11,10 @@ import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
 import { useBeneficiariesFilters } from 'src/hooks/beneficiaries/useBeneficiariesFilters';
 import { BeneficiariesFilters } from 'src/types/beneficiaries/BeneficiariesFilters';
-import Box from "@mui/material/Box";
-import {useQuery} from "@apollo/client";
-import {GET_FAMILIES} from "../../API/Beneficiaries/beneficiaries_grapql";
-import Family from "../../types/beneficiaries/Family";
+import Box from '@mui/material/Box';
+import { useQuery } from '@apollo/client';
+import { GET_FAMILIES } from '../../API/Beneficiaries/beneficiaries_grapql';
+import Family from '../../types/beneficiaries/Family';
 
 interface BeneficiariesFiltersViewSimpleProps {
   onSetFiltersAction: (filters: BeneficiariesFilters) => void;
@@ -36,7 +36,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
     if (!!communityId) {
       setFilter('communityCode', communityId);
       setFilter('communityId', communityId);
-      refetchFamilies({communityCode: filters.communityId, familyName: filters.familyName})
+      refetchFamilies({ communityCode: filters.communityId, familyName: filters.familyName });
     }
   }, [communityId]);
 
@@ -53,9 +53,10 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
       <CardContent>
         <Collapse in={openCollapse}>
           <Box display={'flex'} flexDirection={'row'} margin={'.25em'}>
-              <p><TextField
+            <p>
+              <TextField
                 select
-                sx={{margin: '.25em'}}
+                sx={{ margin: '.25em' }}
                 variant='standard'
                 label='Familia'
                 value={filters.familyId}
@@ -68,81 +69,83 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                   </MenuItem>
                 ))}
               </TextField>
-                <TextField
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Edad Mínima'
-                  value={filters.ageStart}
-                  onChange={e => setFilter('ageStart', e.target.value)}
-                />
-                <TextField
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Edad Máxima'
-                  value={filters.ageEnd}
-                  onChange={e => setFilter('ageEnd', e.target.value)}
-                />
-              </p>
-              <p>
-                <TextField
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='DNI'
-                  value={filters.dniStarts}
-                  onChange={e => setFilter('dniStarts', e.target.value)}
-                />
-                <TextField
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Nombre'
-                  value={filters.firstName}
-                  onChange={e => setFilter('firstName', e.target.value)}
-                />
-                <TextField
-                  select
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Tipo'
-                  value={filters.type}
-                  onChange={e => setFilter('type', e.target.value)}
-                >
-                  <MenuItem value=''>Todas</MenuItem>
-                  {Object.entries(BENEFICIARY_TYPES).map(entry => {
-                    const [typeEnglish, typeSpanish] = entry;
+              <TextField
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Edad Mínima'
+                value={filters.ageStart}
+                onChange={e => setFilter('ageStart', e.target.value)}
+              />
+              <TextField
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Edad Máxima'
+                value={filters.ageEnd}
+                onChange={e => setFilter('ageEnd', e.target.value)}
+              />
+            </p>
+            <p>
+              <TextField
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='DNI'
+                value={filters.dniStarts}
+                onChange={e => setFilter('dniStarts', e.target.value)}
+              />
+              <TextField
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Nombre'
+                value={filters.firstName}
+                onChange={e => setFilter('firstName', e.target.value)}
+              />
+              <TextField
+                select
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Tipo'
+                value={filters.type}
+                onChange={e => setFilter('type', e.target.value)}
+              >
+                <MenuItem value=''>Todas</MenuItem>
+                {Object.entries(BENEFICIARY_TYPES).map(entry => {
+                  const [typeEnglish, typeSpanish] = entry;
 
-                    return (
-                      <MenuItem value={typeEnglish} key={typeEnglish}>
-                        {typeSpanish}
-                      </MenuItem>
-                    );
-                  })}
-                </TextField>
-              </p>
-              <p>
-                <TextField
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Apellido'
-                  value={filters.lastName}
-                  onChange={e => setFilter('lastName', e.target.value)}
-                />
-                <TextField
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Escuela'
-                  value={filters.school}
-                  onChange={e => setFilter('school', e.target.value)}
-                />
-                <TextField
-                  select
-                  sx={{margin: '.25em'}}
-                  variant='standard'
-                  label='Género'
-                  value={filters.gender}
-                  onChange={e => setFilter('gender', e.target.value)}
-                >
-                  <MenuItem value=''>Sin Preferencia</MenuItem>
-                  {Object.entries(GENDERS).filter(entry => (/^[A-Z]+$/.test(entry[0]))).map(entry => {
+                  return (
+                    <MenuItem value={typeEnglish} key={typeEnglish}>
+                      {typeSpanish}
+                    </MenuItem>
+                  );
+                })}
+              </TextField>
+            </p>
+            <p>
+              <TextField
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Apellido'
+                value={filters.lastName}
+                onChange={e => setFilter('lastName', e.target.value)}
+              />
+              <TextField
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Escuela'
+                value={filters.school}
+                onChange={e => setFilter('school', e.target.value)}
+              />
+              <TextField
+                select
+                sx={{ margin: '.25em' }}
+                variant='standard'
+                label='Género'
+                value={filters.gender}
+                onChange={e => setFilter('gender', e.target.value)}
+              >
+                <MenuItem value=''>Sin Preferencia</MenuItem>
+                {Object.entries(GENDERS)
+                  .filter(entry => /^[A-Z]+$/.test(entry[0]))
+                  .map(entry => {
                     const [genderEnglish, genderSpanish] = entry;
 
                     return (
@@ -150,9 +153,10 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                         {genderSpanish}
                       </MenuItem>
                     );
-                  })}`
-                </TextField>
-              </p>
+                  })}
+                `
+              </TextField>
+            </p>
           </Box>
           <Button sx={{ width: '100%' }} variant='contained' onClick={() => onSetFiltersAction(filters)}>
             Importar

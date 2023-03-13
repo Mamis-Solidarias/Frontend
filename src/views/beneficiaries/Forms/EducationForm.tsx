@@ -19,10 +19,10 @@ export const EducationForm: FC<EducationFormProps> = props => {
 
   return (
     <>
-      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em'}}>Educación</Typography>
+      <Typography sx={{ textDecoration: 'underline', paddingTop: '.5em' }}>Educación</Typography>
       <TextField
         type='text'
-        sx={{py: '.3em'}}
+        sx={{ py: '.3em' }}
         label='Escuela a la que va'
         placeholder='ITBA'
         value={beneficiaryFields.school}

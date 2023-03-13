@@ -1,4 +1,4 @@
-import GENDERS from "../beneficiaries/Genders";
+import GENDERS from '../beneficiaries/Genders';
 
 export interface AbrigaditosEdition {
   id?: string;
@@ -28,7 +28,7 @@ export const defaultEdition: AbrigaditosEdition = {
   description: '',
   provider: '',
   fundraiserGoal: 0,
-  totalDonations: 0,
+  totalDonations: 0
 };
 
 export interface AbrigaditosEditionModify {
@@ -46,5 +46,5 @@ export const defaultEditionModify: AbrigaditosEditionModify = {
   fundraiserGoal: 0,
   addedBeneficiaries: [],
   removedBeneficiaries: [],
-  newBeneficiaries: [],
-}
+  newBeneficiaries: []
+};

@@ -2,7 +2,7 @@ import { CampaignDonor } from 'src/types/campaigns/CampaignDonor';
 import { JuntosEdition, JuntosEditionModify } from 'src/types/campaigns/JuntosEdition';
 import { MochiEdition, MochiEditionModify, MochiImport } from 'src/types/campaigns/MochiEdition';
 import { axiosClient } from './initialization';
-import {AbrigaditosEdition, AbrigaditosEditionModify} from "src/types/campaigns/AbrigaditosEdition";
+import { AbrigaditosEdition, AbrigaditosEditionModify } from 'src/types/campaigns/AbrigaditosEdition';
 
 export const createMochiEdition = async (campaign: MochiEdition) => {
   return axiosClient.post('/campaigns/mochi', campaign);
@@ -36,10 +36,10 @@ export const modifyJuntosEdition = async (campaign: JuntosEditionModify, id: str
   return axiosClient.put('/campaigns/mochi/' + id, campaign);
 };
 
-export const createAbrigaditosEdition = async  (campaign: AbrigaditosEdition ) => {
+export const createAbrigaditosEdition = async (campaign: AbrigaditosEdition) => {
   return axiosClient.post('/campaigns/abrigaditos', campaign);
-}
+};
 
 export const modifyAbrigaditosEdition = async (campaign: AbrigaditosEditionModify, id: string) => {
   return axiosClient.put('/campaigns/abrigaditos/' + id, campaign);
-}
+};

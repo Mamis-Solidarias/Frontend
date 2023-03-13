@@ -81,48 +81,47 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
 
   const addBeneficiary = () => {
     const education: Education | undefined =
-    !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
-      ? {
-          school: beneficiaryFields.school,
-          year: beneficiaryFields.year,
-          transportationMethod: beneficiaryFields.transportationMethod
-        }
-      : undefined;
-  const clothes: Clothes | undefined =
-    !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
-      ? {
-          shoeSize: beneficiaryFields.shoeSize,
-          pantsSize: beneficiaryFields.pantsSize,
-          shirtSize: beneficiaryFields.shirtSize
-        }
-      : undefined;
-  const job: Job | undefined = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : undefined;
-  const health: Health | undefined =
-    beneficiaryFields.hasCovidVaccine || beneficiaryFields.hasMandatoryVaccines ||
-    !!beneficiaryFields.observations
-      ? {
-          hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
-          hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
-          observations: beneficiaryFields.observations
-        }
-      : undefined;
-  beneficiaries.push({
-    firstName: beneficiaryFields.firstName,
-    lastName: beneficiaryFields.lastName,
-    type: beneficiaryFields.type,
-    gender: beneficiaryFields.gender,
-    birthday: beneficiaryFields.birthday,
-    dni: beneficiaryFields.dni,
-    comments: beneficiaryFields.comments,
-    likes: beneficiaryFields.likes,
-    education,
-    job,
-    clothes,
-    health
-  });
-  open.push(false);
-  resetFields();
-  }
+      !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
+        ? {
+            school: beneficiaryFields.school,
+            year: beneficiaryFields.year,
+            transportationMethod: beneficiaryFields.transportationMethod
+          }
+        : undefined;
+    const clothes: Clothes | undefined =
+      !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
+        ? {
+            shoeSize: beneficiaryFields.shoeSize,
+            pantsSize: beneficiaryFields.pantsSize,
+            shirtSize: beneficiaryFields.shirtSize
+          }
+        : undefined;
+    const job: Job | undefined = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : undefined;
+    const health: Health | undefined =
+      beneficiaryFields.hasCovidVaccine || beneficiaryFields.hasMandatoryVaccines || !!beneficiaryFields.observations
+        ? {
+            hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
+            hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
+            observations: beneficiaryFields.observations
+          }
+        : undefined;
+    beneficiaries.push({
+      firstName: beneficiaryFields.firstName,
+      lastName: beneficiaryFields.lastName,
+      type: beneficiaryFields.type,
+      gender: beneficiaryFields.gender,
+      birthday: beneficiaryFields.birthday,
+      dni: beneficiaryFields.dni,
+      comments: beneficiaryFields.comments,
+      likes: beneficiaryFields.likes,
+      education,
+      job,
+      clothes,
+      health
+    });
+    open.push(false);
+    resetFields();
+  };
 
   return (
     <Dialog
@@ -245,9 +244,15 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             variant='contained'
             onClick={() => addBeneficiary()}
-            disabled={!beneficiaryFields.familyId || !beneficiaryFields.firstName ||
-              !beneficiaryFields.lastName || !beneficiaryFields.type || !beneficiaryFields.gender ||
-              !beneficiaryFields.birthday || !beneficiaryFields.dni}
+            disabled={
+              !beneficiaryFields.familyId ||
+              !beneficiaryFields.firstName ||
+              !beneficiaryFields.lastName ||
+              !beneficiaryFields.type ||
+              !beneficiaryFields.gender ||
+              !beneficiaryFields.birthday ||
+              !beneficiaryFields.dni
+            }
           >
             Añadir
           </Button>
@@ -310,8 +315,8 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                       </TableCell>
                     </TableRow>
                     <TableRow sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                        <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                      <TableCell colSpan={12}>
+                      <Collapse in={open[index]} timeout='auto' unmountOnExit>
+                        <TableCell colSpan={12}>
                           <Box
                             sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start', flexWrap: 'wrap' }}
                           >
@@ -332,51 +337,56 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                             )}
                             {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{ mx: '1em', my: '1em' }} />}
                           </Box>
-                      </TableCell>
-                        </Collapse>
+                        </TableCell>
+                      </Collapse>
                     </TableRow>
                   </>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
-        <div style={{display:'flex', flexDirection:'row',justifyContent: 'space-evenly'}}>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
           <Button
-              sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%'}}
-              variant='outlined'
-              onClick={() => {handleClose(); resetAllFields();}}
+            sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%' }}
+            variant='outlined'
+            onClick={() => {
+              handleClose();
+              resetAllFields();
+            }}
           >
             Cancelar
           </Button>
-        <Button
-          sx={{ display: 'flex', justifyContent: 'center', margin: '1%',  width: '100%' }}
-          variant='contained'
-          onClick={async () => {
-            try {
-              await createBeneficiaries(familyId, beneficiaries);
-              resetAllFields();
-              setAction({
-                complete: true,
-                success: true,
-                message: 'Beneficiarios creados exitosamente',
-                status: 201
-              });
-              handleClose();
-            } catch (e: any) {
-              const messageJson = e?.response?.data?.errors;
-              const errorMessage = !!messageJson ? (Object.entries(messageJson).map( entry => entry[1])[0] as any) as string: "Ha ocurrido un error cargando los beneficiarios. Intente nuevamente más tarde";
-              setAction({
-                complete: true,
-                success: false,
-                message: errorMessage,
-                status: e.statusCode
-              });
-            }
-          }}
-          disabled={beneficiaries.length === 0}
-        >
-          Crear
-        </Button>
+          <Button
+            sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%' }}
+            variant='contained'
+            onClick={async () => {
+              try {
+                await createBeneficiaries(familyId, beneficiaries);
+                resetAllFields();
+                setAction({
+                  complete: true,
+                  success: true,
+                  message: 'Beneficiarios creados exitosamente',
+                  status: 201
+                });
+                handleClose();
+              } catch (e: any) {
+                const messageJson = e?.response?.data?.errors;
+                const errorMessage = !!messageJson
+                  ? (Object.entries(messageJson).map(entry => entry[1])[0] as any as string)
+                  : 'Ha ocurrido un error cargando los beneficiarios. Intente nuevamente más tarde';
+                setAction({
+                  complete: true,
+                  success: false,
+                  message: errorMessage,
+                  status: e.statusCode
+                });
+              }
+            }}
+            disabled={beneficiaries.length === 0}
+          >
+            Crear
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

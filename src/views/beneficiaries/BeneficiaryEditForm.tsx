@@ -179,83 +179,83 @@ export const BeneficiaryEditForm: FC<BeneficiaryEditFormProps> = props => {
               </Grid>
             </Box>
           </Grid>
-          <div style={{display:'flex', flexDirection:'row',justifyContent: 'space-evenly'}}>
-          <Button
-              sx={{ display: 'flex', justifyContent: 'center',margin: '1%', width: '100%'}}
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%' }}
               variant='outlined'
               onClick={() => handleClose()}
-          >
-            Cancelar
-          </Button>
-          <Button
-            sx={{ display: 'flex', justifyContent: 'center',margin:'1%', width: '100%' }}
-            variant='contained'
-            onClick={async () => {
-              const education: Education | null =
-                !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
-                  ? {
-                      school: beneficiaryFields.school,
-                      year: beneficiaryFields.year,
-                      transportationMethod: beneficiaryFields.transportationMethod
-                    }
-                  : null;
-              const clothes: { shoes?: string; pants?: string; shirt?: string } | null =
-                !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
-                  ? {
-                      shoes: beneficiaryFields.shoeSize,
-                      pants: beneficiaryFields.pantsSize,
-                      shirt: beneficiaryFields.shirtSize
-                    }
-                  : null;
-              const job: Job | null = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : null;
-              const health: Health | null =
-                beneficiaryFields.hasCovidVaccine || beneficiaryFields.hasMandatoryVaccines ||
-                !!beneficiaryFields.observations
-                  ? {
-                      hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
-                      hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
-                      observations: beneficiaryFields.observations
-                    }
-                  : null;
+            >
+              Cancelar
+            </Button>
+            <Button
+              sx={{ display: 'flex', justifyContent: 'center', margin: '1%', width: '100%' }}
+              variant='contained'
+              onClick={async () => {
+                const education: Education | null =
+                  !!beneficiaryFields.school || !!beneficiaryFields.year || !!beneficiaryFields.transportationMethod
+                    ? {
+                        school: beneficiaryFields.school,
+                        year: beneficiaryFields.year,
+                        transportationMethod: beneficiaryFields.transportationMethod
+                      }
+                    : null;
+                const clothes: { shoes?: string; pants?: string; shirt?: string } | null =
+                  !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
+                    ? {
+                        shoes: beneficiaryFields.shoeSize,
+                        pants: beneficiaryFields.pantsSize,
+                        shirt: beneficiaryFields.shirtSize
+                      }
+                    : null;
+                const job: Job | null = !!beneficiaryFields.title ? { title: beneficiaryFields.title } : null;
+                const health: Health | null =
+                  beneficiaryFields.hasCovidVaccine ||
+                  beneficiaryFields.hasMandatoryVaccines ||
+                  !!beneficiaryFields.observations
+                    ? {
+                        hasCovidVaccine: beneficiaryFields.hasCovidVaccine,
+                        hasMandatoryVaccines: beneficiaryFields.hasMandatoryVaccines,
+                        observations: beneficiaryFields.observations
+                      }
+                    : null;
 
-              try {
-                await updateBeneficiary(beneficiary.id as string, {
-                  firstName: beneficiaryFields.firstName,
-                  lastName: beneficiaryFields.lastName,
-                  type: beneficiaryFields.type,
-                  gender: beneficiaryFields.gender,
-                  birthday: beneficiaryFields.birthday,
-                  dni: beneficiaryFields.dni,
-                  comments: beneficiaryFields.comments,
-                  likes: beneficiaryFields.likes,
-                  education,
-                  job,
-                  clothes,
-                  health
-                });
-                setBeneficiaryEdited(true);
-                setAction({
-                  complete: true,
-                  success: true,
-                  message: 'Usuario actualizado exitosamente',
-                  status: 200
-                });
-                handleClose();
-              } catch (err) {
-                setAction({
-                  complete: true,
-                  success: false,
-                  message: 'Algo ha ocurrido actualizando el usuario. Intente nuevamente más tarde',
-                  status: 400
-                });
-              }
-            }}
-          >
-            Modificar Datos
-          </Button>
+                try {
+                  await updateBeneficiary(beneficiary.id as string, {
+                    firstName: beneficiaryFields.firstName,
+                    lastName: beneficiaryFields.lastName,
+                    type: beneficiaryFields.type,
+                    gender: beneficiaryFields.gender,
+                    birthday: beneficiaryFields.birthday,
+                    dni: beneficiaryFields.dni,
+                    comments: beneficiaryFields.comments,
+                    likes: beneficiaryFields.likes,
+                    education,
+                    job,
+                    clothes,
+                    health
+                  });
+                  setBeneficiaryEdited(true);
+                  setAction({
+                    complete: true,
+                    success: true,
+                    message: 'Usuario actualizado exitosamente',
+                    status: 200
+                  });
+                  handleClose();
+                } catch (err) {
+                  setAction({
+                    complete: true,
+                    success: false,
+                    message: 'Algo ha ocurrido actualizando el usuario. Intente nuevamente más tarde',
+                    status: 400
+                  });
+                }
+              }}
+            >
+              Modificar Datos
+            </Button>
           </div>
         </Box>
-
       </DialogContent>
     </Dialog>
   );
