@@ -5,7 +5,7 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
 
-export default () => {
+const IndexPage = () => {
   return (
     <ApexChartWrapper>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mx: '5em' }}>
@@ -32,3 +32,5 @@ export default () => {
     </ApexChartWrapper>
   );
 };
+
+export default IndexPage;
