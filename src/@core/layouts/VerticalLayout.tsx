@@ -115,7 +115,7 @@ const VerticalLayout = (props: LayoutProps) => {
         )}
       </>
     );
-  } else return <></>;
+  } else return <div></div>;
 };
 
 export default VerticalLayout;

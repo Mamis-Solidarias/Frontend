@@ -1,7 +1,7 @@
 // ** Types Import
-import { Settings } from 'src/@core/context/settingsContext';
-import { NavLink, NavSectionTitle, VerticalNavItemsType } from 'src/@core/layouts/types';
-import { userIsLoggedIn } from 'src/utils/sessionManagement';
+import {Settings} from 'src/@core/context/settingsContext';
+import {NavLink, NavSectionTitle, VerticalNavItemsType} from 'src/@core/layouts/types';
+import {userIsLoggedIn} from 'src/utils/sessionManagement';
 
 // ** Custom Menu Components
 import VerticalNavLink from './VerticalNavLink';
@@ -30,22 +30,15 @@ const resolveNavItemComponent = (
 
 const VerticalNavItems = (props: Props) => {
   // ** Props
-  const { verticalNavItems } = props;
+  const {verticalNavItems} = props;
 
   const RenderMenuItems = verticalNavItems?.map((item: NavLink | NavSectionTitle, index: number) => {
-    if (
-      typeof window !== 'undefined' &&
-      userIsLoggedIn() &&
-      !!localStorage.getItem('user') &&
-      JSON.parse(localStorage.getItem('user') as string).roles.length > 0
-    ) {
-      const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
+    const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
 
-      return <TagName {...props} key={index} item={item} />;
-    } else return <div key='none'></div>;
+    return <TagName {...props} key={index} item={item}/>;
   });
 
-  return <>{RenderMenuItems}</>;
+  return <div>{RenderMenuItems}</div>;
 };
 
 export default VerticalNavItems;
