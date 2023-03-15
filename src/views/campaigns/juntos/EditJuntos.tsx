@@ -91,7 +91,8 @@ export default (props: EditJuntosProps) => {
         }
       })
     );
-  }, [juntosSelector.openEditJuntos]);
+  }, [dataEdition.description, dataEdition.fundraiserGoal, dataEdition.provider, dispatch, juntosSelector.editJuntos,
+    juntosSelector.openEditJuntos]);
 
   const editJuntos = async () => {
     try {

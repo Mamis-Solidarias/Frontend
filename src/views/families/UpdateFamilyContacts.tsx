@@ -42,7 +42,7 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
 
   useEffect(() => {
     setContactsFinal([...contacts]);
-  }, []);
+  }, [contacts]);
 
   const resetFields = () => {
     setContact({ type: '', title: '', isPreferred: false, content: '' });

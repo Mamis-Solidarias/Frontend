@@ -35,7 +35,7 @@ const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = prop
 
   useEffect(() => {
     refetchFamilies({ communityCode: filters.communityCode });
-  }, [filters.communityCode]);
+  }, [filters.communityCode, refetchFamilies]);
 
   return (
     <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
