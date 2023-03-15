@@ -74,7 +74,9 @@ const VerticalLayout = (props: LayoutProps) => {
             setNavVisible={setNavVisible}
             toggleNavVisibility={toggleNavVisibility}
             {...props}
-          />
+          >
+            {children}
+          </Navigation>
           <MainContentWrapper className='layout-content-wrapper'>
             {/* AppBar Component */}
             <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />
