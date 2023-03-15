@@ -1,7 +1,6 @@
 // ** Types Import
 import {Settings} from 'src/@core/context/settingsContext';
 import {NavLink, NavSectionTitle, VerticalNavItemsType} from 'src/@core/layouts/types';
-import {userIsLoggedIn} from 'src/utils/sessionManagement';
 
 // ** Custom Menu Components
 import VerticalNavLink from './VerticalNavLink';

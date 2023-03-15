@@ -100,8 +100,6 @@ const Navigation = (props: Props) => {
     }
   };
 
-  const ScrollWrapper = hidden ? Box : PerfectScrollbar;
-
   useEffect(() => {
     setIsMounted(true);
   }, [])
