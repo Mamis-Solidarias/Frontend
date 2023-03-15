@@ -1,8 +1,8 @@
 // ** React Imports
-import { ReactNode } from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 
 // ** MUI Imports
-import { Theme } from '@mui/material/styles';
+import {Theme} from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 // ** Layout Imports
@@ -16,15 +16,16 @@ import VerticalNavItems from 'src/navigation/vertical';
 import VerticalAppBarContent from './components/vertical/AppBarContent';
 
 // ** Hook Import
-import { useSettings } from 'src/@core/hooks/useSettings';
+import {useSettings} from 'src/@core/hooks/useSettings';
 
 interface Props {
   children: ReactNode;
 }
 
-const UserLayout = ({ children }: Props) => {
+const UserLayout = ({children}: Props) => {
   // ** Hooks
-  const { settings, saveSettings } = useSettings();
+  const {settings, saveSettings} = useSettings();
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
   /**
    *  The below variable will hide the current layout menu at given screen size.
@@ -36,27 +37,35 @@ const UserLayout = ({ children }: Props) => {
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
 
-  return (
-    <VerticalLayout
-      hidden={hidden}
-      settings={settings}
-      saveSettings={saveSettings}
-      verticalNavItems={VerticalNavItems()} // Navigation Items
-      // afterVerticalNavMenuContent={}
-      verticalAppBarContent={(
-        props // AppBar Content
-      ) => (
-        <VerticalAppBarContent
-          hidden={hidden}
-          settings={settings}
-          saveSettings={saveSettings}
-          toggleNavVisibility={props.toggleNavVisibility}
-        />
-      )}
-    >
-      {children}
-    </VerticalLayout>
-  );
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+
+  if (!isMounted) {
+    return <></>
+  } else
+    return (
+      <VerticalLayout
+        hidden={hidden}
+        settings={settings}
+        saveSettings={saveSettings}
+        verticalNavItems={VerticalNavItems()} // Navigation Items
+        // afterVerticalNavMenuContent={}
+        verticalAppBarContent={(
+          props // AppBar Content
+        ) => (
+          <VerticalAppBarContent
+            hidden={hidden}
+            settings={settings}
+            saveSettings={saveSettings}
+            toggleNavVisibility={props.toggleNavVisibility}
+          />
+        )}
+      >
+        {children}
+      </VerticalLayout>
+    );
 };
 
 export default UserLayout;

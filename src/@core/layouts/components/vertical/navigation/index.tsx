@@ -1,17 +1,17 @@
 // ** React Import
-import { ReactNode, useRef, useState } from 'react';
+import {ReactNode, useEffect, useRef, useState} from 'react';
 
 // ** MUI Import
 import List from '@mui/material/List';
-import Box, { BoxProps } from '@mui/material/Box';
-import { styled, useTheme } from '@mui/material/styles';
+import Box, {BoxProps} from '@mui/material/Box';
+import {styled, useTheme} from '@mui/material/styles';
 
 // ** Third Party Components
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext';
-import { VerticalNavItemsType } from 'src/@core/layouts/types';
+import {Settings} from 'src/@core/context/settingsContext';
+import {VerticalNavItemsType} from 'src/@core/layouts/types';
 
 // ** Component Imports
 import Drawer from './Drawer';
@@ -19,7 +19,7 @@ import VerticalNavItems from './VerticalNavItems';
 import VerticalNavHeader from './VerticalNavHeader';
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba';
+import {hexToRGBA} from 'src/@core/utils/hex-to-rgba';
 
 interface Props {
   hidden: boolean;
@@ -61,6 +61,7 @@ const Navigation = (props: Props) => {
 
   // ** States
   const [groupActive, setGroupActive] = useState<string[]>([]);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [currentActiveGroup, setCurrentActiveGroup] = useState<string[]>([]);
 
   // ** Ref
@@ -79,7 +80,7 @@ const Navigation = (props: Props) => {
         // @ts-ignore
         const original = ref._getBoundingClientRect();
 
-        return { ...original, height: Math.floor(original.height) };
+        return {...original, height: Math.floor(original.height)};
       };
     }
   };
@@ -99,55 +100,78 @@ const Navigation = (props: Props) => {
     }
   };
 
-  const ScrollWrapper = hidden ? Box : PerfectScrollbar;
+  useEffect(() => {
+    setIsMounted(true);
+  }, [])
 
-  return (
-    <Drawer {...props}>
-      <VerticalNavHeader {...props} />
-      <StyledBoxForShadow
-        ref={shadowRef}
-        sx={{
-          background: `linear-gradient(${theme.palette.background.default} 40%,${hexToRGBA(
-            theme.palette.background.default,
-            0.1
-          )} 95%,${hexToRGBA(theme.palette.background.default, 0.05)})`
-        }}
-      />
-      <Box sx={{ height: '100%', position: 'relative', overflow: 'hidden' }}>
-        {/* @ts-ignore */}
-        <ScrollWrapper
-          containerRef={(ref: any) => handleInfiniteScroll(ref)}
-          {...(hidden
-            ? {
+  if (!isMounted) {
+    return <></>
+  } else
+    return (
+      <Drawer {...props}>
+        <VerticalNavHeader {...props} />
+        <StyledBoxForShadow
+          ref={shadowRef}
+          sx={{
+            background: `linear-gradient(${theme.palette.background.default} 40%,${hexToRGBA(
+              theme.palette.background.default,
+              0.1
+            )} 95%,${hexToRGBA(theme.palette.background.default, 0.05)})`
+          }}
+        />
+        <Box sx={{height: '100%', position: 'relative', overflow: 'hidden'}}>
+          {/* @ts-ignore */}
+          {hidden && <PerfectScrollbar
+            containerRef={(ref: any) => handleInfiniteScroll(ref)}
+            {...(hidden
+              ? {
                 onScroll: (container: any) => scrollMenu(container),
-                sx: { height: '100%', overflowY: 'auto', overflowX: 'hidden' }
+                sx: {height: '100%', overflowY: 'auto', overflowX: 'hidden'}
               }
-            : {
-                options: { wheelPropagation: false },
+              : {
+                options: {wheelPropagation: false},
                 onScrollY: (container: any) => scrollMenu(container)
               })}
-        >
-          {beforeVerticalNavMenuContent ? beforeVerticalNavMenuContent(props) : null}
-          <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            {userVerticalNavMenuContent ? (
-              userVerticalNavMenuContent(props)
-            ) : (
-              <List className='nav-items' sx={{ transition: 'padding .25s ease', pr: 4.5 }}>
-                <VerticalNavItems
-                  groupActive={groupActive}
-                  setGroupActive={setGroupActive}
-                  currentActiveGroup={currentActiveGroup}
-                  setCurrentActiveGroup={setCurrentActiveGroup}
-                  {...props}
-                />
-              </List>
-            )}
-          </Box>
-        </ScrollWrapper>
-      </Box>
-      {afterVerticalNavMenuContent ? afterVerticalNavMenuContent(props) : null}
-    </Drawer>
-  );
+          >
+            {beforeVerticalNavMenuContent ? beforeVerticalNavMenuContent(props) : null}
+            <Box sx={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+              {userVerticalNavMenuContent ? (
+                userVerticalNavMenuContent(props)
+              ) : (
+                <List className='nav-items' sx={{transition: 'padding .25s ease', pr: 4.5}}>
+                  <VerticalNavItems
+                    groupActive={groupActive}
+                    setGroupActive={setGroupActive}
+                    currentActiveGroup={currentActiveGroup}
+                    setCurrentActiveGroup={setCurrentActiveGroup}
+                    {...props}
+                  />
+                </List>
+              )}
+            </Box>
+          </PerfectScrollbar>}
+          {!hidden && <Box>
+            {beforeVerticalNavMenuContent ? beforeVerticalNavMenuContent(props) : null}
+            <Box sx={{height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+              {userVerticalNavMenuContent ? (
+                userVerticalNavMenuContent(props)
+              ) : (
+                <List className='nav-items' sx={{transition: 'padding .25s ease', pr: 4.5}}>
+                  <VerticalNavItems
+                    groupActive={groupActive}
+                    setGroupActive={setGroupActive}
+                    currentActiveGroup={currentActiveGroup}
+                    setCurrentActiveGroup={setCurrentActiveGroup}
+                    {...props}
+                  />
+                </List>
+              )}
+            </Box>
+          </Box>}
+        </Box>
+        {afterVerticalNavMenuContent ? afterVerticalNavMenuContent(props) : null}
+      </Drawer>
+    );
 };
 
 export default Navigation;
