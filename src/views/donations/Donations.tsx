@@ -65,27 +65,29 @@ export default () => {
       </TableRow>
     );
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const nodes = data === undefined ? [] : data.donations.nodes;
   const pageInfo = data === undefined ? undefined : data.donations.pageInfo;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const edges = data === undefined ? [] : data.donations.edges;
 
   useEffect(() => {
     if (!error) {
       dispatch(updateDonations(nodes));
     }
-  }, [nodes]);
+  }, [dispatch, error, nodes]);
 
   useEffect(() => {
     if (!error && !!pageInfo) {
       dispatch(updateHasNextPage(pageInfo.hasNextPage));
     }
-  }, [pageInfo]);
+  }, [dispatch, error, pageInfo]);
 
   useEffect(() => {
     if (!error) {
       dispatch(updateCursor(edges.cursor));
     }
-  }, [edges]);
+  }, [dispatch, edges, error]);
 
   return (
     <Card>

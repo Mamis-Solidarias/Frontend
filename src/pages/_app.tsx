@@ -35,7 +35,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { setContext } from '@apollo/client/link/context';
 import { useEffect } from 'react';
 import { userIsLoggedIn } from '../utils/sessionManagement';
-import { store } from '../app/store';
+import { store } from '../appStore/store';
 
 // ** Redux Provider - for React Redux
 import { Provider } from 'react-redux';
