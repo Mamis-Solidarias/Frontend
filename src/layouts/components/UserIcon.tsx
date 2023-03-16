@@ -1,12 +1,12 @@
 // ** React Imports
-import { ReactNode } from 'react';
 
 // ** MUI Imports
-import { SvgIconProps } from '@mui/material';
+import {SvgIconProps, SvgIconTypeMap} from '@mui/material';
+import {OverridableComponent} from "@mui/material/OverridableComponent";
 
 interface UserIconProps {
   iconProps?: SvgIconProps;
-  icon: string | ReactNode;
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string; };
 }
 
 const UserIcon = (props: UserIconProps) => {

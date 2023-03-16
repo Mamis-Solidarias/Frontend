@@ -1,17 +1,17 @@
 // ** Types Import
 import {Settings} from 'src/@core/context/settingsContext';
-import {NavLink, NavSectionTitle, VerticalNavItemsType} from 'src/@core/layouts/types';
+import {NavLink, NavSectionTitle} from 'src/@core/layouts/types';
 
 // ** Custom Menu Components
 import VerticalNavLink from './VerticalNavLink';
 import VerticalNavSectionTitle from './VerticalNavSectionTitle';
+import navigation from "src/navigation/vertical";
 
 interface Props {
   settings: Settings;
   navVisible?: boolean;
   groupActive: string[];
   currentActiveGroup: string[];
-  verticalNavItems?: VerticalNavItemsType;
   saveSettings: (values: Settings) => void;
   setGroupActive: (value: string[]) => void;
   setCurrentActiveGroup: (item: string[]) => void;
@@ -29,9 +29,7 @@ const resolveNavItemComponent = (
 
 const VerticalNavItems = (props: Props) => {
   // ** Props
-  const {verticalNavItems} = props;
-
-  const RenderMenuItems = verticalNavItems?.map((item: NavLink | NavSectionTitle, index: number) => {
+  const RenderMenuItems = navigation.map((item: NavLink | NavSectionTitle, index: number) => {
     const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
 
     return <TagName {...props} key={index} item={item}/>;

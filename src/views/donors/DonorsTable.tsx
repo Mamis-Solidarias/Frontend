@@ -27,6 +27,7 @@ interface DonorsTableProps {
   openCreateDonor: boolean;
   setAction: (action: Action) => void;
   filters: DonorsFilters;
+  children: any;
 }
 
 const DonorsTable: FC<DonorsTableProps> = props => {

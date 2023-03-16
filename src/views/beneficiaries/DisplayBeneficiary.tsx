@@ -27,6 +27,7 @@ interface DisplayBeneficiaryProps {
   open: boolean[];
   setOpen: (open: boolean[]) => void;
   benefsQ: number;
+  children?: any
 }
 
 const DisplayBeneficiary: FC<DisplayBeneficiaryProps> = props => {

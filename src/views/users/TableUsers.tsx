@@ -34,6 +34,7 @@ interface TableUsersProps {
   userAdded: boolean;
   setUserAdded: (userAdded: boolean) => void;
   setAction: (action: Action) => void;
+  children: any;
 }
 
 const TableUsers: FC<TableUsersProps> = props => {

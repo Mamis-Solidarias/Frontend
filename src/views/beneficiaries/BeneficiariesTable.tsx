@@ -36,6 +36,7 @@ interface BeneficiariesTableProps {
   openCreateBeneficiaries: boolean;
   openWindow: boolean;
   setAction: (action: Action) => void;
+  children: any
 }
 
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {

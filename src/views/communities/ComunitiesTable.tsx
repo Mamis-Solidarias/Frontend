@@ -26,6 +26,7 @@ interface CommunitiesTableProps {
   openCreateCommunities: boolean;
   openWindow: boolean;
   setAction: (action: Action) => void;
+  children: any;
 }
 
 const CommunitiesTable: FC<CommunitiesTableProps> = props => {
