@@ -10,77 +10,76 @@ import AcUnitIcon from '@mui/icons-material/AcUnit';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 // ** Type import
-import { VerticalNavItemsType } from 'src/@core/layouts/types';
+import {VerticalNavItemsType} from 'src/@core/layouts/types';
 
-const navigation = (): VerticalNavItemsType => {
-  return [
-    {
-      sectionTitle: 'Usuarios',
-      service: 'Users'
-    },
-    {
-      title: 'Administrar Usuarios',
-      icon: AccountCogOutline,
-      path: '/usuarios',
-      service: 'Users'
-    },
-    {
-      sectionTitle: 'Personas',
-      service: ''
-    },
-    {
-      icon: AccountGroup,
-      title: 'Beneficiarios',
-      path: '/beneficiarios',
-      service: 'Beneficiaries'
-    },
-    {
-      icon: HomeAccount,
-      title: 'Familias',
-      path: '/familias',
-      service: 'Beneficiaries'
-    },
-    {
-      icon: HomeGroup,
-      title: 'Comunidades',
-      path: '/comunidades',
-      service: 'Beneficiaries'
-    },
-    {
-      icon: VolunteerActivismIcon,
-      title: 'Donantes',
-      path: '/donantes',
-      service: 'Donors'
-    },
-    {
-      sectionTitle: 'Campañas',
-      service: ''
-    },
-    {
-      icon: BackpackIcon,
-      title: 'Una Mochi',
-      path: '/mochi',
-      service: 'Campaigns'
-    },
-    {
-      icon: HandshakeIcon,
-      title: 'Juntos a la Par',
-      path: '/juntos',
-      service: 'Campaigns'
-    },
-    {
-      icon: AcUnitIcon,
-      title: 'Abrigaditos',
-      path: '/abrigaditos',
-      service: 'Campaigns'
-    },
-    {
-      icon: AttachMoneyIcon,
-      title: 'Donaciones',
-      path: '/donaciones',
-      service: 'Donations'
-    }
-  ];
-};
+// @ts-ignore
+const navigation: VerticalNavItemsType = [
+  {
+    sectionTitle: 'Usuarios',
+    service: 'Users'
+  },
+  {
+    title: 'Administrar Usuarios',
+    icon: AccountCogOutline,
+    path: '/usuarios',
+    service: 'Users'
+  },
+  {
+    sectionTitle: 'Personas',
+    service: ''
+  },
+  {
+    icon: AccountGroup,
+    title: 'Beneficiarios',
+    path: '/beneficiarios',
+    service: 'Beneficiaries'
+  },
+  {
+    icon: HomeAccount,
+    title: 'Familias',
+    path: '/familias',
+    service: 'Beneficiaries'
+  },
+  {
+    icon: HomeGroup,
+    title: 'Comunidades',
+    path: '/comunidades',
+    service: 'Beneficiaries'
+  },
+  {
+    icon: VolunteerActivismIcon,
+    title: 'Donantes',
+    path: '/donantes',
+    service: 'Donors'
+  },
+  {
+    sectionTitle: 'Campañas',
+    service: ''
+  },
+  {
+    icon: BackpackIcon,
+    title: 'Una Mochi',
+    path: '/mochi',
+    service: 'Campaigns'
+  },
+  {
+    icon: HandshakeIcon,
+    title: 'Juntos a la Par',
+    path: '/juntos',
+    service: 'Campaigns'
+  },
+  {
+    icon: AcUnitIcon,
+    title: 'Abrigaditos',
+    path: '/abrigaditos',
+    service: 'Campaigns'
+  },
+  {
+    icon: AttachMoneyIcon,
+    title: 'Donaciones',
+    path: '/donaciones',
+    service: 'Donations'
+  }
+];
 
 export default navigation;

@@ -38,6 +38,7 @@ interface FamiliesTableProps {
   filters: BeneficiariesFilters;
   openCreateFamilies: boolean;
   setAction: (action: Action) => void;
+  children: any;
 }
 
 const FamiliesTable: FC<FamiliesTableProps> = props => {

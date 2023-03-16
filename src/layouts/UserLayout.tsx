@@ -10,8 +10,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import VerticalLayout from 'src/@core/layouts/VerticalLayout';
 
 // ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical';
-
 // ** Component Import
 import VerticalAppBarContent from './components/vertical/AppBarContent';
 
@@ -50,8 +48,6 @@ const UserLayout = ({children}: Props) => {
         hidden={hidden}
         settings={settings}
         saveSettings={saveSettings}
-        verticalNavItems={VerticalNavItems()} // Navigation Items
-        // afterVerticalNavMenuContent={}
         verticalAppBarContent={(
           props // AppBar Content
         ) => (

@@ -11,6 +11,7 @@ import { CampaignsFilters } from 'src/types/campaigns/CampaignsFilters';
 interface CampaignsFiltersViewProps {
   filters: CampaignsFilters;
   setFilter: (field: keyof CampaignsFilters, value: any) => void;
+  children: any
 }
 
 const CampaignsFiltersView: FC<CampaignsFiltersViewProps> = props => {

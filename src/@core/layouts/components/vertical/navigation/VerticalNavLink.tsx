@@ -1,5 +1,5 @@
 // ** React Imports
-import { ElementType, ReactNode } from 'react';
+import { ElementType } from 'react';
 
 // ** Next Imports
 import Link from 'next/link';
@@ -26,6 +26,8 @@ import UserIcon from 'src/layouts/components/UserIcon';
 
 // ** Utils
 import { handleURLQueries } from 'src/@core/layouts/utils';
+import {SvgIconTypeMap} from "@mui/material";
+import {OverridableComponent} from "@mui/material/OverridableComponent";
 
 interface Props {
   item: NavLink;
@@ -66,7 +68,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
   // ** Hooks
   const router = useRouter();
 
-  const IconTag: ReactNode = item.icon;
+  const IconTag: (OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string; }) | undefined = item.icon;
 
   const isNavLinkActive = () => {
     return router.pathname === item.path || handleURLQueries(router, item.path);
@@ -105,7 +107,7 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }: Props) => {
               transition: 'margin .25s ease-in-out'
             }}
           >
-            <UserIcon icon={IconTag} />
+            {IconTag !== undefined && <UserIcon icon={IconTag} />}
           </ListItemIcon>
 
           <MenuItemTextMetaWrapper>
