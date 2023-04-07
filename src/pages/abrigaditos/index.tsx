@@ -23,6 +23,7 @@ import CampaignActions from 'src/views/campaigns/abrigaditos/CampaignActions';
 import SelectEdition from 'src/views/campaigns/abrigaditos/SelectEdition';
 import { useRouter } from 'next/router';
 import AbrigaditosDonations from 'src/views/campaigns/abrigaditos/AbrigaditosDonations';
+import AssignPayment from "src/views/campaigns/juntos/AssignPayment";
 
 export default () => {
   const { action, setCompletion, setAction } = useAction();
@@ -87,6 +88,7 @@ export default () => {
         </Grid>
       </Grid>
       <Portal>
+        <AssignPayment setAction={setAction} refetchEditions={refetchEditions} />
         <CreateAbrigaditos setAction={setAction} refetchAbrigaditos={refetchEditions} />
         {!!dataEdition?.abrigaditosCampaign && (
           <EditAbrigaditos

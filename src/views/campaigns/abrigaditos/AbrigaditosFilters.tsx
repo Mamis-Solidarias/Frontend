@@ -9,7 +9,7 @@ import Card from '@mui/material/Card';
 import { CampaignsFilters } from 'src/types/campaigns/CampaignsFilters';
 import CampaignsFiltersView from '../CampaignsFiltersView';
 import { useAppDispatch, useAppSelector } from 'src/hooks/reduxHooks';
-import { updateFiltersApplied, updateOpenCollapse } from 'src/features/campaigns/juntosSlice';
+import { updateFiltersApplied, updateOpenCollapse } from 'src/features/campaigns/abrigaditosSlice';
 import { Action } from 'src/types/Action';
 
 export default (props: { setAction: (action: Action) => void }) => {
