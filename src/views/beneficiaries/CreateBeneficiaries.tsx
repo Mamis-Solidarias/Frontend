@@ -39,7 +39,6 @@ import {
   defaultCreateBeneficiaryExtras,
   useCreateBeneficiaryExtras
 } from 'src/hooks/beneficiaries/useCreateBeneficiaryExtras';
-import Clothes from 'src/types/beneficiaries/Clothes';
 import Job from 'src/types/beneficiaries/Job';
 import Health from 'src/types/beneficiaries/Health';
 import Community from 'src/types/beneficiaries/Community';
