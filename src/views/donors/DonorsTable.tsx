@@ -70,7 +70,7 @@ const DonorsTable: FC<DonorsTableProps> = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openUpdateDonor, openCreateDonor]);
 
-  if (error && !data) {
+  if (error) {
     router.push('/login');
 
     return (
@@ -80,9 +80,9 @@ const DonorsTable: FC<DonorsTableProps> = props => {
     );
   }
 
-  const nodes = data === undefined ? [] : data.donors.nodes;
-  const pageInfo = data === undefined ? undefined : data.donors.pageInfo;
-  const edges = data === undefined ? [] : data.donors.edges;
+  const nodes = !data?.donors ? [] : data.donors?.nodes;
+  const pageInfo = !data?.donors ? undefined : data.donors?.pageInfo;
+  const edges = !data?.donors ? [] : data.donors?.edges;
 
   return (
     <Card>

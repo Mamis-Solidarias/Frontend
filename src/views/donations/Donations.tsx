@@ -65,6 +65,7 @@ export default () => {
       </TableRow>
     );
   }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const nodes = data === undefined ? [] : data.donations.nodes;
   const pageInfo = data === undefined ? undefined : data.donations.pageInfo;
@@ -72,22 +73,25 @@ export default () => {
   const edges = data === undefined ? [] : data.donations.edges;
 
   useEffect(() => {
-    if (!error) {
+    if (!error && !!nodes && nodes.length > 0) {
       dispatch(updateDonations(nodes));
     }
-  }, [dispatch, error, nodes]);
+    // eslint-disable-next-line
+  }, [error, nodes]);
 
   useEffect(() => {
     if (!error && !!pageInfo) {
       dispatch(updateHasNextPage(pageInfo.hasNextPage));
     }
-  }, [dispatch, error, pageInfo]);
+    // eslint-disable-next-line
+  }, [error, pageInfo]);
 
   useEffect(() => {
     if (!error) {
       dispatch(updateCursor(edges.cursor));
     }
-  }, [dispatch, edges, error]);
+    // eslint-disable-next-line
+  }, [edges, error]);
 
   return (
     <Card>

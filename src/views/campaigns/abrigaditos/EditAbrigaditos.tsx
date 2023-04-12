@@ -91,8 +91,7 @@ export default (props: EditAbrigaditosProps) => {
         }
       })
     );
-  }, [abrigaditosSelector.editAbrigaditos, abrigaditosSelector.openEditAbrigaditos,
-    dataEdition.description, dataEdition.fundraiserGoal, dataEdition.provider, dispatch]);
+  }, [dataEdition]);
 
   const editAbrigaditos = async () => {
     try {
