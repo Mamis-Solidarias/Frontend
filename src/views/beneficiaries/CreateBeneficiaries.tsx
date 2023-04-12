@@ -88,7 +88,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
           transportationMethod: beneficiaryFields.transportationMethod
         }
         : undefined;
-    const clothes: Clothes | undefined =
+    const clothes: any =
       !!beneficiaryFields.shirtSize || !!beneficiaryFields.shoeSize || !!beneficiaryFields.pantsSize
         ? {
           shoes: beneficiaryFields.shoeSize,
