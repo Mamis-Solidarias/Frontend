@@ -203,7 +203,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
           />
           {invalidPassword && (
             <FormHelperText error>
-              La contraseña es inválida, tiene que tener al menos una letra minúscula, una letra mayúscula y un dígito
+              La contraseña es inválida, tiene que tener al menos 8 caracteres, una letra minúscula, una letra mayúscula y un dígito
             </FormHelperText>
           )}
           <TextField

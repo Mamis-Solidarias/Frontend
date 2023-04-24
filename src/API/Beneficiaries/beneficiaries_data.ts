@@ -4,7 +4,7 @@ import Job from 'src/types/beneficiaries/Job';
 import { axiosClient } from './initialization';
 
 export const activateBeneficiary = async (id: string) => {
-  return axiosClient.post('/beneficiaries/' + id);
+  return axiosClient.post('/beneficiaries/' + id, { headers: { 'ContentType': undefined}});
 };
 
 export const deleteBeneficiary = async (id: string) => {

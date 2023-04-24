@@ -29,9 +29,9 @@ const navigation: VerticalNavItemsType = [
     service: ''
   },
   {
-    icon: AccountGroup,
-    title: 'Beneficiarios',
-    path: '/beneficiarios',
+    icon: HomeGroup,
+    title: 'Comunidades',
+    path: '/comunidades',
     service: 'Beneficiaries'
   },
   {
@@ -41,9 +41,9 @@ const navigation: VerticalNavItemsType = [
     service: 'Beneficiaries'
   },
   {
-    icon: HomeGroup,
-    title: 'Comunidades',
-    path: '/comunidades',
+    icon: AccountGroup,
+    title: 'Beneficiarios',
+    path: '/beneficiarios',
     service: 'Beneficiaries'
   },
   {

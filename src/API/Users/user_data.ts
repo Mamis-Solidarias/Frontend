@@ -13,7 +13,7 @@ export const getUser = async (id: string): Promise<{ data: { user: User } }> => 
 };
 
 export const reactivateUser = async (id: number) => {
-  return axiosClient.post('/users/' + id.toString());
+  return axiosClient.post('/users/' + id.toString(),{ headers: { 'ContentType': undefined as any}});
 };
 
 export const createUser = async (data: UserNoId) => {
