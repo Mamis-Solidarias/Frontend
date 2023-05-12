@@ -37,7 +37,8 @@ export default () => {
     data: dataEditions,
     refetch: refetchEditions
   } = useQuery(GET_JUNTOS_EDITIONS, { variables: { communityId: 'valor nulo' } });
-  const { data: dataEdition } = useQuery(GET_JUNTOS, {
+
+  const { data: dataEdition, refetch: refetchEdition } = useQuery(GET_JUNTOS, {
     variables: { edition: juntosSelector.filtersApplied.edition, community: juntosSelector.filtersApplied.community }
   });
 
@@ -82,7 +83,7 @@ export default () => {
         </Grid>
       </Grid>
       <Portal>
-        <AssignPayment setAction={setAction} refetchEditions={refetchEditions} />
+        <AssignPayment setAction={setAction} refetchEdition={refetchEdition} />
         <CreateJuntos setAction={setAction} refetchJuntos={refetchEditions} />
         {!!dataEdition?.juntosCampaign && (
           <EditJuntos setAction={setAction} refetchJuntos={refetchEditions} dataEdition={dataEdition.juntosCampaign} />
