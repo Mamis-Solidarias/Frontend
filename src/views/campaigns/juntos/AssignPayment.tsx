@@ -15,11 +15,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 interface AssignPaymentProps {
   setAction: (action: Action) => void;
-  refetchEditions: () => void;
+  refetchEdition: () => void;
 }
 
 export default (props: AssignPaymentProps) => {
-  const { setAction, refetchEditions } = props;
+  const { setAction, refetchEdition } = props;
   const dispatch = useAppDispatch();
   const campaignPaymentSelector = useAppSelector(state => state.campaignPayment);
 
@@ -39,7 +39,7 @@ export default (props: AssignPaymentProps) => {
   const assignPaymentHandler = async () => {
     try {
       await assignPayment();
-      refetchEditions();
+      refetchEdition();
       setAction({
         complete: true,
         success: true,

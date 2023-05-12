@@ -42,7 +42,7 @@ export default () => {
     router.push('/login');
   }
 
-  const { data: dataEdition } = useQuery(GET_ABRIGADITOS, {
+  const { data: dataEdition, refetch: refetchEdition } = useQuery(GET_ABRIGADITOS, {
     variables: {
       edition: abrigaditosSelector.filtersApplied.edition,
       community: abrigaditosSelector.filtersApplied.community
@@ -88,7 +88,7 @@ export default () => {
         </Grid>
       </Grid>
       <Portal>
-        <AssignPayment setAction={setAction} refetchEditions={refetchEditions} />
+        <AssignPayment setAction={setAction} refetchEdition={refetchEdition} />
         <CreateAbrigaditos setAction={setAction} refetchAbrigaditos={refetchEditions} />
         {!!dataEdition?.abrigaditosCampaign && (
           <EditAbrigaditos
