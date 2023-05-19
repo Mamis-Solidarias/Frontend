@@ -125,7 +125,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
         handleClose();
       }}
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Nuevo Usuario</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Añadir Usuario</DialogTitle>
       <DialogContent>
         <Box component='form' onSubmit={handleSubmit}>
           <TextField
@@ -242,7 +242,7 @@ export const CreateUser: FC<CreateUserProps> = props => {
               password === ''
             }
           >
-            Crear
+            Añadir
           </Button>
         </Box>
       </DialogContent>

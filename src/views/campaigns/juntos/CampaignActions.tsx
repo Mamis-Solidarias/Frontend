@@ -21,7 +21,7 @@ export default (props: CampaignActionsProps) => {
         Editar
       </Button>
       <Button sx={{ mx: '.25em' }} variant='contained' onClick={() => dispatch(updateOpenCreateJuntos(true))}>
-        Crear
+        Añadir
       </Button>
     </>
   );

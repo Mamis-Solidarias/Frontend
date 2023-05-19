@@ -252,7 +252,7 @@ export const CreateFamilies: FC<CreateFamiliesProps> = props => {
             }}
             disabled={families.length === 0}
           >
-            Crear
+            Añadir
           </Button>
         </div>
       </DialogContent>

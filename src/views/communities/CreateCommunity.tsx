@@ -58,7 +58,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Comunidades</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Añadir Comunidades</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
@@ -200,7 +200,7 @@ export const CreateCommunity: FC<CreateCommunityProps> = props => {
             }}
             disabled={communities.length === 0}
           >
-            Crear
+            Añadir
           </Button>
         </div>
       </DialogContent>

@@ -228,7 +228,7 @@ export default () => {
                     setCreateMochiFinished(false);
                   }}
                 >
-                  Crear
+                  Añadir
                 </Button>
               )}
             </Box>

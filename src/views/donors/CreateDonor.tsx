@@ -40,7 +40,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Donante</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Añadir Donante</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
@@ -162,7 +162,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
             }}
             disabled={!donor.name || (!donor.phone && !donor.email)}
           >
-            Crear
+            Añadir
           </Button>
         </div>
       </DialogContent>
