@@ -101,6 +101,7 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
     refetchWithSameParameters();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paging.pageCursor, filters, paging.limit]);
+
   if (error) {
     router.push('/login');
 

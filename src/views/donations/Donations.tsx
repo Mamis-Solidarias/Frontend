@@ -35,12 +35,13 @@ export default () => {
   const { data, loading, error, refetch } = useQuery(GET_DONATIONS, {
     variables: {
       filter: donationsSelector.filtersApplied,
-      first: donationsSelector.paging.limit
+      first: donationsSelector.paging.limit,
+      after: donationsSelector.paging.pageCursor
     }
   });
 
-  const refetchWithSameParameters = async () => {
-    await refetch({ filter: donationsSelector.filtersApplied, first: donationsSelector.paging.limit });
+  const refetchWithSameParameters = () => {
+    refetch({ filter: donationsSelector.filtersApplied, first: donationsSelector.paging.limit, after: donationsSelector.paging.pageCursor });
   };
 
   useEffect(() => {
@@ -87,6 +88,11 @@ export default () => {
   }, [error, pageInfo]);
 
   useEffect(() => {
+    refetchWithSameParameters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [donationsSelector.paging]);
+
+  useEffect(() => {
     if (!error) {
       dispatch(updateCursor(edges.cursor));
     }
@@ -115,7 +121,7 @@ export default () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {pageInfo !== undefined && <DonationsTablePagination />}
+      {pageInfo !== undefined && <DonationsTablePagination pageInfo={pageInfo} edges={edges}/>}
     </Card>
   );
 };

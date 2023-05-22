@@ -160,7 +160,7 @@ export const CreateDonor: FC<CreateDonorProps> = props => {
                 });
               }
             }}
-            disabled={!donor.name || (!donor.phone && !donor.email)}
+            disabled={!donor.name || (!donor.phone && !donor.email) || !donor.dni}
           >
             Añadir
           </Button>
