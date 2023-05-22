@@ -384,7 +384,7 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
             }}
             disabled={beneficiaries.length === 0}
           >
-            Crear
+            Añadir
           </Button>
         </div>
       </DialogContent>

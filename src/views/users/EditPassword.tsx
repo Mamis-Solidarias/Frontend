@@ -150,7 +150,7 @@ export const EditPassword: FC<EditPasswordProps> = props => {
             onClick={handleSubmit}
             disabled={passwordMismatch || invalidPassword || password === '' || oldPassword === ''}
           >
-            Crear
+            Añadir
           </Button>
         </Box>
       </DialogContent>

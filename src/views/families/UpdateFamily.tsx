@@ -72,7 +72,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             sx={{ py: '.3em' }}
             type='text'
             inputProps={{ pattern: '^.+$' }}
-            label='Nuevo Nombre de Familia'
+            label='Nombre de Familia'
             placeholder='Paso de los Libres 428'
             value={name}
             onChange={e => {
@@ -86,7 +86,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             type='text'
             sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
-            label='Nueva Dirección'
+            label='Dirección'
             placeholder='Paso de los Libres 428'
             value={address}
             onChange={e => {
@@ -100,7 +100,7 @@ export const UpdateFamily: FC<UpdateFamilyProps> = props => {
             id='details'
             type='text'
             inputProps={{ pattern: ' .+' }}
-            label='Nuevos Detalles'
+            label='Detalles'
             placeholder='Viven cerca del río'
             value={details}
             onChange={e => {

@@ -14,7 +14,7 @@ interface DonationsPageData {
   editDonation?: Donation;
   addDonation?: Donation;
   paging: DonationsPaging;
-  cursor: string | null;
+  cursor: string;
   endCursor?: string;
   openCollapsible: boolean[];
 }
@@ -28,7 +28,7 @@ export const initialState: DonationsPageData = {
   filtersToApply: defaultFilters,
   donations: [],
   paging: defaultPagingSettings,
-  cursor: null,
+  cursor: '',
   openCollapsible: []
 };
 
@@ -60,7 +60,7 @@ const donationsSlice = createSlice({
     updateHasNextPage(state, action: PayloadAction<boolean>) {
       state.hasNextPage = action.payload;
     },
-    updateCursor(state, action: PayloadAction<string | null>) {
+    updateCursor(state, action: PayloadAction<string>) {
       state.cursor = action.payload;
     },
     updateEndCursor(state, action: PayloadAction<string>) {
@@ -76,14 +76,11 @@ const donationsSlice = createSlice({
 
 export const {
   updateDonations,
-  updateFiltersToApply,
   updateOpenFiltersCollapse,
   updateFiltersApplied,
-  updateOpenAddDonation,
   updatePaging,
   updateHasNextPage,
   updateHasWriteDonations,
   updateCursor,
-  updateCollapseDonations
 } = donationsSlice.actions;
 export default donationsSlice.reducer;

@@ -93,7 +93,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       maxWidth='lg'
     >
       <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>
-        Crear Edición de "Una Mochi como la tuya"
+        Añadir Edición de "Una Mochi como la tuya"
       </DialogTitle>
       <DialogContent>
         <Box>
@@ -214,7 +214,7 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
           }}
           disabled={!mochiEdition.edition || !data || data.filteredBeneficiaries.nodes.length === 0}
         >
-          Crear
+          Añadir
         </Button>
       </DialogContent>
     </Dialog>

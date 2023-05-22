@@ -66,7 +66,7 @@ export const UpdateCommunity: FC<UpdateCommunityProps> = props => {
             type='text'
             sx={{ py: '.3em' }}
             inputProps={{ pattern: '^.+$' }}
-            label='Nueva Dirección'
+            label='Dirección'
             placeholder='Paso de los Libres 428'
             value={address}
             onChange={e => {

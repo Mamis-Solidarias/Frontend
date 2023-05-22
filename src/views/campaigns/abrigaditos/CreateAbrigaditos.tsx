@@ -145,7 +145,7 @@ export default (props: CreateAbrigaditosProps) => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Edición de "Abrigaditos"</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Añadir Edición de "Abrigaditos"</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
@@ -267,7 +267,7 @@ export default (props: CreateAbrigaditosProps) => {
               dataBeneficiaries.filteredBeneficiaries.nodes.length === 0
             }
           >
-            Crear
+            Añadir
           </Button>
         </Box>
       </DialogContent>

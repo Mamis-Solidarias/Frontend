@@ -117,7 +117,7 @@ export default (props: CreateJuntosProps) => {
       }}
       maxWidth='lg'
     >
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Crear Edición de "Juntos a la Par"</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', justifyContent: 'center' }}>Añadir Edición de "Juntos a la Par"</DialogTitle>
       <DialogContent>
         <Box>
           <TextField
@@ -220,7 +220,7 @@ export default (props: CreateJuntosProps) => {
               dataBeneficiaries.filteredBeneficiaries.nodes.length === 0
             }
           >
-            Crear
+            Añadir
           </Button>
         </Box>
       </DialogContent>
