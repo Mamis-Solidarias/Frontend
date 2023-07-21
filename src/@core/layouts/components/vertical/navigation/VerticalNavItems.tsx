@@ -6,6 +6,7 @@ import {NavLink, NavSectionTitle} from 'src/@core/layouts/types';
 import VerticalNavLink from './VerticalNavLink';
 import VerticalNavSectionTitle from './VerticalNavSectionTitle';
 import navigation from "src/navigation/vertical";
+import {hasReadAccess} from "../../../../../utils/sessionManagement";
 
 interface Props {
   settings: Settings;
@@ -32,7 +33,9 @@ const VerticalNavItems = (props: Props) => {
   const RenderMenuItems = navigation.map((item: NavLink | NavSectionTitle, index: number) => {
     const TagName: any = resolveNavItemComponent(item, JSON.parse(localStorage.getItem('user') as string).roles);
 
-    return <TagName {...props} key={index} item={item}/>;
+    if ( hasReadAccess(item.service)) {
+      return <TagName {...props} key={index} item={item}/>;
+    }
   });
 
   return <div>{RenderMenuItems}</div>;
