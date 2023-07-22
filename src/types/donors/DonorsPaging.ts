@@ -6,7 +6,7 @@ export interface DonorsPaging {
   limit: number;
 }
 
-export const PAGE_LIMITS = { SMALL: 5, MEDIUM: 10, LARGE: 15 };
+export const PAGE_LIMITS = { SMALL: 10, MEDIUM: 20, LARGE: 30 };
 
 export const defaultPagingSettings: DonorsPaging = {
   pageCursor: null,
