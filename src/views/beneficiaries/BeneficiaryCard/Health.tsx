@@ -12,14 +12,14 @@ export const HealthCard: FC<{ health: any; sx?: any }> = props => {
         '¿Tiene Vacuna COVID?': health.hasCovidVaccine
           ? 'Sí'
           : health.hasCovidVaccine === undefined
-          ? 'Falta información'
+          ? '-'
           : 'No',
         '¿Tiene Vacunas Mandatorias?': health.hasMandatoryVaccines
           ? 'Sí'
           : health.hasMandatoryVaccines === undefined
-          ? 'Falta información'
+          ? '-'
           : 'No',
-        Observaciones: !!health.observations ? health.observations : 'Falta Información'
+        Observaciones: !!health.observations ? health.observations : '-'
       }}
       sx={sx}
     />
