@@ -21,10 +21,11 @@ interface GeneralFormProps {
 export const GeneralForm: FC<GeneralFormProps> = props => {
   const { beneficiaryFields, setBeneficiaryField, communities, setFamilyId, startingCommunityInput } = props;
   const [selectedCommunity, setSelectedCommunity] = useState<string>('');
-  const { data, refetch } = useQuery(GET_FAMILIES);
+  const { data, refetch } = useQuery(GET_FAMILIES, {variables: { communityCode: '', limit: 50}});
+
   useEffect(() => {
     setBeneficiaryField('familyId', '');
-    refetch({ communityCode: selectedCommunity });
+    refetch({ communityCode: selectedCommunity, limit: 50 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCommunity]);
 
@@ -94,7 +95,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
           type='text'
           sx={{ py: '.3em' }}
           label='Comentarios (opcional)'
-          placeholder='Es buena gente'
+          placeholder='Cuida de sus nietos'
           value={beneficiaryFields.comments}
           onChange={e => setBeneficiaryField('comments', e.target.value)}
           fullWidth={true}
@@ -109,7 +110,7 @@ export const GeneralForm: FC<GeneralFormProps> = props => {
             fullWidth={true}
             variant='standard'
             label='Familia'
-            placeholder='Gómez'
+            placeholder='Gomez'
             value={beneficiaryFields.familyId}
             onChange={e => {
               setBeneficiaryField('familyId', e.target.value);
