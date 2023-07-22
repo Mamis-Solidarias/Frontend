@@ -26,7 +26,7 @@ const navigation: VerticalNavItemsType = [
   },
   {
     sectionTitle: 'Personas',
-    service: ''
+    service: 'Beneficiaries'
   },
   {
     icon: HomeGroup,
@@ -54,7 +54,7 @@ const navigation: VerticalNavItemsType = [
   },
   {
     sectionTitle: 'Campañas',
-    service: ''
+    service: 'Campaigns'
   },
   {
     icon: BackpackIcon,

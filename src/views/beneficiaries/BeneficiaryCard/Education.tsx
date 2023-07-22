@@ -18,13 +18,13 @@ export const EducationCard: FC<{ education: any; sx?: any }> = props => {
     <DefaultCard
       title={<SchoolIcon sx={{ color: '#7291F9' }} />}
       fields={{
-        Institución: !!education.school ? education.school : 'Falta Información',
+        Institución: !!education.school ? education.school : '-',
         'Año académico': !!education.year
           ? SCHOOL_YEARS[education.year as keyof typeof SCHOOL_YEARS]
-          : 'Falta Información',
+          : '-',
         'Método de Transporte': !!education.transportationMethod
           ? TRANSPORT_METHODS[education.transportationMethod as keyof typeof TRANSPORT_METHODS]
-          : 'Falta Información'
+          : '-'
       }}
       sx={sx}
     />
