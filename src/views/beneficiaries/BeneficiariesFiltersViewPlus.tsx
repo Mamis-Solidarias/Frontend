@@ -29,7 +29,8 @@ const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = prop
   const { data: dataFamilies, refetch: refetchFamilies } = useQuery(GET_FAMILIES, {
     variables: {
       communityCode: filters.communityCode,
-      familyName: filters.familyName
+      familyName: filters.familyName,
+      limit: 50
     }
   });
 
