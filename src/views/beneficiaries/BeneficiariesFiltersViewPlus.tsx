@@ -6,8 +6,8 @@ import Family from 'src/types/beneficiaries/Family';
 import Community from 'src/types/beneficiaries/Community';
 import TextField from '@mui/material/TextField';
 
-import GENDERS from 'src/types/beneficiaries/Genders';
-import BENEFICIARY_TYPES from 'src/types/beneficiaries/BeneficiaryTypes';
+import {GENDERS_REDUCED} from "src/types/beneficiaries/Genders";
+import {BENEFICIARY_TYPES_REDUCED} from "src/types/beneficiaries/BeneficiaryTypes";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Button, Card, CardContent, Collapse, Grid, IconButton, Switch } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'mdi-material-ui';
@@ -131,7 +131,7 @@ const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = prop
                 onChange={e => setFilter('type', e.target.value)}
               >
                 <MenuItem value=''>Todas</MenuItem>
-                {Object.entries(BENEFICIARY_TYPES).map(entry => {
+                {Object.entries(BENEFICIARY_TYPES_REDUCED).map(entry => {
                   const [typeEnglish, typeSpanish] = entry;
 
                   return (
@@ -170,7 +170,7 @@ const BeneficiariesFiltersViewPlus: FC<BeneficiariesFiltersViewPlusProps> = prop
                 onChange={e => setFilter('gender', e.target.value)}
               >
                 <MenuItem value=''>Sin Preferencia</MenuItem>
-                {Object.entries(GENDERS).map(entry => {
+                {Object.entries(GENDERS_REDUCED).map(entry => {
                   const [genderEnglish, genderSpanish] = entry;
 
                   return (

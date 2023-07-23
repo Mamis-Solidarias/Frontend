@@ -4,8 +4,8 @@ import React, { FC, useEffect, useState } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import GENDERS from 'src/types/beneficiaries/Genders';
-import BENEFICIARY_TYPES from 'src/types/beneficiaries/BeneficiaryTypes';
+import {GENDERS_REDUCED} from "src/types/beneficiaries/Genders";
+import {BENEFICIARY_TYPES_REDUCED} from "src/types/beneficiaries/BeneficiaryTypes";
 import { Button, Card, CardContent, Collapse, IconButton } from '@mui/material';
 import { ChevronDown, ChevronUp } from 'mdi-material-ui';
 import CardHeader from '@mui/material/CardHeader';
@@ -109,7 +109,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                 onChange={e => setFilter('type', e.target.value)}
               >
                 <MenuItem value=''>Todas</MenuItem>
-                {Object.entries(BENEFICIARY_TYPES).map(entry => {
+                {Object.entries(BENEFICIARY_TYPES_REDUCED).map(entry => {
                   const [typeEnglish, typeSpanish] = entry;
 
                   return (
@@ -144,7 +144,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
                 onChange={e => setFilter('gender', e.target.value)}
               >
                 <MenuItem value=''>Sin Preferencia</MenuItem>
-                {Object.entries(GENDERS)
+                {Object.entries(GENDERS_REDUCED)
                   .filter(entry => /^[A-Z]+$/.test(entry[0]))
                   .map(entry => {
                     const [genderEnglish, genderSpanish] = entry;
