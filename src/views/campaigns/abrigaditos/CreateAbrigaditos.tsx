@@ -50,7 +50,8 @@ export default (props: CreateAbrigaditosProps) => {
       communityId: abrigaditosSelector.createAbrigaditos.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null,
+      limit: 500
     };
   };
   const { error: errorCommunities, loading: loadingCommunities, data: dataCommunities } = useQuery(GET_COMMUNITIES);

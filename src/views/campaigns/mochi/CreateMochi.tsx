@@ -46,7 +46,8 @@ export const CreateMochi: FC<CreateMochiProps> = props => {
       communityId: mochiEdition.communityId,
       school: filtersApplied.school,
       gender: filtersApplied.gender,
-      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null
+      isActive: !!filtersApplied.isActive ? filtersApplied.isActive === 'true' : null,
+      limit: 500
     }
   });
 
