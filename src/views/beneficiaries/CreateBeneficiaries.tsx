@@ -4,7 +4,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import {FC, useState} from 'react';
+import React, {FC, useState} from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -282,21 +282,15 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                           aria-label='expand row'
                           size='small'
                           onClick={() => {
-                            if (open.length === 0) {
-                              setOpen(
-                                Array.from({length: beneficiaries.length}, (l, openIndex) => openIndex === index)
-                              );
-                            } else {
-                              setOpen(
-                                Array.from({length: beneficiaries.length}, (l, openIndex) => {
-                                  if (openIndex === index) {
-                                    return !open[index];
-                                  }
+                            setOpen(
+                              Array.from({ length: beneficiaries.length }, (l, openKey) => {
+                                if (openKey === index) {
+                                  return !open[index];
+                                }
 
-                                  return open[openIndex];
-                                })
-                              );
-                            }
+                                return open[openKey];
+                              })
+                            );
                           }}
                         >
                           {open[index] ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
@@ -315,26 +309,14 @@ export const CreateBeneficiaries: FC<CreateBeneficiariesProps> = props => {
                     </TableRow>
                     <TableRow sx={{'&:last-of-type td, &:last-of-type th': {border: 0}}}>
                       <Collapse in={open[index]} timeout='auto' unmountOnExit>
-                        <TableCell colSpan={12}>
-                          <Box
-                            sx={{display: 'flex', flexDirection: 'row', justifyContent: 'start', flexWrap: 'wrap'}}
-                          >
-                            {!!beneficiary.education && (
-                              <EducationCard education={beneficiary.education} sx={{mx: '1em', my: '1em'}}/>
-                            )}
-                            {!!beneficiary.health && (
-                              <HealthCard health={beneficiary.health} sx={{mx: '1em', my: '1em'}}/>
-                            )}
-                            {!!beneficiary.clothes && (
-                              <ClothesCard clothes={beneficiary.clothes} sx={{mx: '1em', my: '1em'}}/>
-                            )}
-                            {!!beneficiary.comments && (
-                              <CommentsCard comments={beneficiary.comments} sx={{mx: '1em', my: '1em'}}/>
-                            )}
-                            {!!beneficiary.likes && (
-                              <LikesCard likes={beneficiary.likes} sx={{mx: '1em', my: '1em'}}/>
-                            )}
-                            {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{mx: '1em', my: '1em'}}/>}
+                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'start' }}>
+                            {!!beneficiary.education && <EducationCard education={beneficiary.education} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.health && <HealthCard health={beneficiary.health} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.clothes && <ClothesCard clothes={beneficiary.clothes} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.comments && <CommentsCard comments={beneficiary.comments} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.likes && <LikesCard likes={beneficiary.likes} sx={{ mx: '1em' }} />}
+                            {!!beneficiary.job && <JobCard job={beneficiary.job} sx={{ mx: '1em' }} />}
                           </Box>
                         </TableCell>
                       </Collapse>
