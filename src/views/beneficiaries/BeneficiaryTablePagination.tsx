@@ -17,7 +17,7 @@ interface BeneficiariesTableProps {
 }
 
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
-  const { paging, setBeneficiariesPaging, pageInfo, nodes, edges, totalCount } = props;
+  const { paging, setBeneficiariesPaging, pageInfo, nodes, totalCount } = props;
 
   return (
     <TablePagination
