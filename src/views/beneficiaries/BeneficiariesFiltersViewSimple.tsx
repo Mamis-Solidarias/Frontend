@@ -39,7 +39,7 @@ const BeneficiariesFiltersView: FC<BeneficiariesFiltersViewSimpleProps> = props 
       setFilter('communityId', communityId);
       refetchFamilies({ communityCode: filters.communityId, familyName: filters.familyName });
     }
-  }, [communityId, filters.communityId, filters.familyName, refetchFamilies, setFilter]);
+  }, [communityId, filters.communityId, filters.familyName]);
 
   return (
     <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
