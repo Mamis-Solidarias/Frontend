@@ -10,11 +10,11 @@ export const GET_MOCHI = gql`
       participants {
         beneficiary {
           familyId
+          name
         }
         campaignId
         beneficiaryGender
         beneficiaryId
-        beneficiaryName
         donationId
         donationDropOffPoint
         donationType
@@ -46,9 +46,11 @@ export const GET_JUNTOS = gql`
       id
       fundraiserGoal
       participants {
+        beneficiary {
+          name
+        }
         beneficiaryId
         beneficiaryGender
-        beneficiaryName
         shoeSize
       }
       donations {
@@ -98,9 +100,12 @@ export const GET_ABRIGADITOS = gql`
       id
       fundraiserGoal
       participants {
+        beneficiary {
+          familyId
+          name
+        }
         beneficiaryId
         beneficiaryGender
-        beneficiaryName
         shirtSize
       }
       donations {
