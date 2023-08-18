@@ -102,6 +102,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
   const nodes = data === undefined ? [] : data.filteredFamilies.nodes;
   const pageInfo = data === undefined ? undefined : data.filteredFamilies.pageInfo;
   const edges = data === undefined ? [] : data.filteredFamilies.edges;
+  const totalCount = data === undefined ? [] : data.filteredFamilies.totalCount;
 
   return (
     <Card>
@@ -201,6 +202,7 @@ const FamiliesTable: FC<FamiliesTableProps> = props => {
       </TableContainer>
       {pageInfo !== undefined && (
         <BeneficiaryTablePagination
+          totalCount={totalCount}
           paging={paging}
           setBeneficiariesPaging={setBeneficiariesPaging}
           pageInfo={pageInfo}

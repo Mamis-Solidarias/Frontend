@@ -48,10 +48,12 @@ export const GET_BENEFICIARIES = gql`
       pageInfo {
         endCursor
         hasNextPage
+        startCursor
       }
       edges {
         cursor
       }
+      totalCount
       nodes {
         dni
         birthday
@@ -100,6 +102,7 @@ export const GET_FAMILIES = gql`
       edges {
         cursor
       }
+      totalCount
       nodes {
         id
         address
@@ -126,6 +129,7 @@ export const GET_COMMUNITIES = gql`
       edges {
         cursor
       }
+      totalCount
       nodes {
         id
         address

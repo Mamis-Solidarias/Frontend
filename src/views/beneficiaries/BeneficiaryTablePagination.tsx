@@ -13,10 +13,11 @@ interface BeneficiariesTableProps {
   pageInfo: any;
   nodes: any;
   edges: any;
+  totalCount: number;
 }
 
 const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
-  const { paging, setBeneficiariesPaging, pageInfo, nodes, edges } = props;
+  const { paging, setBeneficiariesPaging, pageInfo, nodes, totalCount } = props;
 
   return (
     <TablePagination
@@ -25,19 +26,26 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
       page={paging.pageNumber}
       rowsPerPageOptions={[PAGE_LIMITS.SMALL, PAGE_LIMITS.MEDIUM, PAGE_LIMITS.LARGE]}
       labelRowsPerPage='Filas por página'
-      labelDisplayedRows={function defaultLabelDisplayedRows({ from, to, count }) {
-        return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`;
+      labelDisplayedRows={function defaultLabelDisplayedRows({ from, to}) {
+        return `${from}–${to} de ${totalCount}`;
       }}
       onPageChange={(e, newPageNumber) => {
         if (paging.pageNumber > newPageNumber && paging.previousCursors.length > 0) {
-          const newPreviousCursors = paging.previousCursors;
+          const newPreviousCursors = [...paging.previousCursors];
+          console.log(newPreviousCursors, newPreviousCursors.length);
           const newCursor = newPreviousCursors.pop();
+          console.log(newPreviousCursors, newPreviousCursors.length);
           setBeneficiariesPaging('pageNumber', newPageNumber);
           setBeneficiariesPaging('previousCursors', newPreviousCursors);
-          setBeneficiariesPaging('pageCursor', newCursor);
+          setBeneficiariesPaging('pageCursor', newCursor === '' ? undefined : newCursor);
         } else if (newPageNumber > paging.pageNumber && pageInfo.hasNextPage) {
-          const newPreviousCursors = paging.previousCursors;
-          newPreviousCursors.push(edges.cursor);
+          const newPreviousCursors = [];
+          if( paging.previousCursors.length === 0 ) {
+            newPreviousCursors.push('');
+          } else {
+            newPreviousCursors.push(...paging.previousCursors, pageInfo.startCursor);
+          }
+          console.log(newPreviousCursors, newPreviousCursors.length);
           const newCursor = pageInfo.endCursor;
           setBeneficiariesPaging('pageNumber', newPageNumber);
           setBeneficiariesPaging('previousCursors', newPreviousCursors);

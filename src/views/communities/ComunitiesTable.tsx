@@ -78,6 +78,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
   const nodes = data === undefined ? [] : data.communities.nodes;
   const pageInfo = data === undefined ? undefined : data.communities.pageInfo;
   const edges = data === undefined ? [] : data.communities.edges;
+  const totalCount =  data === undefined ? [] : data.communities.totalCount;
 
   return (
     <Card>
@@ -132,6 +133,7 @@ const CommunitiesTable: FC<CommunitiesTableProps> = props => {
       )}
       {pageInfo !== undefined && (
         <BeneficiaryTablePagination
+          totalCount={totalCount}
           paging={paging}
           setBeneficiariesPaging={setBeneficiariesPaging}
           pageInfo={pageInfo}
