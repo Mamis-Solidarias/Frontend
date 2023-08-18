@@ -48,6 +48,7 @@ export const GET_BENEFICIARIES = gql`
       pageInfo {
         endCursor
         hasNextPage
+        startCursor
       }
       edges {
         cursor

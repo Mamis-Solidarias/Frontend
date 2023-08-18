@@ -41,9 +41,9 @@ const BeneficiariesTable: FC<BeneficiariesTableProps> = props => {
         } else if (newPageNumber > paging.pageNumber && pageInfo.hasNextPage) {
           const newPreviousCursors = [];
           if( paging.previousCursors.length === 0 ) {
-            newPreviousCursors.push('', edges[0].cursor);
+            newPreviousCursors.push('');
           } else {
-            newPreviousCursors.push(...paging.previousCursors, edges[0].cursor);
+            newPreviousCursors.push(...paging.previousCursors, pageInfo.startCursor);
           }
           console.log(newPreviousCursors, newPreviousCursors.length);
           const newCursor = pageInfo.endCursor;
