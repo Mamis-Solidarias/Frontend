@@ -31,7 +31,7 @@ export default (props: JuntosEditionProps) => {
           <TableBody>
             {dataEdition?.participants?.map((participant: Participant) => (
               <TableRow key={participant.beneficiaryId}>
-                <TableCell>{participant.beneficiaryName}</TableCell>
+                <TableCell>{participant.beneficiary?.firstName + ' ' + participant.beneficiary?.lastName}</TableCell>
                 <TableCell>{GENDERS[participant.beneficiaryGender as keyof typeof GENDERS]}</TableCell>
                 <TableCell>{participant.shoeSize}</TableCell>
               </TableRow>

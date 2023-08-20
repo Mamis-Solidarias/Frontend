@@ -31,7 +31,7 @@ export default (props: AbrigaditosEditionProps) => {
           <TableBody>
             {dataEdition?.participants?.map((participant: Participant) => (
               <TableRow key={participant.beneficiaryId}>
-                <TableCell>{participant.beneficiary.name}</TableCell>
+                <TableCell>{participant.beneficiaryName}</TableCell>
                 <TableCell>{GENDERS[participant.beneficiaryGender as keyof typeof GENDERS]}</TableCell>
                 <TableCell>{participant.shirtSize}</TableCell>
               </TableRow>
