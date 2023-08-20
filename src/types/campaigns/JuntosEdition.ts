@@ -16,7 +16,7 @@ export interface JuntosEdition {
 export interface Participant {
   beneficiaryId: number;
   beneficiaryGender: keyof typeof GENDERS;
-  beneficiaryName: string;
+  beneficiary: {firstName: string, lastName: string, familyId: string};
   shoeSize: number;
 }
 

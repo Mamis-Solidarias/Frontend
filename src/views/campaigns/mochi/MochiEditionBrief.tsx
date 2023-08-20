@@ -63,7 +63,7 @@ export const MochiEditionBrief: FC<MochiEditionBriefProps> = props => {
               <TableRow key={participant.id}>
                 <TableCell></TableCell>
                 <TableCell>{participant.beneficiary?.familyId}</TableCell>
-                <TableCell>{participant.beneficiaryName}</TableCell>
+                <TableCell>{participant.beneficiary?.firstName + ' ' + participant.beneficiary?.lastName}</TableCell>
                 <TableCell>
                   {!!participant.schoolCycle
                     ? SCHOOL_CYCLES[participant.schoolCycle as keyof typeof SCHOOL_CYCLES]

@@ -16,7 +16,7 @@ export interface AbrigaditosEdition {
 export interface Participant {
   beneficiaryId: number;
   beneficiaryGender: keyof typeof GENDERS;
-  beneficiary: {name: string};
+  beneficiaryName: string;
   shirtSize: number;
 }
 

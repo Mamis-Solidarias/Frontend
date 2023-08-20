@@ -44,10 +44,9 @@ export const defaultMochiImport: MochiImport = {
 };
 
 export interface Participant {
-  beneficiary: Beneficiary;
+  beneficiary: {firstName: string, lastName: string, familyId: string};
   beneficiaryGender: string;
   beneficiaryId: number;
-  beneficiaryName: string;
   donationDropOffLocation: string | null;
   donationType: string | null;
   donationId: string;
