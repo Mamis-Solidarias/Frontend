@@ -1,5 +1,3 @@
-import Beneficiary from '../beneficiaries/Beneficiary';
-
 export interface MochiEdition {
   edition: string;
   communityId: string;
