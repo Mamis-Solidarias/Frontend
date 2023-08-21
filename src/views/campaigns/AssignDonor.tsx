@@ -28,7 +28,8 @@ export const AssignDonor: FC<AssignDonorProps> = props => {
   const [donor, setDonor] = useState<CampaignDonor>(defaultCampaignDonor);
   const { data } = useQuery(GET_DONORS, {
     variables: {
-      isGodFather: true
+      isGodFather: true,
+      limit: 50,
     }
   });
 
