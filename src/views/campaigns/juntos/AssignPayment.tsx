@@ -59,7 +59,8 @@ export default (props: AssignPaymentProps) => {
 
   const { data } = useQuery(GET_DONORS, {
     variables: {
-      isGodFather: true
+      isGodFather: true,
+      limit: 50,
     }
   });
 
