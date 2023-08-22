@@ -76,6 +76,20 @@ export const UpdateDonor: FC<UpdateDonorProps> = props => {
             variant='standard'
           />
           <TextField
+            id='mercadoPagoEmail'
+            type='text'
+            sx={{ py: '.3em' }}
+            inputProps={{ pattern: '^.+$' }}
+            label='Email de Mercado Pago'
+            placeholder='pmendoza@gmail.com'
+            value={donorNewValues.mercadoPagoEmail}
+            onChange={(e: any) => {
+              setDonorField('mercadoPagoEmail', e.target.value);
+            }}
+            fullWidth={true}
+            variant='standard'
+          />
+          <TextField
             id='phone'
             type='text'
             sx={{ py: '.3em' }}

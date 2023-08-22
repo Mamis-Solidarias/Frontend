@@ -1,13 +1,21 @@
-import { Donor } from 'src/types/donors/Donor';
-import { axiosClient } from './initialization';
+import {Donor} from "src/types/donors/Donor";
+import {axiosClient} from "./initialization";
 
 export const createDonor = async (data: Donor) => {
-  return axiosClient.post('donors', data);
+  return axiosClient.post("donors", data);
 };
 
 export const updateDonor = async (
   id: string,
-  data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: boolean | null }
+  data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: boolean | null, mercadoPagoEmail?: string | null;}
 ) => {
-  return axiosClient.put('donors/' + id, data);
+  const dataToSend = {
+    name: data.name === null ? undefined : data.name,
+    email: data.email === null ? undefined : data.email,
+    phone: data.phone === null ? undefined : data.phone,
+    mercadoPagoEmail: data.mercadoPagoEmail === null ? undefined : data.mercadoPagoEmail,
+    isGodFather: data.isGodFather === null ? undefined : data.isGodFather
+  };
+
+  return axiosClient.put("donors/" + id, dataToSend);
 };
