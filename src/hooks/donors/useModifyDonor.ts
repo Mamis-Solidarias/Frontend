@@ -10,8 +10,8 @@ export const defaultDonor = {
   isGodFather: false
 };
 
-export const useModifyDonor = (entryDonor?: Donor | null) => {
-  const [donor, setDonor] = useState<Donor>(!!entryDonor ? entryDonor : defaultDonor);
+export const useModifyDonor = () => {
+  const [donor, setDonor] = useState<Donor>({...defaultDonor});
 
   const setDonorField = (field: keyof Donor, value: any) => {
     setDonor(oldDonor => ({ ...oldDonor, ...{ [field]: value } }));
