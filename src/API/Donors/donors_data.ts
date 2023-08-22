@@ -7,12 +7,13 @@ export const createDonor = async (data: Donor) => {
 
 export const updateDonor = async (
   id: string,
-  data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: boolean | null }
+  data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: boolean | null, mercadoPagoEmail?: string | null;}
 ) => {
   const dataToSend = {
     name: data.name === null ? undefined : data.name,
     email: data.email === null ? undefined : data.email,
     phone: data.phone === null ? undefined : data.phone,
+    mercadoPagoEmail: data.mercadoPagoEmail === null ? undefined : data.mercadoPagoEmail,
     isGodFather: data.isGodFather === null ? undefined : data.isGodFather
   };
 
