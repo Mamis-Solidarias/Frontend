@@ -10,7 +10,7 @@ import { updateDonor } from 'src/API/Donors/donors_data';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import {defaultDonor, useModifyDonor} from "src/hooks/donors/useModifyDonor";
+import { useModifyDonor } from 'src/hooks/donors/useModifyDonor';
 import { Donor } from 'src/types/donors/Donor';
 import { Action } from 'src/types/Action';
 
@@ -23,11 +23,11 @@ interface UpdateDonorProps {
 
 export const UpdateDonor: FC<UpdateDonorProps> = props => {
   const { openDialog, handleClose, donor, setAction } = props;
-  const { donor: donorNewValues, setDonor, setDonorField } = useModifyDonor();
+  const { donor: donorNewValues, setDonor, setDonorField } = useModifyDonor(donor);
 
   const resetFields = () => {
     if (!!donor) {
-      setDonor({...defaultDonor, ...{isGodFather: donor.isGodFather}});
+      setDonor(donor);
     }
   };
 
@@ -132,7 +132,6 @@ export const UpdateDonor: FC<UpdateDonorProps> = props => {
                   name: donorNewValues.name,
                   email: donorNewValues.email,
                   phone: donorNewValues.phone,
-                  mercadoPagoEmail: donorNewValues.mercadoPagoEmail,
                   isGodFather: donorNewValues.isGodFather
                 });
                 setAction({
