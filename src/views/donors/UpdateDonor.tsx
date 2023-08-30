@@ -132,6 +132,7 @@ export const UpdateDonor: FC<UpdateDonorProps> = props => {
                   name: donorNewValues.name,
                   email: donorNewValues.email,
                   phone: donorNewValues.phone,
+                  mercadoPagoEmail: donorNewValues.mercadoPagoEmail,
                   isGodFather: donorNewValues.isGodFather
                 });
                 setAction({
