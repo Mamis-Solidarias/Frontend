@@ -24,7 +24,7 @@ export default (props: JuntosBriefInformation) => {
         title={<InfoIcon sx={{ color: '#00a5ff' }} />}
         fields={{
           Recaudado: juntosEdition.totalDonations + '$',
-          Completitud: ((juntosEdition.totalDonations * 100) / juntosEdition.fundraiserGoal).toFixed(2) + '%'
+          Completitud: Math.round((juntosEdition.totalDonations * 100) / juntosEdition.fundraiserGoal) + '%'
         }}
       />
     </>

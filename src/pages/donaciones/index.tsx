@@ -21,6 +21,8 @@ import { useAppDispatch, useAppSelector } from 'src/hooks/reduxHooks';
 import { updateHasWriteDonations, updateOpenFiltersCollapse } from 'src/features/donations/donationsSlice';
 import Donations from 'src/views/donations/Donations';
 
+// import DonorsFilterView from 'src/views/donors/DonorsFilterView';
+
 export default () => {
   const { action, setCompletion } = useAction();
   const donationsSelector = useAppSelector(state => state.donations);
@@ -37,6 +39,7 @@ export default () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12}>
+          {/*
           <Card sx={{ my: '2em', width: '100%', display: 'flex', flexDirection: 'column' }}>
             <CardHeader
               title='Filtros'
@@ -55,20 +58,20 @@ export default () => {
             />
             <CardContent>
               <Collapse in={donationsSelector.openFiltersCollapse}>
-                {/*<DonorsFilterView filters={donationsSelector.filtersApplied}*/}
-                {/*                  setFilter={setFilter}*/}
-                {/*                  onSetFiltersAction={(filters) => {*/}
-                {/*  setFiltersApplied(filters);*/}
-                {/*  setAction({*/}
-                {/*    complete: true,*/}
-                {/*    success: true,*/}
-                {/*    message: 'Filtros aplicados exitosamente',*/}
-                {/*    status: 200*/}
-                {/*  });*/}
-                {/*}}/>*/}
+                                 <DonorsFilterView filters={donationsSelector.filtersApplied}
+                             setFilter={setFilter}
+                               onSetFiltersAction={(filters) => {
+                setFiltersApplied(filters);
+                setAction({
+                complete: true,
+                success: true,
+                  message: 'Filtros aplicados exitosamente',
+                status: 200
+                });
+                }}/> 
               </Collapse>
             </CardContent>
-          </Card>
+          </Card>*/}
           <Donations />
         </Grid>
       </Grid>

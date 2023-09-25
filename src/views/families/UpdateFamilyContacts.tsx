@@ -49,9 +49,12 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
   };
 
   const deleteContact = (contactToDelete: ContactToSend) => {
+    console.log('estoy aca', contactToDelete);
     const index = contactsFinal.indexOf(contactToDelete);
-    const newContacts = contactsFinal;
+    console.log('index', index);
+    const newContacts = [...contactsFinal];
     newContacts.splice(index, 1);
+    console.log(newContacts, contactsFinal);
     setContactsFinal(newContacts);
   };
 
@@ -181,6 +184,18 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
                       </Link>
                     </TableCell>
                   )}
+                  {contact.type === 'Phone' && (
+                    <TableCell>
+                      <Link
+                        target={'_blank'}
+                        rel={'noopener noreferrer'}
+                        href={'tel:' + contact.content}
+                        sx={{ color: 'lightBlue' }}
+                      >
+                        <CallIcon />
+                      </Link>
+                    </TableCell>
+                  )}
                   {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] ===
                     CONTACTING_METHODS.WHATSAPP && (
                     <TableCell>
@@ -195,6 +210,11 @@ export const UpdateFamilyContacts: FC<UpdateContactsProps> = props => {
                     </TableCell>
                   )}
                   {CONTACTING_METHODS[contact.type as keyof typeof CONTACTING_METHODS] === CONTACTING_METHODS.OTHER && (
+                    <TableCell>
+                      <DeviceUnknownIcon sx={{ color: 'gray' }} />
+                    </TableCell>
+                  )}
+                  {contact.type === 'Other' && (
                     <TableCell>
                       <DeviceUnknownIcon sx={{ color: 'gray' }} />
                     </TableCell>

@@ -198,7 +198,7 @@ export default () => {
                       sx={{ display: 'flex', flexDirection: 'column', minWidth: '5em', height: '100%' }}
                       title={<InfoIcon sx={{ color: '#00a5ff' }} />}
                       fields={{
-                        Completitud: (getParticipantsWithDonation() * 100) / getAllParticipants() + '%'
+                        Completitud: Math.round((getParticipantsWithDonation() * 100) / getAllParticipants()) + '%'
                       }}
                     />
                   </Box>
