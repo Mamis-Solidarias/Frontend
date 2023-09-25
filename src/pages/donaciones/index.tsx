@@ -5,27 +5,21 @@ import { useEffect } from 'react';
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts';
 
 // ** Demo Components Imports
-import Card from '@mui/material/Card';
-import IconButton from '@mui/material/IconButton';
-import ChevronUp from 'mdi-material-ui/ChevronUp';
-import ChevronDown from 'mdi-material-ui/ChevronDown';
-import Collapse from '@mui/material/Collapse';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 
 import { useAction } from 'src/hooks/actionHook';
 import Portal from '@mui/material/Portal';
 import ActionToast from 'src/views/pages/misc/ActionToast';
 import { hasWriteAccess, userIsLoggedIn } from 'src/utils/sessionManagement';
-import { useAppDispatch, useAppSelector } from 'src/hooks/reduxHooks';
-import { updateHasWriteDonations, updateOpenFiltersCollapse } from 'src/features/donations/donationsSlice';
+import { useAppDispatch } from 'src/hooks/reduxHooks';
+import { updateHasWriteDonations } from 'src/features/donations/donationsSlice';
 import Donations from 'src/views/donations/Donations';
 
 // import DonorsFilterView from 'src/views/donors/DonorsFilterView';
 
 export default () => {
   const { action, setCompletion } = useAction();
-  const donationsSelector = useAppSelector(state => state.donations);
+  
+  // const donationsSelector = useAppSelector(state => state.donations);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
