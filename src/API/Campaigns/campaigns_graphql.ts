@@ -86,8 +86,8 @@ export const GET_DONATION = gql`
 `;
 
 export const GET_JUNTOS_EDITIONS = gql`
-  query filterQuery {
-    juntosCampaigns {
+  query filterQuery($communityId: String) {
+    juntosCampaigns(where: { communityId: { startsWith: $communityId } }) {
       edition
     }
   }
@@ -117,8 +117,8 @@ export const GET_ABRIGADITOS = gql`
 `;
 
 export const GET_ABRIGADITOS_EDITIONS = gql`
-  query filterQuery {
-    abrigaditosCampaigns {
+  query filterQuery($communityId: String) {
+    abrigaditosCampaigns(where: { communityId: { startsWith: $communityId } }) {
       edition
     }
   }

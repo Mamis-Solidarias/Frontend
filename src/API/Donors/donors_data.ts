@@ -10,11 +10,11 @@ export const updateDonor = async (
   data: { name?: string | null; email?: string | null; phone?: string | null; isGodFather?: boolean | null, mercadoPagoEmail?: string | null;}
 ) => {
   const dataToSend = {
-    name: !data.name ? undefined : data.name,
-    email: !data.email ? undefined : data.email,
-    phone: !data.phone ? undefined : data.phone,
-    mercadoPagoEmail: !data.mercadoPagoEmail ? undefined : data.mercadoPagoEmail,
-    isGodFather: !data.isGodFather ? undefined : data.isGodFather
+    name: data.name === null ? undefined : data.name,
+    email: data.email === null ? undefined : data.email,
+    phone: data.phone === null ? undefined : data.phone,
+    mercadoPagoEmail: data.mercadoPagoEmail === null ? undefined : data.mercadoPagoEmail,
+    isGodFather: data.isGodFather === null ? undefined : data.isGodFather
   };
 
   return axiosClient.put("donors/" + id, dataToSend);

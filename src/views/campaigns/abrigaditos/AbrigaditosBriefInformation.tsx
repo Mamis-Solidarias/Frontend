@@ -24,7 +24,7 @@ export default (props: AbrigaditosBriefInformation) => {
         title={<InfoIcon sx={{ color: '#00a5ff' }} />}
         fields={{
           Recaudado: abrigaditosEdition.totalDonations + '$',
-          Completitud: ((abrigaditosEdition.totalDonations * 100) / abrigaditosEdition.fundraiserGoal).toFixed(2) + '%'
+          Completitud: Math.round((abrigaditosEdition.totalDonations * 100) / abrigaditosEdition.fundraiserGoal) + '%'
         }}
       />
     </>
